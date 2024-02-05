@@ -1,0 +1,4 @@
+server - 94.130.33.168,1444
+Database - GlobalDBS
+Username - gdscfcom_appuser
+Password - Point3rpo@957
