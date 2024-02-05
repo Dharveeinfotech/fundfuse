@@ -1,0 +1,511 @@
+﻿@model TMP.Models.CustomerMasterModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "User Account";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 1 })
+    }
+    @using (Html.BeginForm("CompanyInfo", "CustomerReg", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "UMForm" }))
+    {
+        @Html.HiddenFor(model => model.GetCityID)
+        @Html.AntiForgeryToken()
+
+
+        <div class="col-md-12 createusertitle">COMPANY INFORMATION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12" style="height:10px;"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Name as on Trade License&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @if (Model.Status == CONT.NA || Model.Status == CONT.UA || Model.Status == CONT.UM || Model.Status == CONT.UR)
+                {
+                    @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control validate[required] ", maxlength = "50", autocomplete = "off" })
+                }
+
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Trading Name&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.TradingName, new { @class = "form-control", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Website&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Website, new { @class = "form-control validate[custom[url]]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Telephone Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.TelNo, new { @class = "form-control tel validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        if (Model.CustomerTypeID != CONT.FunderCustomerTypeID)
+        {
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Industry&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.IndustryID, new SelectList(ViewBag.DDLIndustryID, "IndustryID", "IndustryName", Model.IndustryID), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+                <div id="DV_SubIndustry">
+                    <label class="col-md-2" for="textinput">Sub Industry&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        <select id="SubIndustryID" name="SubIndustryID" class="form-control validate[required]"></select>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+            <div class="form-group" style="display:none;" id="DV_OtherIndustry">
+                <label class="col-md-2" for="textinput">Other Industry&nbsp;<span style="color:red;width:50px;"></span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.OtherIndustry, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Other Sub Industry&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.OtherSubIndustry, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="form-group" style="display:none;" id="DV_OtherSubIndustry">
+                <label class="col-md-2" for="textinput"></label>
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Other Sub Industry&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.OtherSubIndustry_Sub, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            if (Model.CustomerTypeID != CONT.SupplierCustomerTypeID && Model.CustomerTypeID != CONT.PayableSupplierCustomerTypeID)
+            {
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Program Type&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @if (Model.Status == CONT.NA || Model.Status == CONT.UA || Model.Status == CONT.UM || Model.Status == CONT.UR)
+                        {
+                            @Html.DropDownListFor(model => model.ProgramType, new SelectList(ViewBag.DDLProgramTypeID, "value", "text", Model.ProgramType), "--Select--", new { @class = "form-control validate[required]", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.ProgramType, new SelectList(ViewBag.DDLProgramTypeID, "value", "text", Model.ProgramType), "--Select--", new { @class = "form-control validate[required]" })
+                        }
+                    </div>
+                </div>
+            }
+        }
+        @*<div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12 createusertitle">ADDRESS</div>
+        <div class="col-md-12" style="height:10px;"></div>*@
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Address&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">P.O. Box&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.POBox, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Country &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.NationalityID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.NationalityID), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">City &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                <select id="CityID" class="form-control validate[required]" name="CityID"></select>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group" style="display:none;" id="DV_OtherCity">
+            <div class="col-md-6"></div>
+            <label class="col-md-2" for="textinput">Other City &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.OtherCity, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12 createusertitle">USER DETAILS</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Full Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.ContactFName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", placeholder = "First Name" })
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.ContactMName, new { @class = "form-control", maxlength = "50", autocomplete = "off", placeholder = "Middle Name" })
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.ContactLName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", placeholder = "Last Name" })
+            </div>
+            <div class="col-md-1"></div>
+            @*<div class="col-md-12">
+                <label class="col-md-2"></label>
+                <p class="col-md-10 padoff name-msg" style="margin:0;">**Please ensure that the names you enter match the ones in your passport, and please use English characters only.</p>
+            </div>*@
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Gender &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.Gender, new SelectList(ViewBag.DDLGenderID, "value", "text", Model.Gender), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Country of Residence &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.LocCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.LocCountryID), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Designation in the Company&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.DesignationID, new SelectList(ViewBag.DDLDesignationID, "DesignationID", "DesignationName", Model.DesignationID), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Mobile Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control tel validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+        </div>
+
+        // Other Designation
+        <div class="form-group" id="DV_OtherDesignation" style="display:none;">
+
+            <label class="col-md-2" for="textinput">Other Designation in the Company&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-6"></div>
+        </div>
+
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">E-Mail&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control isEmailGood validate[required,custom[email]]", id = "EmailID", name = "EmailID", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+
+        <div class="col-md-12" style="text-align:right">
+            @Html.HiddenFor(x => x.CustomerID)
+            @Html.HiddenFor(x => x.CustomerTypeID)
+            @Html.HiddenFor(x => x.ProgramType)
+            @Html.HiddenFor(x => x.Status)
+            @Html.HiddenFor(x => x.CustomerCode)
+            @Html.HiddenFor(x => x.CustomerTempID)
+            <input type="hidden" id="hdnSubIndustryID" name="hdnSubIndustryID" value="@Model.SubIndustryID" />
+            <input type="text" id="CustomerTypeID" name="CustomerTypeID" style="display:none;" />
+            <input type="hidden" id="hdnSubIndustryName" name="hdnSubIndustryName" value="@Model.SubIndustryName" />
+            @*<button id="Save" name="Save" value="Save" type="submit" class="btn CommonAttachValidation btn-tgs">Save</button>&nbsp;&nbsp;*@
+            <button id="NextSave" name="NextSave" value="NextSave" type="submit" class="btn CommonAttachValidation btn-tgs">Save & Proceed</button>
+        </div>
+    }
+</div>
+<style>
+    .error {
+        border-color: #a94442 !important;
+    }
+
+        .error:focus {
+            box-shadow: 0 0 2px #a94442 !important;
+        }
+</style>
+
+<script>
+    OnlineUser();
+
+    var IndustryID = $("#IndustryID").val();
+    if (IndustryID != "") {
+        if (typeof (IndustryID) != 'undefined') {
+            AddOtherIndustry();
+        }
+    }
+
+    var DesignationID = $("#DesignationID").val();
+    if (DesignationID != "") {
+        AddOtherDesignation();
+    }
+    var SubIndustryID = $("#SubIndustryID").val();
+    if (SubIndustryID != "") {
+        AddOtherSubIndustry();
+    }
+
+    function AddOtherIndustry() {
+        var IndustryID = $("#IndustryID").val();
+        if (IndustryID != "") {
+            var skillsSelect = document.getElementById("IndustryID");
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Other") {
+                $('#DV_OtherIndustry').show();
+                $('#DV_SubIndustry').hide();
+                $('#DV_OtherSubIndustry').hide();
+                $("#OtherIndustry").focus();
+            }
+            else {
+                $('#DV_OtherIndustry').hide();
+                $('#DV_OtherSubIndustry').hide();
+                $('#DV_SubIndustry').show();
+                $("#OtherIndustry").val("");
+                $("#OtherSubIndustry").val("");
+            }
+        }
+    }
+
+    function AddOtherSubIndustry() {
+        var SubIndustryID = $("#hdnSubIndustryName").val();
+        if (SubIndustryID != "") {
+
+            if (SubIndustryID == "Other") {
+                $('#DV_OtherSubIndustry').show();
+            }
+            else {
+                $('#DV_OtherIndustry').hide();
+                $('#DV_OtherSubIndustry').hide();
+                $('#DV_SubIndustry').show();
+            }
+        }
+    }
+
+    function AddOtherDesignation() {
+        var IndustryID = $("#DesignationID").val();
+        if (IndustryID != "") {
+            var skillsSelect = document.getElementById("DesignationID");
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Other") {
+                $('#DV_OtherDesignation').show();
+                $("#OtherDesignation").focus();
+            }
+            else {
+                $('#DV_OtherDesignation').hide();
+                $("#OtherDesignation").val("");
+            }
+        }
+    }
+
+    $("#IndustryID").on("change", function () {
+        AddOtherIndustry();
+    });
+    $("#SubIndustryID").on("change", function () {
+        var SubIndustryID = $("#SubIndustryID").val();
+        if (SubIndustryID != "") {
+            var skillsSelect = document.getElementById("SubIndustryID");
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Other") {
+                $('#DV_OtherSubIndustry').show();
+            }
+            else {
+                $('#DV_OtherIndustry').hide();
+                $('#DV_OtherSubIndustry').hide();
+                $('#DV_SubIndustry').show();
+            }
+        }
+    });
+
+    $("#DesignationID").on("change", function () {
+        AddOtherDesignation();
+    });
+
+    $("#ProgramType").on("change", function () {
+        var ProgramType = $("#ProgramType").val();
+        if (ProgramType != "") {
+            if (ProgramType == "F") {
+                $("#CustomerTypeID").val(@CONT.ObligorCustomerTypeID);
+            }
+            else if (ProgramType == "R") {
+                $("#CustomerTypeID").val(@CONT.BuyerCustomerTypeID);
+            }
+            else if (ProgramType == "B") {
+                $("#CustomerTypeID").val(@CONT.BothObligorAndBuyerTypeID);
+            }
+        }
+    });
+
+    $("#Save,#NextSave").on("click", function () {
+        var DtCityID = $("#CityID").val();
+        var NationalityID = $("#NationalityID").val();
+        if (NationalityID != "") {
+            if (DtCityID == "0" || DtCityID == "") {
+                document.getElementById("CityID").className = "error " + document.getElementById("CityID").className;
+                return false;
+            }
+            else {
+                document.getElementById("CityID").className = document.getElementById("CityID").className.replace("error ", "");
+                $('#CityID').rules('remove');
+            }
+        }
+    });
+
+    $("#CityID").on("change", function () {
+        {
+            document.getElementById("CityID").className = document.getElementById("CityID").className.replace("error ", "");
+            $('#CityID').rules('remove');
+        }
+    });
+
+    var NationalityID = $("#NationalityID").val();
+    if (NationalityID != "" && typeof (NationalityID) != 'undefined') {
+        //$.LoadingOverlay("show");
+        $("#CityID").empty();
+        $('#CityID').append($('<option></option>').val("0").html("-- Select --"));
+        GetCity(NationalityID);
+        document.getElementById("CityID").className = document.getElementById("CityID").className.replace("error ", "");
+        //setTimeout(function () {
+        //    $.LoadingOverlay("hide");
+        //}, 500);
+    }
+    else {
+        $('#CityID').append($('<option></option>').val("0").html("-- Select --"));
+        $('#CityID').val("0");
+    }
+
+    $("#NationalityID").on("change", function () {
+        $.LoadingOverlay("show");
+        $('#DV_OtherCity').hide();
+        var NationalityID = $(this).val();
+        $("#CityID").empty();
+        $('#CityID').append($('<option></option>').val("0").html("-- Select --"));
+        GetCity(NationalityID);
+        //$("#IndustryID").focus();
+        setTimeout(function () {
+            $.LoadingOverlay("hide");
+        }, 500);
+    });
+
+    function GetCity(NationalityID) {
+        $.ajax({
+            url: "/ServiceProvider/GetCityData?CountryID=" + NationalityID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $.each(data, function (i, City) {
+                    $("#CityID").append(
+                        $('<option></option>').val(City.CityID).html(City.CityName));
+                });
+                $('#CityID').val($("#GetCityID").val());
+                $('#CityID').append($('<option></option>').val("00").html("Other"));
+
+                document.getElementById("CityID").className = document.getElementById("CityID").className.replace("error ", "");
+                document.getElementById("CityID").className = "error " + document.getElementById("CityID").className;
+
+                var DtCityID = $("#CityID").val();
+                if (DtCityID != 0) {
+                    document.getElementById("CityID").className = document.getElementById("CityID").className.replace("error ", "");
+                }
+                if (DtCityID == null) {
+                    document.getElementById("CityID").className = "error " + document.getElementById("CityID").className;
+                }
+
+                var OtherCity = $("#OtherCity").val();
+                if (OtherCity != "" && typeof (OtherCity) != 'undefined') {
+                    $("#CityID").val("00");
+                }
+                return false;
+            },
+        });
+    }
+
+    // Add Other Designation Code
+    var DesignationID = $("#DesignationID").val();
+    if (DesignationID != "") {
+        AddOtherDesignation();
+    }
+
+    function AddOtherDesignation() {
+        var IndustryID = $("#DesignationID").val();
+        if (IndustryID != "") {
+            var skillsSelect = document.getElementById("DesignationID");
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Other") {
+                $('#DV_OtherDesignation').show();
+                $("#OtherDesignation").focus();
+            }
+            else {
+                $('#DV_OtherDesignation').hide();
+                $("#OtherDesignation").val("");
+            }
+        }
+    }
+
+    $("#DesignationID").on("change", function () {
+        AddOtherDesignation();
+    });
+
+
+    // Add Other City Code
+    $("#CityID").on("change", function () {
+        AddOtherCity();
+    });
+
+    var OtherCity = $("#OtherCity").val();
+    if (OtherCity != "" && typeof (OtherCity) != 'undefined') {
+        EditOtherCity();
+    }
+
+    function AddOtherCity() {
+        var CityID = $("#CityID").val();
+        if (CityID != "") {
+            var skillsSelect = document.getElementById("CityID");
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Other") {
+                $('#DV_OtherCity').show(); $("#OtherCity").val(""); $("#OtherCity").focus();
+            }
+            else {
+                $('#DV_OtherCity').hide(); $("#OtherCity").val("");
+            }
+        }
+    }
+
+    function EditOtherCity() {
+        var OtherCity = $("#OtherCity").val();
+        if (OtherCity != "" && typeof (OtherCity) != 'undefined') {
+            $('#DV_OtherCity').show(); $("#OtherCity").focus();
+
+        }
+        else { $('#DV_OtherCity').hide(); $("#OtherCity").val(""); }
+    }
+
+</script>
+

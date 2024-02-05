@@ -1,0 +1,90 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  IEnumerable<TMP.Models.InvoiceTransactionModel>
+
+@if (Enumerable.Count(@ViewBag.Transt) > 0)
+{
+    <div class="col-md-12 dashboard-titel">PORTFOLIO</div>
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <table id="exampleDB2" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>Transaction Number</th>
+                        <th>Product</th>
+                        <th>Transaction Date</th>
+                        <th>Currency</th>
+                        <th>Total Amount</th>
+                        <th>Buyer Name</th>
+                        
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Transaction History</th>
+                        <th style="display:none;">
+                        </th>
+                        <th style="display:none;">
+                        </th>
+                    </tr>
+                    @if (Enumerable.Count(@ViewBag.Transt) > 0)
+                {
+                    <tbody>
+                        @foreach (var item in ViewBag.Transt)
+                    {
+                            <tr>
+                                @if (ViewBag._currentUser.IsChecker && item.IsFoundFD == false && item.IsFoundFB == false && (item.Status == CONT.FA || item.Status == CONT.SB || item.Status == CONT.CC || item.Status == CONT.FC || item.Status == CONT.BB || item.Status == CONT.ID || item.Status == CONT.CF))
+                                {
+                                    <td><a href='@Url.Action("FunderTransaction", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>@item.TranRefNo</a></td>
+                                }
+                                else if (ViewBag._currentUser.IsMaker && item.FunderID == 0 && (item.Status == CONT.IJ || item.Status == CONT.OB || item.Status == CONT.IU))
+                                {
+                                    <td><a href='@Url.Action("FunderTransaction", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>@item.TranRefNo</a></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a href="javascript:void(0);" class="factoringView" data-id="@item.InvoiceID">@item.TranRefNo</a>
+                                    </td>
+                                }
+                                @if (item.ProgramType == CONT.FType)
+                                {
+                                    <td>Receivables Finance</td>
+                                }
+                                else
+                                {
+                                    <td>Payables Finance</td>
+                                }
+                                <td>@Convert.ToDateTime(item.TranDate).ToString("dd-MMM-yyyy")</td>
+                                <td>@item.CurrencyCode</td>
+                                <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
+                                @if (item.ProgramType == CONT.FType)
+                                {
+                                    <td>@item.ObligorName</td>
+                                }
+                                else
+                                {
+                                    <td>@item.BuyerName</td>
+                                }
+                               
+                                <td>@Convert.ToDateTime(item.DueDate).ToString("dd-MMM-yyyy")</td>
+                                <td>@item.StatusUserDesc</td>
+                               
+                                <td>
+                                    <a href="javascript:void(0);" class="InvoiceCommentHistoryView" data-id="@item.InvoiceID">View</a>
+                                </td>
+                                <td class="InvoiceID" style="display:none;">
+                                    <span>@item.InvoiceID</span>
+                                </td>
+                                <td class="ProgramType" style="display:none;">
+                                    <span>@item.ProgramType</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    }
+                </table>
+            </div>
+          
+        </div>
+        <hr />
+}

@@ -1,0 +1,56 @@
+﻿@model List<TMP.Models.InvoiceTransactionModel>
+<div class="col-md-12 createusertitle">COMMODITY HISTORY</div>
+<div class="col-md-12" style="height:10px;"></div>
+<div class="col-md-12" style="padding:0px;">
+    @if (Model != null)
+            {
+        <table id="example21" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgfact">
+                    <th>Action Date</th>
+                    <th>COMMODITY</th>
+                    <th>Reference Number</th>
+                    <th>Charge Amount</th>
+                    <th>Certificate Number</th>
+                    <th>Qty</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var items in Model)
+                {
+                    <tr>
+                        <td>@Convert.ToDateTime(items.ActionDate).ToString("dd-MMM-yyyy")</td>
+                        <td>@items.ComLevelDesc</td>
+                        <td>@items.RefNo</td>
+                        <td>@string.Format("{0:0,0.00}", items.ChargeAmt)</td>
+                        <td>@items.CertificateNo</td>
+                        <td>@string.Format("{0:0,0.00}", items.QtyComm)</td>
+                        <td>@items.CommValue</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example21').DataTable({
+        });
+    });
+</script>
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        padding-left: 47px;
+    }
+
+    .dataTables_paginate {
+        padding-right: 40px;
+    }
+</style>
+
+

@@ -1,0 +1,131 @@
+﻿@model TMP.Models.CustomerBankAccDetail
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Supplier Bank Account Detail";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 7 })
+    }
+    @using (Html.BeginForm("ExporterBankAccountDetail", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @*if (Model.ProgramType == CONT.FType)
+        {
+            <div class="col-md-12 createusertitle">SUPPLIER BANK ACCOUNT DETAILS</div>
+        }
+        else if (Model.ProgramType == CONT.RType)
+        {
+            <div class="col-md-12 createusertitle">EXPORTER BANK ACCOUNT DETAILS</div>
+        }
+        else if (Model.ProgramType == CONT.BothProgramType)
+        {*@
+            <div class="col-md-12 createusertitle">SUPPLIER BANK ACCOUNT DETAILS</div>
+        @*}*@
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="form-group">
+            @*@if (Model.ProgramType == CONT.FType)
+            {
+                <label class="col-md-2" for="textinput">Supplier&nbsp;<span style="color:red;width:50px;">*</span></label>
+            }
+            else if (Model.ProgramType == CONT.RType)
+            {
+                <label class="col-md-2" for="textinput">Exporter&nbsp;<span style="color:red;width:50px;">*</span></label>
+            }
+            else if (Model.ProgramType == CONT.BothProgramType)
+            {*@
+                <label class="col-md-2" for="textinput">Supplier&nbsp;<span style="color:red;width:50px;">*</span></label>
+            @*}*@
+            <div class="col-md-3">
+                @Html.DropDownList("CustomerSuppID", null, "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Currency&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control validate[required]" })
+
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Account Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.AccountName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Bank Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.BankID, new SelectList(ViewBag.DDLBankID, "BankID", "BankName", Model.BankID), "--Select--", new { @class = "form-control  validate[required]" })
+
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Bank Address&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Account Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.AccountNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">IBAN&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.IBAN, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Country&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.BankCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.BankCountryID), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Swift Code&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Swift, new { @class = "form-control", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">IFSC Code&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.IFSC, new { @class = "form-control", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        @Html.Action("GridExporterBankDetail", "CustomerReg", new { CustomerID = Model.CustomerID })
+        <div class="col-md-12" style="text-align:right;">
+            @Html.HiddenFor(x => x.Status)
+            @Html.HiddenFor(x => x.CustomerID)
+            @Html.HiddenFor(x => x.CustomerBankAccID)
+            <button id="Save" name="Save" value="Save" type="submit" class="btn CommonAttachValidation btn-tgs">Save & Add New</button>&nbsp;&nbsp;
+            <button id="NextSave" name="NextSave" value="NextSave" type="submit" class="btn CommonAttachValidation btn-tgs">Save & Next</button>
+        </div>
+    }
+</div>
+<script>
+    ExporterBankAccount();
+</script>

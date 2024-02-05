@@ -1,0 +1,297 @@
+﻿@model IEnumerable<TMP.Models.UserMaster_ListAll_Result>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+    @*@Html.Partial("../MasterPage/_MenuPartialPage")*@
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="col-md-12">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgum">
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Login Name</th>
+                    <th>Company Name</th>
+                    <th>E-Mail</th>
+                    <th>Mobile Number</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MiddleName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.LoginName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.EmailID)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MobileNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
+                            <td>
+                                @if (ViewBag.UserRight != null && ViewBag.UserRight == "Viewer")
+                                {
+                                    <a href="#" onclick="ViewDetail('@item.UserID')">View</a>
+                                }
+                                else
+                                {
+                                    if (item.Status == CONT.NC || item.Status == CONT.UC || item.Status == CONT.NR || item.Status == CONT.UR)
+                                    {
+                                        @Html.ActionLink("View", "UserDetailsView", new { UserID = item.UserID })
+                                    }
+                                    else
+                                    {
+                                        <a href="#" onclick="ViewDetail('@item.UserID')">View</a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-10" style="height:10px;"></div>
+
+    <input type="hidden" id="hdnUserID" name="hdnUserID" />
+    <input type="hidden" id="hdnActionName" name="hdnActionName" />
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<style type="text/css">
+    .web_dialog_overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: #000000;
+        opacity: .15;
+        filter: alpha(opacity=15);
+        -moz-opacity: .15;
+        z-index: 101;
+        display: none;
+    }
+
+    .web_dialog {
+        display: none;
+        position: fixed;
+        width: 100%;
+        top: 30%;
+        left: 30%;
+        margin-left: -190px;
+        margin-top: -100px;
+        z-index: 102;
+    }
+
+    .web_dialog_title {
+        border-bottom: solid 2px #336699;
+        background-color: #336699;
+        padding: 4px;
+        color: White;
+        font-weight: bold;
+    }
+
+        .web_dialog_title a {
+            color: White;
+            text-decoration: none;
+        }
+
+    .align_right {
+        text-align: right;
+    }
+
+    .Wd {
+        width: 65%;
+    }
+
+    .wh {
+        /*width:360px;height:100px;*/
+    }
+
+    .div-border {
+        margin-top: 1%;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#example_filter.dataTables_filter").hide();
+        $(".modal-body").css({ 'display': 'block' });
+
+        $('#example').DataTable({
+            "pageLength": 10
+        });
+
+        $("#btnShowModal").click(function (e) {
+            ShowDialog(true);
+            e.preventDefault();
+        });
+        $("#btnClose").click(function (e) {
+            HideDialog();
+            e.preventDefault();
+        });
+
+
+
+    });
+
+    $('.OpenDiv').click(function () {
+
+        var ID = $(this).attr("id");
+        var UserName = $(this).attr("varname");
+
+
+        var b = ID.split("_");
+        var ActionName = ID.split("_")[0];
+        var UserID = ID.split("_")[1];
+        $("#hdnUserID").val(UserID);
+        $("#hdnActionName").val(ActionName);
+
+        $.ajax({
+            url: "/mUserMasters/AIDPopup?ActionName=" + ActionName + "&UserName=" + UserName,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('#myModalContent').html(result);
+                $('#myModal').modal('show');
+                //$("#dialog").html(result);
+                ShowDialog(true);
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(result);
+                $('#Error').modal('show');
+            }
+        });
+
+    });
+
+
+    function Act_InA_Del() {
+        var ProcessRemarks = $("#txtProcessRemarks").val();
+        if (ProcessRemarks == "") {
+            $("#errorMsg").html("Please enter Remarks");
+            $('#Error').modal('show');
+            return false;
+        }
+        var UserID = $("#hdnUserID").val();
+        var ActionName = $("#hdnActionName").val();
+
+        if (confirm("Are you sure you want to " + ActionName)) {
+
+            $.ajax({
+                url: "/mUserMasters/Act_InA_Del?ActionName=" + ActionName + "&UserID=" + UserID + "&ProcessRemarks=" + ProcessRemarks,
+                type: "POST",
+                data: "{}",
+                datatype: "text",
+                contentType: "application/text; charset=utf-8",
+                success: function (data) {
+                    var Value = data.split("$")[0];
+                    var msg = data.split("$")[1];
+                    if (Value == "0") {
+                        $("#errorMsg").html(msg);
+                        $('#Error').modal('show');
+                    }
+                    else if (Value == "1") {
+                        $("#errorMsg").html(msg);
+                        $('#Error').modal('show');
+                        window.location.href = "/mUserMasters/index";
+                    }
+                    else if (Value == "2") {
+                        window.location.href = "/mUserMasters/Login";
+                    }
+                    return false;
+                },
+            });
+        } else {
+            return false;
+        }
+
+
+    }
+
+    function ViewDetail(id) {
+        var roleid = id;
+        $.ajax({
+            url: "/mUserMasters/UserView",
+            type: "POST",
+            data: "{id:'" + roleid + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result == 'Roles not exist.') {
+                    $("#errorMsg").html(result);
+                    $('#Error').modal('show');
+                }
+                else {
+                    $('#myModalContent').html(result);
+                    $('#myModal').modal('show');
+                    //$("#dialog").addClass("web_dialog Wd");
+                    //$("#dialog").html(result);
+                    //ShowDialog(true);
+                }
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+
+    }
+
+    function ShowDialog(modal) {
+        $("#overlay").show();
+        $("#dialog").fadeIn(300);
+        if (modal) {
+            $("#overlay").unbind("click");
+        }
+        else {
+            $("#overlay").click(function (e) {
+                HideDialog();
+            });
+        }
+    }
+
+
+    function HideDialog() {
+
+        $("#overlay").hide();
+        $("#dialog").fadeOut(300);
+    }
+
+</script>

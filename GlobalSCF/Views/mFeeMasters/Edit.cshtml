@@ -1,0 +1,296 @@
+﻿@model TMP.Models.FeeMaster_ListAll_Model
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">Fee Master</div>
+    <fieldset>
+        @using (Html.BeginForm("Edit", "mFeeMasters", FormMethod.Post, new { id = "EDITForm" }))
+        {
+            @Html.AntiForgeryToken()
+            if (ViewBag.ErrorMsg != null)
+            {
+                <span class="text-danger"> @ViewBag.ErrorMsg</span>
+            }
+
+            <input type="hidden" id="FeeId" name="FeeId" value="@Model.lstFeeMaster[0].FeeId" />
+            @Html.HiddenFor(model => model.lstFeeMaster[0].FeeId)
+
+            <input type="hidden" id="IsActive" name="IsActive" />
+                    <input type="hidden" id="Status" name="Status" value="@Model.lstFeeMaster[0].Status" />
+
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">Fee Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                        <div class="col-md-3">
+                            <input id="FeeName" name="FeeName" type="text" value="@Model.lstFeeMaster[0].FeeName" class="form-control validate[required,custom[onlyLetterSp]]" maxlength="100" autocomplete="off">
+                        </div>
+                        <div class="col-md-1"></div>
+                        
+                            <label class="col-md-2"></label>
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-1"></div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">Fixed</label>
+                        <div class="col-md-3">
+                            @if (Model.lstFeeMaster[0].IsFix == true)
+                            {
+                                <div class="col-md-10"><input type="checkbox" id="chkIsFix" name="chkIsFix" value="@Model.IsFix" checked="checked" style="display:block;" /></div>
+                            }
+                            else
+                            {
+                                <div class="col-md-10"><input type="checkbox" id="chkIsFix" name="chkIsFix" value="@Model.IsFix" style="display:block;" /></div>
+                            }
+                        </div>
+                        <div class="col-md-1"></div>
+                        
+                            <label class="col-md-2"></label>
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-1"></div>
+                        
+                    </div>
+                    <input type="hidden" name="intCustomerTypeMaster" id="intCustomerTypeMaster" value="@Model.lstCustomerTypeMaster.Count">
+
+                    <div class="col-md-12">
+                        <!--menu title-->
+                        <table id="example" class="display" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="bgsp">
+
+                                    <th>Fee Name</th>
+                                    <th>Percentage</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.lstCustomerTypeMaster)
+                                {
+                                    <tr>
+                                        @{
+                                            bool Found = false;
+                                        }
+                                        @foreach (var itemFeeDetailSelected in Model.lstFeeDetailMaster)
+                                        {
+                                            if (item.CustomerTypeID == itemFeeDetailSelected.CustomerTypeId)
+                                            {
+
+                                                <input type="checkbox" id="chk_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" name="chk_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" class="chkViibleTextandGetvalue chkchkchk" value="Checkbox_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" style="display:none;" checked="checked" />
+                                                <input type="checkbox" id="chkDelete_@itemFeeDetailSelected.FeeDetId" name="chkDelete_@itemFeeDetailSelected.FeeDetId" style="position:absolute;top:-100000px;" /> @*style="position:absolute;top:-100000px;" checked="checked"*@
+                                                    <td>
+                                                        @item.CustomerTypeName
+                                                    </td>
+                                                    <td>
+                                                        @if (itemFeeDetailSelected.FeePer > 0)
+                                                        {
+                                                            <input type="text" name="txtper_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" id="txtper_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" class="txtText_@item.CustomerTypeID create-input CheckPer validate[custom[number]]" step="0.01" title="0.00" value="@string.Format("{0:0,0.00}", itemFeeDetailSelected.FeePer)" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" name="txtper_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" id="txtper_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" class="txtText_@item.CustomerTypeID create-input CheckPer validate[custom[number]]" step="0.01" title="0.00" value="0.00" />
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (itemFeeDetailSelected.FeeAmt > 0)
+                                                        {
+                                                            <input type="text" name="txtAmt_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" id="txtAmt_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" class="txtText_@item.CustomerTypeID create-input validate[custom[number]]" step="0.01" title="0.00" value="@string.Format("{0:0,0.00}", itemFeeDetailSelected.FeeAmt)" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" name="txtAmt_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" id="txtAmt_@item.CustomerTypeID _@itemFeeDetailSelected.FeeDetId" class="txtText_@item.CustomerTypeID create-input validate[custom[number]]" step="0.01" title="0.00" value="0.00" />
+                                                        }
+                                                    </td>
+                                                Found = true;
+                                                break;
+
+                                            }
+                                        }
+                                        @if (Found == false)
+                                        {
+                                            <td>
+                                                <input type="checkbox" id="chk_@item.CustomerTypeID" name="chk_@item.CustomerTypeID" class="chkViibleText chkchkchk" value="Checkbox_@item.CustomerTypeID" style="display:block;" />
+                                            </td>
+                                            <td>
+                                                @item.CustomerTypeName
+                                            </td>
+                                            <td>
+                                                <input type="text" disabled="disabled" name="txtper_@item.CustomerTypeID" id="txtper_@item.CustomerTypeID" class="txtText_@item.CustomerTypeID create-input CheckPer validate[custom[number]]" step="0.01" title="0.00" />
+                                            </td>
+                                            <td>
+                                                <input type="text" disabled="disabled" name="txtAmt_@item.CustomerTypeID" id="txtAmt_@item.CustomerTypeID" class="txtText_@item.CustomerTypeID create-input validate[custom[number]]" step="0.01" title="0.00" />
+                                            </td>
+                                        }
+                                    </tr>
+                                            }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-md-7">
+                        @*@Html.TextArea("ProcessRemark", "", 1, 1, new { @class = "col-md-12 footerbox validate[required]", placeholder = "ProcessRemark" })*@
+                    </div>
+
+                    <div class="col-md-5" style="text-align:right;">
+                        <button type="submit" id="Create" name="Create" class="btn-tgs">Save</button>
+                    </div>
+                                            }
+    </fieldset>
+
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#popup').click(function () {
+            var FeeId = $("#FeeId").val();
+            $.ajax({
+                url: "/mFeeMasters/CommentResult?FeeId=" + FeeId,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                    //$("#NEW2").html(data);
+                    $("table.display").DataTable();
+                    event.preventDefault();
+                    return false;
+                },
+            });
+        });
+    });
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var a = "";
+            var b = "";
+            var w = "@Model.lstFeeMaster[0].IsActive";
+            $("#IsActive").val(w);
+
+            $('.chkViibleText').click(function (event) {
+
+                var chkViibleTextValue = $(this).val();
+                var CustomerTypeId = chkViibleTextValue.split("_")[1];
+
+                if (this.checked) { // check select status
+                    $(".txtText_" + CustomerTypeId + "").each(function () { //loop through each checkbox
+
+                        $(".txtText_" + CustomerTypeId + "").removeAttr("disabled", "disabled");
+                        $(".txtText_" + CustomerTypeId + "").val("0");
+                    });
+                } else {
+                    $(".txtText_" + CustomerTypeId + "").each(function () { //loop through each checkbox
+
+                        $(".txtText_" + CustomerTypeId + "").attr("disabled", "disabled");
+                        $(this).val("");
+                    });
+                }
+            });
+
+            $('.chkViibleTextandGetvalue').click(function (event) {
+                
+                var chkViibleTextValue = $(this).val();
+                var CustomerTypeId = chkViibleTextValue.split("_")[1];
+                var FeeDetId = chkViibleTextValue.split("_")[2];
+
+                if (this.checked) {
+                    $("#chkDelete_" + FeeDetId + "").prop("checked", false);
+                    $(".txtText_" + CustomerTypeId + "").each(function () {
+                        $(".txtText_" + CustomerTypeId + "").removeAttr("disabled", "disabled");
+                        $(".txtText_" + CustomerTypeId + "").val("0");
+                    });
+                }
+                else {
+                    $("#chkDelete_" + FeeDetId + "").prop("checked", true);
+                    $(".txtText_" + CustomerTypeId + "").each(function () {
+                        $(".txtText_" + CustomerTypeId + "").attr("disabled", "disabled");
+                        $(this).val("");
+                    });
+                }
+            });
+        });
+
+        $('#FeeName').blur(function () {
+            var url = "/mFeeMasters/CheckFeeName";
+            var name = $('#FeeName').val();
+            var hdnFeeId;
+            if ($('#FeeId').length > 0) {
+                hdnFeeId = $('#FeeId').val();
+            }
+
+            $.get(url, { input: name, FeeID: hdnFeeId }, function (data) {
+                if (data == "Available") {
+                    $("#result").html("<span id='spanGreen' style='color:green'><i class='fa fa-check 3x'></i></span>");
+                    $("#FeeName").css('color', 'green');
+                }
+                else {
+                    $("#result").html("<span id='spanRed' style='color:red'><i class='fa fa-times 3x'></i></span>");
+                    $("#FeeName").css('color', 'red');
+                }
+            });
+        });
+
+        $("#Create").click(function () {
+            if ($("#spanRed").length > 0) {
+                return false;
+            }
+            var a = 0;
+            $(".chkchkchk").each(function () {
+                if (this.checked) {
+                    a = 1;
+                }
+            });
+            if (a == 0) {
+                $("#errorMsg").html("Please select atleast one Fee !!");
+                $('#Error').modal('show');
+                return false;
+            }
+            return true;
+        });
+
+        $('.CheckPer').change(function () {
+
+            var intPremPer = $(this).val();
+            if (intPremPer > 100) {
+                $("#errorMsg").html("Percentage Can Not Be More Then 100%.");
+                $('#Error').modal('show');
+                $(this).val("");
+                $(this).focus();
+                return false;
+            }
+            else
+                return true;
+        })
+    </script>
+
+    <script type="text/javascript">
+        $("#EDITForm").validationEngine(
+         'attach', {
+             promptPosition: "bottomLeft",
+             scroll: false,
+             autoHidePrompt: true,
+             autoHideDelay: 3500,
+             fadeDuration: 0.3,
+             focusFirstField: false,
+             MaxErrorsPerField: 1
+         });
+    </script>
+}

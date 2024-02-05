@@ -1,0 +1,24 @@
+﻿
+@model IEnumerable<TMP.Models.CustomerMaster_ListAll_Result>
+<table>
+    <tr>
+        <th>
+
+        </th>
+        <th>
+            Company Type
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <input type="checkbox" id="chkBox[]" name="chkBox" class="checkbox" value="@item.CustomerTypeID" />
+            </td>
+            <td>
+                @item.CustomerTypeName
+            </td>
+        </tr>
+    }
+    
+</table>

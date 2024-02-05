@@ -1,0 +1,66 @@
+﻿@model  IEnumerable<TMP.Models.CustomerSupplierModel>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@if (Model.Count() > 0)
+{
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>Company Name</th>
+                        <th>Country of Incorporation</th>
+                        <th>Date of Incorporation</th>
+                        <th>Telephone Number</th>
+                        <th>Mobile Number</th>
+                        <th>E-Mail</th>
+                        <th>License Expiry Date</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@item.CompanyName</td>
+                            <td>@item.IncCountryName</td>
+                            <td>@item.IncDate.ToString("dd-MMM-yyyy")</td>
+                            <td>@item.TelNo</td>
+                            <td>@item.MobileNo</td>
+                            <td>@item.EmailID</td>
+                            @if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(item.LicExpDate))
+                            {
+                                <td class="DateExpireLabel">@(string.Format("{0:dd-MMM-yyyy}", item.LicExpDate))</td>
+                            }
+                            else
+                            {
+                                <td>@(string.Format("{0:dd-MMM-yyyy}", item.LicExpDate))</td>
+                            }
+                            <td>@Html.ActionLink("Edit", "SupplierDetail", new { CustomerID = item.CustomerID, CSid = item.CustomerSuppID, did = 0, status = item.Status })</td>
+                            <td>@Html.ActionLink("Delete", "SupplierDetail", new { CustomerID = item.CustomerID, did = item.CustomerSuppID, CSid = 0, status = item.Status })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 5,
+        });
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+
+
+

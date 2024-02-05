@@ -1,0 +1,89 @@
+﻿@model List<TMP.Models.InvoiceTransactionModel>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12">
+                <table id="example"  cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>Total Amount</th>
+                            <th>Transaction Number</th>
+                            <th>Product</th>
+                            <th>Supplier Name</th>
+                            <th>Yield</th>
+                            <th>Tenor</th>
+                            <th>Due Date</th>
+                            <th>Action</th>
+                            <th style="display:none;">
+                            </th>
+                            <th style="display:none;">
+                            </th>
+                        </tr>
+                        @if (Model.Count() > 0)
+                        {
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
+                                    <td>@item.TranRefNo</td>
+                                    @if (item.ProgramType == CONT.FType)
+                                    {
+                                        <td>Receivables Finance</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Payables Finance</td>
+                                    }
+
+                                    <td>
+                                        @item.SupplierName
+                                    </td>
+
+                                    <td> @string.Format("{0:0,0.00}", item.FunProfitRate) %</td>
+                                    <td>@item.Tenor Days</td>
+                                    <td>@Convert.ToDateTime(item.DueDate).ToString("dd-MMM-yyyy")</td>
+                                   @if (item.Status == CONT.OA || item.Status == CONT.OP)
+                                    {
+                                        <td><a href='@Url.Action("ObligorChecker", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Accept</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                           
+                                        </td>
+                                    }
+                                    <td class="InvoiceID" style="display:none;">
+                                        <span>@item.InvoiceID</span>
+                                    </td>
+                                    <td class="ProgramType" style="display:none;">
+                                        <span>@item.ProgramType</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        }
+                    </table>
+                </div>
+
+            </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10, "ordering": false
+        });
+    });
+</script>
+
+

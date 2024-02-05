@@ -1,0 +1,205 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Profit And Processing Fees";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("ProfitAndFees", "InvoiceCommon", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations" }))
+    {
+        @Html.HiddenFor(model => model.InvoiceID)
+        @Html.HiddenFor(model => model.ProgramType)
+
+        <div class="col-md-12 createusertitle">PAYMENT DETAILS</div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        <div class="container padoff">
+         
+            <table class="col-md-5">
+                <tbody>
+                    <tr>
+                        <td class="td-bg">Transaction Number</td>
+                          <td class="td-line">
+                            @Model.TranRefNo
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Bank Name</td>
+                          <td class="td-line">
+                            @Html.DropDownListFor(model => model.PayBankID, new SelectList(ViewBag.DDLBankID, "BankID", "BankName", Model.PayBankID), "--Select--", new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Account Number</td>
+                          <td class="td-line">
+                            @Html.TextBoxFor(model => model.PayAccountNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="col-md-5">
+                <tbody>
+                    <tr>
+                        <td class="td-bg">Currency</td>
+                          <td class="td-line">
+                            @Model.CurrencyCode
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Conversion Currency</td>
+                          <td class="td-line">
+                            @Html.DropDownListFor(model => model.PayCurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.PayCurrencyID), "--Select--", new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Conversion Currency Rate</td>
+                          <td class="td-line">
+                            @Html.TextBoxFor(model => model.PayCurrencyRate, new { @class = "form-control num validate[required]", maxlength = "50", autocomplete = "off" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+           
+        </div>
+        <div class="col-md-12" style="height:35px;"></div>
+
+        <div class="container padoff">
+           
+            <table class="col-md-5">
+                <tbody>
+                    <tr>
+                        <td class="td-bg" colspan="2" style="text-align: center !important;font-weight: 800;">Profit Amount</td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Profit Amount</td>
+                          <td class="td-line">
+                            @Html.TextBoxFor(model => model.ProfitAmt, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Conversion Amount</td>
+                          <td class="td-line">
+                            @Html.TextBoxFor(model => model.PayProfitAmt, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Payment Reference Number</td>
+                          <td class="td-line">
+                            @Html.TextBoxFor(model => model.PayProfitRefNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Payment Date</td>
+                          <td class="td-line">
+                            @if (Model.PayProfitDate != Convert.ToDateTime("01-01-1900") && Model.PayProfitDate != Convert.ToDateTime("01-01-0001"))
+                            {
+                                <input id="PayProfitDate" name="PayProfitDate" type="text" placeholder="" class="form-control disable formattedCalender validate[required]" autocomplete="off" value="@Convert.ToDateTime(Model.PayProfitDate).ToString("dd-MMM-yyyy")">
+                            }
+                            else
+                            {
+                                <input id="PayProfitDate" name="PayProfitDate" type="text" placeholder="" class="form-control disable formattedCalender validate[required]" autocomplete="off">
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="col-md-5">
+                <tbody>
+                    <tr>
+                        <td class="td-bg" colspan="2" style="text-align: center !important;font-weight: 800;">Transaction Fees</td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Fees Amount</td>
+                          <td class="td-line">
+                            @Html.TextBoxFor(model => model.TranFeeAmt, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Conversion Amount</td>
+                          <td class="td-line">
+                            @Html.TextBoxFor(model => model.PayProcessFeeAmt, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Payment Reference Number</td>
+                          <td class="td-line">
+                            @Html.TextBoxFor(model => model.PayProcessRefNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Payment Date</td>
+                          <td class="td-line">
+                            @if (Model.PayProcessDate != Convert.ToDateTime("01-01-1900") && Model.PayProcessDate != Convert.ToDateTime("01-01-0001"))
+                            {
+                                <input id="PayProcessDate" name="PayProcessDate" type="text" placeholder="" class="form-control disable formattedCalender validate[required]" autocomplete="off" value="@Convert.ToDateTime(Model.PayProcessDate).ToString("dd-MMM-yyyy")">
+                            }
+                            else
+                            {
+                                <input id="PayProcessDate" name="PayProcessDate" type="text" placeholder="" class="form-control disable formattedCalender validate[required]" autocomplete="off">
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+           
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        <div class="container">
+            <div class="col-md-6">
+                @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+            </div>
+            <div class="col-md-6" style="text-align:right;padding-top:30px;">
+                <button id="Cancel" name="Cancel" value="Cancel" type="submit" class="btn CommonDetachValidation btn-tgs">Cancel</button>
+                <button id="btnSubmit" name="btnSubmit" value="submit" type="submit" class="btn CommonAttachValidation btn-tgs">Submit</button>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    }
+</div>
+<style>
+    .error {
+        border-color: #a94442 !important;
+    }
+
+        .error:focus {
+            box-shadow: 0 0 2px #a94442 !important;
+        }
+          table {
+        margin-bottom: 1%;
+          margin-left: 65px;
+        margin-top: 1%;
+    }
+</style>
+<script>
+    $('#PayProfitDate').val(); $('#PayProcessDate').val();
+    $('#PayCurrencyRate').change(function () {
+        var PayCurrencyID = $("#PayCurrencyID").val();
+        if (PayCurrencyID != "") {
+            Calc();
+        }
+        else {
+            $("#errorMsg").html("Please select conversion currency.");
+            $('#Error').modal('show');
+            $('#PayCurrencyRate').val("");
+        }
+    });
+
+    function Calc() {
+        var PayCurrencyRate = document.getElementById("PayCurrencyRate").value;
+        var ProfitAmt = document.getElementById("ProfitAmt").value;
+        var TranFeeAmt = document.getElementById("TranFeeAmt").value;
+
+        var PayProfitAmt = ProfitAmt * PayCurrencyRate;
+        var PayProcessFeeAmt = TranFeeAmt * PayCurrencyRate;
+
+        document.getElementById("PayProfitAmt").value = parseFloat(PayProfitAmt, 10).toFixed(2);
+        document.getElementById("PayProcessFeeAmt").value = parseFloat(PayProcessFeeAmt, 10).toFixed(2);
+      
+    }
+    $("#ProfitAmt").val(parseFloat($("#ProfitAmt").val(), 10).toFixed(2));
+    $("#TranFeeAmt").val(parseFloat($("#TranFeeAmt").val(), 10).toFixed(2));
+</script>

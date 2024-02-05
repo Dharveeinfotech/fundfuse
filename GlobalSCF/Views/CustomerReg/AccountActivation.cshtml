@@ -1,0 +1,700 @@
+﻿@model TMP.Models.CustomerVerifyModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Account Activation";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+@{
+    List<SelectListItem>
+    listItems1 = new List<SelectListItem>
+        ();
+    listItems1.Add(new SelectListItem
+    {
+        Text = "Yes",
+        Value = "Yes"
+    });
+    listItems1.Add(new SelectListItem
+    {
+        Text = "No",
+        Value = "No"
+    });
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    {
+        if (Model.Admin == "Y")
+        {
+            @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 10 })
+        }
+        else
+        {
+            @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 11 })  }
+            }
+    @using (Html.BeginForm("AccountActivation", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "DocumentsDetails" }))
+            {
+        @Html.AntiForgeryToken()
+        if (Model.Status == CONT.UV || Model.Status == CONT.UO || Model.Status == CONT.UP)
+        {
+            <div class="col-md-12 createusertitle">UPDATE ACCOUNT</div>
+        }
+        else
+        {
+            <div class="col-md-12 createusertitle">ACTIVATION OF ACCOUNT</div>
+        }
+
+        <div class="col-md-12" style="height:10px;"></div>
+
+
+        <div class="container" style="border:1px solid;padding:20px;margin:20px; border-color:#58595b;">
+
+            <p style="font-size:15px; text-align:center;padding-bottom:10px;">Sighting of original documents</p>
+            <label class="col-md-2" for="textinput">Completed &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-2">@Html.DropDownListFor(model => model.Complete, listItems1, "--Select--", new { @class = "form-control  validate[required]" })</div>
+            <label class="col-md-2" for="textinput">Completed By &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-2">
+                @Html.TextBoxFor(model => model.CompleteBy, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <label class="col-md-2" for="textinput">Completed Date &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-2">
+                @if (Model.CustomerVerID > 0)
+                {
+                    <input id="CompleteDate" name="CompleteDate" type="text" placeholder="" class="form-control formattedCalenderAll validate[required]" autocomplete="off" value="@Model.CompleteDate.ToString(" dd-MMM-yyyy")" />
+                }
+                else
+                {
+                    <input id="CompleteDate" name="CompleteDate" type="text" placeholder="" class="form-control formattedCalenderAll validate[required]" autocomplete="off" />
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+                @if (Model.CustomerVerID > 0)
+                {
+                    if (Model.IsVerified)
+                    {
+                        <p>
+                            <input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb" /> Incomplete Verification &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="cb2" name="cb2" value="cb2" class="chb" checked="checked" /> Verification Completed
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb" checked="checked" /> Incomplete Verification &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="cb2" name="cb2" value="cb2" class="chb" /> Verification Completed
+                        </p>
+                    }
+                }
+                else
+                {
+                    <p>
+                        <input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb" /> Incomplete Verification &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" id="cb2" name="cb2" value="cb2" class="chb" /> Verification Completed
+                    </p>
+                }
+            </div>
+            <div class="col-md-2"></div>
+
+
+        </div>
+        <div class="form-group div-incomplate" style="margin-left:8px;">
+            <label class="col-md-2" for="textinput">Documents required&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.DocumentIDs_List, new SelectList(ViewBag.DDLDocID, "DocumentID", "DocumentName", Model.DocumentIDs_List), new { @class = "form-control", @multiple = "multiple", @id = "DocumentIDs_List" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Other requirements&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.OtherDoc, new { @class = "form-control validate[required]", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="form-group div-complate padoff" style="margin-left:7px;">
+            <div class="col-md-12">
+                <div class="col-md-4"></div>
+                <div class="col-md-4" style="text-align:center;">
+                    <p style="margin:0; font-size:15px">Authorized Signatories</p>
+                </div>
+                <div class="col-md-4"></div>
+
+            </div>
+        </div>
+        <div class="form-group div-complate padoff">
+            @if (ViewBag.CustomerShareHoldList != null)
+                {
+                <table id="example11" class="display" cellspacing="0" width="96.5%" style="margin-left:20px;">
+                    <thead>
+                        <tr class="bgspr">
+                            <th width="10%">Select</th>
+                            <th width="40%">Contact name</th>
+                            <th width="40%">E-Mail</th>
+                            <th width="10%">Signatories</th>
+                        </tr>
+                    <tbody>
+                        @foreach (var item in ViewBag.CustomerShareHoldList)
+                        {
+                            <tr>
+                                <td><input type="checkbox" id="chk_@item.CustomerShareHoldID" name="chk_@item.CustomerShareHoldID" class="DisableItem" /></td>
+                                <td>@item.ContactFullName</td>
+                                <td>@item.EmailID</td>
+
+                                @if (item.IsSelectSign == true)
+                                {
+                                    if (item.AuthSignType == "J")
+                                    {
+                                        <td>
+                                            <select class="form-control validate[required] DisableItem" id="AuthSignType_@item.CustomerShareHoldID" name="AuthSignType_@item.CustomerShareHoldID">
+                                                <option value="">--Select--</option>
+                                                <option value="J" selected="selected">Joint</option>
+                                                <option value="S">Single</option>
+                                            </select>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <select class="form-control validate[required] DisableItem" id="AuthSignType_@item.CustomerShareHoldID" name="AuthSignType_@item.CustomerShareHoldID">
+                                                <option value="">--Select--</option>
+                                                <option value="J">Joint</option>
+                                                <option value="S" selected="selected">Single</option>
+                                            </select>
+                                        </td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td>
+                                        <select class="form-control validate[required] DisableItem" id="AuthSignType_@item.CustomerShareHoldID" name="AuthSignType_@item.CustomerShareHoldID">
+                                            <option value="" selected="selected">--Select--</option>
+                                            <option value="J">Joint</option>
+                                            <option value="S">Single</option>
+                                        </select>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+
+        if (Model.CustomerTypeID == CONT.SupplierCustomerTypeID)
+        {
+            @*<div class="form-group div-complate" style="margin-left:6px;">
+                <div class="col-md-2" style="text-align:left;">
+                    <button id="btnMultiProgramCode" name="btnMultiProgramCode" value="btnMultiProgramCode" class="btn btn-tgs">Generate Program</button>
+                </div>
+            </div>*@
+        }
+
+        if (Model.CustomerTypeID != CONT.SupplierCustomerTypeID)
+        {
+            <div class="form-group div-complate" style="margin-left:6px;">
+
+                <div class="col-md-2">Insurance</div>
+                <div class="col-md-4">
+
+                    @if (Model.IsInsurance)
+                    {
+                        <p>
+                            <input type="checkbox" id="cb3" name="cb3" value="cb3" class="chb" checked="checked" /> Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="cb4" name="cb4" value="cb4" class="chb" /> No
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <input type="checkbox" id="cb3" name="cb3" value="cb3" class="chb" /> Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="cb4" name="cb4" value="cb4" class="chb" checked="checked" /> No
+                        </p>
+                    }
+
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        }
+
+        if (Model.CustomerTypeID == CONT.FunderCustomerTypeID)
+        {
+            <div class="divInsurance">
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Policy No&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.PolicyNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                    </div>
+                    <div class="col-md-1"></div>
+
+                    <label class="col-md-2" for="textinput">Attachment&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @if (Model.Attach != null)
+                    {
+                            <label class="f-btn f-btn-default f-btn-file">
+                                Upload <input type="file" name="Attach" id="Attach" class="file" />
+                            </label>
+                            <label class="l-filename" id="Attach_span"></label>
+                            if (Model.Attach != "")
+                            {
+                                @Html.HiddenFor(x => x.Attach)
+                                <span class="p-view">
+                                    @*<a href='~/Files/Upload/@Model.Attach' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="Attach_PopUp" data-id="@Model.Attach">View</a>
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <label class="f-btn f-btn-default f-btn-file">
+                                Upload <input type="file" name="Attach" id="Attach" class="validate[required] file" />
+                            </label>
+                            <label class="l-filename" id="Attach_span"></label>
+                        }
+                    </div>
+                    <div class="col-md-1"></div>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Issuance Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @if (Model.IssueDate == Convert.ToDateTime("01/01/1900") || Model.IssueDate == Convert.ToDateTime("01/01/0001"))
+                        {
+                            <input id="IssueDate" name="IssueDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" />
+                        }
+                        else
+                        {
+                            <input id="IssueDate" name="IssueDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" value="@Model.IssueDate.ToString("dd-MMM-yyyy")" />
+                        }
+                    </div>
+
+                    <div class="col-md-1"></div>
+
+                    <label class="col-md-2" for="textinput">Expiry Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @if (Model.ExpDate == Convert.ToDateTime("01/01/1900") || Model.ExpDate == Convert.ToDateTime("01/01/0001"))
+                        {
+                            <input id="ExpDate" name="ExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" />
+                        }
+                        else
+                        {
+                            if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.ExpDate))
+                            {
+                                <input id="ExpDate" name="ExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required] DateExpire" autocomplete="off" value="@Model.ExpDate.ToString("dd-MMM-yyyy")" />
+                            }
+                            else
+                            {
+                                <input id="ExpDate" name="ExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" value="@Model.ExpDate.ToString("dd-MMM-yyyy")" />
+                            }
+                        }
+                    </div>
+                    <div class="col-md-1"></div>
+
+                </div>
+            </div>
+        }
+
+        if (Model.CustomerTypeID != CONT.FunderCustomerTypeID && Model.CustomerTypeID != CONT.SupplierCustomerTypeID)
+        {
+            @*<div class="form-group div-complate" style="margin-left:6px;">
+                <div class="col-md-2" style="text-align:left;">
+                    <button id="btnProgramCode" name="btnProgramCode" value="btnProgramCode" class="btn btn-tgs">Generate Program</button>
+                </div>
+            </div>*@
+
+            <div class="form-group div-complate" style="margin-left:14px;">
+                @*<label class="col-md-2" for="textinput">Program Code &nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.ProgramCode, new { @class = "form-control validate[required]", autocomplete = "off", @readonly = "readonly" })
+                </div>
+                <div class="col-md-1"></div>*@
+                @if (Model.CustomerTypeID == CONT.ObligorCustomerTypeID || Model.CustomerTypeID == CONT.BothObligorAndBuyerTypeID)
+                {
+                    <label class="col-md-2" for="textinput">Extension Tenor &nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.ExtTenor, new { @class = "form-control num validate[required]", autocomplete = "off", maxlength = "4" })
+                    </div>
+                    <div class="col-md-1"></div>
+                }
+            </div>
+        }
+
+        if (Model.CustomerTypeID == CONT.SupplierCustomerTypeID)
+        {
+            @*<div class="form-group div-MultiProgram">
+                @Html.Action("GridMultiProgram", "CustomerReg", new { CustomerID = Model.CustomerID })
+            </div>*@
+        }
+        if (Model.CustomerTypeID != CONT.FunderCustomerTypeID)
+        {
+            <div class="form-group div-complate" style="margin-left:12px;">
+                <label class="col-md-2" for="textinput">Profit Type &nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.ProfitType, new SelectList(ViewBag.DDLProfitTypeID, "value", "text", Model.ProfitType), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+
+                @if (Model.CustomerTypeID == CONT.ObligorCustomerTypeID || Model.CustomerTypeID == CONT.BothObligorAndBuyerTypeID)
+                {
+                    <label class="col-md-2" for="textinput">Extension Due Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @if (Model.ExtDateType == "D")
+                        {
+                            <span>
+                                <input type="radio" name="Extensionradio" class="Extensionradio" value="P">&nbsp; &nbsp;Tentative Payment Date &nbsp; &nbsp; &nbsp;
+                                <input type="radio" name="Extensionradio" class="Extensionradio" value="D" checked>&nbsp; &nbsp;Due Date
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                <input type="radio" name="Extensionradio" class="Extensionradio" value="P" checked> &nbsp;Tentative Payment Date &nbsp; &nbsp; &nbsp;
+                                <input type="radio" name="Extensionradio" class="Extensionradio" value="D">&nbsp; &nbsp;Due Date
+                            </span>
+                        }
+
+                    </div>
+                    <div class="col-md-1"></div>
+                }
+            </div>
+        }
+
+
+        if (ViewBag._currentUser.IsMaker == true || ViewBag._currentUser.IsOpTeam == true)
+        {
+            if ((Model.Status == CONT.NV || Model.Status == CONT.NO || Model.Status == CONT.UV || Model.Status == CONT.UO || Model.Status == CONT.UP) && Model.Admin != "Y")
+            {
+                <div class="container padoff">
+                    <table class="col-md-12" style="width:96.5%;margin-left:20px;">
+                        <tbody>
+                            <tr>
+                                @if (Model.CustomerTypeID == CONT.FunderCustomerTypeID)
+                                {
+                                    <td class="td-bg" style="width:23.4%;">Comments by Compliance Team</td>
+                                }
+                                else if (Model.Status == CONT.NO)
+                                {
+                                    <td class="td-bg" style="width:23.4%;">Comments by Operations Team</td>
+                                }
+                                else
+                                {
+                                    <td class="td-bg" style="width:23.4%;">Comments by Credit Approver</td>
+                                }
+                                <td class="td-line">
+                                    @Model.ProcessRemark
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-12" style="height:20px;"></div>
+                <div class="container padoff">
+                    <table class="col-md-12" style="width:96.5%;margin-left:20px;">
+                        <tbody>
+                            <tr>
+                                <td class="td-bg" style="width:23.4%;" id="goToLINK"><a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@Model.CustomerID">View All Comments</a> / Comments</td>
+                                <td class="td-line"> @Html.TextBoxFor(model => model.Feedback, new { @class = "form-control removedsbl", autocomplete = "off" })</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group btn-incomplate">
+                    <div class="col-md-12" style="text-align:right;margin-top:10px;">
+                        <div class="col-md-8"></div>
+                        @if (Model.Status == CONT.NV || Model.Status == CONT.NO)
+                        {
+                            <div class="col-md-4">
+                                 <button id="Return" name="Return" value="Return" type="submit" class="btn btn-tgs CommonAttachValidation">Return</button>&nbsp;&nbsp;
+                                <button id="Reject" name="Reject" value="Reject" type="submit" class="btn btn-tgs CommonAttachValidation">Reject</button>&nbsp;&nbsp;
+                                <button id="onhold" name="onhold" value="onhold" type="submit" class="btn btn-tgs CommonAttachValidation">On Hold</button>&nbsp;&nbsp;
+                                <button id="Activate" name="Activate" value="Activate" type="submit" class="btn btn-tgs CommonAttachValidation">Activate</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4">
+                                <button id="Reject" name="Reject" value="Reject" type="submit" class="btn btn-tgs">Reject</button>&nbsp;&nbsp;
+                                <button id="Activate" name="Activate" value="Activate" type="submit" class="btn btn-tgs">Approve</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+                if ((Model.Status == CONT.UV || Model.Status == CONT.UP) && Model.Admin != "Y")
+                {
+                    <script>
+                        debugger;
+                        $('.form-control').attr('disabled', true);
+                        $('.removedsbl').attr('disabled', false);
+                        $('#btnProgramCode').attr('disabled', true);
+                        $("input.chb").attr("disabled", true);
+                        $("input.Extensionradio").attr("disabled", true);
+                        $('#btnMultiProgramCode').attr('disabled', true);
+                        $(".div-MultiProgram").css("display", "block");
+                        $("input.DisableItem").attr("disabled", true);
+                        $(".btn-incomplate").css("display", "block");
+                        $("#Activate").show();
+                        $("#onhold").hide();
+                        $("#Reject").show();
+                        $("#Return").hide();
+                    </script>
+
+                    @Html.HiddenFor(x => x.CompleteBy)
+                    @Html.HiddenFor(x => x.Complete)
+                    @Html.HiddenFor(x => x.CompleteDate)
+                    @Html.HiddenFor(x => x.IsInsurance)
+                    @Html.HiddenFor(x => x.IsVerified)
+                    @Html.HiddenFor(x => x.ExtTenor)
+                    @Html.HiddenFor(x => x.ProfitType)
+                    @Html.HiddenFor(x => x.ExtDateType)
+                }
+                else
+                {
+                    <script>
+                        $("#Activate").click(function () {
+                            if ($(".DisableItem:checkbox:checked").length > 0) {
+                                return true;
+                            } else {
+                                $("#errorMsg").html("Please select Authorized Signatories to complete the verification process.");
+                                $('#Error').modal('show');
+                                return false;
+                            }
+                        });
+                    </script>
+                    if (Model.CustomerVerID > 0)
+                    {
+                        if (Model.IsVerified)
+                        {
+                            <script>
+                                $(".btn-incomplate").css("display", "block");
+                                $("#Activate").show();
+                                $("#onhold").hide();
+                                $("#Reject").hide();
+                            </script>
+                        }
+                        else
+                        {
+                            <script>
+                                $(".btn-incomplate").css("display", "block");
+                                $("#Activate").hide();
+                                $("#onhold").show();
+                                $("#Reject").show();
+                            </script>
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                <div class="col-md-12" style="text-align:right;margin-top:20px;">
+                    <button id="Next" name="Next" value="Next" type="submit" class="btn btn-tgs">Next</button>
+                </div>
+
+
+                <script>
+                    $('.form-control').attr('disabled', true);
+                    $('#btnProgramCode').css('display', 'none');
+                    $("input.chb").attr("disabled", true);
+                    $("input.Extensionradio").attr("disabled", true);
+                    $('#btnMultiProgramCode').attr('disabled', true);
+                    $(".div-MultiProgram").css("display", "block");
+                    $("input.DisableItem").attr("disabled", true);
+                    document.getElementById("Attach").disabled = true;
+
+                </script>
+            }
+        }
+        @Html.HiddenFor(x => x.CustomerVerID)
+        @Html.HiddenFor(x => x.AuthSignType)
+        @Html.HiddenFor(x => x.CustomerID)
+        @Html.HiddenFor(x => x.CustomerTypeID)
+        @Html.HiddenFor(x => x.CustomerShareHoldIDs)
+        @Html.HiddenFor(x => x.DocumentIDs)
+        @Html.HiddenFor(x => x.Status)
+        @Html.HiddenFor(x => x.Admin)
+        @Html.HiddenFor(x => x._currentStatus)
+      
+    }
+
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".Attach_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.Attach' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    AccountActivation();
+    if ('@Model.AuthSignType' == 'S') {
+        $('#rdoS').attr('checked', true); $('#rdoJ').attr('checked', false);
+    }
+    else { $('#rdoS').attr('checked', false); $('#rdoJ').attr('checked', true); }
+    $("#rdoJ").on("change", function () {
+        $('#rdoJ').attr('checked', true); $('#rdoS').attr('checked', false);
+    });
+    $("#rdoS").on("change", function () {
+        $('#rdoS').attr('checked', true); $('#rdoJ').attr('checked', false);
+    });
+
+    //$(".div-MultiProgram").css("display", "none");
+
+    $("#btnMultiProgramCode").on("click", function () {
+        $(".div-MultiProgram").css("display", "block");
+        return false;
+    });
+
+    $("#btnProgramCode").on("click", function () {
+        var CustomerID = $("#CustomerID").val();
+        if (CustomerID != "") {
+            $.ajax({
+                url: "/CustomerReg/GetProgramCode?CustomerID=" + CustomerID,
+                type: "GET",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $.each(data, function (i, Data) {
+                        $("#ProgramCode").val(Data.ProgramCode);
+                        return false;
+                    });
+                    return false;
+                },
+            });
+            return false;
+        }
+    });
+
+    $("#goToLINK").on("click", ".OpenList", function () {
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var CustomerID = $('#CustomerID').val();
+        if (CustomerID != null && CustomerID > 0) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: "/CustomerReg/RemarksPopup?CustomerID=" + CustomerID,
+                contentType: "application/json; charset=utf-8",
+                data: "{}",
+                datatype: "json",
+                success: function (data) {
+                    $('#Invoiceview').html(data);
+                    $('#process').modal('hide');
+                    $('#InvoiceModal').modal('show');
+                },
+            });
+        }
+    });
+
+    $(document).ready(function () {
+        $(".DisableItem").each(function () {
+            var ID = $(this).attr("id");
+            var value = $(this).val();
+            var InvID = ID.split('_')[1];
+            $("#AuthSignType_" + InvID).attr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", false);
+        });
+    });
+
+    $(".DisableItem").on("change", function () {
+        var ID = $(this).attr("id");
+        var value = $(this).val();
+        var InvID = ID.split('_')[1];
+        if ($("#chk_" + InvID).is(':checked')) {
+            $("#AuthSignType_" + InvID).removeAttr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", true);
+        }
+        else {
+            $("#AuthSignType_" + InvID).attr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", false);
+        }
+    });
+
+    $(document).ready(function () {
+        $('#example11').DataTable({
+            "pageLength": 5,
+        });
+    });
+</script>
+
+<style>
+    .div-incomplate {
+        display: none;
+    }
+
+    .div-complate {
+        display: none;
+    }
+
+    .btn-incomplate {
+        display: none;
+    }
+    /*.dropdown-menu {
+        border-radius: 0px;
+        margin: 0px;
+    }*/
+
+        .dropdown-menu > li > a:hover {
+            background-color: #428bca;
+            color: #000000;
+        }
+
+    .multiselect-container > li > a.multiselect-all label {
+        font-weight: 400;
+        padding: 0px 0px 0px 35px;
+    }
+
+    .dropdown-menu > li > a {
+        background-color: transparent;
+       padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 5px;
+    }
+
+    .radio, .checkbox {
+        display: block;
+        min-height: 10px;
+    }
+
+    .btn-group > .btn:first-child {
+        margin-left: 0;
+        text-align: left;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        display: none;
+    }
+
+    .Extensionradio {
+        margin-top: 10px !important;
+    }
+
+    .divInsurance {
+        display: none;
+    }
+
+    .div-MultiProgram {
+        display: none;
+    }
+</style>

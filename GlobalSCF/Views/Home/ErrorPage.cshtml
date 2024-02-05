@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12">
+    @Html.Action("_MenuPartialPage", "MasterPage")
+    <h1 class="text-danger">Error.</h1>
+    <h2 class="text-danger">An error occurred while processing your request.</h2>
+    </div>

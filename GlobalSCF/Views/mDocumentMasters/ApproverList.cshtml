@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TMP.Models.DocumentMaster_ListAll_Result>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgsp">
+                    <th>Document Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(item.DocumentName, "DetailsApprover", new { id = item.DocumentID, idh = item.DocumentProcessHistoryID })</td>
+                            <td>@Html.DisplayFor(modelItem => item.DocumentDesc)</td>
+
+                            <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10
+        });
+    });
+</script>
+

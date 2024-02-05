@@ -1,0 +1,51 @@
+﻿
+@model TMP.Models.mCustomerMasterModel
+@{
+    int _currTabIndex = Convert.ToInt32(ViewBag.SelectedTab);
+}
+@if (@Model.CustomerID > 0)
+{
+    <div class="col-md-12 bgsp">
+        <div id="exTab1">
+            <ul class="nav nav-pills">
+
+                <li class="@(_currTabIndex ==  1 ? "active" : "valdt")">
+                    <a href="/ServiceProvider/CompanyInfo?CustomerID=@Model.CustomerID">COMPANY INFORMATION</a>
+                </li>
+                
+                <li class="@(_currTabIndex ==  2 ? "active" : "valdt")">
+                    <a href="/ServiceProvider/BankAccountDetails?CustomerID=@Model.CustomerID">BANK ACCOUNTS</a>
+                </li>
+                <li class="@(_currTabIndex ==  3 ? "active" : "valdt")">
+                    <a href="/ServiceProvider/Documents?CustomerID=@Model.CustomerID">DOCUMENTATION</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-12" style="height:15px;"></div>
+}
+<style>
+      .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #555555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #dddddd;
+    border-bottom-color: transparent;
+}
+    .valdt{
+        border:1px solid #fff;
+        border-radius:5px;
+    }
+    #exTab1 .nav > li > a {
+    padding: 15px 20px;
+    font-size: 14px;
+}
+ #exTab1 .nav-pills > li.active > a {
+    background-color: 
+#fff;
+color:
+    #000;
+}
+</style>
+

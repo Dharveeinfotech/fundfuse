@@ -1,0 +1,54 @@
+﻿@model TMP.Models.UserSignDetailModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Registration Agree";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-1"></div>
+<div class="col-md-10 div-border padoff">
+    <div class="col-md-12 createusertitle">ACCEPTANCE OF AGREEMENT</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="container" style="padding:15px;">
+        @*<p class="padoff name-msg" style="margin:0;">**As the authorized signatory of the company, please review and sign the following agreement in order to be able to access the Platform for transactions. If there is more than one signatory (joint signatories), then the other signatory also needs to sign the agreement before you can gain access to the transactions. </p>*@
+    </div>
+    @using (Html.BeginForm("FunderLetterofAwareness", "OnlineReg", FormMethod.Post, new { @class = "col-md-12 CommonValidations" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div class="col-md-3">
+                <button id="btn_Letter_Awareness" name="btn_Letter_Awareness" value="btn_Letter_Awareness"
+                        type="button" class="btn btn-tgs">
+                    Letter of Awareness
+                </button>&nbsp;&nbsp;&nbsp;
+            </div>
+            <label class="col-md-1" for="textinput">Feedback&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.Feedback, new { @class = "form-control validate[required]", autocomplete = "off" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12" style="text-align:right;">
+                <button id="btn_RETURN" name="btn_RETURN" value="btn_RETURN" type="submit" class="CommonAttachValidation btn btn-tgs btncls_2">RETURN</button>&nbsp;&nbsp;&nbsp;                
+                <button id="btn_APPROVE" name="btn_APPROVE" value="btn_APPROVE" type="submit" class="CommonAttachValidation btn btn-tgs btncls_2">APPROVE</button>
+            </div>
+        </div>
+
+            @Html.HiddenFor(x => x.CustomerExporterID)
+            @Html.HiddenFor(x => x.Status)            
+    }
+</div>
+<div class="col-md-1"></div>
+<script type="text/javascript">
+    //AuthUserAgreeFunder();
+    $("#btn_Letter_Awareness").on("click", function () {
+        var TempName = '@CONT.ES_Letter_of_Awarness';
+        var CustomerID = '@Model.CustomerID';
+        CommonAgreementPopUp(TempName, CustomerID);
+        return false;
+    });
+    $("#pdf").on("click", function () {
+        var CustomerID = '@Model.CustomerID';
+        CommonDocPDFGene(CustomerID);
+        return false;
+    });
+</script>

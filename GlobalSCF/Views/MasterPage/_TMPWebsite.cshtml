@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/favicon.ico" type="image/gif" sizes="32x32">
+
+    @Styles.Render("~/Content/onlineCss")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/onlineJS")
+    @Scripts.Render("~/bundles/jqueryval")
+</head>
+
+<body class="btmmargin tgs-bg">
+    @Html.Partial("_Header")
+
+    <div class="container padoff">
+        <div class="col-md-12">
+            @if (ViewBag.ErrorMesssage != null)
+            {
+                <span class="text-danger"> @ViewBag.ErrorMesssage</span>
+            }
+        </div>
+        @RenderBody()
+        <div class="col-md-12">
+            <div class="container footeronline footertop">
+                <span class="menutext"> Copyright © @System.DateTime.Now.Year  </span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="menutext">All Rights Reserved</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            </div>
+        </div>
+    </div>
+    @RenderSection("scripts", required: false)
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            InitLayout();
+        });
+    </script>
+    <style>
+        .intl-tel-input input, .intl-tel-input input[type="text"], .intl-tel-input input[type="tel"] {
+            padding-left: 12px;
+        }
+
+        .intl-tel-input {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+            .intl-tel-input .flag-dropdown:hover .selected-flag {
+                background-color: transparent;
+            }
+
+            .intl-tel-input .selected-flag .arrow {
+                border-left: none;
+                border-right: none;
+            }
+
+            .intl-tel-input .flag-dropdown {
+                width: 100%;
+            }
+
+            .intl-tel-input .selected-flag {
+                width: 100%;
+            }
+
+            .intl-tel-input .country-list {
+                width: 262px;
+            }
+    </style>
+</body>
+</html>

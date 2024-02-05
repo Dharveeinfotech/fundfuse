@@ -1,0 +1,163 @@
+﻿@model TMP.Models.CustomerShareHolderModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+
+@Html.AntiForgeryToken()
+<div class="col-md-12" style="height:10px;"></div>
+<div class="col-md-12 createusertitle">BENEFICIAL OWNERS OF THE SHAREHOLDING COMPANY</div>
+<div class="col-md-12" style="height:15px;"></div>
+<form enctype="multipart/form-data">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+
+        <div class="col-md-3">
+            First Name
+            <input id="ShareFirstName" name="ShareFirstName" type="text" class="ShareFirstName form-control" autocomplete="off" value="@Model.FirstName" placeholder="First Name">
+        </div>
+        <div class="col-md-3">
+            Middle Name
+            <input id="ShareMiddleName" name="ShareMiddleName" type="text" class="form-control" autocomplete="off" value="@Model.MiddleName" placeholder="Middle Name">
+        </div>
+        <div class="col-md-3">
+            Last Name
+            <input id="ShareLastName" name="ShareLastName" type="text" class="ShareLastName form-control" autocomplete="off" value="@Model.LastName" placeholder="Last Name">
+        </div>
+        <div class="col-md-3">
+            Gender
+            @Html.DropDownListFor(model => model.ShareGender, new SelectList(ViewBag.DDLGenderID, "value", "text", Model.ShareGender), "--Select--", new { @class = "form-control validate[required]" })
+        </div>
+        @*<div class="col-md-12">
+            <p class="col-md-10 padoff name-msg" style="margin:0;">**Please ensure that the names you enter match the ones in your passport, and please use English characters only.</p>
+        </div>*@
+    </div>
+    <div class="form-group" style="padding-bottom: 5%;">
+        <div class="col-md-3">
+            Country of Residence
+            @Html.DropDownListFor(model => model.ShareLocCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.LocCountryID), "--Select--", new { @class = "ShareLocCountryID form-control ValRemo1" })
+        </div>
+
+        <div class="col-md-3">
+            Share Percentage
+            <input id="childSharePer" name="childSharePer" type="text" class="childSharePer form-control per2" autocomplete="off" value="@Model.SharePer" placeholder="Share % ">
+        </div>
+
+        <div class="col-md-3">
+            Nationality
+            @Html.DropDownListFor(model => model.ShareNatCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.NatCountryID), "Select Nationality", new { @class = "ShareNatCountryID form-control ValRemo1" })
+
+        </div>
+        <div class="col-md-3">
+            Passport Number
+            <input id="SharePassNo" name="SharePassNo" type="text" class="SharePassNo form-control" autocomplete="off" value="@Model.PassNo" placeholder="Passport Number">
+        </div>
+
+    </div>
+
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="form-group" style="padding-bottom: 6%;">
+        <div class="col-md-3">
+            Place of Issuance
+            @Html.DropDownListFor(model => model.SharePassCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.PassCountryID), "Select Place of Issuance", new { @class = "SharePassCountryID form-control ValRemo2" })
+        </div>
+        <div class="col-md-3">
+            Issuance Date
+            @if (Model.CustomerShareHoldID > 0)
+            {
+            <input id="SharePassIssueDate" name="SharePassIssueDate" type="text" placeholder="Issuance Date" class="form-control formattedCalenderinc SharePassIssueDate" autocomplete="off" value="@Model.PassIssueDate.ToString("dd-MMM-yyyy")" />
+            }
+            else
+            {
+            <input id="SharePassIssueDate" name="SharePassIssueDate" type="text" placeholder="Issuance Date" class="form-control formattedCalenderinc SharePassIssueDate" autocomplete="off" />
+            }
+        </div>
+        <div class="col-md-3">
+            Expiry Date
+
+            @if (Model.CustomerShareHoldID > 0)
+            {
+            <input id="SharePassExpDate" name="SharePassExpDate" type="text" placeholder="Expiry Date" class="form-control formattedCalender SharePassExpDate" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")" />
+            }
+            else
+            {
+            <input id="SharePassExpDate" name="SharePassExpDate" type="text" placeholder="Expiry Date" class="form-control formattedCalender SharePassExpDate" autocomplete="off" />
+            }
+        </div>
+        <div class="col-md-3" style="padding-top:10px;">
+            Passport Copy&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="file" name="ShareUpdPassport1" id="ShareUpdPassport1" class="file" />
+
+            @if (Model.UpdPassport != null)
+            {
+                if (Model.UpdPassport != "")
+                {
+
+            <input type="hidden" id="ShareUpdPassport" name="ShareUpdPassport" value="@Model.UpdPassport" />
+            <label class="p-view">
+                @*<a href='~/Files/Upload/@Model.UpdPassport' target="_blank">View</a>*@
+                <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@Model.UpdPassport">View</a>
+            </label>
+                }
+            }
+
+        </div>
+    </div>
+
+   
+    <div class="form-group" style="padding-bottom: 6%;">
+        <div class="col-md-3" style="padding-top:0px;">
+            National ID Copy&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="file" name="ShareUpdNatIden1" id="ShareUpdNatIden1" class="file" />
+            @if (Model.UpdNatIden != null)
+            {
+                if (Model.UpdNatIden != "")
+                {
+
+            <input type="hidden" id="ShareUpdNatIden" name="ShareUpdNatIden" value="@Model.UpdNatIden" />
+            <label class="p-view">
+                @*<a href='~/Files/Upload/@Model.UpdNatIden' target="_blank">View</a>*@
+                <a href="javascript:void(0);" class="UpdNatIden_PopUp" data-id="@Model.UpdNatIden">View</a>
+            </label>
+                }
+            }
+
+        </div>
+    </div>
+
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="col-md-12" style="text-align:right;padding-bottom:1%;">
+        @Html.HiddenFor(x => x.ShareCustomerShareHoldID)
+        @Html.HiddenFor(x => x.ParentID)
+        @Html.HiddenFor(x => x.Status)
+        @Html.HiddenFor(x => x.CustomerID)
+        <button id="benSave" name="benSave" type="button" value="benSave" class="CommonAttachValidation1 btn btn-tgs">&nbsp;Save</button>
+    </div>
+</form>
+<script type="text/javascript">
+
+    ShareBeneficial();
+    $(".UpdPassport_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdPassport' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(".UpdNatIden_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdNatIden' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+</script>
+
+<style>
+    .error {
+        border-color: #a94442 !important;
+    }
+
+        .error:focus {
+            box-shadow: 0 0 2px #a94442 !important;
+        }
+
+    .p-view {
+        padding-top: 0px;
+    }
+</style>
+

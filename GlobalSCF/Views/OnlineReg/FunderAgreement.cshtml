@@ -1,0 +1,145 @@
+﻿@model TMP.Models.UserSignDetailModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Registration Agree";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-1"></div>
+<div class="col-md-10 div-border padoff">
+    <div class="col-md-12 createusertitle">ACCEPTANCE OF AGREEMENT</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="container" style="padding:15px;">
+        <p class="padoff name-msg" style="margin:0;">**As the authorized signatory of the company, please review and sign the following agreement in order to be able to access the Platform for transactions. If there is more than one signatory (joint signatories), then the other signatory also needs to sign the agreement before you can gain access to the transactions. </p>
+    </div>
+    @using (Html.BeginForm("FunderAgreement", "OnlineReg", FormMethod.Post, new { @class = "col-md-12 CommonValidations" }))
+    {
+
+        @Html.AntiForgeryToken()
+        
+        <div class="form-group">
+            <div class="col-md-4">
+                <button id="pdf" name="pdf" value="pdf" type="button" class="btn btn-tgs">CLIENT IDENTIFICATION FORM</button>&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="col-md-4">
+                <button id="btn_Master_Wakala_Agreement" name="btn_Master_Wakala_Agreement" value="btn_Master_Wakala_Agreement" type="button" class="btn btn-tgs">Master Wakala Agreement</button>&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="col-md-4">
+                <button id="btn_Master_Assignment_Agreement" name="btn_Master_Assignment_Agreement" value="btn_Master_Assignment_Agreement"
+                        type="button" class="btn btn-tgs">
+                    Master Assignment Agreement
+                </button>&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+        
+        <div class="form-group" style="padding-top:15px;">
+           
+            <label class="col-md-5" for="textinput">Feedback&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.Feedback1, new { @class = "form-control validate[required]", autocomplete = "off" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12" style="text-align:right;">
+
+                @*<button id="btn_RETURN1" name="btn_RETURN1" value="btn_RETURN1" type="submit" class="CommonAttachValidation btn btn-tgs btncls_1">RETURN</button>&nbsp;&nbsp;&nbsp;*@
+                <button id="btn_APPROVE1" name="btn_APPROVE1" value="btn_APPROVE1" type="submit" class="CommonAttachValidation btn btn-tgs btncls_1">APPROVE</button>
+            </div>
+        </div>
+        @Html.HiddenFor(x => x.UserID)
+        @Html.HiddenFor(x => x.Status)
+        @Html.HiddenFor(x => x.CustomerID)
+        @Html.HiddenFor(x => x.ProgramType)
+        @Html.HiddenFor(x => x.IsIndiCmplt)
+    }
+    @*@using (Html.BeginForm("AssignmentAgreement", "OnlineReg", FormMethod.Post, new { @class = "col-md-12 CommonValidations" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="col-md-12 createusertitle">MASTER ASSIGNMENT AGREEMENT</div>
+        <div class="form-group">
+            <div class="col-md-4">
+                <button id="btn_Master_Assignment_Agreement" name="btn_Master_Assignment_Agreement" value="btn_Master_Assignment_Agreement"
+                        type="button" class="btn btn-tgs">
+                    Master Assignment Agreement
+                </button>&nbsp;&nbsp;&nbsp;
+            </div>
+            <label class="col-md-1" for="textinput">Feedback&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.Feedback2, new { @class = "form-control validate[required]", autocomplete = "off" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12" style="text-align:right;">
+
+                <button id="btn_RETURN2" name="btn_RETURN2" value="btn_RETURN2" type="submit" class="CommonAttachValidation btn btn-tgs btncls_2">RETURN</button>&nbsp;&nbsp;&nbsp;
+                <button id="btn_APPROVE2" name="btn_APPROVE2" value="btn_APPROVE2" type="submit" class="CommonAttachValidation btn btn-tgs btncls_2">APPROVE</button>
+            </div>
+        </div>
+        @Html.HiddenFor(x => x.UserID)
+        @Html.HiddenFor(x => x.Status)
+        @Html.HiddenFor(x => x.CustomerID)
+        @Html.HiddenFor(x => x.ProgramType)
+        @Html.HiddenFor(x => x.IsIndiCmplt)
+    }*@
+</div>
+<div class="col-md-1"></div>
+<div class="modal fade" id="JointSignMsgModal" role="dialog">
+    <div class="modal-dialog " style="width:600px">
+        <div class="modal-content">
+            <div class="modal-header">                
+            </div>
+            <div class="modal-body">
+                <div id='JointSignMsgview'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" id="btnJointSign" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //AuthUserAgreeFunder();
+    if ('@ViewBag.btncls_1' == "False") {
+        $(".btncls_1").attr("disabled", "disabled");
+    }
+    if ('@ViewBag.btncls_2' == "False") {
+        $(".btncls_2").attr("disabled", "disabled");
+    }
+
+    $("#btnJointSign").on("click", function () {
+        document.location = '@Url.Action("CMNDashboard", "Home")';
+        return false;
+    });
+    if ('@ViewBag.btncls_1' == "False" && '@ViewBag.btncls_2' == "False") {
+
+        if ('@ViewBag.IsMenuPanelHide' == "True") {
+            $("#JointSignMsgModal").modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            $('#JointSignMsgview').html("<p>Thank you for signing the agreement(s).</p> <p>Please note that in order for you to start transacting on the  SCF Platform Platform, the other Authorized Signatory also needs to sign the agreement(s).</p>");
+            $('#JointSignMsgModal').modal('show');
+        }
+        else {
+            document.location = '@Url.Action("CMNDashboard", "Home")';
+        }
+    }
+    $("#btn_Master_Wakala_Agreement").on("click", function () {
+        var TempName = '@CONT.ES_Master_Wakala_Agreement';
+        var CustomerID = '@Model.CustomerID';
+        CommonAgreementPopUp(TempName, CustomerID);
+        return false;
+    });
+
+    $("#btn_Master_Assignment_Agreement").on("click", function () {
+        var TempName = '@CONT.ES_Master_Assignment_Agreement';
+        var CustomerID = '@Model.CustomerID';
+        CommonAgreementPopUp(TempName, CustomerID);
+        return false;
+    });
+    $("#pdf").on("click", function () {
+        var CustomerID = '@Model.CustomerID';
+        CommonDocPDFGene(CustomerID);
+        return false;
+    });
+
+</script>

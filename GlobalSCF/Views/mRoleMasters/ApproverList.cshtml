@@ -1,0 +1,60 @@
+﻿
+@model TMP.Models.mRoleMaster
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+
+}
+<div class="col-md-12 div-border padoff">
+
+    @using (Html.BeginForm("ApproverList", "mRoleMaster", FormMethod.Post, new { }))
+    {
+        if (ViewBag.ErrorMsg != null)
+        {
+            <span class="text-danger"> @ViewBag.ErrorMsg</span>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        }
+
+        @Html.AntiForgeryToken()
+        <div class="col-md-12 ">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgum">
+                        <th>Role Name</th>
+                        <th>Role Description</th>
+                        <th>Status</th>                      
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.lstRoleMasterListBind != null && Model.lstRoleMasterListBind.Count > 0)
+                    {
+                        foreach (var item in Model.lstRoleMasterListBind)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.RoleName, "Details", new
+                               {
+                                   iRoleID = item.RoleID,
+                                   iRoleProcessHistoryID = @item.RoleProcessHistoryID,
+                                   icheck = ViewData["CheckerView"].ToString()
+                               })
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.RoleDesc)</td>
+                                <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10
+        });
+    });
+</script>

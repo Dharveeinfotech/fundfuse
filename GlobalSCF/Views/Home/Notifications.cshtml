@@ -1,0 +1,1261 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Notifications";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+
+    <div class="col-md-12 scroll padoff">
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="AdministratorCode">
+            @if (ViewBag.AdministrationCheckData != null)
+            {
+                if (ViewBag.AdministrationCheckData == 1)
+                {
+            <div class="col-md-12 createusertitle">Administration</div>
+                    if (ViewBag.ServiceProviderMaker != null)
+                    {
+                        if (ViewBag.ServiceProviderMaker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Admin - Maker - Amendment</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Company Name</th>
+                            <th>Company Code</th>
+                            <th>Mobile Number</th>
+                            <th>E-Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.ServiceProviderMaker)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.ServiceProviderMakerMenuID','/ServiceProvider/CompanyInfo?CustomerID=@item.CustomerID')">@item.CompanyName</a>
+                                            </td>
+                                            <td>@item.CustomerCode</td>
+                                            <td>@item.MobileNo</td>
+                                            <td>@item.EmailID</td>
+                                        </tr>
+                                        }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+
+
+
+                    if (ViewBag.ServiceProviderChecker != null)
+                    {
+                        if (ViewBag.ServiceProviderChecker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Admin - Checker</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Company Name</th>
+                            <th>Company Code</th>
+                            <th>Mobile Number</th>
+                            <th>E-Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.ServiceProviderChecker)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.ServiceProviderCheckerMenuID','/ServiceProvider/MakerDetails?CustomerID=@item.CustomerID')">@item.CompanyName</a>
+                                            </td>
+                                            <td>@item.CustomerCode</td>
+                                            <td>@item.MobileNo</td>
+                                            <td>@item.EmailID</td>
+                                        </tr>
+                                        }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.ServiceProviderApprover != null)
+                    {
+                        if (ViewBag.ServiceProviderApprover.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Admin - Approver</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Company Name</th>
+                            <th>Company Code</th>
+                            <th>Mobile Number</th>
+                            <th>E-Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.ServiceProviderApprover)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.ServiceProviderApproverMenuID','/ServiceProvider/MakerDetails?CustomerID=@item.CustomerID')">@item.CompanyName</a>
+                                            </td>
+                                            <td>@item.CustomerCode</td>
+                                            <td>@item.MobileNo</td>
+                                            <td>@item.EmailID</td>
+                                        </tr>
+                                        }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+
+
+                    if (ViewBag.InsuranceProviderMaker != null)
+                    {
+                        if (ViewBag.InsuranceProviderMaker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Insurance Provider - Maker - Amendment</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Company Name</th>
+                            <th>Company Code</th>
+                            <th>Company Type</th>
+                            <th>Mobile Number</th>
+                            <th>E-Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.InsuranceProviderMaker)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.InsuranceProviderMakerMenuID','/InsuranceProvider/CompanyInfo?CustomerID=@item.CustomerID')">@item.CompanyName</a>
+                                            </td>
+                                            <td>@item.CustomerCode</td>
+                                            <td>@item.CustomerTypeName</td>
+                                            <td>@item.MobileNo</td>
+                                            <td>@item.EmailID</td>
+                                        </tr>
+                                        }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.InsuranceProviderChecker != null)
+                    {
+                        if (ViewBag.InsuranceProviderChecker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Insurance Provider - Checker</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Company Name</th>
+                            <th>Company Code</th>
+                            <th>Company Type</th>
+                            <th>Mobile Number</th>
+                            <th>E-Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.InsuranceProviderChecker)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.InsuranceProviderCheckerMenuID','/InsuranceProvider/CompanyInfoView?CustomerID=@item.CustomerID&CustomerTypeID=@item.CustomerTypeID')">@item.CompanyName</a>
+                                            </td>
+                                            <td>@item.CustomerCode</td>
+                                            <td>@item.CustomerTypeName</td>
+                                            <td>@item.MobileNo</td>
+                                            <td>@item.EmailID</td>
+                                        </tr>
+                                        }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.InsuranceProviderApprover != null)
+                    {
+                        if (ViewBag.InsuranceProviderApprover.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Insurance Provider - Approver</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Company Name</th>
+                            <th>Company Code</th>
+                            <th>Company Type</th>
+                            <th>Mobile Number</th>
+                            <th>E-Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.InsuranceProviderApprover)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.InsuranceProviderApproverMenuID','/InsuranceProvider/CompanyInfoView?CustomerID=@item.CustomerID&CustomerTypeID=@item.CustomerTypeID')">@item.CompanyName</a>
+                                            </td>
+                                            <td>@item.CustomerCode</td>
+                                            <td>@item.CustomerTypeName</td>
+                                            <td>@item.MobileNo</td>
+                                            <td>@item.EmailID</td>
+                                        </tr>
+                                        }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+
+                   
+                }
+            }
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="UserManagementCode">
+            @if (ViewBag.UserCheckData != null)
+            {
+                if (ViewBag.UserCheckData == 1)
+                {
+            <div class="col-md-12 createusertitle">User Management</div>
+            <div class="col-md-12" style="height:10px;"></div>
+                    if (ViewBag.UserIsMaker != null)
+                    {
+                        if (ViewBag.UserIsMaker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">User - Maker - Amendment</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgum">
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Login Name</th>
+                            <th>Company Name</th>
+                            <th>E-Mail</th>
+                            <th>Mobile Number</th>
+                            <th>Process Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in ViewBag.UserIsMaker)
+                                        {
+                        <tr>
+                            <td>
+                                @if (item.Status == CONT.NM || item.Status == CONT.UM)
+                                                    {
+                                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.UserMakerMenuID','../mUserMasters/Edit?id=@item.UserID')">@item.FirstName</a>
+                                                    }
+
+                                                    else
+                                                    {
+                                                @item.FirstName
+                                                    }
+                            </td>
+                            <td>@item.MiddleName</td>
+                            <td>@item.LastName</td>
+                            <td>@item.LoginName</td>
+                            <td>@item.CompanyName</td>
+                            <td>@item.EmailID</td>
+                            <td>@item.MobileNo</td>
+                            <td>@item.ProcessRemark</td>
+                        </tr>
+                                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+                        }
+                    }
+
+                    if (ViewBag.UserIsChecker != null)
+                    {
+                        if (ViewBag.UserIsChecker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">User - Checker</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgum">
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Login Name</th>
+                            <th>Company Name</th>
+                            <th>E-Mail</th>
+                            <th>Mobile Number</th>
+                            <th>Process Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.UserIsChecker)
+                                        {
+
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.UserCheckerMenuID','../mUserMasters/Details?id=@item.UserHistoryID')">@item.FirstName</a>
+                            </td>
+                            <td>@item.MiddleName</td>
+                            <td>@item.LastName</td>
+                            <td>@item.LoginName</td>
+                            <td>@item.CompanyName</td>
+                            <td>@item.EmailID</td>
+                            <td>@item.MobileNo</td>
+                            <td>@item.ProcessRemark</td>
+                        </tr>
+                                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+                        }
+                    }
+                    if (ViewBag.UserIsApprover != null)
+                    {
+                        if (ViewBag.UserIsApprover.Count > 0)
+                        {
+
+            <div class="col-md-12" style="color:#0C4269;">User - Approver</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgum">
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Login Name</th>
+                            <th>Company Name</th>
+                            <th>E-Mail</th>
+                            <th>Mobile Number</th>
+                            <th>Process Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in ViewBag.UserIsApprover)
+                                        {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.UserApproverMenuID','/mUserMasters/Details?id=@item.UserHistoryID')">@item.FirstName</a>
+                            </td>
+                            <td>@item.MiddleName</td>
+                            <td>@item.LastName</td>
+                            <td>@item.LoginName</td>
+                            <td>@item.CompanyName</td>
+                            <td>@item.EmailID</td>
+                            <td>@item.MobileNo</td>
+                            <td>@item.ProcessRemark</td>
+                        </tr>
+
+                                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+                        }
+                    }
+
+                    if (ViewBag.RoleIsMaker != null)
+                    {
+                        if (ViewBag.RoleIsMaker.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Role - Maker - Amendment</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgum">
+                                            <th>Role Name</th>
+                                            <th>Role Description</th>
+                                            <th>Process Remark</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in ViewBag.RoleIsMaker)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.RoleMakerMenuID','/mRoleMasters/RoleManagement?RoleId=@item.RoleID')">@item.RoleName</a>
+
+                                                </td>
+                                                <td>@item.RoleDesc</td>
+                                                <td>@item.ProcessRemark</td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12" style="height:10px;"></div>
+                        }
+                    }
+                    if (ViewBag.RoleIsChecker != null)
+                    {
+                        if (ViewBag.RoleIsChecker.Count > 0)
+                        {
+
+                            <div class="col-md-12" style="color:#0C4269;">Role - Checker</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgum">
+                                            <th>Role Name</th>
+                                            <th>Role Description</th>
+                                            <th>Process Remark</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.RoleIsChecker)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.RoleCheckerMenuID','/mRoleMasters/RoleDetails?RoleId=@item.RoleID&iRoleProcessHistoryID=@item.RoleProcessHistoryID&icheck=Checker')">@item.RoleName</a>
+                                                </td>
+                                                <td>@item.RoleDesc</td>
+                                                <td>@item.ProcessRemark</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12" style="height:10px;"></div>
+                        }
+                    }
+                    if (ViewBag.RoleIsApprover != null)
+                    {
+                        if (ViewBag.RoleIsApprover.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Role - Approver</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgum">
+                                            <th>Role Name</th>
+                                            <th>Role Description</th>
+                                            <th>Process Remark</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in ViewBag.RoleIsApprover)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.RoleApproverMenuID','/mRoleMasters/RoleDetails?RoleId=@item.RoleID&iRoleProcessHistoryID=@item.RoleProcessHistoryID&icheck=Approver')">@item.RoleName</a>
+
+                                                </td>
+                                                <td>@item.RoleDesc</td>
+                                                <td>@item.ProcessRemark</td>
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+
+                }
+            }
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="OnlineRegistrationsCode">
+            @if (ViewBag.OnlineRegistration_CheckData != null)
+            {
+                if (ViewBag.OnlineRegistration_CheckData == 1)
+                {
+                    <div class="col-md-12 createusertitle">Registration</div>
+                    if (ViewBag.Obl_CompScrn_Data != null)
+                    {
+                        if (ViewBag.Obl_CompScrn_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Buyer - Compliance Screening</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Obl_CompScrn_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Obl_CompScrn_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                    if (ViewBag.Obl_CrdtReview_Data != null)
+                    {
+                        if (ViewBag.Obl_CrdtReview_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Buyer - Credit Review Checker</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Obl_CrdtReview_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Obl_CrdtReview_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                    <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                    <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                    if (ViewBag.Obl_CrdtReviewApprover_Data != null)
+                    {
+                        if (ViewBag.Obl_CrdtReviewApprover_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Buyer - Credit Approval</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Obl_CrdtReviewApprover_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Obl_CrdtReviewApprover_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                    <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                    <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+
+                    if (ViewBag.Obl_OprTem_Data != null)
+                    {
+                        if (ViewBag.Obl_OprTem_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Buyer - Operations Team</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Obl_OprTem_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Obl_OprTem_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                    <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                    <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+
+                    if (ViewBag.Sup_CompScrn_Data != null)
+                    {
+                        if (ViewBag.Sup_CompScrn_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Supplier - Compliance Screening</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Sup_CompScrn_Data)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Sup_CompScrn_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                            </td>
+                                            <td>@item.CustomerCode</td>
+                                            <td>@item.MobileNo</td>
+                                            <td>@item.EmailID</td>
+                                            @if (item.IsAdminRegister == 1)
+                                                {
+                                                <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                <td>Online Panel</td> }
+                                            <td>@item.StatusDisplay</td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                    if (ViewBag.Sup_CrdtReview_Data != null)
+                    {
+                        if (ViewBag.Sup_CrdtReview_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Supplier - Credit Review Checker</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Sup_CrdtReview_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Sup_CrdtReview_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                    <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                    <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                    if (ViewBag.Sup_CrdtReviewApprover_Data != null)
+                    {
+                        if (ViewBag.Sup_CrdtReviewApprover_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Supplier - Credit Approval</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Sup_CrdtReviewApprover_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Sup_CrdtReviewApprover_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                    <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                    <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+
+                    if (ViewBag.Sup_OprTem_Data != null)
+                    {
+                        if (ViewBag.Sup_OprTem_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Supplier - Operations Team</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Sup_OprTem_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Sup_OprTem_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                    <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                    <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                    
+                    if (ViewBag.Fndr_CompScrn_Data != null)
+                    {
+                        if (ViewBag.Fndr_CompScrn_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Funder - Compliance Screening</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Fndr_CompScrn_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Fndr_CompScrn_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                    <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                    <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                    if (ViewBag.Fndr_OprTem_Data != null)
+                    {
+                        if (ViewBag.Fndr_OprTem_Data.Count > 0)
+                        {
+                            <div class="col-md-12" style="color:#0C4269;">Funder - Operations Team</div>
+                            <div class="col-md-12">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgsp">
+                                            <th>Company Name</th>
+                                            <th>Company Code</th>
+                                            <th>Mobile Number</th>
+                                            <th>E-Mail</th>
+                                            <th>Registration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Fndr_OprTem_Data)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.Fndr_OprTem_MenuID','/CustomerReg/CompanyInfoDetails?CustomerID=@item.CustomerID&currentStatus=@item.Status')">@item.ContactFullName</a>
+                                                </td>
+                                                <td>@item.CustomerCode</td>
+                                                <td>@item.MobileNo</td>
+                                                <td>@item.EmailID</td>
+                                                @if (item.IsAdminRegister == 1)
+                                                {
+                                                    <td>Admin Panel</td> }
+                                                else
+                                                {
+                                                    <td>Online Panel</td> }
+                                                <td>@item.StatusDisplay</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+
+                }
+            }
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="SystemParametersCode">
+            @if (ViewBag.SParametersCheckData != null)
+            {
+                if (ViewBag.SParametersCheckData == 1)
+                {
+            <div class="col-md-12 createusertitle">System Settings</div>
+                    if (ViewBag.DMIsMaker != null)
+                    {
+                        if (ViewBag.DMIsMaker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Document Management - Maker - Amendment</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Document Name</th>
+                            <th>Document Description</th>
+                            <th>Process Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.DMIsMaker)
+                                    {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.DMMakerMenuID','/mDocumentMasters/Edit/?id=@item.DocumentID&status=@item.Status')">@item.DocumentName</a>
+
+                            </td>
+                            <td>@item.DocumentDesc</td>
+                            <td>
+                                @item.ProcessRemark
+                            </td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.DMIsChecker != null)
+                    {
+                        if (ViewBag.DMIsChecker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Document Management - Checker</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Document Name</th>
+                            <th>Document Description</th>
+                            <th>Process Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.DMIsChecker)
+                                    {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.DMCheckerMenuID','/mDocumentMasters/Details/?id=@item.DocumentID&idh=@item.DocumentProcessHistoryID')">@item.DocumentName</a>
+
+                            </td>
+                            <td>@item.DocumentDesc</td>
+                            <td>
+                                @item.ProcessRemark
+                            </td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.DMIsApprover != null)
+                    {
+                        if (ViewBag.DMIsApprover.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Document Management - Approver</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Document Name</th>
+                            <th>Document Description</th>
+                            <th>Process Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.DMIsApprover)
+                                    {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.DMApproverMenuID','/mDocumentMasters/DetailsApprover/?id=@item.DocumentID&idh=@item.DocumentProcessHistoryID')">@item.DocumentName</a>
+
+                            </td>
+                            <td>@item.DocumentDesc</td>
+                            <td>
+                                @item.ProcessRemark
+                            </td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+
+
+                    if (ViewBag.TMIsMaker != null)
+                    {
+                        if (ViewBag.TMIsMaker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Template Management - Maker - Amendment</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Template</th>
+                            <th>Template Type</th>
+                            <th>Process Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.TMIsMaker)
+                                    {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.TMMakerMenuID','/HTMLTemplate/ViewSample/?id=@item.HtmlTemplateID')">@item.HtmlName</a>
+                            </td>
+
+                            <td>@item.TemplateType</td>
+                            <td>@item.ProcessRemark</td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.TMIsChecker != null)
+                    {
+                        if (ViewBag.TMIsChecker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Template Management - Checker</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Template</th>
+                            <th>Template Type</th>
+                            <th>Process Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.TMIsChecker)
+                                    {
+                        <tr>
+                            <td>
+
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.TMCheckerMenuID','/HTMLTemplate/Details?id=@item.HtmlTemplateID&idh=@item.HtmlTemplateProcessHistoryID')">@item.HtmlName</a>
+                            </td>
+                            <td>@item.TemplateType</td>
+                            <td>@item.ProcessRemark</td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.TMIsApprover != null)
+                    {
+                        if (ViewBag.TMIsApprover.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Template Management - Approver</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Template</th>
+                            <th>Template Type</th>
+                            <th>Process Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.TMIsApprover)
+                                    {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.TMApproverMenuID','/HTMLTemplate/DetailsApprover?id=@item.HtmlTemplateID&idh=@item.HtmlTemplateProcessHistoryID')">@item.HtmlName</a>
+
+                            </td>
+                            <td>@item.TemplateType</td>
+                            <td>@item.ProcessRemark</td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+
+                    if (ViewBag.FeeMaker != null)
+                    {
+                        if (ViewBag.FeeMaker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Fee Management - Maker - Amendment</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Fee Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.FeeMaker)
+                                    {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.FeeMakerMenuID','/mFeeMasters/Edit/?id=@item.FeeId')">@item.FeeName</a>
+                            </td>
+                            <td>@item.StatusUserDesc</td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.FeeIsChecker != null)
+                    {
+                        if (ViewBag.FeeIsChecker.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Fee Management - Checker</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Fee Name</th>
+                            <th>Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.FeeIsChecker)
+                                    {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.FeeCheckerMenuID','/mFeeMasters/Details?iFeeID=@item.FeeId&icheck=Checker')">@item.FeeName</a>
+                            </td>
+                            <td>@item.StatusUserDesc</td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                    if (ViewBag.FeeIsApprover != null)
+                    {
+                        if (ViewBag.FeeIsApprover.Count > 0)
+                        {
+            <div class="col-md-12" style="color:#0C4269;">Fee Management - Approver</div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">
+                            <th>Fee Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.FeeIsApprover)
+                                    {
+                        <tr>
+                            <td>
+                                <a href="Javascript:void(0)" onclick="RedirectToPageName('@ViewBag.FeeApproverMenuID','/mFeeMasters/Details?iFeeID=@item.FeeId&icheck=Approver')">@item.FeeName</a>
+                            </td>
+                            <td>
+                                @item.StatusUserDesc
+                            </td>
+                        </tr>
+                                    }
+                    </tbody>
+                </table>
+            </div>
+                        }
+                    }
+                }
+            }
+        </div>
+
+    </div> <!--scroll div-->
+</div> <!--main div-->
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        //Mekar
+        $(document).ready(function () {
+            $("table.display").DataTable();
+        });
+    </script>
+}
+
+
+<script>
+    function RedirectToPageName(id, Currenturl) {
+        $.ajax({
+            url: "/Home/RedirectToPageUrl",
+            type: "POST",
+            data: '{MenuID:"' + id + '"}',
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result == "Success") {
+                    window.location = Currenturl;
+                    return true;
+                }
+            },
+            error: function () {
+                return false;
+            }
+        });
+
+    }
+
+</script>
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        display: none;
+    }
+    .scroll {
+        height: 495px;
+    }
+</style>
+

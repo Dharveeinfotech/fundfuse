@@ -1,0 +1,167 @@
+﻿@model TMP.Models.CountryMaster
+@{
+    ViewBag.Title = "System Perameter";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+
+    <form method="post" id="subupform">
+        <div class="col-md-12 createusertitle">System Parameter</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        <input type="hidden" id="SystemParamterID" name="SystemParamterID" value="@Model.SystemParamterID" class="form-control validate[required]" />
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Process Transaction Day&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.EditorFor(m => m.ProcessTranDay, new { htmlAttributes = new { @class = "form-control validate[required,custom[integer]]", placeholder = "Process Transaction Day", autocomplete = "off" } })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Website URL&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                <input type="text" id="WebSiteURL" name="WebSiteURL" value="@Model.WebSiteURL" class="form-control validate[required]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Fund Reqiure Day&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                <input type="text" id="fund" name="fund" value="@Model.FundRequireDay" class="form-control validate[required,custom[integer]]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Login Lockout Attempt Count&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                <input type="text" id="loginattempt" name="loginattempt" value="@Model.LoginLockoutAttempt" class="form-control validate[required,custom[integer]]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Login Lockout Time Frame(Minute)&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                <input type="text" id="loginlock" name="loginlock" value="@Model.LoginLockoutTimeFrameMin" class="form-control validate[required,custom[integer]]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Password Expiry(Day)&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                <input type="text" id="psdexpday" name="psdexpday" value="@Model.PwdExpiryDay" class="form-control validate[required,custom[integer]]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Last Password History(Day)&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                <input type="text" id="lastpwdepxy" name="lastpwdepxy" value="@Model.LastPwdHistoryDay" class="form-control validate[required,custom[integer]]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Site Idle Session Time(Minute)&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                <input type="text" id="siteidle" name="siteidle" value="@Model.SiteIdleSessionMin" class="form-control validate[required,custom[integer]]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">TMP WebSite&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                <input type="text" id="TMPWebSite" name="TMPWebSite" value="@Model.TMPWebSite" class="form-control validate[required]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">TMP Email&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                <input type="text" id="TMPEmail" name="TMPEmail" value="@Model.TMPEmail" class="form-control validate[required]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">TMP Team&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                <input type="text" id="TMPTeam" name="TMPTeam" value="@Model.TMPTeam" class="form-control validate[required]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">TMP Platform&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                <input type="text" id="TMPPlatform" name="TMPPlatform" value="@Model.TMPPlatform" class="form-control validate[required]" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Is Maintenance&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.CheckBoxFor(m => Model.IsMaintenance)
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Maintenance Msg&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                <input type="text" id="MaintenanceMsg" name="MaintenanceMsg" value="@Model.MaintenanceMsg" class="form-control validate[required]" maxlength="250" autocomplete="off" />
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput"></label>
+            <div class="col-md-3"></div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput"></label>
+            <div class="col-md-3" style="text-align:right;">
+                <button id="update" name="update" type="submit" class="btn-tgs" formmethod="post" formaction="../Country/SystemPerameter">Update</button>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="text-align:right;">
+            @if (ViewData["SuccessMessage"] != null)
+            {
+                <p style="color:green">@ViewData["SuccessMessage"]</p>
+            }
+        </div>
+
+    </form>
+</div>
+<style>
+    .footeronline {
+        position: fixed;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#subupform").validationEngine(
+            'attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+    });
+</script>

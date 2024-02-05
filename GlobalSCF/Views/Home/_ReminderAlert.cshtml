@@ -1,0 +1,188 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  IEnumerable<TMP.Models.InvoiceTransactionModel>
+<table id="exampleDB4" cellspacing="0" width="100%;" height="140px;">
+    <thead>
+        <tr class="bgspr">
+            <th>Type</th>
+            <th>Status</th>
+            <th style="display:none;">
+            </th>
+            <th style="display:none;">
+            </th>
+        </tr>
+    </thead>
+    @if (Enumerable.Count(@ViewBag.reminder) > 0)
+    {
+        <tbody>
+            @foreach (var item in ViewBag.reminder)
+            {
+                <tr>
+                    <td>@item.Type</td>
+
+                    @if (item.CustomerTypeID == CONT.ServiceProviderCustomerTypeID)
+                    {
+                        if (item.ActionType == "MoreDetail")
+                        {
+                            if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                <td>
+                                    <a href="/ServiceProvider/CompanyInfo?CustomerID=@item.CustomerID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="/ServiceProvider/MakerDetails?CustomerID=@item.CustomerID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            <td>CHECK THE STATUS</td>
+                        }
+                    }
+                    else if (item.CustomerTypeID == CONT.InsuranceBrokerTypeID || item.CustomerTypeID == CONT.InsuranceProviderTypeID)
+                    {
+                        if (item.ActionType == "MoreDetail")
+                        {
+                            if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                <td>
+                                    <a href="/InsuranceProvider/CompanyInfo?CustomerID=@item.CustomerID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="/InsuranceProvider/CompanyInfoView?CustomerID=@item.CustomerID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else if (item.ActionType == "ShareHolder")
+                        {
+                            if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                <td>
+                                    <a href="/InsuranceProvider/Shareholders?CustomerID=@item.CustomerID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="/InsuranceProvider/CommonDetails?CustomerID=@item.CustomerID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else if (item.ActionType == "AuthDirector")
+                        {
+                            if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                <td>
+                                    <a href="/InsuranceProvider/AuthSignDetails?CustomerID=@item.CustomerID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="/InsuranceProvider/CommonDetails?CustomerID=@item.CustomerID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            <td>CHECK THE STATUS</td>
+                        }
+                    }
+                    else
+                    {
+                        if (item.ActionType == "MoreDetail")
+                        {
+                            if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                <td>
+                                    <a href="/CustomerReg/CompanyMoreInfo?CustomerID=@item.CustomerID&IsEditProfile=true">CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="/CustomerReg/CompanyMoreInfoDetails?CustomerID=@item.CustomerID&IsEditProfile=true">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else if (item.ActionType == "SuppExp")
+                        {
+                            if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                <td>
+                                    <a href="/CustomerReg/SupplierDetail?CustomerID=@item.CustomerID&IsEditProfile=true">CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="/CustomerReg/SupplierDetailList?CustomerID=@item.CustomerID&IsEditProfile=true">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else if (item.ActionType == "AuthDirector")
+                        {
+                            if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                <td>
+                                    <a href="/CustomerReg/AuthSignDetails?CustomerID=@item.CustomerID&IsEditProfile=true">CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="/CustomerReg/CommonDetails?CustomerID=@item.CustomerID&IsEditProfile=true">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else if (item.ActionType == "ShareHolder")
+                        {
+                            if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                <td>
+                                    <a href="/CustomerReg/Shareholders?CustomerID=@item.CustomerID&IsEditProfile=true">CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="/CustomerReg/CommonDetails?CustomerID=@item.CustomerID&IsEditProfile=true">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else if (item.ActionType == "Transaction")
+                        {
+                            if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID)
+                            {
+                                <td>
+                                    <a href='@Url.Action("Settlement", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, IndexStatus = item.Status, SettlementType = "Pending" })'>CHECK THE STATUS</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a href="javascript:void(0);" class="factoringView" data-id="@item.InvoiceID">CHECK THE STATUS</a>
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            <td>CHECK THE STATUS</td>
+                        }
+                    }
+                    <td class="InvoiceID" style="display:none;">
+                        <span>@item.InvoiceID</span>
+                    </td>
+                    <td class="ProgramType" style="display:none;">
+                        <span>@item.ProgramType</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+</table>

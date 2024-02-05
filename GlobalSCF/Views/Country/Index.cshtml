@@ -1,0 +1,1367 @@
+﻿@*@model TMP.Models.CityMaster_ListAll_Result*@
+@model TMP.Models.CountryMaster
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    <script language="Javascript">
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+    </script>
+    <script language="Javascript">
+        function Key(evt) {
+            var k = evt.keyCode;
+            return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || (k >= 48 && k <= 57));
+            $("#errorMsg").html("Sorry, Space is not allowed.");
+            $('#Error').modal('show');
+            return true;
+        }
+    </script>
+    <script language="Javascript">
+        function nospace(evt) {
+            if (evt.value.match(/\s/g)) {
+                $("#errorMsg").html("Sorry You Are Not Allowed to Enter Spaces.");
+                $('#Error').modal('show');
+                evt.value = evt.value.repalce(/\s/g);
+                return true;
+            }
+            else { return false; }
+        }
+    </script>
+    <div class="col-md-12 createusertitle">System Settings</div>
+    <div class="col-md-12" style="height:2px;"></div>
+    <div class="container scroll">
+
+        <form method="post" id="addcountryval">
+            <div class="panel panel-default" id="panel_1">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_1" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Country Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_1" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Country</label>
+                                <div>@Html.DropDownList("CountryID", null, "--Select--", new { @class = "form-control" })</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">Add Country</label>
+
+                                <div><input type="text" id="textidconN" name="textidconN" value="@Model.CountryName" class="form-control validate[required]" maxlength="100" onkeypress="nonumbers(evt)" autocomplete="off" /></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">Country Code</label>
+
+                                <div><input type="text" id="textidcon" name="textidcon" value="@Model.CountryCode" class="form-control  validate[required]" maxlength="3" onkeypress="Key(evt)" autocomplete="off" /></div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <label class="control-label">Nationality</label>
+                                <input type="checkbox" id="chkIsNAt" name="chkIsNAt" value="@Model.IsNationality" style="display:block;" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="control-label">Risk Level</label>
+                                <input type="text" id="txtRiskLevel" name="txtRiskLevel" value="@Model.RiskLevel" class="form-control num validate[required]" autocomplete="off" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="control-label">Sanction</label>
+                                <input type="text" id="txtSanction" name="txtSanction" value="@Model.Sanction" class="form-control" maxlength="100" autocomplete="off" />
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" formmethod="post" formaction="../Country/AddCountry" class="btn-tgs" id="countrymsg" name="countrymsg" onsubmit="nonumbers(evt)" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/AddCountry?Action=Delete" class="btn-tgs" id="btncountryDelete" name="btncountryDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgcountry</span>
+                                @if (ViewData["countrymsg"] != null)
+                                {
+                                    <p style="color:green;display:inline;">@ViewData["countrymsg"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="countryval">
+            <div class="panel panel-default" id="panel_2">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_2" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            City Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <label class="control-label">Country</label>
+                                <div>@Html.DropDownList("CountryID2", null, "--Select--", new { @class = "form-control validate[required]" })</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label">City</label>
+
+                                <div>@Html.DropDownList("CityID", null, "--Select--", new { @class = "form-control" })</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label">Add City</label>
+
+                                <div><input type="text" id="textid" name="textid" value="@Model.CityName" class="form-control validate[required,custom[onlyLetterSp]]" maxlength="100" autocomplete="off" /></div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label">City Code</label>
+
+                                <div><input type="text" id="textid1" name="textid1" value="@Model.CityCode" class="form-control  validate[required]" maxlength="3" onkeypress="Key(evt)" autocomplete="off" /></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" formmethod="post" formaction="../Country/Index" class="btn-tgs" id="UPDATE" name="UPDATE" onsubmit="Key(evt)" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/Index?Action=Delete" class="btn-tgs" id="btncountryvalDelete" name="btncountryvalDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgcity</span>
+                                @if (ViewData["UPDATE"] != null)
+                                {
+                                    <p style="color:green;display:inline;">@ViewData["UPDATE"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="currnyform">
+            <div class="panel panel-default" id="panel_3">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_3" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Currency Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Currency</label>
+
+                                <div>   @Html.DropDownList("CurrencyID", null, "--Select--", new { @class = "form-control" })</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label">Add New</label>
+
+                                <div><input type="text" id="CurrencyName" name="CurrencyName" value="@Model.CurrencyName" class="form-control validate[required,custom[onlyLetterSp]]" maxlength="100" autocomplete="off" /></div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label">Currency Code</label>
+                                <div>
+                                    @Html.DropDownList("CurrencyCode", null, "--Select--", new { @class = "", style = "display:none;" })
+                                    <input type="text" id="CurrencyCode1" name="CurrencyCode1" value="@Model.CurrencyCode" class="form-control validate[required]" maxlength="5" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/Currency" id="btncurrency" name="btncurrency" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/Currency?Action=Delete" class="btn-tgs" id="btncurrnyformDelete" name="btncurrnyformDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsg</span>
+                                @if (ViewData["btncurrency"] != null)
+                                {
+                                    <p style="color:green;display:inline;">@ViewData["btncurrency"]</p>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="comptype">
+            <div class="panel panel-default" id="panel_4">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_4" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Company Type Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_4" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Type of Company</label>
+                                <div>  @Html.DropDownList("CompanyTypeID", null, "--Select--", new { @class = "form-control validate[required]" })</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="control-label">Add New</label>
+                                <div><input type="text" id="companytype" name="companytype" value="@Model.CompanyTypeName" class="form-control validate[required]" maxlength="100" autocomplete="off" /></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/CompanyType" id="companytype1" name="companytype1" value="Submit" onsubmit="NoNumbersKey(evt)" />
+                                <input type="submit" formmethod="post" formaction="../Country/CompanyType?Action=Delete" class="btn-tgs" id="btncomptypeDelete" name="btncomptypeDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgtype</span>
+                                @if (ViewData["companytype1"] != null)
+                                {
+                                    <p style="color:green; display:inline">@ViewData["companytype1"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="indufrom">
+            <div class="panel panel-default" id="panel_5">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_5" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Industry Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_5" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Industry</label>
+                                <div>  @Html.DropDownList("IndustryID", null, "--Select--", new { @class = "form-control validate[required]" })</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">Add New</label>
+                                <div><input type="text" id="industry" name="industry" value="@Model.IndustryName" class="form-control validate[required]" maxlength="100" autocomplete="off" /></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/Industry" id="indusrty2" name="indusrty2" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/Industry?Action=Delete" class="btn-tgs" id="btnindufromDelete" name="btnindufromDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgind</span>
+                                @if (ViewData["indusrty2"] != null)
+                                {
+                                    <p style="color:green; display:inline">@ViewData["indusrty2"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="subform">
+            <div class="panel panel-default" id="panel_6">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_6" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Sub Industry Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_6" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Industry</label>
+
+                                <div>@Html.DropDownList("SubIndustryID1", null, "--Select--", new { @class = "form-control validate[required]" })</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label">Sub Industry</label>
+
+                                <div><select id="SubIndustryID" name="SubIndustryID" class="form-control validate[required]"></select></div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="control-label">Add New</label>
+                                <div><input type="text" id="industrynew" name="industrynew" value="@Model.IndustryName" class="form-control validate[required]" autocomplete="off" maxlength="100" /></div>
+                            </div>
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/SubIndustry" id="indusrty" name="indusrty" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/SubIndustry?Action=Delete" class="btn-tgs" id="btnsubformDelete" name="btnsubformDelete" value="Delete" />
+                                @if (ViewData["indusrty"] != null)
+                                {
+                                    <p style="color:green; display:inline">@ViewData["indusrty"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="insform">
+            @*<div class="panel panel-default" id="panel_7">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_7" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Insurance Provider
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_7" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Insurance Provider</label>
+                                <div>@Html.DropDownList("InsuranceProviderID", null, "--Select--", new { @class = "form-control validate[required]" })</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="control-label">Add New</label>
+                                <div><input type="text" id="insurance" name="insurance" value="@Model.InsuranceProviderName" class="form-control validate[required]" maxlength="100" autocomplete="off" /></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/Insurrance" id="insurance1" name="insurance1" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/Insurrance?Action=Delete" class="btn-tgs" id="btninsformDelete" name="btninsformDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgins</span>
+                                @if (ViewData["insurance1"] != null)
+                                {
+                                    <p style="color:green; display:inline">@ViewData["insurance1"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        </form>
+
+        <form method="post" id="bankform">
+            <div class="panel panel-default" id="panel_8">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_8" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Bank Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_8" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Bank Name</label>
+                                <div> @Html.DropDownList("BankID", null, "--Select--", new { @class = "form-control validate[required]" })</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="control-label">Add New</label>
+                                <div><input type="text" id="bankname" name="bankname" value="@Model.BankName" class="form-control validate[required]" maxlength="100" autocomplete="off" /></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/Bank" id="bank" name="bank" onclick="msg(this)" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/Bank?Action=Delete" class="btn-tgs" id="btnbankformDelete" name="btnbankformDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgbank</span>
+                                @if (ViewData["bank"] != null)
+                                {
+                                    <p style="color:green;display:inline">@ViewData["bank"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="desgform">
+            <div class="panel panel-default" id="panel_9">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_9" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Designation Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_9" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Designation</label>
+                                <div>@Html.DropDownList("DesignationID", null, "--Select--", new { @class = "form-control validate[required]" })</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="control-label">Add New</label>
+                                <div><input type="text" id="designation" name="designation" value="@Model.DesignationName" class="form-control validate[required]" maxlength="100" autocomplete="off" /></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/DesignationType" id="designation1" name="designation1" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/DesignationType?Action=Delete" class="btn-tgs" id="btndesignationDelete" name="btndesignationDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgdes</span>
+                                @if (ViewData["designation1"] != null)
+                                {
+                                    <p style="color:green; display:inline">@ViewData["designation1"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="TemplateForm">
+            <div class="panel panel-default" id="panel_10">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_10" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Template Master
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_10" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Template</label>
+                                <div> @Html.DropDownList("TemplateID", null, "--Select --", new { @class = "form-control validate[required]" })</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="control-label">Add New</label>
+                                <div><input type="text" id="Name" name="Name" value="@Model.Name" class="form-control validate[required]" maxlength="100" autocomplete="off" /></div>
+                            </div>
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/Template" id="TemplateFormSubmit" name="TemplateFormSubmit" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/Template?Action=Delete" class="btn-tgs" id="TemplateFormDelete" name="TemplateFormDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgdes</span>
+                                @if (ViewData["btnTemplate"] != null)
+                                {
+                                    <p style="color:green; display:inline">@ViewData["btnTemplate"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="post" id="DynamicTextTemplateForm">
+            <div class="panel panel-default" id="panel_11">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-target="#collapseOne_11" style="cursor:pointer;">
+                            <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                            Dynamic Text
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_11" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">Dynamic Text</label>
+                                <div> @Html.DropDownList("DynamicTextID", null, "--Select --", new { @class = "form-control validate[required]" })</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="control-label">Add New</label>
+                                <div><input type="text" id="DynamicTextName" name="DynamicTextName" value="@Model.DynamicTextName" class="form-control validate[required]" autocomplete="off" maxlength="100" /></div>
+                            </div>
+                            <div class="col-md-4">
+                                <br />
+                                <input type="submit" class="btn-tgs" formmethod="post" formaction="../Country/DynamicText" id="DynamicTextTemplateFormSubmit" name="DynamicTextTemplateFormSubmit" value="Submit" />
+                                <input type="submit" formmethod="post" formaction="../Country/DynamicText?Action=Delete" class="btn-tgs" id="DynamicTextTemplateFormDelete" name="DynamicTextTemplateFormDelete" value="Delete" />
+                                <span class="text-danger"> @ViewBag.ErrorMsgdes</span>
+                                @if (ViewData["btnDynamicTemplate"] != null)
+                                {
+                                    <p style="color:green; display:inline">@ViewData["btnDynamicTemplate"]</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="col-md-12" style="height:2px;"></div> &nbsp;
+    <br />
+
+    &nbsp;&nbsp;&nbsp;<a href="/Country/CreateEmail">E-Mail Configuration </a>&nbsp; | &nbsp;
+    <a href="/Country/SMSConfig">SMS Configuration</a>&nbsp; | &nbsp;
+    <a href="/Country/FAQ">FAQ</a>&nbsp; | &nbsp; <a href="/Country/CreateHolidayMaster">Holiday Master</a>
+    &nbsp; | &nbsp;<a href="/Country/SystemPerameter">System Parameter</a>
+    &nbsp; | &nbsp;<a href="/Country/ScreeningConfig">Screening Config</a>
+    @*&nbsp; | &nbsp;<a href="/Country/TransferChargeMaster">Transfer Charge Master</a>*@
+
+</div>
+<script>
+    //function toggleIcon(e) {
+    //    $(e.target)
+    //        .prev('.panel-heading')
+    //        .find(".more-less")
+    //        .toggleClass('glyphicon-plus glyphicon-minus');
+    //}
+    //$('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    //$('.panel-group').on('shown.bs.collapse', toggleIcon);
+</script>
+<script type="text/javascript">
+    $("#DynamicTextID").on("change", function () {
+        var DynamicTextName = $("#DynamicTextID option:selected").text();
+        var DynamicTextID = $("#DynamicTextID option:selected").val();
+        $("#DynamicTextName").val(DynamicTextName);
+
+        if (TemplateID == 0) {
+            $("#DynamicTextName").val("");
+        }
+    });
+
+    $("#DynamicTextTemplateFormSubmit").on("click", function () {
+        $('#DynamicTextID').removeClass('validate[required]');
+        $("#DynamicTextTemplateForm").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+
+    $("#DynamicTextTemplateFormDelete").on("click", function () {
+        $('#DynamicTextID').addClass('form-control validate[required]');
+        $("#DynamicTextTemplateForm").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+
+    $("#DynamicTextTemplateForm").validationEngine(
+        'attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+</script>
+
+<script type="text/javascript">
+    $("#TemplateID").on("change", function () {
+        var Name = $("#TemplateID option:selected").text();
+        var TemplateID = $("#TemplateID option:selected").val();
+        $("#Name").val(Name);
+
+        if (TemplateID == 0) {
+            $("#Name").val("");
+        }
+    });
+
+    $("#TemplateFormSubmit").on("click", function () {
+        $('#TemplateID').removeClass('validate[required]');
+        $("#TemplateForm").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+
+    $("#TemplateFormDelete").on("click", function () {
+        $('#TemplateID').addClass('form-control validate[required]');
+        $("#TemplateForm").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+
+    $("#TemplateForm").validationEngine(
+        'attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+</script>
+
+<script src="~/Scripts/jquery.eComboBox.js"></script>
+
+<script type="text/jscript">
+    $('#textid1').blur(function () {
+        var url = "/Country/CheckCityCode";
+        var name = $('#textid1').val();
+        var hdnCustomerID;
+        $.get(url, { input: name }, function (data) {
+            if (data == "Available") {
+                $("#result").html("<span id='spanGreen' style='color:green'><i class='fa fa-check 3x'></i></span>");
+                $("#CompanyName").css('color', 'green');
+            }
+            else {
+                $("#result").html("<span id='spanRed' style='color:red'><i class='fa fa-times 3x'></i></span>");
+                $("#CompanyName").css('color', 'red');
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $("#InsuranceProviderID").on("change", function () {
+        var insurance5 = $("#InsuranceProviderID option:selected").text();
+        var InsuranceProviderID = $("#InsuranceProviderID option:selected").val();
+        $("#insurance").val(insurance5);
+
+        if (InsuranceProviderID == 0) {
+            $("#insurance").val("");
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $("#document").ready(function () {
+        $("#CurrencyCode1").val("");
+        $("#CurrencyName").val("");
+    });
+    $("#SubIndustryID").on("change", function () {
+        var industry8 = $("#SubIndustryID option:selected").text();
+        $("#industrynew").val(industry8);
+        if (SubIndustryID == 0) {
+            $("#industrynew").val("");
+        }
+    });
+
+    $("#SubIndustryID1").on("change", function () {
+        $("#SubIndustryID").empty();
+        var company7 = $("#SubIndustryID1 option:selected").text();
+        var IndustryID = $("#SubIndustryID1 option:selected").val();
+        $.ajax({
+            url: "/Country/Getindustrydata?iIndustryID=" + IndustryID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i] != '') {
+                        if (i == 0) {
+                            $("#SubIndustryID").append("<option value='0'>--Select--</option>");
+                        }
+                        $("#SubIndustryID").append("<option value=" + data[i].IndustryID + ">" +
+                            data[i].IndustryName + "</option>");
+                    }
+                }
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $("#IndustryID").on("change", function () {
+        var industry5 = $("#IndustryID option:selected").text();
+        var IndustryID = $("#IndustryID option:selected").val();
+
+        $("#industry").val(industry5);
+
+        if (IndustryID == 0) {
+            $("#industry").val("");
+        }
+    });
+</script>
+
+
+<script type="text/javascript">
+    $("#CompanyTypeID").on("change", function () {
+        var company_type = $("#CompanyTypeID option:selected").text();
+        var CompanyTypeID = $("#CompanyTypeID option:selected").val();
+        $("#companytype").val(company_type);
+
+        if (CompanyTypeID == 0) {
+            $("#companytype").val("");
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $("#DesignationID").on("change", function () {
+        var designation_type = $("#DesignationID option:selected").text();
+        var DesignationID = $("#DesignationID option:selected").val();
+        $("#designation").val(designation_type);
+
+        if (DesignationID == "") {
+            $("#designation").val("");
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $("#BankID").on("change", function () {
+        var bank = $("#BankID option:selected").text();
+        var BankID = $("#BankID option:selected").val();
+        $("#bankname").val(bank);
+        if (BankID == 0) {
+            $("#bankname").val("");
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $("#LanguageID").on("change", function () {
+        var language = $("#LanguageID option:selected").text();
+        $("#launguagename").val(language);
+        if (LanguageID == 0) {
+            $("#launguagename").val("");
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $("#CurrencyID").on("change", function () {
+        var Currency = $("#CurrencyID option:selected").text();
+        var currval = $("#CurrencyID option:selected").val();
+        if (currval == 0) {
+            $("#CurrencyCode1").val("");
+            $("#CurrencyName").val("");
+        }
+        else {
+            $("#CurrencyCode").val(currval);
+            var CurrencyCode = $("#CurrencyCode option:selected").text();
+            $("#CurrencyCode1").val(CurrencyCode);
+            $("#CurrencyName").val(Currency);
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtCity").on("change", function () {
+            var city_code = $("#CityID option:selected").text();
+
+            $("#textid").val($("#txtCity").val());
+            $("#city_code1").val(city_code1);
+        });
+
+        $("#CityID").eComboBox();
+        var CountryID = $(this).val();
+        $("#CityID").empty();
+        $("#textid").val("");
+        $("#textid1").val("");
+        if (CountryID == "") {
+            $("#CityID").val("");
+            $('#CityID').append($('<option></option>').val("0").html("-- Select --"));
+            return false;
+        }
+        $.ajax({
+            url: "/Country/GetCityData?iCountryID=" + CountryID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i] != '') {
+                        $("#CityID").append("<option value='0'>--Select--</option>");
+                        $("#CityID").append("<option value=" + data[i].CityID + ">" + data[i].CityName + "</option>");
+                    }
+                }
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+    });
+    $(document).ready(function () {
+        $("#CityCode").blur(function () {
+            var city_code1 = $("#CityCode option:selected").text();
+        });
+        $("#CityID").on("change", function () {
+            var city_code1 = $("#CityID  option:selected").text();
+            var cityid1 = $("#CityID").val();
+            $("#textid").val(city_code1);
+            $("#textid1").val(cityid1);
+            if (cityid1 == 0) {
+                $("#textid").val("");
+                $("#textid1").val("");
+            }
+        });
+    });
+
+    $("#CountryID2").on("change", function () {
+        var CountryID = $(this).val();
+        $("#CityID").empty();
+        $("#textid").val("");
+        $("#textid1").val("");
+        if (CountryID == "") {
+            $("#CityID").val("");
+            $('#CityID').append($('<option></option>').val("0").html("-- Select --"));
+            return false;
+        }
+
+        $.ajax({
+            url: "/Country/GetCityData?iCountryID=" + CountryID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i] != '') {
+                        if (i == 0) {
+                            $("#CityID").append("<option value='0'>--Select--</option>");
+                        }
+                        $("#CityID").append("<option value=" + data[i].CityID + ">" + data[i].CityName + "</option>");
+
+                    }
+                }
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+    });
+    $("#Add").click(function () {
+        return false;
+    });
+
+
+    $("#Update").click(function () {
+        return false;
+    });
+
+</script>
+<script>
+    $("#CityID").on("change", function () {
+        var CityID = $("#CityID").val();
+        $.ajax({
+            url: "/Country/GetCityCode?iCityID=" + CityID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i] != '') {
+                        if (i == 0) {
+                            $("#textid1").val("");
+                        }
+                        $("#textid1").val(data[i].CityCode);
+                    }
+                }
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        })
+    })
+</script>
+<script language="Javascript">
+    $("#CurrencyCode1").on('keyup', function (e) {
+        var val = $(this).val();
+        if (val.match(/[^a-zA-Z]/g)) {
+            $(this).val(val.replace(/[^a-zA-Z]/g, ''));
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#UPDATE").on("click", function () {
+            $("#countryval").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#btncountryvalDelete").on("click", function () {
+            $('#CityID').addClass('form-control validate[required]');
+            $("#countryval").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#countryval").validationEngine(
+            'attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+
+        $("#addcountryval").validationEngine(
+            'attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btncurrency").on("click", function () {
+            $('#CurrencyID').removeClass('validate[required]');
+            $("#currnyform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#btncurrnyformDelete").on("click", function () {
+            $('#CurrencyID').addClass('form-control validate[required]');
+            $("#currnyform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#currnyform").validationEngine(
+            'attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#companytype1").on("click", function () {
+            $('#CompanyTypeID').removeClass('validate[required]');
+            $("#comptype").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#btncomptypeDelete").on("click", function () {
+            $('#CompanyTypeID').addClass('form-control validate[required]');
+            $("#comptype").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#comptype").validationEngine(
+            'attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#designation1").on("click", function () {
+            $('#DesignationID').removeClass('validate[required]');
+            $("#desgform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#btndesignationDelete").on("click", function () {
+            $('#DesignationID').addClass('form-control validate[required]');
+            $("#desgform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#indusrty2").on("click", function () {
+            $('#IndustryID').removeClass('validate[required]');
+            $("#indufrom").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#btnindufromDelete").on("click", function () {
+            $('#IndustryID').addClass('form-control validate[required]');
+            $("#indufrom").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#indufrom").validationEngine(
+            'attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#bank").on("click", function () {
+            $('#BankID').removeClass('validate[required]');
+            $("#bankform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#btnbankformDelete").on("click", function () {
+            $('#BankID').addClass('form-control validate[required]');
+            $("#bankform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+        $("#bankform").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#insurance1").on("click", function () {
+            $('#InsuranceProviderID').removeClass('validate[required]');
+            $("#insform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#btninsformDelete").on("click", function () {
+            $('#InsuranceProviderID').addClass('form-control validate[required]');
+            $("#insform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+        $("#insform").validationEngine(
+            'attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#indusrty").on("click", function () {
+            $("#SubIndustryID").removeClass('validate[required]');
+            $('#SubIndustryID1').removeClass('validate[required]');
+            $("#subform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+
+        $("#btnsubformDelete").on("click", function () {
+            $('#SubIndustryID1').addClass('form-control validate[required]');
+            $('#SubIndustryID').addClass('form-control validate[required]');
+            $('#industrynew').addClass('validate[required]');
+            $("#subform").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+        });
+        $("#subform").validationEngine(
+            'attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+    });
+</script>
+<script>
+    $("#CountryID").on("change", function () {
+        var countryName = $("#CountryID option:selected").text();
+        var countryID = $("#CountryID option:selected").val();
+        $("#textidconN").empty();
+        if (countryID == "") {
+            $("#textidconN").val("");
+            $("#textidcon").val("");
+            $("#CountryName").val("");
+            $("#txtRiskLevel").val("");
+            $("#txtSanction").val("");
+        }
+        else {
+            $("#textidconN").val(countryName);
+            $.ajax({
+                url: "/Country/GetCountryCodeString?iCountryID=" + countryID,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var Result = data.split(",")
+                    $("#textidcon").val(Result[0]);
+                    if (Result[1] == "True" || Result[1] == true || Result[1] == "true") {
+                        $("#chkIsNAt").attr("checked", "checked");
+                    } else {
+                        $("#chkIsNAt").removeAttr("checked", "checked");
+                    }
+                    $("#txtRiskLevel").val(Result[2]);
+                    $("#txtSanction").val(Result[3]);
+                    return false;
+                },
+                error: function () {
+                    $("#errorMsg").html(Error);
+                    $('#Error').modal('show');
+                }
+            })
+        }
+    })
+</script>
+<script type="text/javascript">
+    $(".Edit").click(function () {
+        var Id = $(this).attr("id");
+        var SplitValue = Id.split("_");
+        $.ajax({
+            url: "/Country/CreateEmail?EmailConfigID=" + EmailConfigID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i] != '') {
+                        $("#hdnCustomerShareHoldDetID").val(data[i].CustomerShareHoldDetID);
+                        $("#Name").val(data[i].Name);
+                        $("#Per").val(data[i].Per);
+                        $("#TelNo").val(data[i].TelNo);
+                        $("#CountryID").val(data[i].CountryID);
+                        $("#EmailID").val(data[i].EmailID);
+                        $("#MobileNo").val(data[i].MobileNo);
+                    }
+                }
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+    });
+
+    $(".Delete").click(function () {
+        var Id = $(this).attr("id");
+        var SplitValue = Id.split("_");
+        var CustomerShareHoldDetID = SplitValue[1];
+        $.ajax({
+            url: "/InstitutionalInvestor/DeleteCustomerShareHoldData?iCustomerShareHoldDetID=" + CustomerShareHoldDetID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+    });
+</script>
+<style>
+    .form-group {
+        padding-bottom: 6%;
+    }
+
+    .city {
+        width: 150px !important;
+    }
+
+    .dataTables_filter, .dataTables_info, .dataTables_paginate {
+        display: none;
+    }
+
+    table.dataTable th.dt-center, table.dataTable td.dt-center, table.dataTable td.dataTables_empty {
+        height: 130px;
+    }
+
+    .btn-tgs {
+        margin-top: 7%;
+    }
+    .scroll { 
+    min-height: 300px;
+}
+</style>
+<style>
+    .footeronline {
+        position: fixed;
+    }
+</style>

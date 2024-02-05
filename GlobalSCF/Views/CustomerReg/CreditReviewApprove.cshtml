@@ -1,0 +1,614 @@
+﻿@model TMP.Models.CustomerReviewModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Credit Review";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        if (Model.Admin == "Y")
+        {
+            @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 9 })
+        }
+        else
+        {
+            @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 10 })  }
+
+    }
+    @using (Html.BeginForm("CreditReviewApprove", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "CommonValidations" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="container padoff">
+            <div class="col-md-12 createusertitle">CREDIT APPROVAL</div>
+            <div class="col-md-12" style="height:15px;"></div>
+
+            @if ((Model.CustomerTypeID == CONT.BuyerCustomerTypeID && Model.ProgramType == CONT.RType))
+            {
+
+                <table class="col-md-5">
+                    <tbody>
+
+                        <tr>
+                            <td class="td-bg">Currency</td>
+                            <td class="td-line">@Model.CurrencyCode</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Recommended Limit</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.Limit)
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Profit Rate</td>
+                            <td class="td-line">
+                                 @string.Format("{0:0,0.00}", Model.ProfitRate) % @Model.ProfitTypeDesc
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Transaction Fee Percentage</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.TranFeePer) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Security Deposit Percentage</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.SecDeptPer) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Security Deposit Amount</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.SecDeptAmt)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Due Diligence Report</td>
+                            <td class="td-line">
+                                @if (Model.UpdDiligRpt != null)
+                                {
+                                    if (Model.UpdDiligRpt != "")
+                                    {
+                                        @Html.HiddenFor(x => x.UpdDiligRpt)
+                                        <span>
+                                            @*<a href='~/Files/Upload/@Model.UpdDiligRpt' target="_blank">View</a>*@
+                                            <a href="javascript:void(0);" class="UpdDiligRpt_PopUp" data-id="@Model.UpdDiligRpt">View</a>
+                                        </span>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Reviewed By</td>
+                            <td class="td-line">@Convert.ToString(Session["DisplayName"])</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Maximum Tenor (Days)</td>
+                            <td class="td-line">@Model.Tenor</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Broker Fee</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.BrokerFee) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Arrangement Fee Percentage</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.ArrangFeePer) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Arrangement Fee Amount</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.ArrangFeeAmt)
+                            </td>
+
+                        </tr>
+                        @*<tr>
+                            <td class="td-bg">Other Fees</td>
+                            <td class="td-line">
+                               @string.Format("{0:0,0.00}", Model.OtherFee) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>*@
+                        <tr>
+                            <td class="td-bg">Penalty Rate</td>
+                            <td class="td-line">
+                               @string.Format("{0:0,0.00}", Model.PenaltyRate) % @Model.ProfitTypeDesc
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Credit Review Report</td>
+                            <td class="td-line">
+                                @if (Model.UpdCredRpt != null)
+                                {
+                                    if (Model.UpdCredRpt != "")
+                                    {
+                                        @Html.HiddenFor(x => x.UpdCredRpt)
+                                        <span>
+                                            @*<a href='~/Files/Upload/@Model.UpdCredRpt' target="_blank">View</a>*@
+                                            <a href="javascript:void(0);" class="UpdCredRpt_PopUp" data-id="@Model.UpdCredRpt">View</a>
+                                        </span>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Review Date</td>
+                            <td class="td-line">@DateTime.Now.ToString("dd-MMM-yyyy")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            else if (Model.CustomerTypeID == CONT.SupplierCustomerTypeID)
+            {
+                <table class="col-md-5">
+                    <tbody>
+
+                        <tr>
+                            <td class="td-bg">Currency</td>
+                            <td class="td-line">@Model.CurrencyCode</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Recommended Limit</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.Limit)
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Reference Base Rate</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.BaseRate) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Applicable Discount Rate</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.DiscRate) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Factor’s Holdback Percentage</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.HoldbackPer) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Broker Fee</td>
+                            <td class="td-line">
+                               @string.Format("{0:0,0.00}", Model.BrokerFee) % @Model.ProfitTypeDesc
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Reviewed By</td>
+                            <td class="td-line">@Convert.ToString(Session["DisplayName"])</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Maximum Tenor (Days)</td>
+                            <td class="td-line">@Model.Tenor</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Profit Margin Rate</td>
+                            <td class="td-line">
+                               @string.Format("{0:0,0.00}", Model.ProfitRate) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Transaction Fee Percentage</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.TranFeePer) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Arrangement Fee Percentage</td>
+                            <td class="td-line">
+                               @string.Format("{0:0,0.00}", Model.ArrangFeeAmt) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>
+                        @*<tr>
+                            <td class="td-bg">Other Fees</td>
+                            <td class="td-line">
+                                 @string.Format("{0:0,0.00}", Model.OtherFee) % @Model.ProfitTypeDesc
+                            </td>
+
+                        </tr>*@
+                        <tr>
+                            <td class="td-bg">Due Diligence Report</td>
+                            <td class="td-line">
+                                @if (Model.UpdDiligRpt != null)
+                                {
+                                    if (Model.UpdDiligRpt != "")
+                                    {
+                                        @Html.HiddenFor(x => x.UpdDiligRpt)
+                                        <span>
+                                            @*<a href='~/Files/Upload/@Model.UpdDiligRpt' target="_blank">View</a>*@
+                                            <a href="javascript:void(0);" class="UpdDiligRpt_PopUp" data-id="@Model.UpdDiligRpt">View</a>
+                                        </span>
+                                    }
+                                }
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Review Date</td>
+                            <td class="td-line">@DateTime.Now.ToString("dd-MMM-yyyy")</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            }
+            else if ((Model.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && Model.ProgramType == CONT.BothProgramType))
+            {
+                <div class="container padoff">
+                    <div class="col-md-12 createusertitle">RECEIVABLES FINANCE CREDIT REVIEW</div>
+                    <div class="col-md-12" style="height:15px;"></div>
+                    <table class="col-md-5">
+                        <tbody>
+                            <tr>
+                                <td class="td-bg">Currency</td>
+                                <td class="td-line">@Model.FCurrencyCode</td>
+
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Recommended Limit</td>
+                                <td class="td-line">
+                                    @Model.FCurrencyCode @string.Format("{0:0,0.00}", Model.FLimit)
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Maximum Tenor (Days)</td>
+                                <td class="td-line">@Model.FTenor</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="col-md-10" style="margin-bottom:0"></table>
+                </div>
+
+                    <div class="container padoff">
+                        <div class="col-md-12 createusertitle padoff">Payables Finance CREDIT REVIEW</div>
+                        <div class="col-md-12" style="height:15px;"></div>
+                        <table class="col-md-5">
+                            <tbody>
+
+                                <tr>
+                                    <td class="td-bg">Currency</td>
+                                    <td class="td-line">@Model.CurrencyCode</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Recommended Limit</td>
+                                    <td class="td-line">
+                                        @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.Limit)
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Profit Rate</td>
+                                    <td class="td-line">
+                                      @string.Format("{0:0,0.00}", Model.ProfitRate) % @Model.ProfitTypeDesc
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Transaction Fee Percentage</td>
+                                    <td class="td-line">
+                                        @string.Format("{0:0,0.00}", Model.TranFeePer) % @Model.ProfitTypeDesc
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Security Deposit Percentage</td>
+                                    <td class="td-line">
+                                        @string.Format("{0:0,0.00}", Model.SecDeptPer) % @Model.ProfitTypeDesc
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Security Deposit Amount</td>
+                                    <td class="td-line">
+                                        @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.SecDeptAmt)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Due Diligence Report</td>
+                                    <td class="td-line">
+                                        @if (Model.UpdDiligRpt != null)
+                                        {
+                                            if (Model.UpdDiligRpt != "")
+                                            {
+                                                @Html.HiddenFor(x => x.UpdDiligRpt)
+                                                <span>
+                                                    @*<a href='~/Files/Upload/@Model.UpdDiligRpt' target="_blank">View</a>*@
+                                                    <a href="javascript:void(0);" class="UpdDiligRpt_PopUp" data-id="@Model.UpdDiligRpt">View</a>
+                                                </span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Reviewed By</td>
+                                    <td class="td-line">@Convert.ToString(Session["DisplayName"])</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="col-md-5">
+                            <tbody>
+                                <tr>
+                                    <td class="td-bg">Maximum Tenor (Days)</td>
+                                    <td class="td-line">@Model.Tenor</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Broker Fee</td>
+                                    <td class="td-line">
+                                       @string.Format("{0:0,0.00}", Model.BrokerFee) % @Model.ProfitTypeDesc
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Arrangement Fee Percentage</td>
+                                    <td class="td-line">
+                                        @string.Format("{0:0,0.00}", Model.ArrangFeePer) % @Model.ProfitTypeDesc
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Arrangement Fee Amount</td>
+                                    <td class="td-line">
+                                        @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.ArrangFeeAmt)
+                                    </td>
+
+                                </tr>
+                                @*<tr>
+                                    <td class="td-bg">Other Fees</td>
+                                    <td class="td-line">
+                                      @string.Format("{0:0,0.00}", Model.OtherFee)  % @Model.ProfitTypeDesc
+                                    </td>
+
+                                </tr>*@
+                                <tr>
+                                    <td class="td-bg">Penalty Rate</td>
+                                    <td class="td-line">
+                                         @string.Format("{0:0,0.00}", Model.PenaltyRate)  % @Model.ProfitTypeDesc
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Credit Review Report</td>
+                                    <td class="td-line">
+                                        @if (Model.UpdCredRpt != null)
+                                        {
+                                            if (Model.UpdCredRpt != "")
+                                            {
+                                                @Html.HiddenFor(x => x.UpdCredRpt)
+                                                <span>
+                                                    @*<a href='~/Files/Upload/@Model.UpdCredRpt' target="_blank">View</a>*@
+                                                    <a href="javascript:void(0);" class="UpdCredRpt_PopUp" data-id="@Model.UpdCredRpt">View</a>
+                                                </span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Review Date</td>
+                                    <td class="td-line">@DateTime.Now.ToString("dd-MMM-yyyy")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+            }
+            else
+            {
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Currency</td>
+                            <td class="td-line">@Model.CurrencyCode</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Recommended Limit</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.Limit)
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Maximum Tenor (Days)</td>
+                            <td class="td-line">@Model.Tenor</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                        <table class="col-md-10" style="margin-bottom:0"></table>
+                        <table class="col-md-5">
+                            <tbody>
+                                <tr>
+                                    <td class="td-bg">Due Diligence Report</td>
+                                    <td class="td-line">
+                                        @if (Model.UpdDiligRpt != null)
+                                        {
+                                            if (Model.UpdDiligRpt != "")
+                                            {
+                                                @Html.HiddenFor(x => x.UpdDiligRpt)
+                                                <span>
+                                                @*<a href = '~/Files/Upload/@Model.UpdDiligRpt' target = "_blank" > View </a>*@
+                                                    <a href="javascript:void(0);" class="UpdDiligRpt_PopUp" data-id="@Model.UpdDiligRpt">View</a>
+                                                </span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Reviewed By</td>
+                                    <td class="td-line">@Convert.ToString(Session["DisplayName"])</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="col-md-5">
+                            <tbody>
+                                <tr>
+                                    <td class="td-bg">Credit Review Report</td>
+                                    <td class="td-line">
+                                        @if (Model.UpdCredRpt != null)
+                                        {
+                                            if (Model.UpdCredRpt != "")
+                                            {
+                                                @Html.HiddenFor(x => x.UpdCredRpt)
+                                             
+                                                <span>
+                                                    @*<a href='~/Files/Upload/@Model.UpdCredRpt' target="_blank">View</a>*@
+                                                    <a href="javascript:void(0);" class="UpdCredRpt_PopUp" data-id="@Model.UpdCredRpt">View</a>
+                                                </span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-bg">Review Date</td>
+                                    <td class="td-line">@DateTime.Now.ToString("dd-MMM-yyyy")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+            }
+
+
+            @if (Model.Status == CONT.NC || Model.Status == CONT.UC)
+            {
+                <table class="col-md-10" style="width:89%;">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg" style="width:23.4%;">Comments by Credit Reviewer</td>
+                            <td class="td-line">@Model.Feedback</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                            <table class="col-md-10" style="width:89%;">
+                                <tbody>
+                                    <tr>
+                                        <td class="td-bg" style="width:23.4%;" id="goToLINK">
+                                            <a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@Model.CustomerID">View All Comments</a> / Comments
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ProcessRemark, new { @class = "form-control validate[required]", autocomplete = "off" })
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+            }
+        </div>
+                    @Html.HiddenFor(x => x.CustomerID)
+                    @Html.HiddenFor(x => x.CustomerTypeID)
+                    @Html.HiddenFor(x => x.ProgramType)
+                    @Html.HiddenFor(x => x.Status)
+                    @Html.HiddenFor(x => x.Admin)
+        if (ViewBag._currentUser.IsMaker == true || ViewBag._currentUser.IsCreRevChecker == true || ViewBag._currentUser.IsCreRevApprover == true || ViewBag._currentUser.IsOpTeam == true)
+        {
+            if ((Model.Status == CONT.NC || Model.Status == CONT.UC) && Model.Admin != "Y")
+            {
+                <div class="container" style="text-align:right;margin-top:20px;">
+                    @*<button id="Reject" name="Reject" value="Reject" type="submit" class="btn btn-tgs">Reject</button> &nbsp;*@
+                    <button id="Return" name="Return" value="Return" type="submit" class="btn btn-tgs">Return</button> &nbsp;
+                    <button id="Approve" name="Approve" value="Approve" type="submit" class="btn btn-tgs">Approve</button> &nbsp;
+                </div>
+            }
+            else
+            {
+                <div class="container" style="text-align:right;margin-top:20px;">
+                    <button id="Next" name="Next" value="Next" type="submit" class="btn btn-tgs">Next</button>
+                </div>
+            }
+
+        }
+    }
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    table {
+        margin-bottom: 2%;
+        margin-left: 65px;
+    }
+</style>
+<script>
+    $(".UpdDiligRpt_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdDiligRpt' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    $(".UpdCredRpt_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdCredRpt' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    $(document).ready(function () {
+        $("#ProcessRemark").val("");
+    });
+    $("#goToLINK").on("click", ".OpenList", function () {
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var CustomerID = $('#CustomerID').val();
+        if (CustomerID != null && CustomerID > 0) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: "/CustomerReg/RemarksPopup?CustomerID=" + CustomerID,
+                contentType: "application/json; charset=utf-8",
+                data: "{}",
+                datatype: "json",
+                success: function (data) {
+                    $('#Invoiceview').html(data);
+                    $('#process').modal('hide');
+                    $('#InvoiceModal').modal('show');
+                },
+            });
+        }
+    });
+</script>

@@ -1,0 +1,1247 @@
+﻿@model TMP.Models.mRoleMaster
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+
+@Html.Hidden("selectedmaker", ViewData["selectedmaker"])
+@Html.Hidden("selectedchecker", ViewData["selectedchecker"])
+@Html.Hidden("selectedapporver", ViewData["selectedapporver"])
+@Html.Hidden("selectedisview", ViewData["selectedisview"])
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.display').dataTable({
+        });
+        var w = "@Model.lstRoleMasterlstallbind[0].IsActive";
+        $("#IsActive").val(w);
+        var data = $("#selectedmaker").val().split(",");
+
+        $.each(data, function (i) {
+            //var a = document.getElementsByName("chk_M_" + data[i]);
+            $(document.getElementsByName("chk_M_" + data[i])).each(function () {
+                this.checked = true;
+            });
+
+        });
+        var data1 = $("#selectedchecker").val().split(",");
+
+        $.each(data1, function (i) {
+
+            $(document.getElementsByName("chk_C_" + data1[i])).each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"
+            });
+        });
+        var data2 = $("#selectedapporver").val().split(",");
+        $.each(data2, function (i) {
+            document.getElementsByName("chk_A_" + data2[i])
+
+
+
+            $(document.getElementsByName("chk_A_" + data2[i])).each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"
+            });
+        });
+        var data3 = $("#selectedisview").val().split(",");
+        $.each(data3, function (i) {
+
+            $(document.getElementsByName("chk_V_" + data3[i])).each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"
+            });
+        });
+
+        SelectMaker();
+        SelectChecker();
+        SelectViewer();
+        SelectApprover();
+    });
+</script>
+
+<div class="col-md-12 div-border padoff">
+
+    <!-- inner content form -->
+    <div class="col-md-12 createusertitle">Update Role</div>
+    <div class="col-md-12" style="height:10px;"></div>
+
+
+    @using (Html.BeginForm("Edit", "mRoleMasters", FormMethod.Post, new { @class = "col-md-12", id = "RMEForm" }))
+    {
+
+        if (ViewBag.ErrorMsg != null)
+        {
+            <span class="text-danger"> @ViewBag.ErrorMsg</span>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        }
+
+        @Html.AntiForgeryToken()
+
+        <fieldset>
+
+            @Html.HiddenFor(model => model.lstRoleMasterlstallbind[0].RoleID)
+
+            <input type='hidden' value="@Model.lstRoleMasterlstallbind[0].RoleID" name="hdnRoleID" id="hdnRoleID" />
+            <div class="col-md-12" style="height:10px;"></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Role Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.lstRoleMasterlstallbind[0].RoleName, new { htmlAttributes = new { @class = "form-control validate[required]" } })                    
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Role Description&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.lstRoleMasterlstallbind[0].RoleDesc, new { htmlAttributes = new { @class = "form-control validate[required]" } })                    
+                    @Html.HiddenFor(model => model.lstRoleMasterlstallbind[0].Status, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <input type="hidden" id="IsActive" name="IsActive" />
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12" style="height:400px;scrollbar-base-color:azure;overflow:auto">
+                <div class="createusertitle col-md-12">Please select a Right</div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div style="position:absolute;top:-100000px; left:40px;">
+                    <input type="checkbox"
+                           name="chk_V_107"
+                           id="chk_V_107" checked="checked" />
+                    <input type="checkbox"
+                           name="chk_V_108"
+                           id="chk_V_108" checked="checked" />
+                    <input type="checkbox"
+                           name="chk_V_112"
+                           id="chk_V_112" checked="checked" />
+                    <input type="checkbox"
+                           name="chk_V_113"
+                           id="chk_V_113" checked="checked" />
+                </div>
+                <input type="hidden" name="intMenuRightsCount" id="intMenuRightsCount" value="@Model.lstMenuRightslstallbind.Count">
+
+                @foreach (var item in Model.lstMenuRightslstallbind)
+                {
+                    if (item.ParentMenuID == -1)
+                    {
+                        foreach (var itemParent in Model.lstMenuRightslstallbind)
+                        {
+                            if (item.MenuID == itemParent.ParentMenuID)
+                            {
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgum">
+                                            <th>@itemParent.MenuName</th>
+                                            <th>Maker</th>
+                                            <th>Checker</th>
+                                            <th>Approval</th>
+                                            <th>Viewer</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item1 in Model.lstMenuRightslstallbind)
+                                {
+                                    if (itemParent.MenuID == item1.ParentMenuID)
+                                    {
+                                                <tr>
+                                                    <td>@item1.MenuName</td>
+                                                    <td>
+                                                        @foreach (var item500 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item1.MenuID == item500.ParentMenuID)
+                                                            {
+                                                                if (item500.MenuName == "Maker")
+                                                                {
+                                                                    <input type="checkbox" onclick="checkboxMaker(@itemParent.MenuID,@item.MenuID,@item1.MenuID);"
+                                                                           class="checkboxMaker_@item1.MenuID admin123_@item.MenuID admin456_@itemParent.MenuID" />
+                                                                    <br />
+
+                                                                }
+                                                            }
+                                                        }
+                                                        @foreach (var item2 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item1.MenuID == item2.ParentMenuID)
+                                                            {
+                                                                if (item1.MenuID == item2.ParentMenuID)
+                                                                {
+                                                                    if (item2.MenuName == "Maker")
+                                                                    {
+                                                                        <div style="position:absolute;top:-100000px;">
+                                                                            <input type="checkbox"
+                                                                                   id="chkMekar" name="chk_M_@itemParent.MenuID" class="mcheckbox1_@item1.MenuID chk_M_@itemParent.MenuID"
+                                                                                   value="Mekar_@itemParent.MenuID"
+                                                                                   style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                            <input type="checkbox"
+                                                                                   id="chkMekar" name="chk_M_@item.MenuID" class="mcheckbox1_@item1.MenuID chk_M_@item.MenuID "
+                                                                                   value="Mekar_@item.MenuID"
+                                                                                   style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                            <input type="checkbox"
+                                                                                   name="chk_M_@item1.MenuID" value="Mekar_@item1.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                                   class="mcheckbox1_@item1.MenuID" />
+
+                                                                            <input type="checkbox" name="chk_M_@item2.MenuID"
+                                                                                   value="Mekar_@item2.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                                   class="mcheckbox1_@item1.MenuID" />
+                                                                        </div>
+                                                                    }
+                                                                    if (item2.MenuName == "Checker")
+                                                                    {
+                                                                        <div style="position:absolute;top:-100000px; left:40px;">
+
+                                                                            <input type="checkbox"
+                                                                                   id="chkMekar" name="chk_C_@itemParent.MenuID" class="mcheckbox2_@item1.MenuID chk_C_@itemParent.MenuID"
+                                                                                   value="Checker_@itemParent.MenuID"
+                                                                                   style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                            <input type="checkbox"
+                                                                                   id="chkMekar" name="chk_C_@item.MenuID" class="mcheckbox2_@item1.MenuID  chk_C_@item.MenuID admin_@item.MenuID"
+                                                                                   value="Checker_@item.MenuID"
+                                                                                   style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                            <input type="checkbox" onclick="checkboxtick(@item1.MenuID);"
+                                                                                   name="chk_C_@item1.MenuID" value="Checker_@item1.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                                   class="mcheckbox2_@item1.MenuID" />
+
+                                                                            <input type="checkbox" name="chk_C_@item2.MenuID"
+                                                                                   value="Checker_@item2.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                                   class="mcheckbox2_@item1.MenuID" />
+                                                                        </div>
+                                                                    }
+                                                                    if (item2.MenuName == "Approver")
+                                                                    {
+                                                                        <div style="position:absolute;top:-100000px;left:80px">
+
+
+                                                                            <input type="checkbox"
+                                                                                   id="chkMekar" name="chk_A_@itemParent.MenuID" class="mcheckbox3_@item1.MenuID chk_A_@itemParent.MenuID"
+                                                                                   value="Approval_@itemParent.MenuID"
+                                                                                   style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                            <input type="checkbox"
+                                                                                   id="chkMekar" name="chk_A_@item.MenuID" class="mcheckbox3_@item1.MenuID chk_A_@item.MenuID "
+                                                                                   value="Approval_@item.MenuID"
+                                                                                   style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                            <input type="checkbox"
+                                                                                   name="chk_A_@item1.MenuID" value="Approval_@item1.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                                   class="mcheckbox3_@item1.MenuID" />
+
+                                                                            <input type="checkbox" name="chk_A_@item2.MenuID"
+                                                                                   value="Approval_@item2.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                                   class="mcheckbox3_@item1.MenuID" />
+                                                                        </div>
+                                                                    }
+                                                                    if (item2.MenuName == "Viewer")
+                                                                    {
+                                                                        <div style="position:absolute; top:-100000px;  left:100px;">
+                                                                            <input type="checkbox"
+                                                                                   id="chkMekar" name="chk_V_@itemParent.MenuID" class="mcheckbox4_@item1.MenuID chk_L_@itemParent.MenuID"
+                                                                                   value="IsView_@itemParent.MenuID"
+                                                                                   style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                            <input type="checkbox"
+                                                                                   id="chkMekar" name="chk_V_@item.MenuID" class="mcheckbox4_@item1.MenuID chk_L_@item.MenuID"
+                                                                                   value="IsView_@item.MenuID"
+                                                                                   style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                            <input type="checkbox"
+                                                                                   name="chk_V_@item1.MenuID" value="IsView_@item1.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                                   class="mcheckbox4_@item1.MenuID" />
+
+                                                                            <input type="checkbox" name="chk_V_@item2.MenuID"
+                                                                                   value="IsView_@item2.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                                   class="mcheckbox4_@item1.MenuID" />
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                                foreach (var item3 in Model.lstMenuRightslstallbind)
+                                                                {
+                                                                    if (item2.MenuName == "Maker")
+                                                                    {
+                                                                        if (item2.MenuID == item3.ParentMenuID)
+                                                                        {
+                                                                            <input type="checkbox"
+                                                                                   name="chk_M_@item3.MenuID" onclick="getselect(@itemParent.MenuID,@item.MenuID,@item1.MenuID);" value="Mekar_@item3.MenuID"
+                                                                                   id="mcheckbox_@item3.MenuID" class="mcheckbox_@item.MenuID mcheckbox_@item1.MenuID admin123_@item.MenuID admin456_@itemParent.MenuID" />
+                                                                            @item3.MenuName<br />
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @foreach (var item500 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item1.MenuID == item500.ParentMenuID)
+                                                            {
+                                                                if (item500.MenuName == "Checker")
+                                                                {
+                                                                    <input type="checkbox" onclick="checkboxChecker(@itemParent.MenuID,@item.MenuID,@item1.MenuID);" class="checkboxChecker_@item1.MenuID admin123_@item.MenuID admin456_@itemParent.MenuID " />
+                                                                    <br />
+                                                                }
+                                                            }
+                                                        }
+                                                        @foreach (var item20 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item1.MenuID == item20.ParentMenuID)
+                                                            {
+                                                                if (item20.MenuName == "Checker")
+                                                                {
+                                                                    foreach (var item50 in Model.lstMenuRightslstallbind)
+                                                                    {
+                                                                        if (item20.MenuID == item50.ParentMenuID)
+                                                                        {
+                                                                            <input type="checkbox"
+                                                                                   name="chk_C_@item50.MenuID" onclick="getselectChecker(@itemParent.MenuID,@item.MenuID,@item1.MenuID);" value="Mekar_@item50.MenuID"
+                                                                                   id="ccheckbox_@item50.MenuID" class="ccheckbox_@item.MenuID ccheckbox_@item1.MenuID admin123_@item.MenuID admin456_@itemParent.MenuID" />
+                                                                            @item50.MenuName<br />
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @foreach (var item500 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item1.MenuID == item500.ParentMenuID)
+                                                            {
+                                                                if (item500.MenuName == "Approver")
+                                                                {
+                                                                    <input type="checkbox"
+                                                                           onclick="checkboxApprover(@itemParent.MenuID,@item.MenuID,@item1.MenuID);" class="checkboxApprover_@item1.MenuID  admin123_@item.MenuID admin456_@itemParent.MenuID" />
+                                                                    <br />
+                                                                }
+                                                            }
+                                                        }
+
+                                                        @foreach (var item20 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item1.MenuID == item20.ParentMenuID)
+                                                            {
+                                                                if (item20.MenuName == "Approver")
+                                                                {
+                                                                    foreach (var item50 in Model.lstMenuRightslstallbind)
+                                                                    {
+                                                                        if (item20.MenuID == item50.ParentMenuID)
+                                                                        {
+                                                                            <input type="checkbox"
+                                                                                   name="chk_A_@item50.MenuID" onclick="getselectApp(@itemParent.MenuID,@item.MenuID,@item1.MenuID);" value="Mekar_@item50.MenuID"
+                                                                                   id="acheckbox_@item50.MenuID" class="acheckbox_@item.MenuID acheckbox_@item1.MenuID admin123_@item.MenuID admin456_@itemParent.MenuID" />
+                                                                            @item50.MenuName<br />
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+
+                                                    </td>
+                                                    <td>
+
+                                                        @foreach (var item500 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item1.MenuID == item500.ParentMenuID)
+                                                            {
+                                                                if (item500.MenuName == "Viewer")
+                                                                {
+                                                                    <input type="checkbox" onclick="checkboxViewer(@itemParent.MenuID,@item.MenuID,@item1.MenuID);" class="checkboxViewer_@item1.MenuID admin123_@item.MenuID admin456_@itemParent.MenuID" />
+                                                                    <br />
+                                                                }
+                                                            }
+                                                        }
+                                                        @foreach (var item22 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item1.MenuID == item22.ParentMenuID)
+                                                            {
+                                                                if (item22.MenuName == "Viewer")
+                                                                {
+                                                                    foreach (var item51 in Model.lstMenuRightslstallbind)
+                                                                    {
+                                                                        if (item22.MenuID == item51.ParentMenuID)
+                                                                        {
+                                                                            <input type="checkbox"
+                                                                                   name="chk_V_@item51.MenuID" onclick="getselectViewer(@itemParent.MenuID,@item.MenuID,@item1.MenuID);" value="Mekar_@item51.MenuID"
+                                                                                   id="vcheckbox_@item51.MenuID" class="vcheckbox_@item.MenuID vcheckbox_@item1.MenuID admin123_@item.MenuID admin456_@itemParent.MenuID" />
+                                                                            @item51.MenuName<br />
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        }
+                    }
+                }
+            </div>
+
+        </fieldset>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <div class="form-group">
+
+                <div class="col-md-2">
+                    @if (Model.lstRoleMasterlstallbind[0].Status != "NM")
+                    {
+                        if (Model.lstRoleMasterlstallbind[0].IsActive == true)
+                        {
+                            <input type="checkbox" name="chkActiveInactive" id="chkActiveInactive" checked="checked" /><label>Active/InActive</label>
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="chkActiveInactive" id="chkActiveInactive" /><label>Active/InActive</label>
+                        }
+                    }
+                    <input type="checkbox" name="chkDeleteRole" id="chkDeleteRole" />  <label>Delete</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+
+
+        <div class="col-md-7">
+            @Html.TextArea("ProcessRemark", "", 1, 1, new { @class = "col-md-12 footerbox validate[required]", placeholder = "ProcessRemarks" })
+        </div>
+
+                                                    <div class="col-md-5" style="text-align:right;">
+                                                        <button id="addnew" name="addnew" class="btn-tgs">Save</button>
+                                                    </div>
+
+
+
+
+    }
+
+    <div class="container">
+        <div class="modal fade" id="myModalView" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content scroll" style="height:350px;width:850px">
+                    <div class="modal-header">
+                        <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Process Remark Details</h4>
+                    </div>
+                    <div id="NEW2" class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#popup').click(function () {
+
+            var RoleID = $("#hdnRoleID").val();
+            $.ajax({
+                url: "/mRoleMasters/CommentResult?RoleID=" + RoleID,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#NEW2").html(data);
+                    $("table.display").DataTable();
+                    event.preventDefault();
+                    return false;
+                },
+
+            });
+
+        });
+
+    });
+</script>
+@*@section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }*@
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#RMEForm").validationEngine(
+                     'attach', {
+                         promptPosition: "bottomLeft",
+                         scroll: false,
+                         autoHidePrompt: true,
+                         autoHideDelay: 2500,
+                         fadeDuration: 0.3,
+                         focusFirstField: false,
+                         MaxErrorsPerField: 1
+                     });
+
+    });
+</script>
+<script type="text/javascript">
+    //Page load time
+
+    function SelectMaker() {
+
+        var data = $("#selectedmaker").val().split(",");
+        $.each(data, function (i) {
+
+            var data11 = 0;
+            $(".mcheckbox_" + data[i] + "").each(function () {
+
+                if (this.checked) {
+
+                } else {
+                    data11 = 1;
+                }
+
+            });
+            if (data11 == 1) {
+                $(".checkboxMaker_" + data[i] + "").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                $(".checkboxMaker_" + data[i] + "").each(function () {
+                    this.checked = true;
+                });
+
+            }
+        });
+    }
+
+    function SelectViewer() {
+
+        var data = $("#selectedisview").val().split(",");
+        $.each(data, function (i) {
+
+            var data11 = 0;
+            $(".vcheckbox_" + data[i] + "").each(function () {
+
+                if (this.checked) {
+
+                } else {
+                    data11 = 1;
+                }
+
+            });
+            if (data11 == 1) {
+                $(".checkboxViewer_" + data[i] + "").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                $(".checkboxViewer_" + data[i] + "").each(function () {
+                    this.checked = true;
+                });
+
+            }
+        });
+    }
+
+    function SelectChecker() {
+
+        var data = $("#selectedchecker").val().split(",");
+        $.each(data, function (i) {
+
+            var data11 = 0;
+            $(".ccheckbox_" + data[i] + "").each(function () {
+
+                if (this.checked) {
+
+                } else {
+                    data11 = 1;
+                }
+
+            });
+            if (data11 == 1) {
+                $(".checkboxChecker_" + data[i] + "").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                $(".checkboxChecker_" + data[i] + "").each(function () {
+                    this.checked = true;
+                });
+
+            }
+        });
+    }
+    function SelectApprover() {
+
+        var data = $("#selectedapporver").val().split(",");
+        $.each(data, function (i) {
+
+            var data11 = 0;
+            $(".acheckbox_" + data[i] + "").each(function () {
+
+                if (this.checked) {
+
+                } else {
+                    data11 = 1;
+                }
+
+            });
+            if (data11 == 1) {
+                $(".checkboxApprover_" + data[i] + "").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                $(".checkboxApprover_" + data[i] + "").each(function () {
+                    this.checked = true;
+                });
+
+            }
+        });
+    }
+
+
+    //Maker
+    function checkboxMaker(ItemParent, item, item1) {
+
+
+
+        var data10 = 0;
+        $(".checkboxMaker_" + item1 + "").each(function () {
+
+            if (this.checked) {
+
+                $(".mcheckbox_" + item1 + "").each(function () {
+                    this.checked = true;
+                });
+                $(".mcheckbox1_" + item1 + "").each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+                $(".mcheckbox_" + item1 + "").each(function () {
+                    this.checked = false;
+                });
+                $(".mcheckbox1_" + item1 + "").each(function () {
+                    this.checked = false;
+                });
+
+                var data500 = 0;
+                $(".admin123_" + item + "").each(function () {
+                    if (this.checked) {
+                        data500 = 1;
+                    }
+
+                });
+                if (data500 == 0) {
+                    $(".chk_M_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_C_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_A_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_L_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                }
+
+                var data501 = 0;
+                $(".admin456_" + ItemParent + "").each(function () {
+                    if (this.checked) {
+                        data501 = 1;
+                    }
+                });
+                if (data501 == 0) {
+                    $(".chk_M_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_C_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_A_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_L_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                }
+
+
+
+
+            }
+        });
+        //Main Checkbox
+
+    }
+
+
+    function getselect(ItemParent, item, item1) {
+
+        var data = 0;
+        $(".mcheckbox_" + item1 + "").each(function () {
+            if (this.checked) {
+                data = 1;
+            }
+        });
+        if (data == 1) {
+            $(".mcheckbox1_" + item1 + "").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+
+            $(".mcheckbox1_" + item1 + "").each(function () {
+                this.checked = false;
+            });
+        }
+
+        var data11 = 0;
+        $(".mcheckbox_" + item1 + "").each(function () {
+            if (this.checked) {
+            } else {
+                data11 = 1;
+            }
+        });
+
+        if (data11 == 1) {
+            $(".checkboxMaker_" + item1 + "").each(function () {
+                this.checked = false;
+            });
+        } else {
+            $(".checkboxMaker_" + item1 + "").each(function () {
+                this.checked = true;
+            });
+        }
+
+
+
+        var data500 = 0;
+        $(".admin123_" + item + "").each(function () {
+            if (this.checked) {
+                data500 = 1;
+            }
+
+        });
+        if (data500 == 0) {
+            $(".chk_M_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_C_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_A_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_L_" + item + "").each(function () {
+                this.checked = false;
+            });
+        }
+
+        var data501 = 0;
+        $(".admin456_" + ItemParent + "").each(function () {
+            if (this.checked) {
+                data501 = 1;
+            }
+        });
+        if (data501 == 0) {
+            $(".chk_M_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_C_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_A_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_L_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+        }
+
+
+
+    }
+    //Checker
+    function checkboxChecker(ItemParent, item, item1) {
+
+        var data10 = 0;
+        $(".checkboxChecker_" + item1 + "").each(function () {
+            if (this.checked) {
+
+                $(".ccheckbox_" + item1 + "").each(function () {
+                    this.checked = true;
+                });
+                $(".mcheckbox2_" + item1 + "").each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+
+                $(".ccheckbox_" + item1 + "").each(function () {
+                    this.checked = false;
+                });
+                $(".mcheckbox2_" + item1 + "").each(function () {
+                    this.checked = false;
+                });
+
+
+                var data500 = 0;
+                $(".admin123_" + item + "").each(function () {
+                    if (this.checked) {
+                        data500 = 1;
+                    }
+
+                });
+
+                if (data500 == 0) {
+                    $(".chk_M_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_C_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_A_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_L_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                }
+
+                var data501 = 0;
+                $(".admin456_" + ItemParent + "").each(function () {
+                    if (this.checked) {
+
+                        data501 = 1;
+                    }
+                });
+
+
+                if (data501 == 0) {
+                    $(".chk_M_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_C_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_A_" + ItemParent + "").each(function () {
+
+                        this.checked = false;
+                    });
+                    $(".chk_L_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                }
+            }
+
+
+        });
+
+
+
+
+    }
+    function getselectChecker(ItemParent, item, item1) {
+
+        var data = 0;
+        $(".ccheckbox_" + item1 + "").each(function () {
+            if (this.checked) {
+                data = 1;
+            }
+        });
+        if (data == 1) {
+            $(".mcheckbox2_" + item1 + "").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $(".mcheckbox2_" + item1 + "").each(function () {
+                this.checked = false;
+            });
+        }
+        var data11 = 0;
+        $(".ccheckbox_" + item1 + "").each(function () {
+            if (this.checked) {
+            } else {
+                data11 = 1;
+            }
+        });
+        if (data11 == 1) {
+            $(".checkboxChecker_" + item1 + "").each(function () {
+                this.checked = false;
+            });
+        } else {
+            $(".checkboxChecker_" + item1 + "").each(function () {
+                this.checked = true;
+            });
+        }
+
+
+        var data500 = 0;
+        $(".admin123_" + item + "").each(function () {
+            if (this.checked) {
+                data500 = 1;
+            }
+
+        });
+        if (data500 == 0) {
+            $(".chk_M_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_C_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_A_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_L_" + item + "").each(function () {
+                this.checked = false;
+            });
+        }
+
+        var data501 = 0;
+        $(".admin456_" + ItemParent + "").each(function () {
+            if (this.checked) {
+                data501 = 1;
+            }
+        });
+        if (data501 == 0) {
+            $(".chk_M_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_C_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_A_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_L_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+        }
+    }
+
+    //Approver
+    function checkboxApprover(ItemParent, item, item1) {
+        var data10 = 0;
+        $(".checkboxApprover_" + item1 + "").each(function () {
+            if (this.checked) {
+                $(".acheckbox_" + item1 + "").each(function () {
+                    this.checked = true;
+                });
+                $(".mcheckbox3_" + item1 + "").each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+                $(".acheckbox_" + item1 + "").each(function () {
+                    this.checked = false;
+                });
+                $(".mcheckbox3_" + item1 + "").each(function () {
+                    this.checked = false;
+                });
+                var data500 = 0;
+                $(".admin123_" + item + "").each(function () {
+                    if (this.checked) {
+                        data500 = 1;
+                    }
+
+                });
+                if (data500 == 0) {
+                    $(".chk_M_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_C_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_A_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_L_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                }
+
+                var data501 = 0;
+                $(".admin456_" + ItemParent + "").each(function () {
+                    if (this.checked) {
+                        data501 = 1;
+                    }
+                });
+                if (data501 == 0) {
+                    $(".chk_M_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_C_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_A_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_L_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                }
+            }
+        });
+    }
+
+    function getselectapp(ItemParent, item, item1) {
+
+        var data = 0;
+        $(".acheckbox_" + item1 + "").each(function () {
+            if (this.checked) {
+                data = 1;
+            }
+        });
+        if (data == 1) {
+            $(".mcheckbox3_" + item1 + "").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $(".mcheckbox3_" + item1 + "").each(function () {
+                this.checked = false;
+            });
+        }
+        var data11 = 0;
+        $(".acheckbox_" + item1 + "").each(function () {
+            if (this.checked) {
+            } else {
+                data11 = 1;
+            }
+        });
+        if (data11 == 1) {
+            $(".checkboxApprover_" + item1 + "").each(function () {
+                this.checked = false;
+            });
+        } else {
+            $(".checkboxApprover_" + item1 + "").each(function () {
+                this.checked = true;
+            });
+        }
+
+        var data500 = 0;
+        $(".admin123_" + item + "").each(function () {
+            if (this.checked) {
+                data500 = 1;
+            }
+
+        });
+        if (data500 == 0) {
+            $(".chk_M_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_C_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_A_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_L_" + item + "").each(function () {
+                this.checked = false;
+            });
+        }
+
+        var data501 = 0;
+        $(".admin456_" + ItemParent + "").each(function () {
+            if (this.checked) {
+                data501 = 1;
+            }
+        });
+        if (data501 == 0) {
+            $(".chk_M_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_C_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_A_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_L_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+        }
+
+
+    }
+
+    //Viewer
+    function checkboxViewer(ItemParent, item, item1) {
+
+
+        var data10 = 0;
+        $(".checkboxViewer_" + item1 + "").each(function () {
+
+            if (this.checked) {
+
+                $(".vcheckbox_" + item1 + "").each(function () {
+                    this.checked = true;
+
+                });
+                $(".mcheckbox4_" + item1 + "").each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+
+                $(".vcheckbox_" + item1 + "").each(function () {
+                    this.checked = false;
+                });
+                $(".mcheckbox4_" + item1 + "").each(function () {
+                    this.checked = false;
+                });
+                var data500 = 0;
+                $(".admin123_" + item + "").each(function () {
+                    if (this.checked) {
+                        data500 = 1;
+                    }
+
+                });
+                if (data500 == 0) {
+                    $(".chk_M_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_C_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_A_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_L_" + item + "").each(function () {
+                        this.checked = false;
+                    });
+                }
+
+                var data501 = 0;
+                $(".admin456_" + ItemParent + "").each(function () {
+                    if (this.checked) {
+                        data501 = 1;
+                    }
+                });
+                if (data501 == 0) {
+                    $(".chk_M_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_C_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_A_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                    $(".chk_L_" + ItemParent + "").each(function () {
+                        this.checked = false;
+                    });
+                }
+            }
+
+        });
+    }
+
+    function getselectViewer(ItemParent, item, item1) {
+
+        var data = 0;
+        $(".vcheckbox_" + item1 + "").each(function () {
+            if (this.checked) {
+                data = 1;
+            }
+        });
+        if (data == 1) {
+            $(".mcheckbox4_" + item1 + "").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $(".mcheckbox4_" + item1 + "").each(function () {
+                this.checked = false;
+            });
+        }
+        var data11 = 0;
+        $(".vcheckbox_" + item1 + "").each(function () {
+            if (this.checked) {
+            } else {
+                data11 = 1;
+            }
+        });
+        if (data11 == 1) {
+            $(".checkboxChecker_" + item1 + "").each(function () {
+                this.checked = false;
+            });
+        } else {
+            $(".checkboxChecker_" + item1 + "").each(function () {
+                this.checked = true;
+            });
+        }
+        var data500 = 0;
+        $(".admin123_" + item + "").each(function () {
+            if (this.checked) {
+                data500 = 1;
+            }
+
+        });
+        if (data500 == 0) {
+            $(".chk_M_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_C_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_A_" + item + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_L_" + item + "").each(function () {
+                this.checked = false;
+            });
+        }
+
+        var data501 = 0;
+        $(".admin456_" + ItemParent + "").each(function () {
+            if (this.checked) {
+                data501 = 1;
+            }
+        });
+        if (data501 == 0) {
+            $(".chk_M_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_C_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_A_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+            $(".chk_L_" + ItemParent + "").each(function () {
+                this.checked = false;
+            });
+        }
+    }
+</script>
+
+<style type="text/css">
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        display: none;
+    }
+
+    td {
+        vertical-align: top;
+        text-align: left !important;
+    }
+
+    .sorting_1 {
+        vertical-align: top;
+        text-align: left !important;
+    }
+
+    th {
+        width: 20% !important;
+    }
+</style>

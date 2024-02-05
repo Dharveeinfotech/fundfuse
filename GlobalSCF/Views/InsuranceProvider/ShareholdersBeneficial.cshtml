@@ -1,0 +1,147 @@
+﻿@model TMP.Models.CustomerShareHolderModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+
+@Html.AntiForgeryToken()
+<div class="col-md-12" style="height:10px;"></div>
+<div class="col-md-12 createusertitle">BENEFICIAL OWNERS OF THE SHAREHOLDING COMPANY</div>
+<div class="col-md-12" style="height:15px;"></div>
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-group">
+
+    <div class="col-md-3">
+        First Name
+        <input id="ShareFirstName" name="ShareFirstName" type="text" class="ShareFirstName form-control" autocomplete="off" value="@Model.ShareFirstName" placeholder="First Name">
+    </div>
+    <div class="col-md-3">
+        Middle Name
+        <input id="ShareMiddleName" name="ShareMiddleName" type="text" class="form-control" autocomplete="off" value="@Model.ShareMiddleName" placeholder="Middle Name">
+    </div>
+    <div class="col-md-3">
+        Last Name
+        <input id="ShareLastName" name="ShareLastName" type="text" class="ShareLastName form-control" autocomplete="off" value="@Model.ShareLastName" placeholder="Last Name">
+    </div>
+    <div class="col-md-3">
+        Share Percentage
+        <input id="childSharePer" name="childSharePer" type="text" class="childSharePer form-control per2" autocomplete="off" value="@Model.childSharePer" placeholder="Share % ">
+    </div>
+    <div class="col-md-12">
+        <p class="col-md-10 padoff name-msg" style="margin:0;">**Please ensure that the names you enter match the ones in your passport, and please use English characters only.</p>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-3">
+        Nationality
+        @Html.DropDownListFor(model => model.ShareNatCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.ShareNatCountryID), "Select Nationality", new { @class = "ShareNatCountryID form-control ValRemo1" })
+
+    </div>
+    <div class="col-md-3">
+        Passport Number
+        <input id="SharePassNo" name="SharePassNo" type="text" class="SharePassNo form-control" autocomplete="off" value="@Model.SharePassNo" placeholder="Passport Number">
+    </div>
+    <div class="col-md-3">
+        Place of Issuance
+        @Html.DropDownListFor(model => model.SharePassCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.SharePassCountryID), "Select Place of Issuance", new { @class = "SharePassCountryID form-control ValRemo2" })
+    </div>
+    <div class="col-md-3">
+        Issuance Date
+        @if (Model.ShareCustomerShareHoldID > 0)
+        {
+            <input id="SharePassIssueDate" name="SharePassIssueDate" type="text" placeholder="Issuance Date" class="form-control formattedCalenderinc" autocomplete="off" value="@Model.SharePassIssueDate.ToString("dd-MMM-yyyy")" />
+        }
+        else
+        {
+            <input id="SharePassIssueDate" name="SharePassIssueDate" type="text" placeholder="Issuance Date" class="form-control formattedCalenderinc" autocomplete="off" />
+        }
+    </div>
+</div>
+
+<div class="col-md-12" style="height:10px;"></div>
+<div class="form-group"style="padding-bottom: 6%;">
+    <div class="col-md-3">
+        Expiry Date
+
+        @if (Model.ShareCustomerShareHoldID > 0)
+        {
+            <input id="SharePassExpDate" name="SharePassExpDate" type="text" placeholder="Expiry Date" class="form-control formattedCalender" autocomplete="off" value="@Model.SharePassExpDate.ToString("dd-MMM-yyyy")" />
+        }
+        else
+        {
+            <input id="SharePassExpDate" name="SharePassExpDate" type="text" placeholder="Expiry Date" class="form-control formattedCalender" autocomplete="off" />
+        }
+    </div>
+
+    <div class="col-md-3" style="padding-top:10px;">
+        Passport Copy&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="f-btn f-btn-default f-btn-file">
+            Upload <input type="file" name="ShareUpdPassport" id="ShareUpdPassport" class="file" />
+        </label>
+        <label class="l-filename" id="ShareUpdPassport_span"></label>
+
+        @if (Model.ShareUpdPassport != null)
+        {
+            if (Model.ShareUpdPassport != "")
+            {
+                @Html.HiddenFor(x => x.ShareUpdPassport)
+                <label class="p-view">
+                    @*<a href='~/Files/Upload/@Model.ShareUpdPassport' target="_blank">View</a>*@
+                    <a href="javascript:void(0);" class="ShareUpdPassport_PopUp" data-id="@Model.ShareUpdPassport">View</a>	
+                </label>
+            }
+        }
+
+    </div>
+
+    <div class="col-md-3"  style="padding-top:10px;">
+        National ID Copy&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="f-btn f-btn-default f-btn-file">
+            Upload <input type="file" name="ShareUpdNatIden" id="ShareUpdNatIden" class="file" />
+        </label>
+        <label class="l-filename" id="ShareUpdNatIden_span"></label>
+        @if (Model.ShareUpdNatIden != null)
+        {
+            if (Model.ShareUpdNatIden != "")
+            {
+                @Html.HiddenFor(x => x.ShareUpdNatIden)
+                <label class="p-view">
+                    @*<a href='~/Files/Upload/@Model.ShareUpdNatIden' target="_blank">View</a>*@
+                    <a href="javascript:void(0);" class="ShareUpdNatIden_PopUp" data-id="@Model.ShareUpdNatIden">View</a>	
+                </label>
+            }
+        }
+
+    </div>
+
+</div>
+
+<div class="col-md-12" style="height:10px;"></div>
+<div class="col-md-12" style="text-align:right;padding-bottom:1%;">
+    @Html.HiddenFor(x => x.ShareCustomerShareHoldID)
+    <button id="parSave" name="parSave" value="parSave" class="CommonAttachValidation1 btn btn-tgs">&nbsp;Add Beneficial</button>
+</div>
+
+<script type="text/javascript">
+
+    $(".ShareUpdPassport_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.ShareUpdPassport' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(".ShareUpdNatIden_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.ShareUpdNatIden' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    ShareBeneficial();
+</script>
+
+<style>
+    .error {
+        border-color: #a94442 !important;
+    }
+
+        .error:focus {
+            box-shadow: 0 0 2px #a94442 !important;
+        }
+</style>

@@ -1,0 +1,363 @@
+﻿@model TMP.Models.UserMaster_ListAll_Result
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+    
+   
+    @using (Html.BeginForm("Detailsapprove", "mUserMasters", FormMethod.Post, new { @class = "col-md-12 padoff", @id = "UMPAForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="container padoff">
+           
+                <div class="scroll">
+                    <div class="col-md-12 createusertitle"><p>Authorized User Information</p></div>
+                    <div class="col-md-12" style="height:10px;"></div>
+                    @Html.HiddenFor(model => model.UserHistoryID)
+                    @Html.HiddenFor(model => model.UserID)
+                    @Html.HiddenFor(model => model.Status)
+                    @Html.HiddenFor(model => model.LoginName)
+                    <input type='hidden' value="@Model.UserID" name="hdnUserID" id="hdnUserID" />
+
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">Full Name</label>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                  
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">Official E-Mail</label>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control isEmailGood validate[custom[email]" } })
+                        </div>
+                        <div class="col-md-1"></div>
+
+                            <label class="col-md-2" for="textinput">Mobile Number</label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                            </div>
+                            <div class="col-md-1"></div>
+                       
+                    </div>
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">Designation</label>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.DesignationName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        </div>
+                        <div class="col-md-1"></div>
+
+                            <label class="col-md-2" for="textinput">Length of Service (Year)</label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.ServLength, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                            </div>
+                            <div class="col-md-1"></div>
+                       
+                    </div>
+
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="col-md-12 createusertitle padoff">Personal Identification Details</div>
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">ID Type</label>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.DocumentName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        </div>
+                        <div class="col-md-1"></div>
+                        <label class="col-md-2" for="textinput">ID Number</label>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.DocNo, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">ID Copy</label>
+                        <div class="col-md-3">
+                            @if (Model.Attach != null)
+                            {
+                                if (Model.Attach != "")
+                                {
+                                    @Html.HiddenFor(x => x.Attach)
+                                    <p class="p-view">
+                                        <a href='~/Files/Upload/@Model.Attach' target="_blank">View</a>
+                                    </p>
+                                }
+                            }
+                        </div>
+                        <div class="col-md-1"></div>
+                        <label class="col-md-2" for="textinput"></label>
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                         
+
+                    <div class="col-md-5"></div>
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="col-md-12 createusertitle padoff"><p>User Access Details</p></div>
+                    <div class="col-md-12" style="height:10px;"></div>
+
+                    <div class="form-group">
+                        <label class="col-md-2" for="companyname">Company Name</label>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="height:10px;"></div>
+                    @if (Model.lstUserRoleLinkMaster_ListAll_Result != null)
+                    {
+                        foreach (var item in Model.lstUserRoleLinkMaster_ListAll_Result)
+                        {
+                            <div class="form-group">
+                                <label class="col-md-2" for="role">Role</label>
+                                <div class="col-md-3 ">
+                                    <a id="lnk_@item.RoleID" style="float:left; cursor:pointer;" onclick="ViewDetail(this.id)">@item.RoleName</a>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="height:10px;"></div>
+                        }
+                    }
+                </div>
+             
+             
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-5">
+                    @Html.TextArea("ProcessRemark", "", 1, 1, new { @class = "col-md-12 footerbox validate[required]", required = "", placeholder = "Remarks" })
+                </div>
+
+                @if (ViewData["iCheck"].Equals("Checker"))
+                {
+                    <div class="col-md-7" style="text-align:right;">
+                        <button id="amend" name="amend" formaction="/mUserMasters/DetailsAmend" type="submit" class="btn-tgs">Return to Maker</button>
+                        <button id="approve" formaction="/mUserMasters/Detailsapprove" type="submit" name="approve" formnovalidate="formnovalidate" class="btn-tgs">Recommend for Approval</button>
+                    </div>
+                }
+
+                @if (ViewData["iCheck"].Equals("Approver"))
+                {
+                    <div class="col-md-7" style="text-align:right;">
+                        <button id="amend" name="amend" formaction="/mUserMasters/DetailsAmend" type="submit" class="btn-tgs">Reject</button>
+                        <button id="approve" formaction="/mUserMasters/Detailsapprove" type="submit" name="approve" formnovalidate="formnovalidate" class="btn-tgs">Approve</button>
+                    </div>
+                }
+           
+            <div id="loading" style="display:none;">
+                <img id="loading-image" src="~/images/page-load.gif"  height="100" width="100" alt="Loading..." />
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog " style="width:1100px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body scroll" style="height:500px;">
+                        <div id='myModalContent'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style type="text/css">
+    .web_dialog_overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: #000000;
+        opacity: .15;
+        filter: alpha(opacity=15);
+        -moz-opacity: .15;
+        z-index: 101;
+        display: none;
+    }
+
+    .web_dialog {
+        display: none;
+        position: fixed;
+        
+        /*overflow-y: scroll;
+        overflow-x: scroll;*/
+        top: 40%;
+        left: 41%;
+        margin-left: -190px;
+        margin-top: -100px;
+        background-color: #ffffff;
+        /*border: 2px solid #336699;*/
+        padding: 0px;
+        z-index: 102;
+    }
+
+    .WP {
+        height: 400px;
+        width: 700px;
+    }
+
+    .web_dialog_title {
+        border-bottom: solid 2px #336699;
+        background-color: #336699;
+        padding: 4px;
+        color: White;
+        font-weight: bold;
+    }
+
+        .web_dialog_title a {
+            color: White;
+            text-decoration: none;
+        }
+
+    .align_right {
+        text-align: right;
+    }
+
+    #loading {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        position: fixed;
+        display: block;
+        opacity: 0.7;
+        background-color: #fff;
+        z-index: 99;
+        text-align: center;
+    }
+
+    #loading-image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 100;
+    }
+    .scroll {    
+    min-height: 375px;
+}
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#popup').click(function () {
+
+            var UserID = $("#hdnUserID").val();
+
+            $.ajax({
+                url: "/mUserMasters/CommentResult?UserID=" + UserID,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                    //$("#NEW2").html(data);
+                    $("table.display").DataTable();
+                    event.preventDefault();
+                    return false;
+                },
+
+            });
+
+        });
+
+    });
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $("#amend").on("click", function () {
+            $("#UMPAForm").validationEngine('attach', {
+                promptPosition: "bottomLeft",
+                scroll: false,
+                autoHidePrompt: true,
+                autoHideDelay: 3500,
+                fadeDuration: 0.3,
+                focusFirstField: false,
+                MaxErrorsPerField: 1
+            });
+
+        });
+
+
+        $("#approve").on("click", function () {
+            $("#UMPAForm").validationEngine('detach');
+        });
+    });
+    function ViewDetail(id) {
+        $('#loading').show();
+        var str = id.split('_');
+        var roleid = str[1];// document.getElementById(id).value;
+        $.ajax({
+            //url: "/mRoleMasters/View",
+            //url: "/mUserMasters/UserRoleRightsView",
+            url: "/mRoleMasters/RoleView",
+            type: "POST",
+            data: "{RoleId:'" + roleid + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            success: function (result) {
+                if (result == 'Roles not exist.') {
+                    $("#errorMsg").html(result);
+                    $('#Error').modal('show');
+                    //Remove Iamge
+                }
+                else {
+
+                    $('#myModalContent').html(result);
+                    $('#myModal').modal('show');
+                    //$("#NEW1").html(result);
+                    $('#loading').hide();
+                    ShowDialog(true);
+                }
+                $('#loading').hide();
+                return false;
+            },
+            error: function () {
+                $('#loading').hide();
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+    }
+
+    function ShowDialog(modal) {
+        $("#overlay").show();
+        $("#dialog").fadeIn(300);
+
+        if (modal) {
+            $("#overlay").unbind("click");
+        }
+        else {
+            $("#overlay").click(function (e) {
+                HideDialog();
+            });
+        }
+    }
+
+    function HideDialog() {
+        $("#overlay").hide();
+        $("#dialog").fadeOut(300);
+    }
+</script>

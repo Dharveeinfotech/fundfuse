@@ -1,0 +1,13 @@
+﻿@model TMP.Models.CustomerTempModel
+@{
+    ViewBag.Title = "Connecting";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+@using (Html.BeginForm("Connecting", "OnlineReg", FormMethod.Post, new { @class = "col-md-12 CommonValidations", id = "theForm" }))
+{
+    @Html.HiddenFor(x => x.CustomerTempID)
+    <input type="hidden" id="CustomerTempID" name="CustomerTempID" value="@Model.CustomerTempID">
+}
+<script>
+    document.getElementById('theForm').submit();
+</script>

@@ -1,0 +1,138 @@
+﻿@model TMP.Models.CountryMaster
+@{
+    ViewBag.Title = "Create E-Mail";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+
+    <form method="post" id="formid" enctype="multipart/form-data">
+        <div class="col-md-12 createusertitle">Configuration Email</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12" style="height:10px;"></div>
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(model => model.EmailConfigID)
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput"> SMTP Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    <input type="text" id="smtpname" name="smtpname" value="@Model.SmtpName" class="form-control validate[required]" maxlength="500" tabindex="1" autocomplete="off" />
+                </div>
+                <div class="col-md-1"></div>
+               
+                    <label class="col-md-2" for="textinput">User Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        <input type="text" id="username" name="username" value="@Model.UserName" class="form-control validate[required]" maxlength="50" tabindex="1" autocomplete="off" />
+                    </div>
+                    <div class="col-md-1"></div>
+               
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Password&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    <input type="text" id="psd" name="psd" value="@Model.Pwd" class="form-control validate[required]" maxlength="50" tabindex="1" autocomplete="off" />
+                </div>
+                <div class="col-md-1"></div>
+              
+                    <label class="col-md-2" for="textinput">From E-Mail&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        <input type="text" id="fromemailid" name="fromemailid" value="@Model.FromEmailID" class="form-control isEmailGood validate[required,custom[email]]" tabindex="1" autocomplete="off" />
+                    </div>
+                    <div class="col-md-1"></div>
+               
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput"> CC E-Mail</label>
+                <div class="col-md-3">
+                    <input type="text" id="ccemailid" name="ccemailid" value="@Model.CCEmailID" class="form-control isEmailGood validate[required,custom[email]]" tabindex="1" maxlength="500" autocomplete="off" />
+                </div>
+                <div class="col-md-1"></div>
+               
+                    <label class="col-md-2" for="textinput"> BCC E-Mail</label>
+                    <div class="col-md-3">
+                        <input type="text" id="bccemailid" name="bccemailid" value="@Model.BCCEmailID" class="form-control isEmailGood validate[required,custom[email]]" tabindex="1" maxlength="500" autocomplete="off" />
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput"> In Port&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.InPort == 0)
+                    {
+                        <input type="text" id="inport" name="inport" value="" class="form-control validate[required, custom[number]]" maxlength="2" tabindex="1" autocomplete="off" />
+                    }
+                    else
+                    {
+                        <input type="text" id="inport" name="inport" value="@Model.InPort" class="form-control validate[required, custom[number]]" maxlength="2" tabindex="1" autocomplete="off" />
+                    }
+                </div>
+                <div class="col-md-1"></div>
+               
+                    <label class="col-md-2" for="textinput">Out Port&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @if (Model.OutPort == 0)
+                        {  <input type="text" id="outport" name="outport" value="" class="form-control validate[required, custom[number]]" maxlength="2" tabindex="1" autocomplete="off" />
+
+                        }
+                        else
+                        { <input type="text" id="outport" name="outport" value="@Model.OutPort" class="form-control validate[required,custom[number]]" maxlength="2" tabindex="1" autocomplete="off" />
+
+                        }
+                    </div>
+                    <div class="col-md-1"></div>
+               
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+
+            <div class="form-group">                
+                <div class="col-md-11" style="text-align:right;">
+                    <button id="submit" name="submit" value="submit" type="submit" class="btn CommonAttachValidation btn-tgs">&nbsp;Submit</button>
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <div class="col-md-12" >
+                    @Html.Action("EmailDetail", "Country")
+                </div>
+            </div>
+
+
+        }
+    </form>
+</div>
+<style>
+    .footeronline {
+        position: fixed;
+    }
+</style>
+<script type="text/javascript">
+
+    $("#submit").on("click", function () {
+
+        $("#formid").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+</script>

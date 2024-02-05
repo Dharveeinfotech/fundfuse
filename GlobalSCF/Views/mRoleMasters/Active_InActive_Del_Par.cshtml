@@ -1,0 +1,95 @@
+﻿
+<div id="NEW" class="modal-body" style="    height: 140px;">
+
+    @{
+        var a = ViewData["ActionName"];
+    }
+    <div class="col-md-12">
+        <div class="col-md-3">Role Name</div>
+        <div class="col-md-9"><input class="form-control" value="@ViewData["RoleName"]" name="" type="text" disabled /></div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-3">Remarks</div>
+        <div class="col-md-9">
+            <input type="text" id="txtProcessRemarks" class="form-control" style="height:60px;" name="txtProcessRemarks" required="" />
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-3">&nbsp;</div>
+        <div class="col-md-9">
+            @if (a.Equals("Delete"))
+            {
+                <button id="btnDelete" name="btnDelete" class="Act_InA_Del btn-tgs" onclick="Act_InA_Del()">delete</button>
+            }
+            else if (a.Equals("InActive"))
+            {
+                <button id="btnInActive" name="btnInActive" class="Act_InA_Del btn-tgs" onclick="Act_InA_Del()">InActive</button>
+            }
+            else if (a.Equals("Active"))
+            {
+                <button id="btnActive" name="btnActive" class="Act_InA_Del btn-tgs" onclick="Act_InA_Del()">Active</button>
+            }
+            
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        function Act_InA_Del() {
+            var ProcessRemarks = $("#txtProcessRemarks").val();
+
+            if (ProcessRemarks == "") {
+                $("#errorMsg").html("Please enter Remarks");
+                $('#Error').modal('show');
+                return false;
+            }
+            var RoleID = $("#hdnRollNo").val();
+            var ActionName = $("#hdnActionName").val();
+
+            if (confirm("Are you sure you want to " + ActionName)) {
+
+                $.ajax({
+                    url: "/mRoleMasters/Act_InA_Del?ActionName=" + ActionName + "&RoleID=" + RoleID + "&ProcessRemarks=" + ProcessRemarks,
+                    type: "POST",
+                    data: "{}",
+                    datatype: "text",
+                    contentType: "application/text; charset=utf-8",
+                    success: function (data) {
+                        var Value = data.split("$")[0];
+                        var msg = data.split("$")[1];
+                        if (Value == "0") {
+                            if (msg == "Redirect") {
+                                window.location.href = "\mUserMasters\Login";
+                            }
+                            else {
+                                $("#errorMsg").html(msg);
+                                $('#Error').modal('show');
+                            }
+
+
+                        }
+                        else if (Value == "1") {
+                            $("#errorMsg").html(msg);
+                            $('#Error').modal('show');
+                            window.location.href = "/mRoleMasters/index";
+                        }
+
+
+                        return false;
+                    },                    
+                });
+            } else {
+                return false;
+            }
+        }
+    });
+
+</script>
+
+
+
+
+
+

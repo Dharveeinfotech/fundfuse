@@ -1,0 +1,67 @@
+﻿@model  IEnumerable<TMP.Models.FAQ>
+@{
+    ViewBag.Title = "FAQ";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <label style="color:red;">@ViewBag.ErrorMessage</label>
+    }
+    <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+           <a class="btn-tgs" href="~/Country/CreateFAQ">Create New</a>
+        </div>
+    
+        <div class="col-md-12">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgcr">
+                        <th style="text-align:left !important">Company Type</th>
+                        <th style="text-align:left !important">Question</th>
+                        <th style="text-align:left !important">Answer</th>
+                        <th style="text-align:left !important">Edit/Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.fq)
+                    {
+                        
+                        <tr>
+                            <td style="text-align:left !important">@item.CustomerTypeName</td>
+                            <td style="text-align:left !important" data-toggle="tooltip"  data-placement="bottom" title="@item.Questions">@TMP.Models.Function.StringLength(item.Questions, 75)</td>
+                            <td style="text-align:left !important" data-toggle="tooltip" title="@item.Answer">@TMP.Models.Function.StringLength(item.Answer,75)</td>
+                            <td style="text-align:left !important"><a href="../Country/CreateFAQ?faqId=@item.FaqID">Edit</a> /<a href="../Country/CreateFAQ?faqdId=@item.FaqID">Delete</a> </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-10" style="height:10px;"></div>
+
+        <input type="hidden" id="hdnCustomerID" name="hdnCustomerID" />
+        <input type="hidden" id="hdnActionName" name="hdnActionName" />
+        <div id="output"></div>
+        <div id="overlay" class="web_dialog_overlay"></div>
+        <div id="dialog" class="web_dialog"></div>
+    </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        //Mekar
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "pageLength": 15
+            });
+
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+    </script>
+}
+

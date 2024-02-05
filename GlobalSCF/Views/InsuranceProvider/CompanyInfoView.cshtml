@@ -1,0 +1,280 @@
+﻿@model TMP.Models.ServiceProviderModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Company Info";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("InsuranceProviderPartialPageView", "MasterPage", new { CustomerID = Model.CustomerID, CustomerTypeID = Model.CustomerTypeID, _tab = 1 })
+    }
+    @using (Html.BeginForm("CompanyInfoView", "InsuranceProvider", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Status)
+        @Html.HiddenFor(model => model.CustomerInfoID)
+        <div class="col-md-12 createusertitle">PRIMARY CONTACT INFORMATION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <input type="radio" name="RdoIP" id="RdoIP" disabled /><span class="checkboxtext">
+                    INSURANCE PROVIDER
+                </span>&nbsp;&nbsp;
+                <input type="radio" name="RdoIB" id="RdoIB" disabled /><span class="checkboxtext">
+                    INSURANCE BROKER
+                </span>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Full Name of Contact Person</label>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.ContactFName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name" } })
+            </div>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.ContactMName, new { htmlAttributes = new { @class = "form-control", placeholder = "Middle Name" } })
+            </div>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.ContactLName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Gender</label>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Country of Residence</label>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.LocCountryName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Mobile Number</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Telephone Number</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.TelNo, new { @class = "form-control" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">E-Mail</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control isEmailGood validate[required,[custom[email]]" })
+            </div>
+            <div class="col-md-1"></div>
+
+            @if (Model.DesignationName != "Other")
+            {
+                <label class="col-md-2" for="textinput">Designation</label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.DesignationName, new { @class = "form-control", value = Model.DesignationName, @readonly = "readonly" })
+                </div>
+            }
+            else
+            {
+                <label class="col-md-2" for="textinput">Other Designation</label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control", value = Model.DesignationName, @readonly = "readonly" })
+                </div>
+            }
+            <div class="col-md-1"></div>
+
+        </div>
+
+        <div class="col-md-12 createusertitle">COMPANY INFORMATION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Name as on Trade License</label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control", autocomplete = "off" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @if (Model.CompanyTypeName != "Other")
+            {
+                <label class="col-md-2" for="textinput">Type of Company</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.CompanyTypeName, new { @class = "form-control", autocomplete = "off" })
+                </div>
+            }
+            else
+            {
+                <label class="col-md-2" for="textinput">Other Type of Company</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.OtherCompanyType, new { @class = "form-control", autocomplete = "off" })
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Trade License Number</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.TradeLicNo, new { @class = "form-control", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Date of Incorporation</label>
+            <div class="col-md-3">
+                @*@Html.EditorFor(model => model.LicExpDate, new { htmlAttributes = new { @class = "form-control ", autocomplete = "off" } })*@
+                @if (Model.IncDate != Convert.ToDateTime("01-01-1900") && Model.IncDate != Convert.ToDateTime("01-01-0001"))
+                {
+                    <input id="IncDate" name="IncDate" type="text" placeholder="" class="form-control  " autocomplete="off" value="@Convert.ToDateTime(Model.IncDate).ToString("dd-MMM-yyyy")">
+                }
+                else
+                {
+                    <input id="IncDate" name="IncDate" type="text" placeholder="" class="form-control  " autocomplete="off">
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Place of Incorporation</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.IncCountryName, new { @class = "form-control", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">License Expiry Date</label>
+            <div class="col-md-3">
+                @*@Html.EditorFor(model => model.IncDate, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })*@
+                @if (Model.LicExpDate != Convert.ToDateTime("01-01-1900") && Model.LicExpDate != Convert.ToDateTime("01-01-0001"))
+                {
+                    <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control  " autocomplete="off" value="@Convert.ToDateTime(Model.LicExpDate).ToString("dd-MMM-yyyy")">
+                }
+                else
+                {
+                    <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control  " autocomplete="off">
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Company Address</label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control", autocomplete = "off" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Country</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+            @if (Model.OtherCity == "")
+            {
+                <label class="col-md-2" for="textinput">City</label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.CityName, new { @class = "form-control", value = Model.CityName, @readonly = "readonly" })
+                </div>
+            }
+            else
+            {
+                <label class="col-md-2" for="textinput">Other City</label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.OtherCity, new { @class = "form-control", value = Model.CityName, @readonly = "readonly" })
+                </div>
+            }
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Telephone Number</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.TelNoInfo, new { @class = "form-control", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Official Website (if available)</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Website, new { @class = "form-control validate[custom[url]]", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">Is the company publicly listed?</div>
+            <div class="col-md-3">
+                <input type="checkbox" name="ChkYes" id="ChkYes" disabled /><span class="checkboxtext">
+                    Yes
+                </span>&nbsp;&nbsp;
+                <input type="checkbox" name="ChkNo" id="ChkNo" disabled /><span class="checkboxtext">
+                    No
+                </span>
+            </div>
+            <div class="col-md-7"></div>
+        </div>
+        @Html.HiddenFor(model => model.CustomerID)
+    }
+    <div class="form-group">
+        <div class="col-md-8"></div>
+        <div class="col-md-3" style="text-align:right;">
+
+            <button id="NextSave" name="NextSave" value="NextSave" onclick="pageRedirect()" class="btn CommonAttachValidation btn-tgs">Next</button>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
+</div>
+<style>
+    input[type=radio] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(1.2); /* IE */
+        -moz-transform: scale(1.2); /* FF */
+        -webkit-transform: scale(1.2); /* Safari and Chrome */
+        -o-transform: scale(1.2); /* Opera */
+        padding: 5px;
+    }
+
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(1.2); /* IE */
+        -moz-transform: scale(1.2); /* FF */
+        -webkit-transform: scale(1.2); /* Safari and Chrome */
+        -o-transform: scale(1.2); /* Opera */
+        padding: 5px;
+    }
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        display: inline;
+    }
+</style>
+<script>
+    $('.form-control').attr('readonly', 'true');
+    function pageRedirect() {
+        window.location.href = "/InsuranceProvider/CommonDetails?CustomerID=" + '@ViewBag.CustomerID' + "&CustomerTypeID=" + '@ViewBag.CustomerTypeID';
+    }
+
+    if ('@ViewBag.CustomerTypeID' == '@CONT.InsuranceProviderTypeID') {
+        $('#RdoIP').attr('checked', true);
+        $('#RdoIB').attr('checked', false);
+    } else {
+        $('#RdoIP').attr('checked', false);
+        $('#RdoIB').attr('checked', true);
+    }
+    if ('@ViewBag.IsCompPubList' == 'True') {
+        $('#ChkYes').attr('checked', true);
+        $('#ChkNo').attr('checked', false);
+    } else {
+        $('#ChkYes').attr('checked', false);
+        $('#ChkNo').attr('checked', true);
+    }
+</script>

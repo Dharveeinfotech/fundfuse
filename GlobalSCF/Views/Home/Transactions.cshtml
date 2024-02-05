@@ -1,0 +1,64 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  IEnumerable<TMP.Models.InvoiceTransactionModel>
+@{
+    ViewBag.Title = "Transaction";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+
+
+    @if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.SupplierCustomerTypeID)
+    {
+        @Html.Action("_SupplierDashboard", "Home")
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ObligorCustomerTypeID)
+    {
+        @Html.Action("_ObligorDashboard", "Home")
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.FunderCustomerTypeID)
+    {
+        @Html.Action("_FunderDashboard", "Home")
+    }
+    else if ((Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.InsuranceProviderTypeID) || (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.InsuranceBrokerTypeID))
+    {
+        @Html.Action("_InsuranceDashboard", "Home")
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.BuyerCustomerTypeID || Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.PayableSupplierCustomerTypeID)
+    {
+        @Html.Action("_BuyerDashboard", "Home")
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.BothObligorAndBuyerTypeID)
+    {
+        @Html.Action("_BothDashboard", "Home")
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID)
+    {
+        @Html.Action("_AdminDashboard", "Home")
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#exampleDB1, #exampleDB2, #exampleDB3').DataTable({
+            "pageLength": 10, "ordering": false
+        });
+        $('#exampleDB4, #exampleDB5').DataTable({
+            "pageLength": 5, "ordering": false
+        });
+    });
+</script>
+<style>
+    table.dataTable th.dt-center, table.dataTable td.dt-center, table.dataTable td.dataTables_empty {
+        text-align: center !important;
+        height: 10px;
+    }
+
+    .reminder-div {
+        margin-top: 46px;
+    }
+
+    
+
+    #exampleDB5_filter {
+        display: none;
+    }
+</style>

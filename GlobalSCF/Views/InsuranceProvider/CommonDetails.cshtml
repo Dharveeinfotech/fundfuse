@@ -1,0 +1,771 @@
+﻿@model  TMP.Models.CustomerShareHolderModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Shareholders/Directors Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("InsuranceProviderPartialPageView", "MasterPage", new { CustomerID = Model.CustomerID, CustomerTypeID = Model.CustomerTypeID, _tab = 2 })
+    }
+
+    @using (Html.BeginForm("CommonDetails", "InsuranceProvider", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "CommonDetails" }))
+    {
+        if (Enumerable.Count(@ViewBag.DirAuthSignGrid) > 0)
+        {
+            if (@ViewBag.DirAuthSignGrid != null)
+            {
+                <div class="col-md-12 createusertitle">DIRECTORS / SIGNATORIES DETAILS</div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="tab-pane" id="4a">
+                    <!--tab 4a-->
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="col-md-12">
+                        <table id="example" class="display" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="bgspr">
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>E-Mail</th>
+                                    <th>Gender</th>
+                                    <th>Country of Residence</th>
+                                    <th>Mobile Number</th>
+                                    <th>Passport Expiry Date</th>
+                                    <th>Type</th>
+                                    <th>View</th>
+                                </tr>
+                            <tbody>
+                                @foreach (var item in ViewBag.DirAuthSignGrid)
+                                {
+                                    foreach (var item1 in ViewBag.DirAuthSignCheck)
+                                    {
+                                        if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                        {
+                                            <tr>
+                                                @if (item.FirstName == item1.FirstName)
+                                                {
+                                                    <td>@item.FirstName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.FirstName">@item.FirstName</td>}
+
+                                                @if (item.MiddleName == item1.MiddleName)
+                                                {
+                                                    <td>@item.MiddleName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MiddleName">@item.MiddleName</td>}
+
+                                                @if (item.LastName == item1.LastName)
+                                                {
+                                                    <td>@item.LastName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LastName">@item.LastName</td>}
+
+                                                @if (item.Gender == item1.Gender)
+                                                {
+                                                    <td>@item.Gender</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.Gender">@item.Gender</td>}
+
+
+                                                @if (item.LocCountryName == item1.LocCountryName)
+                                                {
+                                                    <td>@item.LocCountryName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LocCountryName">@item.LocCountryName</td>}
+
+
+                                                @if (item.EmailID == item1.EmailID)
+                                                {
+                                                    <td>@item.EmailID</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.EmailID">@item.EmailID</td>}
+
+                                                @if (item.MobileNo == item1.MobileNo)
+                                                {
+                                                    <td>@item.MobileNo</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MobileNo">@item.MobileNo</td>}
+
+                                                @if (string.Format("{0:dd-MMM-yyyy}", item.PassExpDate) == string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))
+                                                {
+                                                    if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(item.PassExpDate))
+                                                    {
+                                                        <td class="DateExpireLabel">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                                }
+                                                @if (item.CustTypeDesc == item1.CustTypeDesc)
+                                    {
+                                                    <td>@item.CustTypeDesc</td>}
+                                    else
+                                    {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CustTypeDesc">@item.CustTypeDesc</td>}
+                                                <td><a href="#" onclick="ViewDetail('@item.CustomerShareHoldID')">View</a></td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="col-md-12" style="height:15px;"></div>
+            }
+        }
+        if (@ViewBag.AuthSignGrid != null)
+        {
+            if (Enumerable.Count(@ViewBag.AuthSignGrid) > 0)
+            {
+                <div class="col-md-12 createusertitle">AUTHORIZED SIGNATORIES DETAILS</div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="tab-pane" id="4a">
+                    <!--tab 4a-->
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="col-md-12">
+                        <table id="example1" class="display" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="bgspr">
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>Gender</th>
+                                    <th>Country of Residence</th>
+                                    <th>Passport Number</th>
+                                    <th>Nationality</th>
+                                    <th>Passport Copy</th>
+                                    <th>POA / Board Resolution</th>
+                                    <th>Type</th>
+                                    <th style="display:none;">
+                                    </th>
+                                    <th style="display:none;">
+                                    </th> 
+                                    <th style="display:none;">
+                                    </th>
+                                    <th style="display:none;">
+                                    </th> 
+                                </tr>
+                            <tbody>
+                                @foreach (var item in ViewBag.AuthSignGrid)
+                                {
+                                    foreach (var item1 in ViewBag.AuthSignCheck)
+                                    {
+                                        if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                        {
+                                            <tr>
+                                                @if (item.FirstName == item1.FirstName)
+                                                {
+                                                    <td>@item.FirstName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.FirstName">@item.FirstName</td>}
+
+                                                @if (item.MiddleName == item1.MiddleName)
+                                                {
+                                                    <td>@item.MiddleName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MiddleName">@item.MiddleName</td>}
+
+                                                @if (item.LastName == item1.LastName)
+                                                {
+                                                    <td>@item.LastName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LastName">@item.LastName</td>}
+
+                                                @if (item.Gender == item1.Gender)
+                                                {
+                                                    <td>@item.Gender</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.Gender">@item.Gender</td>}
+
+                                                @if (item.LocCountryName == item1.LocCountryName)
+                                                {
+                                                    <td>@item.LocCountryName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LocCountryName">@item.LocCountryName</td>}
+
+
+                                                @if (item.PassNo == item1.PassNo)
+                                                {
+                                                    <td>@item.PassNo</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.PassNo">@item.PassNo</td>}
+
+
+                                                @if (item.NatCountryName == item1.NatCountryName)
+                                                {
+                                                    <td>@item.NatCountryName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.NatCountryName">@item.NatCountryName</td>}
+
+
+                                                @if (item.UpdPassport == item1.UpdPassport)
+                                                {
+                                                    <td>
+                                                        @if (item.UpdPassport != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdPassport' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                                        }
+                                                    </td>}
+                                                else
+                                                {
+                                                    <td>
+                                                        @if (item.UpdPassport != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdPassport' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                                            if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                                            {
+                                                                <span>Old Document 
+                                                        @*<a href='~/Files/Upload/@item1.UpdPassport' target="_blank">View</a>*@
+                                                                    <a href="javascript:void(0);" class="OldUpdPassport_PopUp" data-id="@item1.UpdPassport">View</a>
+                                                        <br /></span>
+                                                            }
+                                                        }
+                                                    </td>}
+
+                                                @if (item.UpdPOA == item1.UpdPOA)
+                                                {
+                                                    <td>
+                                                        @if (item.UpdPOA != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdPOA' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="UpdPOA_PopUp" data-id="@item.UpdPOA">View</a>
+                                                        }
+                                                    </td>}
+                                                else
+                                                {
+                                                    <td>
+                                                        @if (item.UpdPOA != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdPOA' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="UpdPOA_PopUp" data-id="@item.UpdPOA">View</a>
+                                                            if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                                            {
+                                                                <span>Old Document 
+                                                        @*<a href='~/Files/Upload/@item1.UpdPOA' target="_blank">View</a>*@
+                                                                    <a href="javascript:void(0);" class="OldUpdPOA_PopUp" data-id="@item1.UpdPOA">View</a>
+                                                        <br /></span>
+                                                            }
+                                                        }
+                                                    </td>}
+                                                @if (item.CustTypeDesc == item1.CustTypeDesc)
+                                                {
+                                                    <td>@item.CustTypeDesc</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CustTypeDesc">@item.CustTypeDesc</td>}
+                                                <td class="UpdPassport" style="display:none;">
+                                                    <span>@item.UpdPassport</span>
+                                                </td>
+                                                <td class="OldUpdPassport" style="display:none;">
+                                                    <span>@item1.UpdPassport</span>
+                                                </td>
+                                                <td class="UpdPOA" style="display:none;">
+                                                    <span>@item.UpdPOA</span>
+                                                </td>
+                                                <td class="OldUpdPOA" style="display:none;">
+                                                    <span>@item1.UpdPOA</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="col-md-12" style="height:15px;"></div>
+            }
+        }
+        if (@ViewBag.SharHoldGrid != null)
+        {
+            if (Enumerable.Count(@ViewBag.SharHoldGrid) > 0)
+            {
+                <div class="col-md-12 createusertitle">INDIVIDUAL SHAREHOLDERS</div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="tab-pane" id="4a">
+                    <!--tab 4a-->
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="col-md-12">
+                        <table id="example2" class="display" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="bgspr">
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>Gender</th>
+                                    <th>Country of Residence</th>
+                                    <th>Share Percentage</th>
+                                    <th>Nationality</th>
+                                    <th>Passport Number</th>
+                                    <th>Place of Issuance</th>
+                                    <th>Issuance Date</th>
+                                    <th>Expiry Date</th>
+                                    <th>Passport Copy</th>
+                                    <th>National ID Copy</th>
+                                    <th style="display:none;">
+                                    </th>
+                                    <th style="display:none;">
+                                    </th>
+                                    <th style="display:none;">
+                                    </th>
+                                    <th style="display:none;">
+                                    </th> 
+                                </tr>
+                            <tbody>
+                                @foreach (var item in ViewBag.SharHoldGrid)
+                                {
+                                    foreach (var item1 in ViewBag.SharHoldCheck)
+                                    {
+                                        if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                        {
+                                            <tr>
+                                                @if (item.FirstName == item1.FirstName)
+                                                {
+                                                    <td>@item.FirstName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.FirstName">@item.FirstName</td>}
+
+                                                @if (item.MiddleName == item1.MiddleName)
+                                                {
+                                                    <td>@item.MiddleName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MiddleName">@item.MiddleName</td>}
+
+                                                @if (item.LastName == item1.LastName)
+                                                {
+                                                    <td>@item.LastName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LastName">@item.LastName</td>}
+
+                                                @if (item.Gender == item1.Gender)
+                                                {
+                                                    <td>@item.Gender</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.Gender">@item.Gender</td>}
+
+
+                                                @if (item.LocCountryName == item1.LocCountryName)
+                                                {
+                                                    <td>@item.LocCountryName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LocCountryName">@item.LocCountryName</td>}
+
+
+                                                @if (item.SharePer == item1.SharePer)
+                                                {
+                                                    <td>@string.Format("{0:0,0.00}", item.SharePer)</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@string.Format("{0:0,0.00}", @item1.SharePer)">@string.Format("{0:0,0.00}", @item.SharePer)</td>}
+
+                                                @if (item.NatCountryName == item1.NatCountryName)
+                                                {
+                                                    <td>@item.NatCountryName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.NatCountryName">@item.NatCountryName</td>}
+
+                                                @if (item.PassNo == item1.PassNo)
+                                                {
+                                                    <td>@item.PassNo</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.PassNo">@item.PassNo</td>}
+
+                                                @if (item.PassCountryName == item1.PassCountryName)
+                                                {
+                                                    <td>@item.PassCountryName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.PassCountryName">@item.PassCountryName</td>}
+
+
+                                                @if (string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate) == string.Format("{0:dd-MMM-yyyy}", item1.PassIssueDate))
+                                                {
+                                                    <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate))</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassIssueDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate))</td>}
+
+
+                                                @if (string.Format("{0:dd-MMM-yyyy}", item.PassExpDate) == string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))
+                                                {
+                                                    if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(item.PassExpDate))
+                                                    {
+                                                        <td class="DateExpireLabel">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>}
+
+
+                                                @if (item.UpdPassport == item1.UpdPassport)
+                                                {
+                                                    <td>
+                                                        @if (item.UpdPassport != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdPassport' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="IndUpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                                        }
+                                                    </td>}
+                                                else
+                                                {
+                                                    <td>
+                                                        @if (item.UpdPassport != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdPassport' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="IndUpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                                            if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                                            {
+                                                                <span>Old Document
+                                                         @*<a href='~/Files/Upload/@item1.UpdPassport' target="_blank">View</a>*@
+                                                                    <a href="javascript:void(0);" class="OldIndUpdPassport_PopUp" data-id="@item1.UpdPassport">View</a>
+                                                        <br /></span>
+                                                            }
+                                                        }
+                                                    </td>}
+
+                                                @if (item.UpdNatIden == item1.UpdNatIden)
+                                                {
+                                                    <td>
+                                                        @if (item.UpdNatIden != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdNatIden' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="IndUpdNatIden_PopUp" data-id="@item.UpdNatIden">View</a>
+                                                        }
+                                                    </td>}
+                                                else
+                                                {
+                                                    <td>
+                                                        @if (item.UpdNatIden != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdNatIden' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="IndUpdNatIden_PopUp" data-id="@item.UpdNatIden">View</a>
+                                                            if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                                            {
+                                                                <span>Old Document 
+                                                        @*<a href='~/Files/Upload/@item1.UpdNatIden' target="_blank">View</a>*@
+                                                                    <a href="javascript:void(0);" class="OldIndUpdNatIden_PopUp" data-id="@item1.UpdNatIden">View</a>
+                                                        <br /></span>
+                                                            }
+                                                        }
+                                                    </td>}
+                                                <td class="IndUpdPassport" style="display:none;">
+                                                    <span>@item.UpdPassport</span>
+                                                </td>
+                                                <td class="IndOldUpdPassport" style="display:none;">
+                                                    <span>@item1.UpdPassport</span>
+                                                </td>
+                                                <td class="IndUpdNatIden" style="display:none;">
+                                                    <span>@item.UpdNatIden</span>
+                                                </td>
+                                                <td class="IndOldUpdNatIden" style="display:none;">
+                                                    <span>@item1.UpdNatIden</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="col-md-12" style="height:15px;"></div>
+            }
+        }
+        if (@ViewBag.CompSharHoldGrid != null)
+        {
+            if (Enumerable.Count(@ViewBag.CompSharHoldGrid) > 0)
+            {
+                <div class="col-md-12 createusertitle">COMPANY SHAREHOLDERS</div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="tab-pane" id="4a">
+                    <!--tab 4a-->
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="col-md-12">
+                        <table id="example21" class="display" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="bgspr">
+                                    <th>Name of Company</th>
+                                    <th>Shareholding Percentage</th>
+                                    <th>Trade License Number</th>
+                                    <th>Trade License</th>
+                                    <th>Beneficial Owner List</th>
+                                    <th style="display:none;">
+                                    </th>
+                                    <th style="display:none;">
+                                    </th>
+                                    <th style="display:none;">
+                                    </th>
+                                    <th style="display:none;">
+                                    </th>
+                                </tr>
+                            <tbody>
+                                @foreach (var item in ViewBag.CompSharHoldGrid)
+                                {
+                                    foreach (var item1 in ViewBag.CompSharHoldCheck)
+                                    {
+                                        if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                        {
+                                            <tr>
+                                                @if (item.CompanyName == item1.CompanyName)
+                                                {
+                                                    <td>@item.CompanyName</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CompanyName">@item.CompanyName</td>}
+
+
+                                                @if (item.SharePer == item1.SharePer)
+                                                {
+                                                    <td>@string.Format("{0:0,0.00}", item.SharePer)</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@string.Format("{0:0,0.00}", @item1.SharePer)">@string.Format("{0:0,0.00}", @item.SharePer)</td>}
+
+                                                @if (item.TradeLicNo == item1.TradeLicNo)
+                                                {
+                                                    <td>@item.TradeLicNo</td>}
+                                                else
+                                                {
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.TradeLicNo">@item.TradeLicNo</td>}
+
+
+
+                                                @if (item.UpdTradeLic == item1.UpdTradeLic)
+                                                {
+                                                    <td>
+                                                        @if (item.UpdTradeLic != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdTradeLic' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="UpdTradeLic_PopUp" data-id="@item.UpdTradeLic">View</a>
+                                                        }
+                                                    </td>}
+                                                else
+                                                {
+                                                    <td>
+                                                        @if (item.UpdTradeLic != "")
+                                                        {
+                                                            @*<a href='~/Files/Upload/@item.UpdTradeLic' target="_blank">View</a>*@
+                                                            <a href="javascript:void(0);" class="UpdTradeLic_PopUp" data-id="@item.UpdTradeLic">View</a>
+                                                            if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
+                                                            {
+                                                                <span>Old Document 
+                                                        @*<a href='~/Files/Upload/@item1.UpdTradeLic' target="_blank">View</a>*@
+                                                                    <a href="javascript:void(0);" class="OldUpdTradeLic_PopUp" data-id="@item1.UpdTradeLic">View</a>
+                                                        <br /></span>
+                                                            }
+                                                        }
+                                                    </td>}
+
+                                                <td>
+                                                    @if (item.ChildCnt > 0)
+                                                    {
+                                                        <a href="javascript:void(0);" class="OpenList" data-id="@item.CustomerShareHoldID">View</a>
+                                                    }
+                                                </td>
+
+                                                <td class="CustomerID" style="display:none;">
+                                                    <span>@item.CustomerID</span>
+                                                </td>
+                                                <td class="CustomerShareHoldDetID" style="display:none;">
+                                                    <span>@item.CustomerShareHoldID</span>
+                                                </td>
+                                                <td class="UpdTradeLic" style="display:none;">
+                                                    <span>@item.UpdTradeLic</span>
+                                                </td>
+                                                <td class="OldUpdTradeLic" style="display:none;">
+                                                    <span>@item1.UpdTradeLic</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="col-md-12" style="height:15px;"></div>
+            }
+        }
+    }
+    <div class="form-group">
+        <div class="col-md-11"></div>
+        <div class="col-md-1" style="text-align:right;">
+            <button id="NextSave" name="NextSave" value="NextSave" type="submit" onclick="pageRedirect()" class="btn CommonAttachValidation btn-tgs">Next</button>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:350px;">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#example1").on("click", ".UpdPassport_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdPassport").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example1").on("click", ".OldUpdPassport_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".OldUpdPassport").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example1").on("click", ".UpdPOA_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdPOA").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example1").on("click", ".OldUpdPOA_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdPOA").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+
+
+    $("#example2").on("click", ".IndUpdPassport", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdPassport").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example2").on("click", ".OldIndUpdPassport_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".OldIndUpdPassport").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example2").on("click", ".IndUpdNatIden_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".IndUpdNatIden").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example2").on("click", ".OldIndUpdNatIden_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".OldIndUpdNatIden").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+
+    $("#example21").on("click", ".UpdTradeLic_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdTradeLic").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example21").on("click", ".OldUpdTradeLic_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".OldUpdTradeLic").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    function pageRedirect() {
+        if(@ViewBag.CustomerTypeID == 6)
+        {
+            window.location.href = "/InsuranceProvider/ViewUserMaster?CustomerID=" + '@ViewBag.CustomerID' + "&CustomerTypeID=" + '@ViewBag.CustomerTypeID';
+        }
+        else
+        {
+            window.location.href = "/InsuranceProvider/DocumentsDetails?CustomerID=" + '@ViewBag.CustomerID' + "&CustomerTypeID=" + '@ViewBag.CustomerTypeID';
+        }
+
+    }
+    $(document).ready(function () {
+        $('#example,#example1,#example2,#example21').DataTable({
+            "pageLength": 5,
+        });
+    });
+    //ShareCompany();
+    function ViewDetail(id) {
+        var CustomerShareHoldID = id;
+        $.ajax({
+            url: "/CustomerReg/AuthSignDetailsPopUp",
+            type: "POST",
+            data: "{CustomerShareHoldID:'" + CustomerShareHoldID + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('#factoringview').html(result);
+                $('#factoringModal').modal('show');
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+    }
+</script>

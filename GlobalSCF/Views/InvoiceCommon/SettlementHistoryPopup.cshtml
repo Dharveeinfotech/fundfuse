@@ -1,0 +1,60 @@
+﻿@model List<TMP.Models.InvoiceTransactionModel>
+<div class="col-md-12 createusertitle">SETTLEMENT HISTORY</div>
+<div class="col-md-12" style="height:10px;"></div>
+<div class="col-md-12" style="padding:0px;">
+    @if (Model != null)
+            {
+        <table id="example21" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgfact">
+                    <th style="width:60px;">Sr. No.</th>
+                    <th>Process Date</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Pay Date</th>
+                    <th>Amount</th>                    
+                    <th>Ref. No.</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int intNo = 1; }
+                @foreach (var items in Model)
+                {
+                    <tr>
+                        <td>@intNo</td>
+                        <td>@Convert.ToDateTime(items.CreateDate).ToString("dd-MMM-yyyy hh:mm:tt")</td>
+                        <td>@items.TypeStatus</td>
+                        <td>@items.TypeDesc</td>
+                        <td>@Convert.ToDateTime(items.PayDate).ToString("dd-MMM-yyyy hh:mm:tt")</td>
+                        <td>@items.CurrencyCode @string.Format("{0:0,0.00}", items.Amt)</td>
+                        <td>@items.RefNo</td>
+                        <td>@items.ProcessRemark</td>
+                    </tr>
+                    intNo++;
+                }
+            </tbody>
+        </table>
+                    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example21').DataTable({
+            "pageLength": 10,
+        });
+    });
+</script>
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        padding-left: 47px;
+    }
+
+    .dataTables_paginate {
+        padding-right: 40px;
+    }
+</style>
+

@@ -1,0 +1,184 @@
+﻿@model IEnumerable<TMP.Models.DocumentMaster_ListAll_Result>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12  div-border padoff">
+    <div class="col-md-12" style="height:10px;"></div>
+    @if (ViewBag.UserRight != null && ViewBag.UserRight == "Maker")
+    {
+        <form>
+            <div class="col-md-12">
+                <button name="createnew" formaction="~/mDocumentMasters/CreateNew" formmethod="post" formnovalidate type="submit" class="btn-tgs">Create New</button>
+            </div>
+        </form>
+    }
+    <div class="col-md-12">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgsp">
+                    <th width="30%">Document Name</th>
+                    <th width="30%">Document Description</th>
+                    <th width="30%">Status</th>
+                    <th width="10%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.DocumentName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DocumentDesc)</td>
+                        <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
+                        <td>
+                            @Html.HiddenFor(modelItem => item.DocumentID)
+                            @if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = item.DocumentID, status = item.Status })
+                            }
+                            else
+                            {
+                                <a id="View_@item.DocumentID" style="cursor:pointer" class="OpenDivForNotUpdateRight" data-toggle="modal" data-target="#myModalView">
+                                    View
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-10" style="height:10px;"></div>
+
+    <input type="hidden" id="hdnDocumentID" name="hdnDocumentID" />
+    <input type="hidden" id="hdnActionName" name="hdnActionName" />
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:500px;">
+                    <div id='myModalContent'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10
+        });
+
+        $("#btnShowModal").click(function (e) {
+            ShowDialog(true);
+            e.preventDefault();
+        });
+        $("#btnClose").click(function (e) {
+            HideDialog();
+            e.preventDefault();
+        });
+    });
+
+    $('.OpenDivForNotUpdateRight').click(function () {
+        var ID = $(this).attr("id");
+        var b = ID.split("_");
+        var ActionName = ID.split("_")[0];
+        var DocID = ID.split("_")[1];
+        $("#hdnRollNo").val(DocID);
+        $("#hdnActionName").val(ActionName);
+
+        $.ajax({
+            url: "/mDocumentMasters/View?DocID=" + DocID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+
+            success: function (data) {
+                //$("#NEW1").html(data);
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+                $("table.display").DataTable();
+                event.preventDefault();
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+
+    });
+
+    function Act_InA_Del() {
+        var ProcessRemarks = $("#txtProcessRemarks").val();
+
+        if (ProcessRemarks == "") {
+            $("#errorMsg").html("Please Enter Remarks");
+            $('#Error').modal('show');
+            return false;
+        }
+        var DocumentID = $("#hdnDocumentID").val();
+        var ActionName = $("#hdnActionName").val();
+
+        if (confirm("Are you sure you want to " + ActionName)) {
+
+            $.ajax({
+                url: "/mDocumentMasters/Act_InA_Del?ActionName=" + ActionName + "&DocumentID=" + DocumentID + "&ProcessRemarks=" + ProcessRemarks,
+                type: "POST",
+                data: "{}",
+                datatype: "text",
+                contentType: "application/text; charset=utf-8",
+
+                success: function (data) {
+                    var Value = data.split("$")[0];
+                    var msg = data.split("$")[1];
+                    if (Value == "0") {
+                        $("#errorMsg").html(msg);
+                        $('#Error').modal('show');
+                    }
+                    else if (Value == "1") {
+                        $("#errorMsg").html(msg);
+                        $('#Error').modal('show');
+                        window.location.href = "/mDocumentMasters/index";
+                    }
+                    else if (Value == "2") {
+                        window.location.href = "/mUserMasters/Login";
+                    }
+                    return false;
+                },
+            });
+        } else {
+            return false;
+        }
+    }
+
+    function ShowDialog(modal) {
+
+        $("#overlay").show();
+        $("#dialog").fadeIn(300);
+        if (modal) {
+            $("#overlay").unbind("click");
+        }
+        else {
+            $("#overlay").click(function (e) {
+                HideDialog();
+            });
+        }
+    }
+
+    function HideDialog() {
+
+        $("#overlay").hide();
+        $("#dialog").fadeOut(300);
+    }
+</script>

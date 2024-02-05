@@ -1,0 +1,179 @@
+﻿@model TMP.Models.UserMaster_ListAll_Result
+    
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/MasterPage/_SCFLayoutMaster.cshtml";
+}
+
+<div class="col-md-12">
+
+    @Html.Partial("../MasterPage/_MenuPartialPage")
+
+    <div class="col-md-10"></div>
+    <!-- inner content form -->
+    <div class="col-md-10 createusertitle">User Details</div>
+    <div class="col-md-10" style="height:5px;"></div>
+
+    @using (Html.BeginForm("ActiveCurrentUser", "mUserMasters", FormMethod.Post, new { @class = "col-md-10" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-10">
+            <fieldset>
+                <div class="col-md-12 createusertitle"><p>Authorized User Information</p></div>
+                <div class="col-md-12" style="height:10px;"></div>
+                @Html.HiddenFor(model => model.UserID)
+                @Html.HiddenFor(model => model.LoginName)
+                @Html.HiddenFor(model => model.Password)
+                @Html.HiddenFor(model => model.PwdExpiryDate)
+                @Html.HiddenFor(model => model.IsAgree)
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">First Name</label>
+                    <div class="col-md-2">
+                        @*@Html.DisplayNameFor(model => model.lstUserMasterHistory_ListAllBind_Result[0].FirstName)*@
+                        @*@Html.DisplayFor(m12 =>m12.lstUserMasterHistory_ListAllBind_Result[0].FirstName)*@
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        @*<input id="textinput" name="textinput" type="text" placeholder="" class="create-input" value="ABC" required>*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Middle Name</label>
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                        @*<input id="textinput" name="textinput" type="text" placeholder="" class="create-input" value="XYZ" required>*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Last Name</label>
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="height:10px;"></div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Designation</label>
+                    <div class="col-md-2">
+                        @Html.HiddenFor(model => model.DesignationID);
+                        @Html.EditorFor(model => model.DesignationName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Length of Service</label>
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.ServicePeriod, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="col-md-2"></div>
+
+                <div class="col-md-12" style="height:10px;"></div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Official E-Mail</label>
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control isEmailGood validate[custom[email]" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Mobile Number</label>
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Staff ID</label>
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.StaffID, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    </div>
+                </div>
+
+                @*<div class="form-group photolabel">
+                        <label class="col-md-2" for="textinput">Photograph</label>
+                        <div class="col-md-2">
+                            <input id="textinput" name="textinput" type="text" placeholder="" class="create-input photobox" value="image" required>
+                            <p class="control-label upload"><a href="#">Upload</a></p>
+                        </div>
+                    </div>*@
+
+                <div class="col-md-12" style="height:10px;"></div>
+
+                <div class="col-md-12 createusertitle"><p>Peronal Identification Details</p></div>
+
+                <div class="col-md-12" style="height:10px;"></div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">ID Type</label>
+                    <div class="col-md-2">
+                        <input id="textinput" name="textinput" type="text" placeholder="" class="form-control" value="PAN Card" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">ID Number</label>
+                    <div class="col-md-2">
+                        <input id="textinput" name="textinput" type="text" placeholder="" class="form-control" value="123456" required>
+                    </div>
+                </div>
+
+                <div class="col-md-5"></div>
+
+                <div class="col-md-12" style="height:10px;"></div>
+
+                <div class="col-md-12 createusertitle"><p>User Access Details</p></div>
+
+                <div class="col-md-12" style="height:10px;"></div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="companyname">Company</label>
+                    <div class="col-md-6">
+                        @Html.HiddenFor(model => model.CustomerID);
+                        @*@Html.TextBox("CompanyName", Model.CompanyName, new { htmlAttributes = new { @readonly = "readonly", @class = "create-input" } })*@
+                        @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="height:10px;"></div>
+
+                @foreach (var item in Model.lstUserRoleLinkMaster_ListAll_Result)
+                {
+                    <div class="form-group">
+                        <label class="col-md-2" for="role">Role</label>
+                        <div class="col-md-6">
+                            @Html.DisplayName(item.RoleName)
+                        </div>
+                    </div>
+                }
+                <div class="col-md-12" style="height:10px;"></div>
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Remarks</label>
+                    <div class="col-md-6">
+                        @Html.TextArea("ProcessRemark", "", 2, 1, new { @class = "form-control", required = "" })
+                        @*<textarea name="remarks" cols="1" rows="2" class="create-input" required></textarea>*@
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="height:10px;"></div>
+                <!-- Button-->
+                <div class="form-group col-md-10">
+                    <div class="col-md-6"> </div>
+                    <div class="col-md-1"> <button type="submit" formaction="/mUserMasters/DetailsAmend" id="amend" name="amend" class="createsave">AMEND</button></div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-1"> <button id="approve" formaction="/mUserMasters/ActiveCurrentUser" type="submit" name="approve" class="createsave">APPROVE</button></div>
+                </div>
+
+            </fieldset>
+        </div>
+    }
+
+    </div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>

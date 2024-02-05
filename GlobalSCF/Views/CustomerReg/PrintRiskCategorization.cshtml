@@ -1,0 +1,229 @@
+﻿@{
+    Layout = null;
+    int i = 0;
+}
+
+@*@model  NMC.Models.ScreeningConfig*@
+@model  IEnumerable<TMP.Models.ScreeningConfig>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Risk Categorization</title>
+    <link rel="icon" href="~/favicon.ico" type="image/gif" sizes="32x32">
+
+    @Styles.Render("~/Content/onlineCss")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/onlineJS")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            $('#collapseOne_0').collapse({ 'toggle': true });
+            $('#collapseOne_1').collapse({ 'toggle': true });
+            $('#collapseOne_2').collapse({ 'toggle': true });
+            $('#collapseOne_3').collapse({ 'toggle': true });
+            $('#collapseOne_4').collapse({ 'toggle': true });
+        });
+        function toggleIcon(e) {
+            $(e.target)
+                .prev('.panel-heading')
+                .find(".more-less")
+                .toggleClass('glyphicon-plus glyphicon-minus');
+        }
+        $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+        $('.panel-group').on('shown.bs.collapse', toggleIcon);
+    </script>
+</head>
+<body class="btmmargin tgs-bg">
+    <div class="container">
+        @if (ViewBag.Cust_Result != null && Enumerable.Count(@ViewBag.Cust_Result) > 0)
+        {
+            <div class="col-md-12 createusertitle">Result</div>
+            <div class="tab-pane" id="4a">
+                <div class="col-md-12">
+                    <table id="exampleRes" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th width="20%">Category Name</th>
+                                <th width="20%">Category</th>
+                                <th width="60%">Remark</th>
+                            </tr>
+                        <tbody>
+                            @foreach (var itemResul in ViewBag.Cust_Result)
+                            {
+                                <tr>
+                                    <td>@itemResul.CategoryName</td>
+                                    <td>@itemResul.Category</td>
+                                    <td>@Html.Raw(itemResul.Remark)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        @if (ViewBag.Cust_Result1 != null && Enumerable.Count(@ViewBag.Cust_Result1) > 0)
+        {
+            <div class="tab-pane" id="4a">
+                <div class="col-md-12">
+                    <table id="exampleRes" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th width="20%">Due Diligence</th>
+                                <th width="10%">Category</th>
+                                <th width="10%">Rating</th>
+                                <th width="60%">Remark</th>
+                            </tr>
+                        <tbody>
+                            @foreach (var itemResul1 in ViewBag.Cust_Result1)
+                            {
+                                <tr>
+                                    <td>@itemResul1.DueDiligence</td>
+                                    <td>@itemResul1.Category</td>
+                                    <td>@itemResul1.Rating</td>
+                                    <td> <p style="color:red;">@Html.Raw(itemResul1.Remark)</p> </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        <div class="col-md-12">
+            <div class="panel-group" id="accordion">
+                @foreach (var item in @ViewBag.Category)
+                {
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="panel panel-default" id="panel_@i">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-target="#collapseOne_@i" style="cursor:pointer;">
+                                    <i class=""></i>
+                                    @item.CategoryName
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne_@i" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                @if (item.CategoryID == 1)
+                                {
+                                    if (ViewBag.Country != null)
+                                    {
+                                        <div class="tab-pane" id="4a">
+                                            <div class="col-md-12">
+                                                <table id="exampleCou" class="display" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr class="bgspr">
+                                                            <th>Country Risk</th>
+                                                            <th>Category</th>
+                                                        </tr>
+                                                    <tbody>
+                                                        @foreach (var itemCou in ViewBag.Country)
+                                                        {
+                                                            <tr>
+                                                                <td>@itemCou.LocCountryName</td>
+                                                                <td>@itemCou.Category</td>
+
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" id="CustomerRiskID" name="CustomerRiskID" value="@ViewBag.Country[0].CustomerRiskID" />
+                                        <input type="hidden" id="CategoryDetID" name="CategoryDetID" value="@ViewBag.Country[0].CategoryDetID" />
+                                        <input type="hidden" id="LocCountryID" name="LocCountryID" value="@ViewBag.Country[0].LocCountryID" />
+                                        <input type="hidden" id="DueDiligence" name="DueDiligence" value="@ViewBag.Country[0].DueDiligence" />
+                                        <input type="hidden" id="Category" name="Category" value="@ViewBag.Country[0].Category" />
+                                        <input type="hidden" id="Remark" name="Remark" value="@ViewBag.Country[0].Remark" />
+                                        <input type="hidden" id="Sanction" name="Sanction" value="@ViewBag.Country[0].Sanction" />
+                                    }
+                                }
+                                @foreach (var item1 in Model)
+                                {
+                                    if (item.CategoryID == item1.CategoryID && item1.ParentCategoryDetID == 0)
+                                    {
+                                        <p style="padding-left:15px;">@item1.Value</p>
+                                        <input type="hidden" id="RiskID_@item1.CategoryDetID" name="RiskID_@item1.CategoryDetID" value="@item1.CustomerRiskID" />
+
+                                        if (item1.SelType != null && item1.SelType == item1.YesRiskLevel)
+                                        {
+                                            <p style="padding-left:15px;margin:0">
+                                                <input type="radio" id="selTy_@item1.CategoryDetID" name="selTy_@item1.CategoryDetID" class="Cls_Y_@item1.CategoryDetID" value="@item1.YesRiskLevel"
+                                                       onclick="document.getElementById('Y_SelectType_@item1.CategoryDetID').value = 'Y'" checked="checked"> Yes
+                                                <input type="radio" id="selTy_@item1.CategoryDetID" name="selTy_@item1.CategoryDetID" class="Cls_N_@item1.CategoryDetID"
+                                                       onclick="document.getElementById('Y_SelectType_@item1.CategoryDetID').value = ''" value="@item1.NoRiskLevel"> No
+
+                                                <input type="hidden" id="Y_SelectType_@item1.CategoryDetID" name="Y_SelectType_@item1.CategoryDetID" value="@item1.SelTypeYN" />
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <p style="padding-left:15px;margin:0">
+                                                <input type="radio" id="selTy_@item1.CategoryDetID" name="selTy_@item1.CategoryDetID" class="Cls_Y_@item1.CategoryDetID"
+                                                       onclick="document.getElementById('Y_SelectType_@item1.CategoryDetID').value = 'Y'"
+                                                       value="@item1.YesRiskLevel"> Yes
+                                                <input type="radio" id="selTy_@item1.CategoryDetID" name="selTy_@item1.CategoryDetID" class="Cls_N_@item1.CategoryDetID"
+                                                       onclick="document.getElementById('Y_SelectType_@item1.CategoryDetID').value = ''" value="@item1.NoRiskLevel" checked="checked"> No
+
+                                                <input type="hidden" id="Y_SelectType_@item1.CategoryDetID" name="Y_SelectType_@item1.CategoryDetID" value="@item1.SelTypeYN" />
+                                            </p>
+                                        }
+
+
+                                        foreach (var item2 in Model)
+                                        {
+                                            if (item1.CategoryDetID == item2.ParentCategoryDetID)
+                                            {
+                                                <div class="DV_Child">
+                                                    <br />
+                                                    <p style="padding-left:30px;">@item2.Value</p>
+                                                    <input type="hidden" id="RiskID_@item2.CategoryDetID" name="RiskID_@item2.CategoryDetID" value="@item2.CustomerRiskID" />
+
+                                                    @if (item2.SelType != null && item2.SelType == item2.YesRiskLevel)
+                                                    {
+                                                        <p style="padding-left:30px;margin:0">
+                                                            <input type="radio" id="selTy_@item2.CategoryDetID" name="selTy_@item2.CategoryDetID" class="Cls_Y_@item2.CategoryDetID" value="@item2.YesRiskLevel"
+                                                                   onclick="document.getElementById('Y_SelectType_@item2.CategoryDetID').value = 'Y'" checked="checked"> Yes
+                                                            <input type="radio" id="selTy_@item2.CategoryDetID" name="selTy_@item2.CategoryDetID" class="Cls_N_@item2.CategoryDetID"
+                                                                   onclick="document.getElementById('Y_SelectType_@item2.CategoryDetID').value = ''" value="@item2.NoRiskLevel"> No
+
+                                                            <input type="hidden" id="Y_SelectType_@item2.CategoryDetID" name="Y_SelectType_@item2.CategoryDetID" value="@item2.SelTypeYN" />
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p style="padding-left:30px;margin:0">
+                                                            <input type="radio" id="selTy_@item2.CategoryDetID" name="selTy_@item2.CategoryDetID" class="Cls_Y_@item2.CategoryDetID"
+                                                                   onclick="document.getElementById('Y_SelectType_@item2.CategoryDetID').value = 'Y'" value="@item2.YesRiskLevel"> Yes
+                                                            <input type="radio" id="selTy_@item2.CategoryDetID" name="selTy_@item2.CategoryDetID" class="Cls_N_@item2.CategoryDetID" value="@item2.NoRiskLevel"
+                                                                   onclick="document.getElementById('Y_SelectType_@item2.CategoryDetID').value = ''" checked="checked"> No
+
+                                                            <input type="hidden" id="Y_SelectType_@item2.CategoryDetID" name="Y_SelectType_@item2.CategoryDetID" value="@item2.SelTypeYN" />
+                                                        </p>
+                                                    }
+                                                </div>
+                                            }
+                                        }
+                                        <hr />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    i++;
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

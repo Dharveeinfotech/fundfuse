@@ -1,0 +1,118 @@
+﻿@model TMP.Models.ScreeningConfig
+@using (Html.BeginForm("addCategoryChildPopUpPost", "Country", FormMethod.Post, new { @class = "", id = "addChildForm" }))
+{
+    @Html.HiddenFor(x => x.CategoryID)
+    @Html.HiddenFor(x => x.CategoryDetID)
+    @Html.HiddenFor(x => x.ParentCategoryDetID)
+    @Html.HiddenFor(x => x.EditRecord)
+    <div class="form-group">
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Value&nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-9">
+            @Html.TextBoxFor(model => model.Value, new { @class = "form-control validate[required] ", maxlength = "1000", autocomplete = "off" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Risk Level for Yes&nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.DropDownListFor(model => model.YesRiskLevel, new SelectList(ViewBag.DDLRiskID, "value", "text", Model.YesRiskLevel), "--Select--", new { @class = "form-control validate[required]" })
+        </div>
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Risk Level for No&nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.DropDownListFor(model => model.NoRiskLevel, new SelectList(ViewBag.DDLRiskID, "value", "text", Model.NoRiskLevel), "--Select--", new { @class = "form-control validate[required]" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Is Override&nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.CheckBoxFor(model => model.IsOverride)
+        </div>
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput"></label>
+        <div class="col-md-3"></div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Yes Comment &nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.TextBoxFor(model => model.YesComment, new { @class = "form-control", maxlength = "1000", autocomplete = "off" })
+        </div>
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">No Comment &nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.TextBoxFor(model => model.NoComment, new { @class = "form-control", maxlength = "1000", autocomplete = "off" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Select Comment&nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.DropDownListFor(model => model.SelComment, new SelectList(ViewBag.DDLSelComment, "value", "text", Model.SelComment), "--Select--", new { @class = "form-control validate[required]" })
+        </div>
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Risk Level &nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.DropDownListFor(model => model.OveRiskLevel, new SelectList(ViewBag.DDLRiskID, "value", "text", Model.OveRiskLevel), "--Select--", new { @class = "form-control validate[required]" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Order No&nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.TextBoxFor(model => model.OrderNo, new { @class = "form-control validate[required] ", maxlength = "100", autocomplete = "off" })
+        </div>
+        <div class="col-md-1"></div>
+        <label class="col-md-2" for="textinput">Activate&nbsp;<span style="color:red;width:50px;">*</span></label>
+        <div class="col-md-3">
+            @Html.CheckBoxFor(model => model.IsActive)
+        </div>
+    </div>
+
+    <button id="addChild" name="addChild" type="button" class="btn btn-default btn-tgs" style="float:right;">Save</button>
+}
+
+<script>
+    $("#addChild").click(function () {
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: '/Country/addCategoryChildPopUpPost',
+            data: $("#addChildForm").serialize(),
+            dataType: 'json',
+            cache: false,
+            contenttype: "application/jsonrequest; charset=utf-8",
+            success: function (data) {
+
+                if (data != null) {
+                    $('#process').modal('hide');
+                    $('#CategoryModal').modal('hide');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 500);
+                } else {
+                    $('#process').modal('hide');
+                    $("#errorMsg").html("Error in update information.");
+                    $('#Error').modal('show');
+                }
+                return false;
+            },
+            error: function (jqXHR) {
+                $('#process').modal('hide');
+                $("#errorMsg").html("Error in update information.");
+                $('#Error').modal('show');
+                return false;
+            }
+
+        });
+    });
+</script>

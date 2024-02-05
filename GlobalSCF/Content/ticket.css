@@ -1,0 +1,43 @@
+@font-face { 
+	font-family: Myriad Pro; 
+	src: url('fonts/MyriadPro-Regular.eot'); 
+	src: local('?'), 
+	url('fonts/MyriadPro-Regular.woff') 
+	format("truetype"); 
+	}
+	
+body {
+	font-family:"Myriad Pro";
+}
+
+.formtitle {
+	border-bottom:#CCCCCC solid 1px;
+	font-size:14px;
+	}
+
+.inputtext {
+	color:#58595b;
+	padding:4px 0 0 15px;
+}
+
+.inputbox {
+	width:100%;
+	background-color:#d4d5d7;
+	border:none;
+	margin:4px 0 4px 0;
+		}
+	
+.btns {
+	color:#000000;
+	padding:2px 5px;
+	background-color:#d8e1e8;
+	border:none;
+	}
+	
+.listtitle {
+	background-color:#CCCCCC;
+	}
+	
+.listtext {
+	text-align:center;
+	}

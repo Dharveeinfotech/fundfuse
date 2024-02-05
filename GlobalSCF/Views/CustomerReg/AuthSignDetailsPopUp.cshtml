@@ -1,0 +1,274 @@
+﻿@model TMP.Models.CustomerShareHolderModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+<div class="col-md-12 div-border padoff" style="background-color:white;">
+    <div class="col-md-12 createusertitle">
+        DIRECTORS / SIGNATORIES DETAILS&nbsp;&nbsp;&nbsp;
+    </div>
+    <div class="director" id="director">
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Full Name</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.FirstName == Model.FirstName)
+                {
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.FirstName })
+                }
+            </div>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.MiddleName == Model.MiddleName)
+                {
+                    @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.MiddleName })
+                }
+            </div>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.LastName == Model.LastName)
+                {
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.LastName })
+                }
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-12">
+                <label class="col-md-2"></label>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Gender</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Gender, new { @class = "form-control validate[required] readOnly" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Country of Residence</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.LocCountryName, new { @class = "form-control validate[required] readOnly" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">E-Mail</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.EmailID == Model.EmailID)
+                {
+                    @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.EmailID })
+                }
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Mobile Number</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.MobileNo == Model.MobileNo)
+                {
+                    @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.MobileNo })
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Passport Number</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.PassNo == Model.PassNo)
+                {
+                    @Html.TextBoxFor(model => model.PassNo, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.PassNo, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.PassNo })
+                }
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Place of Issuance</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.PassCountryName == Model.PassCountryName)
+                {
+                    @Html.TextBoxFor(model => model.PassCountryName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.PassCountryName, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.PassCountryName })
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Issuance Date</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.PassIssueDate == Model.PassIssueDate)
+                {
+                    <input id="PassIssueDate" name="PassIssueDate" type="text" placeholder="" class="form-control" autocomplete="off" value="@Model.PassIssueDate.ToString("dd-MMM-yyyy")" />
+                }
+                else
+                { 
+                    <input id="PassIssueDate" name="PassIssueDate" type="text" placeholder="" class="form-control changes-input" autocomplete="off" value="@Model.PassIssueDate.ToString("dd-MMM-yyyy")"  title="@ViewBag.AuthSign.PassIssueDate.ToString("dd-MMM-yyyy")" />
+                 
+                }
+               
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Expiry Date</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.PassExpDate == Model.PassExpDate)
+                {
+                    if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.PassExpDate))
+                    {
+                        <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")" />
+                    }
+                    else
+                    {
+                        <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")" />
+                    }
+                }
+                else
+                {
+                    if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.PassExpDate))
+                    {
+                        <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control  changes-input DateExpire" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")"  title = @ViewBag.AuthSign.PassExpDate.ToString("dd-MMM-yyyy")  />
+                    }
+                    else
+                    {
+                        <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control  changes-input" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")"  title = @ViewBag.AuthSign.PassExpDate.ToString("dd-MMM-yyyy")  />
+                    }
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Nationality</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.NatCountryName == Model.NatCountryName)
+                {
+                    @Html.TextBoxFor(model => model.NatCountryName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.NatCountryName, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.NatCountryName })
+                }
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Designation</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.DesignationName == Model.DesignationName)
+                {
+                    @Html.TextBoxFor(model => model.DesignationName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.DesignationName, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.DesignationName })
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="form-group" id="DV_OtherDesignation" style="display:none;">
+            <div class="col-md-6"></div>
+            <label class="col-md-2" for="textinput">Other Designation</label>
+            <div class="col-md-3">
+                @if (ViewBag.AuthSign.OtherDesignation == Model.OtherDesignation)
+                {
+                    @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control changes-input", title = @ViewBag.AuthSign.OtherDesignation })
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Passport Copy</label>
+            <div class="col-md-3">
+                @if (Model.UpdPassport != "")
+                {
+                    <span class="p-view">
+                        <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@Model.UpdPassport">View</a>	
+                    </span>
+                }
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">National ID Copy</label>
+            <div class="col-md-3">
+                @if (Model.UpdNatIden != "")
+                {
+                    <span class="p-view">
+                        <a href="javascript:void(0);" class="UpdNatIden_PopUp" data-id="@Model.UpdNatIden">View</a>	
+                    </span>
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">POA / Board Resolution</label>
+            <div class="col-md-3">
+                @if (Model.UpdPOA != "")
+                {
+                    <span class="p-view">
+                        <a href="javascript:void(0);" class="UpdPOA_PopUp" data-id="@Model.UpdPOA">View</a>	
+                    </span>
+                }
+            </div>
+            <div class="cls-optnN-new"><div class="col-md-7"></div></div>
+            <div class="cls-optnR-new">
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Role</label>
+                <div class="col-md-3">
+                    @if (ViewBag.AuthSign.RoleNames == Model.RoleNames)
+                    {
+                        <label for="textinput">@Model.RoleNames</label>
+                    }
+                    else
+                    {
+                        <label class="changes-input" for="textinput">@Model.RoleNames</label>
+                    }
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //$('.form-control').attr('readonly', 'true');
+
+    $(".UpdPassport_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdPassport' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(".UpdNatIden_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdNatIden' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(".UpdPOA_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdPOA' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+</script>

@@ -1,0 +1,127 @@
+﻿@model  TMP.Models.CustomerBankAccDetail
+@{
+    ViewBag.Title = "Bank Account Details List";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 4 })
+    }
+
+    @using (Html.BeginForm("BankAccountDetailsList", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "CommonDetails" }))
+    {
+        if (Enumerable.Count(@ViewBag.BankDetailGrid) > 0)
+        {
+            <div class="col-md-12 createusertitle">BANK ACCOUNT DETAILS</div>
+
+            <div class="tab-pane" id="4a">
+                <!--tab 4a-->
+
+                <div class="col-md-12">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th>Account Name</th>
+                                <th>Currency</th>
+                                <th>Bank Name</th>
+                                <th>Account Number</th>
+                                <th>Address</th>
+                                <th>IBAN</th>
+                                <th>Country</th>
+                                <th>Swift Code</th>
+                                <th>IFSC Code</th>
+                            </tr>
+                        <tbody>
+                            @foreach (var item in ViewBag.BankDetailGrid)
+                            {
+                                foreach (var item1 in ViewBag.BankDetailCheck)
+                                {
+                                    if (item.CustomerBankAccID == item1.CustomerBankAccID)
+                                    {
+
+                                        <tr>
+
+                                            @if (item.AccountName == item1.AccountName)
+                                            {
+                                                <td>@item.AccountName</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.AccountName">@item.AccountName</td>}
+                                            @if (item.CurrencyCode == item1.CurrencyCode)
+                                            {
+                                                <td>@item.CurrencyCode</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CurrencyCode">@item.CurrencyCode</td>}
+                                            @if (item.BankName == item1.BankName)
+                                            {
+                                                <td>@item.BankName</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.BankName">@item.BankName</td>}
+                                            @if (item.AccountNo == item1.AccountNo)
+                                            {
+                                                <td>@item.AccountNo</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.AccountNo">@item.AccountNo</td>}
+                                            @if (item.Address == item1.Address)
+                                            {
+                                                <td>@item.Address</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.Address">@item.Address</td>}
+                                            @if (item.IBAN == item1.IBAN)
+                                            {
+                                                <td>@item.IBAN</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.IBAN">@item.IBAN</td>}
+                                            @if (item.CountryName == item1.CountryName)
+                                            {
+                                                <td>@item.CountryName</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CountryName">@item.CountryName</td>}
+                                            @if (item.Swift == item1.Swift)
+                                            {
+                                                <td>@item.Swift</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.Swift">@item.Swift</td>}
+                                            @if (item.IFSC == item1.IFSC)
+                                            {
+                                                <td>@item.IFSC</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.IFSC">@item.IFSC</td>}
+                                        </tr>
+
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="col-md-12" style="height:15px;"></div>
+        }
+      
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12" style="text-align:right">
+            @Html.HiddenFor(x => x.CustomerID)
+            @Html.HiddenFor(x => x.Status)
+            <button id="Next" name="Next" value="Next" type="submit" class="btn CommonAttachValidation btn-tgs">Next</button>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example,#example1').DataTable({
+            "pageLength": 5,
+        });
+    });
+    ShareCompany();
+</script>

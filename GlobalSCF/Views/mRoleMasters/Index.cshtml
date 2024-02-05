@@ -1,0 +1,243 @@
+﻿@model TMP.Models.mRoleMaster
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<div class="col-md-12 div-border padoff">
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" id="hdnRollNo" name="hdnRollNo" />
+        <input type="hidden" id="hdnActionName" name="hdnActionName" />
+    }
+    <div class="col-md-12" style="height:10px;"></div>
+    @if (ViewBag.UserRight != null && ViewBag.UserRight == "Maker")
+    {
+        <form>
+            <div class="col-md-12">
+                <button name="createnew" formaction="~/mRoleMasters/CreateRole" formmethod="post" formnovalidate type="submit" class="btn-tgs">Create New</button>
+            </div>
+        </form>
+    }
+    <div class="col-md-12">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgum">
+                    <th>Role Name</th>
+                    <th>Role Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.lstRoleMaster)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.RoleName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.RoleDesc)</td>
+                        <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
+                        <td>
+                            @if (ViewBag.UserRight != null && ViewBag.UserRight == "Viewer")
+                            {
+                                @Html.ActionLink("View", "RoleDetails", new { RoleID = item.RoleID })
+                            }
+                            else
+                            {
+                                if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                                {
+                                    if (ViewBag.UserRight != null && ViewBag.UserRight == "Maker")
+                                    {
+                                        @Html.ActionLink("Edit", "RoleManagement", new { RoleID = item.RoleID })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("View", "RoleDetails", new { RoleID = item.RoleID })
+                                    }
+                                }
+                                else if (item.Status == CONT.NC || item.Status == CONT.UC || item.Status == CONT.NR || item.Status == CONT.UR)
+                                {
+                                    @Html.ActionLink("View", "RoleDetails", new { RoleID = item.RoleID })
+                                }
+                                else
+                                {
+                                    @*@Html.ActionLink("View", "RoleDetails", new { RoleID = item.RoleID })*@
+                                    <a id="View_@item.RoleID" style="cursor:pointer" class="OpenDivForNotUpdateRight" data-toggle="modal" data-target="#myModalView">
+                                        View
+                                    </a>
+                                }
+                            }
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    @*<div class="container scroll">
+
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Role</h4>
+                    </div>
+                    <div id="NEW" class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>*@
+
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:500px;">
+                    <div id='myModalContent'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function Act_InA_Del() {
+        var ProcessRemarks = $("#txtProcessRemarks").val();
+
+        if (ProcessRemarks == "") {
+            $("#errorMsg").html("Please enter Remarks");
+            $('#Error').modal('show');
+            return false;
+        }
+        var RoleID = $("#hdnRollNo").val();
+        var ActionName = $("#hdnActionName").val();
+
+        if (confirm("Are you sure you want to " + ActionName)) {
+
+            $.ajax({
+                url: "/mRoleMasters/Act_InA_Del?ActionName=" + ActionName + "&RoleID=" + RoleID + "&ProcessRemarks=" + ProcessRemarks,
+                type: "POST",
+                data: "{}",
+                datatype: "text",
+                contentType: "application/text; charset=utf-8",
+                //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function (data) {
+                    var Value = data.split("$")[0];
+                    var msg = data.split("$")[1];
+                    if (Value == "0") {
+                        if (msg == "Redirect") {
+                            window.location.href = "\mUserMasters\Login";
+                        }
+                        else {
+                            $("#errorMsg").html(msg);
+                            $('#Error').modal('show');
+                        }
+
+
+                    }
+                    else if (Value == "1") {
+                        $("#errorMsg").html(msg);
+                        $('#Error').modal('show');
+                        window.location.href = "/mRoleMasters/index";
+                    }
+
+
+                    return false;
+                },
+            });
+        } else {
+            return false;
+        }
+
+    }
+    $(document).ready(function () {
+
+
+        $("#example_filter.dataTables_filter").hide();
+        $(".modal-body").css({ 'display': 'block' });
+
+        $('#example').DataTable({
+            "pageLength": 10
+        });
+
+    });
+
+    $('.OpenDivForNotUpdateRight').click(function () {
+
+        var ID = $(this).attr("id");
+        var b = ID.split("_");
+        var ActionName = ID.split("_")[0];
+        var RoleID = ID.split("_")[1];
+        $("#hdnRollNo").val(RoleID);
+        $("#hdnActionName").val(ActionName);
+
+        $.ajax({
+            url: "/mRoleMasters/RoleView?RoleId=" + RoleID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+                //$("#NEW1").html(data);
+                $("table.display").DataTable();
+                event.preventDefault();
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+
+    });
+
+
+    $('.OpenDiv').click(function () {
+
+        var ID = $(this).attr("id");
+        var b = ID.split("_");
+        var RoleName = $(this).attr("varname");
+        var ActionName = ID.split("_")[0];
+        var RoleID = ID.split("_")[1];
+        $("#hdnRollNo").val(RoleID);
+        $("#hdnActionName").val(ActionName);
+
+        $.ajax({
+            url: "/mRoleMasters/Active_InActive_Del_Par?ActionName=" + ActionName + "&RoleName=" + RoleName,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            success: function (data) {
+                $("#NEW").html(data);
+                event.preventDefault();
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,46 @@
+﻿
+<div id="NEW2">
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="col-md-12">
+        <table id="Abcdeg" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgmp">
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item1 in @ViewBag.lstCustomerMaster)
+                {
+                    if (@item1.ProcessRemark != "")
+                    {
+                        <tr>
+                            <td>@item1.ProcessDate.ToString("dd-MMM-yyyy # hh:mm:ss tt")</td>
+
+                            <td>@item1.RoleName</td>
+                            <td style="text-align:left !important" data-toggle="tooltip" data-placement="bottom" title="@item1.ProcessRemark">@TMP.Models.Function.StringLength(item1.ProcessRemark, 75)</td>
+                        </tr>
+                    }
+
+
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div id="output"></div>
+    <div id="overlay" class="web_dialog_overlay"></div>
+    <div id="dialog" class="web_dialog"></div>
+</div>
+<script>
+      $('#Abcdeg').DataTable({
+            "bFilter": false,
+            "bPaginate": false,
+            "bInfo": false,
+            "order": [[0, "desc"]]
+      });
+      $('[data-toggle="tooltip"]').tooltip();
+</script>
+
+

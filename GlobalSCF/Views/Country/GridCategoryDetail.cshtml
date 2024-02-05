@@ -1,0 +1,77 @@
+﻿@model  IEnumerable<TMP.Models.ScreeningConfig>
+@if (Model.Count() > 0)
+{
+
+    foreach (var item in Model)
+    {
+        <div class="container">
+      
+                <div class="col-md-9" style="text-decoration:underline;">
+                    @item.CategoryName
+                </div>
+                <div class="col-md-3">
+                    <button id="@item.CategoryID" name="@item.CategoryID" value="@item.CategoryDetID" class="btn-Cat">Add</button>
+                </div>
+        
+                <div class="col-md-1"></div>
+                <div class="col-md-8">
+
+                    @foreach (var item1 in @ViewBag.child)
+                    {
+
+                        if (item.CategoryID == item1.CategoryID && item1.ParentCategoryDetID == 0)
+                        {
+                            <div class="container"style="border-bottom: 1px solid #eeeeee;padding: 10px;">
+                                <div class="col-md-9">
+                                    @item1.Value
+                                </div>
+                                <div class="col-md-3">
+                                    <button id="@item1.CategoryID" name="@item1.CategoryID" value="@item1.CategoryDetID" class="btn-Cat">Add</button>&nbsp;&nbsp;
+                                    <button id="@item1.CategoryID" name="@item1.CategoryID" value="@item1.CategoryDetID" class="btn-Edit">Edit</button>
+                                    <button id="@item1.CategoryID" name="@item1.CategoryID" value="@item1.CategoryDetID" class="btn-Delet">Delet</button>
+                                </div>
+                            </div>
+                            <div class="col-md-12"></div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-8">
+                                @foreach (var item2 in @ViewBag.child)
+                            {
+                                if (item1.CategoryDetID == item2.ParentCategoryDetID)
+                                {
+                                        <div class="container"style="border-bottom: 1px solid #eeeeee;padding: 10px;">
+                                            <div class="col-md-7">
+                                                @item2.Value
+                                            </div>
+                                            <div class="col-md-5">
+                                                <button id="@item2.CategoryID" name="@item2.CategoryID" value="@item2.CategoryDetID" class="btn-Cat">Add</button>
+                                                <button id="@item2.CategoryID" name="@item2.CategoryID" value="@item2.CategoryDetID" class="btn-Edit">Edit</button>
+                                                <button id="@item2.CategoryID" name="@item2.CategoryID" value="@item2.CategoryDetID" class="btn-Delet">Delet</button>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+
+                        }
+
+                    }
+                </div>
+            </div>
+
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            "pageLength": 10,
+        });
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>

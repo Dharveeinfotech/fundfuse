@@ -1,0 +1,257 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model TMP.Models.CustomerDocModel
+@{
+    ViewBag.Title = "Documents";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+   
+}
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 11 })
+    }
+
+    <div class="col-md-12 createusertitle">
+        DOCUMENTATION
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="col-md-12">
+
+        <div class="col-md-12" style="height:10px;"></div>
+        @using (Html.BeginForm("Documents", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.HiddenFor(model => model.CustomerID)
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.CustomerTypeID)
+            @Html.Hidden("intMenuCount", Model.lstCustomerTypeDocumentList.Count)
+
+            if (Model.lstCustomerDocDetail == null)
+            {
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th style="width:60px;">Sr. No.</th>
+                            <th>Document Name</th>
+                            <th>Attachments</th>
+                            <th style="display:none;">
+                            </th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int p = 1;
+                            foreach (var item in Model.lstCustomerTypeDocumentList)
+                            {
+                                <tr>
+                                    <td>
+                                        @p
+                                        @Html.HiddenFor(model => item.DocumentID)
+                                        @Html.HiddenFor(model => model.CustomerDocID)
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="chk_@item.DocumentID" id="chk_@item.DocumentID" class="mcheckbox_@item.DocumentID" hidden />
+                                        @Html.DisplayFor(model => item.DocumentName)
+                                    </td>
+                                    <td>
+                                        @if (item.Attachment != null && item.Attachment != "")
+                                        {
+                                            <p class="listp" style="text-align:left;">
+                                                @*<a href='~/Files/Upload/@item.Attachment' target="_blank">Download</a>*@
+                                                <a href="javascript:void(0);" class="Attachment_PopUp" data-id="@item.Attachment">Download</a>
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <label class="f-btn f-btn-default f-btn-file" style="margin-bottom:0px;">
+                                                Upload <input type="file" name="fileCantrol_@item.DocumentID" id="fileCantrol_@item.DocumentID" class="newClassExistData Docfile col-md-6" style="display:none;" />
+                                            </label>
+                                            <label class="l-filename" id="span_fileCantrol_@item.DocumentID"></label>
+                                        }
+                                    </td>
+                                    <td class="Attachment" style="display:none;">
+                                        <span>@item.Attachment</span>
+                                    </td> 
+                                </tr>
+                                p++;
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="col-md-12 padoff" style="text-align:right;">
+                    <button id="btnSavePersonalIDDetail" name="btnSavePersonalIDDetail" class="btn newClassExistData btn-tgs" formnovalidate>Save</button>
+                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <table id="example" class="display" cellspacing="0" width="100%">
+
+                                        <thead>
+                                            <tr class="bgspr">
+                                                <th style="width:60px;">Sr. No.</th>
+                                                <th>Document Name</th>
+                                                <th>Attachments</th>
+                                                <th style="display:none;">
+                                                </th>     
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int p = 1;
+                                                foreach (var item in Model.lstCustomerTypeDocumentList)
+                                                {
+                                                    bool Found = false;
+                                                    foreach (var item1 in Model.lstCustomerDocDetail)
+                                                    {
+                                                        if (item.DocumentID == item1.DocumentID)
+                                                        {
+                                                            Found = true;
+
+                                                            <tr>
+                                                                <td>
+                                                                    @p
+                                                                    @Html.HiddenFor(model => item1.DocumentID)
+                                                                    @Html.HiddenFor(mode => item1.CustomerDocID)
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" name="chk_@item.DocumentID" id="chk_@item.DocumentID" class="mcheckbox_@item.DocumentID" hidden />
+                                                                    @Html.DisplayFor(model => item1.DocumentName)
+                                                                </td>
+
+                                                                <td>
+                                                                    @if (item.Attachment != null && item.Attachment != "")
+                                                                    {
+                                                                        <p class="listp" style="text-align:left;">
+                                                                            @*<a href='~/Files/Upload/@item.Attachment' target="_blank">Download</a>*@
+                                                                            <a href="javascript:void(0);" class="Attachment_PopUp" data-id="@item.Attachment">Download</a>
+                                                                        </p>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <label class="f-btn f-btn-default f-btn-file" style="margin-bottom:0px;">
+                                                                            Upload <input type="file" name="fileCantrol_@item.DocumentID" id="fileCantrol_@item.DocumentID" class="newClassExistData Docfile flVisible col-md-6" style="display:none;" />
+                                                                        </label>
+                                                                        <label class="l-filename" id="span_fileCantrol_@item.DocumentID"></label>
+
+
+                                                                        <input type="hidden" id="hdAttchFileName_@item.DocumentID" value="@item1.Attachment" />
+                                                                        if (item1.Attachment != null && item1.Attachment != "")
+                                                                        {
+                                                                            <span class="listp">
+                                                                                @*<a href='~/Files/Upload/@item1.Attachment' target="_blank">View</a>*@
+                                                                                <a href="javascript:void(0);" class="Attachment_PopUp" data-id="@item.Attachment">View</a>
+                                                                            </span>
+                                                                        }
+                                                                    }
+                                                                </td>
+                                                                <td class="Attachment" style="display:none;">
+                                                                    <span>@item1.Attachment</span>
+                                                                </td> 
+                                                            </tr>
+
+                                                            p++;
+                                                            break;
+                                                        }
+                                                        //p++;
+                                                    }
+                                                    if (Found == false)
+                                                    {
+
+                                                        <tr>
+                                                            <td>
+                                                                @p
+                                                                @Html.HiddenFor(modelItems => item.DocumentID)
+                                                                @Html.HiddenFor(modelItems => modelItems.CustomerDocID)
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" name="chk_@item.DocumentID" id="chk_@item.DocumentID" class="mcheckbox_@item.DocumentID" hidden />
+                                                                @Html.DisplayFor(model => item.DocumentName)
+                                                            </td>
+
+                                                            <td>
+                                                                @if (item.Attachment != null && item.Attachment != "")
+                                                                {
+
+                                                                    <p class="listp" style="text-align:left;">
+                                                                        @*<a href='~/Files/Upload/@item.Attachment' target="_blank">Download</a>*@
+                                                                        <a href="javascript:void(0);" class="Attachment_PopUp" data-id="@item.Attachment">Download</a>
+                                                                    </p>
+                                                                }
+                                                                else
+                                                                {
+                                                                    @Html.DisplayFor(model => model.Attachment)
+
+                                                                    <label class="f-btn f-btn-default f-btn-file" style="margin-bottom:0px;">
+                                                                        Upload <input type="file" name="fileCantrol_@item.DocumentID" id="fileCantrol_@item.DocumentID" class="newClassExistData Docfile flVisible col-md-6" style="display:none;" />
+                                                                    </label>
+                                                                    <label class="l-filename" id="span_fileCantrol_@item.DocumentID"></label>
+                                                                }
+                                                            </td>
+                                                            <td class="Attachment" style="display:none;">
+                                                                <span>@item.Attachment</span>
+                                                            </td>  
+                                                        </tr>
+
+                                                        p++;
+                                                    }
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                    @if (Convert.ToInt32(ViewBag.IsAdminRegister) == 0 && Convert.ToInt32(Session["onlineCustomerTypeID"]) != CONT.ServiceProviderCustomerTypeID)
+                                    {
+                                        <div class="col-md-12 createusertitle">DECLARATION</div>
+                                        <div class="col-md-12" style="height:10px;"></div>
+                                        <div class="col-md-9">
+                                            <input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb validate[required]" /> <span style="">&nbsp; I hereby declare that all the details provided for the registration are true and accurate <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to the best of my knowledge.</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-9"></div>
+                                    }
+                                    <div class="col-md-3 padoff" style="text-align:right;padding-top:1%">
+                                        <div class="BlnIsMyAccountFalse col-md-6">
+                                            <button id="btnSavePersonalIDDetail" name="btnSavePersonalIDDetail" class="btn newClassExistData btn-tgs" formnovalidate>Save</button>
+                                        </div>
+                                        <div class="col-md-6" style="text-align:left;">
+                                            <button id="Submit" name="Submit" class="btn btn-tgs" formnovalidate>Submit</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                                    }
+
+
+                                                }
+    </div>
+
+</div>
+
+<script>
+    Document();
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "scrollY": 300,
+            "scrollX": "100%"
+        });
+    });
+
+    $("#example").on("click", ".Attachment_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".Attachment").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+</script>
+<style>
+    .div-border-multitab {
+        padding-bottom: 6%;
+    }
+    label{
+        margin:0px;
+    }
+</style>

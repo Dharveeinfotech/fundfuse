@@ -1,0 +1,134 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Admin Maker";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("iSCFChecker", "InvoiceCommon", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "iSCFChecker" }))
+    {
+        @Html.HiddenFor(model => model.InvoiceID)
+        @Html.HiddenFor(model => model.ProgramType)
+        @Html.HiddenFor(model => model.IsInsurance)
+        @Html.HiddenFor(model => model.Status)
+        @Html.HiddenFor(model => model.ObligorEmailID)
+        @Html.HiddenFor(model => model.SupplierEmailID)
+        @Html.HiddenFor(model => model.iSCFEmailID)
+        @Html.HiddenFor(model => model.BuyerEmailID)
+        @Html.HiddenFor(model => model.IsObligorGen)
+
+
+        @Html.Action("ISCFHeader", "InvoiceCommon", new { InvoiceID = Model.InvoiceID })
+
+        @Html.Action("TransactionSummary", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+        <div class="container">
+            @Html.Action("InvoiceDetails", "InvoiceCommon", new { InvoiceId = Model.InvoiceID, IsAdd = false })
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        @Html.Action("OfferDetails", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType, IsUpdate = false })
+
+        if (Model.Status == CONT.RA || Model.Status == CONT.RC)
+        {
+            @Html.Action("iSCFInvoiceInsuranceGrid", "InvoiceCommon", new { InvoiceID = Model.InvoiceID })
+        }
+
+        <div class="col-md-12" style="height:10px;"></div>
+        if (Model.Status == CONT.RA || Model.Status == CONT.RC || Model.Status == CONT.BB)
+        {
+
+        }
+        else
+        {
+            <div class="form-group">
+                <label class="col-md-1"></label>
+                <label class="col-md-3" for="textinput">
+                    INSURANCE COVERAGE :
+                    @if (Model.IsInsurance)
+                    {
+                        <span>YES</span>
+                    }
+                    else
+                    {
+                        <span>NO</span>
+                    }
+                </label>
+
+
+            </div>
+        }
+        <div class="container padoff">
+            <div class="col-md-6">
+                @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+            </div>
+            <div class="col-md-6" style="padding-top:30px;">
+                <div class="col-md-12" style="text-align:right;">
+                    <button id="Cancel" name="Cancel" value="Cancel" type="submit" class="btn  btn-tgs CommonDetachValidation">Cancel</button>
+                    @if (Model.Status == CONT.IP || Model.Status == CONT.IA || Model.Status == CONT.II || Model.Status == CONT.IF)
+                    {
+                        <button id="Return" name="Return" value="Return" type="submit" class="btn  btn-tgs CommonAttachValidation">Return</button>
+                    }
+                    <button id="Reject" name="Reject" value="Reject" type="submit" class="btn  btn-tgs CommonAttachValidation">Reject</button>
+                    <button id="Approve" name="Approve" value="Approve" type="submit" class="btn  btn-tgs CommonDetachValidation">Approve</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="ConfirmModal" role="dialog">
+            <div class="modal-dialog" style="width:600px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <div id="ConfirmMsg">
+
+                        </div>
+                        <button id="Yes" name="Yes" type="submit" class="btn  btn-tgs">Yes</button>
+                        <button id="DivClose" type="button" class="btn  btn-tgs" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<script>
+    $("#Approve").on("click", function () {
+        if ('@Model.ProgramType' == '@CONT.RType') {
+            if ('@Model.Status' == '@CONT.II' || '@Model.Status' == '@CONT.IF') {
+                var BUYTotBalAmt = $("#HDBUYTotBalAmt").val();
+                if (BUYTotBalAmt < 0) {
+                    BUYTotBalAmt = parseFloat(BUYTotBalAmt).toFixed(2);
+                    $("#ConfirmMsg").html("<p  style='font-size:14px'>Buyer's Utilized Limit has crossed the Balance Limit: " + BUYTotBalAmt + "</p> <p style='font-size:14px'> Select Yes to continue or No to go back.</p>");
+                    $('#ConfirmModal').modal('show');
+                    return false;
+                }
+                return true;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            if ('@Model.Status' == '@CONT.IP' || '@Model.Status' == '@CONT.IA') {
+                var SUPTotBalAmt = $("#HDSUPTotBalAmt").val();
+                if (SUPTotBalAmt < 0) {
+                    SUPTotBalAmt = parseFloat(SUPTotBalAmt).toFixed(2);
+                    $("#ConfirmMsg").html("<p  style='font-size:14px'>Supplier's Utilized Limit has crossed the Balance Limit: " + SUPTotBalAmt + "</p> <p style='font-size:14px'> Select Yes to continue or No to go back.</p>");
+                    $('#ConfirmModal').modal('show');
+                    return false;
+                }
+                return true;
+            }
+            else {
+                return true;
+            }
+        }
+    });
+    $("#Yes").on('click', function () {
+        $("#iSCFChecker").submit();
+        $('#ConfirmModal').modal('hide');
+    });
+
+</script>

@@ -1,0 +1,139 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Insurance Add";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("InvoiceInsuranceChecker", "InvoiceCommon", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations" }))
+    {
+        @Html.HiddenFor(model => model.InvoiceInsID)
+        @Html.HiddenFor(model => model.InvoiceID)
+        @Html.HiddenFor(model => model.InsuranceID)
+        @Html.HiddenFor(model => model.InsuranceBrokerID)
+        @Html.HiddenFor(model => model.ProgramType)
+        <div class="col-md-12 createusertitle">INSURANCE INFORMATION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Insurance Provider&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.InsuranceName, new { @class = "form-control readonly", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Policy Number&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PolicyNo, new { @class = "form-control readonly", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Insurance Broker&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.InsuranceBrokerName, new { @class = "form-control readonly", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Insured Amount&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.InsAmt, new { @class = "form-control num readonly", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Premium %&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PremPer, new { @class = "form-control per readonly", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Premium Amount&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PremAmt, new { @class = "form-control readonly", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Policy Issue Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @if (Model.IssueDate != Convert.ToDateTime("01-01-1900") && Model.IssueDate != Convert.ToDateTime("01-01-0001"))
+                {
+                    <input id="IssueDate" name="IssueDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" value="@Convert.ToDateTime(Model.IssueDate).ToString("dd-MMM-yyyy")">
+                }
+                else
+                {
+                    <input id="IssueDate" name="IssueDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off">
+                }
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Policy Expiry Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @if (Model.ExpDate != Convert.ToDateTime("01-01-1900") && Model.ExpDate != Convert.ToDateTime("01-01-0001"))
+                {
+                    <input id="ExpDate" name="ExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" value="@Convert.ToDateTime(Model.ExpDate).ToString("dd-MMM-yyyy")">
+                }
+                else
+                {
+                    <input id="ExpDate" name="ExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off">
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Signed Declaration&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                <label class="f-btn f-btn-default f-btn-file">
+                    Upload<input type="file" name="Attach" id="Attach" class="file validate[required]" />
+                </label>
+                <label class="l-filename" id="Attach_span"></label>
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput"></label>
+            <div class="col-md-3">
+               
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Comments&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control validate[required] readonly", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="container">
+
+            <div class="col-md-2" style="margin-left:14px;"><button id="InsDecl" name="InsDecl" value="InsDecl" type="button" class="btn btn-tgs ">INSURANCE DECLARATION</button></div>
+        </div>
+        <div class="container" style="padding-top:20px;">
+            <div class="col-md-6">
+                @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+            </div>
+            <div class="col-md-6" style="padding-top:30px;text-align:right;">
+                <button id="Cancel" name="Cancel" value="Cancel" type="submit" class="btn CommonDetachValidation btn-tgs">Cancel</button>&nbsp;&nbsp;
+                <button id="Submit" name="Submit" value="Submit" type="submit" class="btn btn-tgs CommonDetachValidation">Submit</button>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $('.readonly').attr('readonly', 'true');
+    $("#InsAmt").val(parseFloat($("#InsAmt").val(), 10).toFixed(2));
+    $("#PremPer").val(parseFloat($("#PremPer").val(), 10).toFixed(2));
+    $("#PremAmt").val(parseFloat($("#PremAmt").val(), 10).toFixed(2));
+    $("#InsDecl").on("click", function () {
+        var TempName = "";
+        CommonDocPopUp(TempName);
+        return false;
+    });
+</script>

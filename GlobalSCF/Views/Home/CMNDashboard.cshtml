@@ -1,0 +1,78 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  IEnumerable<TMP.Models.InvoiceTransactionModel>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+
+
+    @if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.SupplierCustomerTypeID)
+    {
+        if (Convert.ToBoolean(Session["IsMenuPanelHide"]) == true) { }
+        else {
+        @Html.Action("_SupplierDashboard", "Home", new { HideBtn = true }) }
+
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ObligorCustomerTypeID)
+    {
+        if (Convert.ToBoolean(Session["IsMenuPanelHide"]) == true) { }
+        else
+        {
+        @Html.Action("_ObligorDashboard", "Home", new { HideBtn = true })}
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.FunderCustomerTypeID)
+    {
+        if (Convert.ToBoolean(Session["IsMenuPanelHide"]) == true) { }
+        else
+        {
+        @Html.Action("_FunderDashboard", "Home", new { HideBtn = true })}
+    }
+    else if ((Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.InsuranceProviderTypeID) || (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.InsuranceBrokerTypeID))
+    {
+        @Html.Action("_InsuranceDashboard", "Home", new { HideBtn = true })
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.BuyerCustomerTypeID || Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.PayableSupplierCustomerTypeID)
+    {
+        if (Convert.ToBoolean(Session["IsMenuPanelHide"]) == true) { }
+        else
+        {
+        @Html.Action("_BuyerDashboard", "Home", new { HideBtn = true })}
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.BothObligorAndBuyerTypeID)
+    {
+        if (Convert.ToBoolean(Session["IsMenuPanelHide"]) == true) { }
+        else
+        {
+        @Html.Action("_BothDashboard", "Home", new { HideBtn = true })}
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID)
+    {
+        @Html.Action("_AdminDashboard", "Home", new { divCust = true})
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#exampleDB1, #exampleDB2, #exampleDB3, #exampleDB5').DataTable({
+            "pageLength": 5, "ordering": false
+        });
+        $('#exampleDB4').DataTable({
+            "pageLength": 3, "ordering": false
+        });
+    });
+</script>
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+        display: none;
+    }
+    table.dataTable th.dt-center, table.dataTable td.dt-center, table.dataTable td.dataTables_empty {
+    text-align: center !important;
+    height: 10px;
+}
+    
+</style>
+

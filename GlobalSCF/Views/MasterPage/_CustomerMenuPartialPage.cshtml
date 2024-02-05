@@ -1,0 +1,151 @@
+﻿
+@model TMP.Models.CustomerMasterModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    int _currTabIndex = Convert.ToInt32(ViewBag.SelectedTab);
+}
+@if (@Model.CustomerID > 0)
+{
+    <div class="col-md-12 bgsp">
+        <div id="exTab1">
+            <ul class="nav nav-tabs">
+
+                <li class="@(_currTabIndex ==  1 ? "active" : "valdt")">
+                    <a href="/CustomerReg/CompanyInfo?CustomerID=@Model.CustomerID">COMPANY INFORMATION</a>
+                </li>
+                
+                <li class="@(_currTabIndex ==  2 ? "active" : "valdt")">
+                    <a href="/CustomerReg/CompanyMoreInfo?CustomerID=@Model.CustomerID&CustomerTypeID=@Model.CustomerTypeID">MORE DETAILS</a>
+                </li>
+                
+                <li class="@(_currTabIndex ==  3 ? "active" : "valdt")">
+                    <a href="/CustomerReg/AuthSignDetails?CustomerID=@Model.CustomerID">DIRECTORS / SIGNATORIES</a>
+                </li>
+                
+                @if (Model.CompPubList == "N")
+                {
+                    <li class="@(_currTabIndex == 4 ? "active" : "valdt")">
+                        <a href="/CustomerReg/Shareholders?CustomerID=@Model.CustomerID">SHAREHOLDERS</a>
+                    </li>
+                    
+                }
+                <li class="@(_currTabIndex ==  5 ? "active" : "valdt")">
+                    <a href="/CustomerReg/BankAccountDetail?CustomerID=@Model.CustomerID">BANK DETAILS</a>
+                </li>
+                
+
+                @if ((Model.CustomerTypeID == CONT.BuyerCustomerTypeID && Model.ProgramType == CONT.RType) ||
+                    (Model.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && Model.ProgramType == CONT.BothProgramType))
+                {
+                    <li class="@(_currTabIndex == 6 ? "active" : "valdt")">
+
+                        <a href="/CustomerReg/SupplierDetail?CustomerID=@Model.CustomerID">SUPPLIER</a>
+                    </li>
+                    
+
+                }
+
+
+                <li class="@(_currTabIndex ==  7 ? "active" : "valdt")">
+                    <a href="/CustomerReg/CreateUser?CustomerID=@Model.CustomerID&CustomerTypeID=@Model.CustomerTypeID">AUTHORIZED USERS</a>
+                </li>
+                
+                @if (Convert.ToBoolean(Session["IsEditProfile"]) == false)
+                {
+                    if (Model.Status == CONT.UA || Model.Status == CONT.NA || Model.Status == CONT.UR)
+                    {
+                        <li>
+                            <div class="dropdown nav-pills">
+                                <button class="dropbtn @(_currTabIndex == 8 ? "active1" : "valdt")">COMPLIANCE</button>
+                                <div class="dropdown-content">
+                                    @*<a href="/CustomerReg/ComplianceScreening?CustomerID=@Model.CustomerID&CustomerTypeID=@Model.CustomerTypeID&currentStatus=@Model.Status&Admin=Y&MenuOrderNo=1">SCREENING</a>*@
+                                    <a href="/CustomerReg/ComplianceScreening?CustomerID=@Model.CustomerID&CustomerTypeID=@Model.CustomerTypeID&currentStatus=@Model.Status&Admin=Y&MenuOrderNo=2">CLASSIFICATION</a>
+                                    <a href="/CustomerReg/CustomerRisk?CustomerID=@Model.CustomerID&Admin=Y">RISK CATEGORIZATION</a>
+                                </div>
+                            </div>
+                            @*<a href="/CustomerReg/ComplianceScreening?CustomerID=@Model.CustomerID&CustomerTypeID=@Model.CustomerTypeID&currentStatus=@Model.Status&Admin=Y">COMPLIANCE SCREENING</a>*@
+                        </li>
+
+                        @*<li class="@(_currTabIndex == 8 ? "active" : "valdt")">
+                                <a href="/CustomerReg/ComplianceScreening?CustomerID=@Model.CustomerID&CustomerTypeID=@Model.CustomerTypeID&currentStatus=@Model.Status&Admin=Y">COMPLIANCE SCREENING</a>
+                            </li>*@
+                if (Model.CustomerTypeID != CONT.FunderCustomerTypeID)
+                {
+                    
+                    <li class="@(_currTabIndex == 9 ? "active" : "valdt")">
+                        <a href="/CustomerReg/CreditReviewApprove?CustomerID=@Model.CustomerID&CustomerTypeID=@Model.CustomerTypeID&ProgramType=@Model.ProgramType&currentStatus=@Model.Status&Admin=Y">CREDIT APPROVAL</a>
+                    </li>
+                }
+                
+                <li class="@(_currTabIndex == 10 ? "active" : "valdt")">
+                    <a href="/CustomerReg/AccountActivation?CustomerID=@Model.CustomerID&CustomerTypeID=@Model.CustomerTypeID&currentStatus=@Model.Status&Admin=Y">ACCOUNT ACTIVATION</a>
+                </li>
+                        
+                    }
+                }
+                <li class="@(_currTabIndex ==  11 ? "active" : "valdt")">
+                    <a href="/CustomerReg/Documents?CustomerID=@Model.CustomerID">DOCUMENTATION</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    @*<div class="col-md-12 investorName">
+        &nbsp;<div class="col-md-5">COMPANY NAME : @Model.CompanyName</div> <div class="col-md-5">
+            @if (Model.CustomerCode != "")
+            { <span>COMPANY CODE : @Model.CustomerCode</span>}
+        </div>
+    </div>*@
+}
+<style>
+    .dropbtn {
+        background-color: #336699;
+        color: #ffffff;
+        padding: 10px 12.5px;
+        font-size: 12px;
+        font-family: 'Roboto', sans-serif;
+        border: none;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #336699;
+        min-width: 170px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #336699;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #336699;
+    }
+
+    .active1 {
+        background-color: #336699;
+        color: white;
+    }
+    .valdt{
+        border:1px solid #fff;
+        border-radius:5px;
+    }
+</style>
+

@@ -1,0 +1,755 @@
+﻿@*@model TMP.Models.mUserMaster*@
+@model TMP.Models.UserMaster_ListAll_Result
+
+@*@model TMP.Models.UserMasterHistory_ListAllBind_Result*@
+@{
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+    ViewBag.Title = "Edit";
+}
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("Update", "mUserMasters", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff", id = "UMUForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset>
+
+            <div class="col-md-12 createusertitle"><p>Authorized User Information</p></div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UserID)
+            @Html.HiddenFor(model => model.CustomerTypeID)
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.LoginName)
+            @Html.HiddenFor(model => model.Password)
+            @Html.HiddenFor(model => model.DocumentID)
+            @Html.HiddenFor(model => model.PwdExpiryDate)
+            @Html.HiddenFor(model => model.IsAgree)
+            <input type='hidden' value="@Model.UserID" name="hdnUserID" id="hdnUserID" />
+
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Full Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.Status == "NM1")
+                    {
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control validate[required,custom[onlyLetterSp]]", autocomplete = "off", placeholder = "First Name" } })
+                    }
+                    else
+                    {
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control", autocomplete = "off", placeholder = "First Name" } })
+                    }                   
+                </div>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control validate[custom[onlyLetterSp]]", autocomplete = "off", placeholder = "Middle Name" } })                    
+                </div>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control validate[required,custom[onlyLetterSp]]", autocomplete = "off", placeholder = "Last Name" } })                    
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Official E-Mail&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control isEmailGood validate[required,custom[email]] ", type = "email" } })                    
+                </div>
+                <div class="col-md-1"></div>
+               
+                    <label class="col-md-2" for="textinput">Mobile Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control tel validate[required]", maxlength = "30", autocomplete = "off" } })                        
+                    </div>
+                    <div class="col-md-1"></div>
+               
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Designation&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownList("DesignationID", null, "--  Select  --", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+              
+                    <label class="col-md-2" for="textinput">Length of Service (Year)&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.EditorFor(model => model.ServLength, new { htmlAttributes = new { @class = "form-control validate[required] validate[custom[integer]]", maxlength = "3", autocomplete = "off" } })                        
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12 createusertitle">Personal Identification Details</div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">ID Type&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownList("DocumentID", null, "-- Select --", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">ID Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.DocNo, new { htmlAttributes = new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" } })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">ID Copy&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.Attach != null)
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="Attach" id="Attach" class="file" />
+                        </label>
+                        <label class="l-filename" id="Attach_span"></label>
+                        if (Model.Attach != "")
+                        {
+                            @Html.HiddenFor(x => x.Attach)
+                            <p class="p-view">
+                                <a href='~/Files/Upload/@Model.Attach' target="_blank">View</a>
+                            </p>
+                        }
+                    }
+                    else
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="Attach" id="Attach" class="validate[required] file" />
+                        </label>
+                        <label class="l-filename" id="Attach_span"></label>
+                    }
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput"></label>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            
+            <div class="col-md-12" style="height:20px;"></div>
+            <div class="col-md-12 createusertitle"><p>User Access Details</p></div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="companyname">Company Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.Status == "NM1")
+                    {                        
+                        @Html.DropDownListFor(model => model.CustomerID, new SelectList(ViewBag.DDLCustomerID, "CustomerID", "CompanyName", Model.CustomerID), "-- Select --", new { @class = "form-control validate[required]" })
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(model => model.CustomerID)
+                        @Html.DropDownListFor(model => model.CustomerID, new SelectList(ViewBag.DDLCustomerID, "CustomerID", "CompanyName", Model.CustomerID), "-- Select --",
+                           new { @disabled = "disabled", @class = "form-control validate[required]" })                     
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="role">Role&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownList("ddlRole", ViewBag.Roles as SelectList, "-- Select --", new { @class = "form-control" })
+                    @Html.ValidationMessage("ddlRole", "", new { @class = "text-danger", id = "validdlRole" })
+                    <div id="DivAddLink"></div>
+                    @Html.Hidden("hidSelRole")
+                </div>
+                <div class="col-md-2">
+                    <div id="divaddremove" style="width:160px"> <div id="AddnewDiv"></div> </div>
+                </div>
+                <div class="col-md-5"></div>
+            </div>
+            <div class="form-group">
+                @if (Model.lstUserRoleLinkMaster_ListAll_Result != null)
+                {
+                    string hidstring = string.Empty;
+                    string hidRolestring = string.Empty;
+                    foreach (var item in Model.lstUserRoleLinkMaster_ListAll_Result)
+                    {
+                        hidstring += item.UserRoleLinkID + ",";
+                        hidRolestring += item.RoleID + ",";
+                        <div id="delRole_@item.UserRoleLinkID">
+                            <label class="col-md-2" for="role"></label>
+                            <div class="col-md-2">
+                                <a id="lnk_@item.RoleID" style="float:left; cursor:pointer;" onclick="ViewDetail(this.id)">@item.RoleName</a>
+                                <a id="lnk_@item.UserRoleLinkID" style="float:right;width:10%; cursor:pointer;" onclick='DeleteRole(this.id,@item.RoleID,"@item.Status")'>
+                                    @*<i class='fa fa-times 1x'></i>*@
+                                    <i style='color:red;' class='glyphicon glyphicon-remove'></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    @Html.Hidden("hidUserRoleLink", hidstring);
+                    @Html.Hidden("hidRolestring", hidRolestring);
+                }
+            </div>
+            @if (Model.Status != "NM1")
+                {
+                <div class="col-md-12" style="height:10px;"></div>
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">Status</label>
+                        <div class="col-md-3">
+                            @Html.CheckBoxFor(model => model.IsActive)
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="form-group">
+                        <label class="col-md-2" for="textinput">Delete</label>
+                        <div class="col-md-3">
+                            @Html.CheckBoxFor(model => model.IsDelete)
+                        </div>
+                    </div>
+            }
+
+
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-7">
+                @Html.TextBox("ProcessRemark", "", new { @class = "col-md-12 footerbox validate[required]", placeholder = "Remarks" })
+                @Html.ValidationMessage("ProcessRemark", "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-5" style="text-align:right;">
+                <button id="createsave" name="createsave" onclick="checkRole();" class="btn-tgs">Save</button>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+        </fieldset>
+    }
+
+    <div id="loading" style="display:none;">
+        <img id="loading-image" src="~/images/page-load.gif" height="100" width="100" alt="Loading..." />
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:500px;">
+                    <div id='myModalContent'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style type="text/css">
+    .web_dialog_overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: #000000;
+        opacity: .15;
+        filter: alpha(opacity=15);
+        -moz-opacity: .15;
+        z-index: 101;
+        display: none;
+    }
+
+    .web_dialog {
+        display: none;
+        position: fixed;
+
+        /*overflow-y: scroll;
+        overflow-x: scroll;*/
+        top: 40%;
+        left: 41%;
+        margin-left: -190px;
+        margin-top: -100px;
+        background-color: #ffffff;
+        /*border: 2px solid #336699;*/
+        padding: 0px;
+        z-index: 102;
+    }
+
+    .web_dialog_title {
+        border-bottom: solid 2px #336699;
+        background-color: #336699;
+        padding: 4px;
+        color: White;
+        font-weight: bold;
+    }
+
+        .web_dialog_title a {
+            color: White;
+            text-decoration: none;
+        }
+
+    .align_right {
+        text-align: right;
+    }
+
+    #loading {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        position: fixed;
+        display: block;
+        opacity: 0.7;
+        background-color: #fff;
+        z-index: 99;
+        text-align: center;
+    }
+
+    #loading-image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 100;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#popup').click(function () {
+
+            var UserID = $("#hdnUserID").val();
+
+            $.ajax({
+                url: "/mUserMasters/CommentResult?UserID=" + UserID,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                    //$("#NEW2").html(data);
+                    $("table.display").DataTable();
+                    event.preventDefault();
+                    return false;
+                },
+
+            });
+
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#UMUForm").validationEngine(
+              'attach', {
+                  promptPosition: "bottomLeft",
+                  scroll: false,
+                  autoHidePrompt: true,
+                  autoHideDelay: 3500,
+                  fadeDuration: 0.3,
+                  focusFirstField: false,
+                  MaxErrorsPerField: 1
+              });
+
+        $("#ddlRole").change(function (e) {
+
+            var value = $("#ddlRole").val();
+            if (value != "") {
+
+
+                var removenewButton = document.getElementById("AddnewDiv");
+                removenewButton.parentNode.removeChild(removenewButton); //remove element
+
+                var createAddnewDiv = document.getElementById("divaddremove");
+                var addElementDiv = document.createElement("div"); //Add element
+                addElementDiv.setAttribute("id", "AddnewDiv");
+                //addElementDiv.setAttribute("style", "float:right;width:660px;");
+                addElementDiv.setAttribute("style", "width:160px;");
+                createAddnewDiv.appendChild(addElementDiv);
+
+                var AddnewButton = document.getElementById("AddnewDiv");
+                var dynamicId = "btn_" + $("#ddlRole").val();
+                var addElement = document.createElement("input"); //Add element
+                addElement.setAttribute("type", "button");
+                addElement.setAttribute("id", dynamicId);
+                addElement.setAttribute("name", dynamicId);
+                addElement.setAttribute("value", "View Detail");
+                addElement.setAttribute("onclick", "ViewDetail(this.id)");
+                AddnewButton.appendChild(addElement);
+
+                var dynamicId = "btn_add_" + $("#ddlRole").val();
+                var addElement = document.createElement("input"); //Add element
+                addElement.setAttribute("type", "button");
+                addElement.setAttribute("id", dynamicId);
+                addElement.setAttribute("name", dynamicId);
+                addElement.setAttribute("value", "Add Role");
+                addElement.setAttribute("onclick", "AddRole(this.id)");
+                AddnewButton.appendChild(addElement);
+
+            }
+            else {
+                var removenewButton = document.getElementById("AddnewDiv");
+                removenewButton.parentNode.removeChild(removenewButton); //remove element
+
+                var createAddnewDiv = document.getElementById("divaddremove");
+                var addElementDiv = document.createElement("div"); //Add element
+                addElementDiv.setAttribute("id", "AddnewDiv");
+                addElementDiv.setAttribute("style", "width:160px;");
+                createAddnewDiv.appendChild(addElementDiv);
+            }
+        });
+      
+
+        $("#btnShowModal").click(function (e) {
+            ShowDialog(true);
+            e.preventDefault();
+        });
+
+        $("#btnClose").click(function (e) {
+            HideDialog();
+            e.preventDefault();
+        });
+
+        $("#btnSubmit").click(function (e) {
+            var brand = $("#brands input:radio:checked").val();
+            $("#output").html("<b>Your favorite mobile brand: </b>" + brand);
+            HideDialog();
+            e.preventDefault();
+        });
+    });
+
+    function checkRole() {
+        var Role = document.getElementById("hidSelRole").value;
+        var RolePast = document.getElementById("hidRolestring").value;
+        if (Role == '' && RolePast == '') {
+            document.getElementById("validdlRole").innerHTML = "Please Select Role";
+            
+            return false;
+        }
+    }
+
+    function ViewDetail(id) {
+
+        $('#loading').show();
+        var str = id.split('_');
+        
+        var roleid = str[1];// document.getElementById(id).value;
+        $.ajax({
+            url: "/mRoleMasters/RoleView",
+            type: "POST",
+            data: "{RoleId:'" + roleid + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            success: function (result) {
+                if (result == 'Roles not exist.') {
+                    $('#loading').hide();
+                    
+                    $("#errorMsg").html(result);
+                    $('#Error').modal('show');
+                }
+                else {
+                    $('#myModalContent').html(result);
+                    $('#myModal').modal('show');
+                    //$("#NEW1").html(result);
+                   
+                    $('#loading').hide();
+                    ShowDialog(true);
+                }
+                $('#loading').hide();
+                return false;
+            },
+            error: function () {
+                $('#loading').hide();
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+
+        //ShowDialog(true);
+    }
+
+    function AddRole(id) {
+        $('#loading').show();
+        var str = id.split('_');
+        
+        var roleid = str[2];// document.getElementById(id).value;
+
+        var roleid = str[2];// document.getElementById(id).value;
+        var selval = document.getElementById("hidSelRole").value;
+        if (selval != '') {
+            var checkroleId = '';
+            var lastchar = selval.slice(-1);
+            if (lastchar == ',')
+                selval = selval.slice(0, -1);
+            var removeRole = selval;
+            var spiltRole = removeRole.split(',');
+            for (var i = 0; i < spiltRole.length; i++) {
+                if (spiltRole[i] == roleid) {
+                    $('#loading').hide();
+                    document.getElementById("validdlRole").innerHTML = "Role Name already exist.";
+                    
+                    return false;
+                }
+            }
+
+        }
+
+        var Rolestring = document.getElementById("hidRolestring").value;
+        if (Rolestring != '') {
+            var checkroleId = '';
+            var lastchar = Rolestring.slice(-1);
+            if (lastchar == ',')
+                Rolestring = Rolestring.slice(0, -1);
+            var removeRole = Rolestring;
+            var spiltRole = removeRole.split(',');
+            for (var i = 0; i < spiltRole.length; i++) {
+                if (spiltRole[i] == roleid) {
+                    $('#loading').hide();
+                    document.getElementById("validdlRole").innerHTML = "Role Name already exist.";
+                    
+                    return false;
+                }
+            }
+
+        }
+
+        $.ajax({
+            url: "/mUserMasters/GetRoleName",
+            type: "POST",
+            data: "{roleid:'" + roleid + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            success: function (result) {
+                if (result == 'Roles not exist.') {
+                    $('#loading').hide();
+                    
+                    $("#errorMsg").html(result);
+                    $('#Error').modal('show');
+                }
+                else {
+                    //"DivAddLink"
+                    var str = result.split('!#!');
+                    //$('#hidRoleID').val(str[0]);
+                    //$('#spRole').text(str[1]);
+
+                    var AddnewButton = document.getElementById("DivAddLink");
+                    var dynamicId = "lnk_" + str[0];
+                    var addElement = document.createElement("a"); //Add element
+                    //addElement.setAttribute("type", "button");
+                    addElement.setAttribute("id", dynamicId);
+                    addElement.setAttribute("name", dynamicId);
+                    addElement.setAttribute("style", "float:left;");
+
+                    //addElement.setAttribute("value", "View Detail");
+                    addElement.setAttribute("onclick", "ViewDetail(this.id)");
+                    //addElement.setAttribute("onmouseover", "ViewDetail(this.id)");
+                    addElement.innerHTML = str[1];
+                    AddnewButton.appendChild(addElement);
+
+                    var dynamicId = "lnkDel_" + str[0];
+                    var addElement = document.createElement("a"); //Add element
+                    addElement.setAttribute("id", dynamicId);
+                    addElement.setAttribute("name", dynamicId);
+                    addElement.setAttribute("style", "width:10%;float:right;");
+                    addElement.setAttribute("onclick", "DeleteNewRole(this.id)");
+                    //addElement.innerHTML = "<i class='fa fa-times 1x'></i>";
+                    addElement.innerHTML = "<i style='color:red;' class='glyphicon glyphicon-remove'></i>";
+                    AddnewButton.appendChild(addElement);
+
+                    var dyanmicDiv = document.createElement('div');
+                    dyanmicDiv.setAttribute("style", "width:100%;float:left;");
+                    AddnewButton.appendChild(dyanmicDiv);
+
+
+                    if (document.getElementById('hidSelRole').value == "") {
+                        document.getElementById('hidSelRole').value = str[0] + ',';
+                    }
+                    else {
+                        var getSelRole = document.getElementById('hidSelRole').value;
+                        getSelRole = getSelRole + str[0] + ',';
+                        $('#hidSelRole').val(getSelRole);
+                    }
+
+                    if (document.getElementById('hidRolestring').value == "") {
+                        document.getElementById('hidRolestring').value = str[0] + ',';
+                    }
+                    else {
+                        var getSelRole = document.getElementById('hidRolestring').value;
+                        getSelRole = getSelRole + str[0] + ',';
+                        $('#hidRolestring').val(getSelRole);
+                    }
+
+                    var removenewButton = document.getElementById("AddnewDiv");
+                    removenewButton.parentNode.removeChild(removenewButton);
+
+                    var createAddnewDiv = document.getElementById("divaddremove");
+                    var addElementDiv = document.createElement("div"); //Add element
+                    addElementDiv.setAttribute("id", "AddnewDiv");
+                    addElementDiv.setAttribute("style", "width:160px;");
+                    createAddnewDiv.appendChild(addElementDiv);
+
+                    document.getElementById("validdlRole").innerHTML = "";
+                }
+                $('#loading').hide();
+                return false;
+            },
+            error: function () {
+                $('#loading').hide();
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+
+        // $("#output").html("<b>Your favorite mobile brand: </b>" + brand);
+        // HideDialog();
+    }
+
+    function DeleteNewRole(id) {
+
+        var str = id.split('_');
+        var roleid = str[1];
+        var delRole = document.getElementById("hidSelRole").value;
+        var lastchar = delRole.slice(-1);
+        if (lastchar == ',')
+            delRole = delRole.slice(0, -1);
+
+        var removeRole = delRole;
+        var spiltRole = removeRole.split(',');
+        var spilitString = '';
+        for (var i = 0; i < spiltRole.length; i++) {
+            if (spiltRole[i] != str[1]) {
+                spilitString += spiltRole[i] + ",";
+            }
+        }
+        document.getElementById("hidSelDeptDetail").value = "";
+        document.getElementById("hidSelDeptDetail").value = spilitString;
+        var delediv = "lnkDel_" + str[1];
+        var deltag = "lnk_" + str[1];
+        var removenewButton = document.getElementById(delediv);
+        removenewButton.parentNode.removeChild(removenewButton);
+
+        var removenewTag = document.getElementById(deltag);
+        removenewTag.parentNode.removeChild(removenewTag);
+
+        document.getElementById("dialog").style.display = 'none';
+        return false;
+    }
+
+    function DeleteRole(id, RoleId, status) {
+
+        $('#loading').show();
+        var str = id.split('_');
+        
+        var roleid = str[1];// document.getElementById(id).value;
+
+        $.ajax({
+            url: "/mUserMasters/DeleteRole",
+            type: "POST",
+            data: "{roleid:'" + roleid + "',status:'" + status + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            success: function (result) {
+                if (result == 'Roles not exist.') {
+                    $('#loading').hide();
+                    $("#errorMsg").html(result);
+                    $('#Error').modal('show');
+                }
+                else {
+                    var delRole = document.getElementById("hidUserRoleLink").value;
+                    var lastchar = delRole.slice(-1);
+                    if (lastchar == ',')
+                        delRole = delRole.slice(0, -1);
+
+                    var removeRole = delRole;
+                    var spiltRole = removeRole.split(',');
+                    var spilitString = '';
+                    for (var i = 0; i < spiltRole.length; i++) {
+                        if (spiltRole[i] != str[1]) {
+                            spilitString += spiltRole[i] + ",";
+                        }
+                    }
+                    document.getElementById("hidUserRoleLink").value = "";
+                    document.getElementById("hidUserRoleLink").value = spilitString;
+                    var delediv = "delRole_" + str[1];
+                    var removenewButton = document.getElementById(delediv);
+                    removenewButton.parentNode.removeChild(removenewButton);
+
+                    var delRole = document.getElementById("hidRolestring").value;
+                    var lastchar = delRole.slice(-1);
+                    if (lastchar == ',')
+                        delRole = delRole.slice(0, -1);
+
+                    var removeRole = delRole;
+                    var spiltRole = removeRole.split(',');
+                    var spilitString = '';
+                    for (var i = 0; i < spiltRole.length; i++) {
+                        if (spiltRole[i] != RoleId) {
+                            spilitString += spiltRole[i] + ",";
+                        }
+                    }
+
+                    document.getElementById("hidRolestring").value = "";
+                    document.getElementById("hidRolestring").value = spilitString;
+
+                    document.getElementById("dialog").style.display = 'none';
+                }
+                $('#loading').hide();
+                return false;
+            },
+            error: function () {
+                $('#loading').hide();
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+
+        // $("#output").html("<b>Your favorite mobile brand: </b>" + brand);
+        // HideDialog();
+    }
+
+    function ShowDialog(modal) {
+        $("#overlay").show();
+        $("#dialog").fadeIn(300);
+
+        if (modal) {
+            $("#overlay").unbind("click");
+        }
+        else {
+            $("#overlay").click(function (e) {
+                HideDialog();
+            });
+        }
+    }
+
+    function HideDialog() {
+        $("#overlay").hide();
+        $("#dialog").fadeOut(300);
+    }
+
+    function CheckValidName(Id) {
+
+        var UserLogin = document.getElementById(Id).value;
+        $.ajax({
+            url: "/mUserMasters/CheckUserName",
+            type: "POST",
+            data: "{UserLogin:'" + UserLogin + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            success: function (result) {
+                document.getElementById('VLoginName').innerText = result;
+                $('#VLoginName').text(result);
+                $('#VLoginName').css('color', 'Green');
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+    }
+</script>

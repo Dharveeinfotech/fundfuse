@@ -1,0 +1,66 @@
+﻿@{
+    if (Session["UserName"] != null && Session["UserId"] != null)
+    {
+        using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="col-md-10 header">
+            <!--header-->
+            <div class="col-md-3">
+                <div class="col-md-12">
+                    <div class="col-md-3 profilepic">
+                        <img src="~/image/stenet.png">
+                    </div>
+                    <div class="col-md-9 user-acct">
+                        <ul>
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">@{ Convert.ToString(Session["UserName"]); }<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li> <a href="javascript:document.getElementById('logoutForm').submit()" style="color:#000;">Log off</a> @*<a href="#" style="color:#000;">Logout</a>*@</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="bell"><i class="fa fa-bell fa-1x"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope fa-1x"></i></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6"></div>
+
+            <div class="col-md-3">
+                <form>
+                    <div class="input-group searchbox">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    <div class="col-md-10">
+        <div class="location-area">
+            <p>Your are here home/dashboard/</p>
+        </div>
+
+        <div class="welcome-msg">
+            <h4 class="h3margin">Welcome <span><strong>@{ Convert.ToString(Session["UserName"]); }</strong></span></h4>
+            <p>What would you like to do today</p>
+        </div>
+
+        <div><p class="col-md-10 h1head">Dashboard</p></div>
+
+    </div>
+}
+
+    }
+    else
+    {
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Log in", "Login", "mUserMasters", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>
+    }
+
+}

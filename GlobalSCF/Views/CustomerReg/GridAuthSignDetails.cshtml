@@ -1,0 +1,101 @@
+﻿@model  IEnumerable<TMP.Models.CustomerShareHolderModel>
+@if (Model.Count() > 0)
+{
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <table id="example1" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>Passport Number</th>
+                        <th>Nationality</th>
+                        <th>E-Mail</th>
+                        <th>Mobile Number</th>
+                        <th>Passport Copy</th>
+                        <th>POA / Board Resolution</th>
+                        <th>Type</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th style="display:none;">
+                        </th>
+                        <th style="display:none;">
+                        </th>
+                    </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.FirstName</td>
+                            <td>@item.MiddleName</td>
+                            <td>@item.LastName</td>
+                            <td>@item.PassNo</td>
+                            <td>@item.NatCountryName</td>
+                            <td>@item.EmailID</td>
+                            <td>@item.MobileNo</td>
+                            <td>
+                                @if (item.UpdPassport != "")
+                                {
+                                    @*<a href='~/Files/Upload/@item.UpdPassport' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                }
+                            </td>
+                            <td>
+                                @if (item.UpdPOA != "")
+                                {
+                                    @*<a href='~/Files/Upload/@item.UpdPOA' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdPOA_PopUp" data-id="@item.UpdPOA">View</a>
+                                }
+                            </td>
+                            <td>@item.CustTypeDesc</td>
+                            <td>@Html.ActionLink("Edit", "AuthSignDetails", new { CustomerID = item.CustomerID, CAid = item.CustomerShareHoldID, CDid = 0,  did = 0 })</td>
+                            <td>@Html.ActionLink("Delete", "AuthSignDetails", new { CustomerID = item.CustomerID, did = item.CustomerShareHoldID, CDid = 0, CAid = 0 })</td>
+                            <td class="UpdPassport" style="display:none;">
+                                <span>@item.UpdPassport</span>
+                            </td>
+                            <td class="UpdPOA" style="display:none;">
+                                <span>@item.UpdPOA</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+}
+    <script>
+        $("#example1").on("click", ".UpdPassport_PopUp", function () {
+            var row = $(this).closest("tr");
+            var fileName = row.find(".UpdPassport").find("span").html();
+            var url = '/Files/Upload/' + fileName + '#toolbar=0';
+            $('#dociframe').attr('src', url)
+            $('#DocPopup').modal({ show: true });
+        });
+        $("#example1").on("click", ".UpdPOA_PopUp", function () {
+            var row = $(this).closest("tr");
+            var fileName = row.find(".UpdPOA").find("span").html();
+            var url = '/Files/Upload/' + fileName + '#toolbar=0';
+            $('#dociframe').attr('src', url)
+            $('#DocPopup').modal({ show: true });
+        });
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            "pageLength": 5,
+
+        });
+    });
+    </script>
+
+    <style>
+        .dataTables_filter {
+            display: none;
+        }
+    </style>
+
+
+
+

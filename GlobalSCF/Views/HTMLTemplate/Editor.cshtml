@@ -1,0 +1,14 @@
+﻿@model TMP.Models.HTMLTemplate_ListAll_Result
+@{
+    ViewBag.Title = "Editor";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<h2>Editor</h2>
+<div class="editor-label">
+    @Html.LabelFor(model => model.PageContent)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.PageContent)
+    @Html.ValidationMessageFor(model => model.PageContent)
+</div>

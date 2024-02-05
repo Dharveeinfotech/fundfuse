@@ -1,0 +1,14 @@
+﻿
+<p style="text-align:center;font-size: 30px;padding-top: 10%;">
+    Your electronic signature has been successfully completed.
+</p>
+
+<script>
+    var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+    if (isSafari) {
+        setTimeout(function () {
+            opener.location.reload(true);
+            window.close();
+        }, 2000);
+    }
+</script>

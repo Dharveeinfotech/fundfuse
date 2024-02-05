@@ -1,0 +1,430 @@
+﻿@model  TMP.Models.CustomerShareHolderModel
+@if (Enumerable.Count(@ViewBag.DirAuthSignGrid) > 0)
+{
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="col-md-12 padoff" id="DirAuth">
+        <div class="col-md-12 createusertitle padoff">DIRECTORS / SIGNATORIES DETAILS</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12">
+                <table id="example11" class="display" cellspacing="0" width="100%" style="margin:0">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Passport Number</th>
+                            <th>Nationality</th>
+                            <th>Passport Copy</th>
+                            <th>POA / Board Resolution</th>
+                            <th>Type</th>
+                            <th>View</th>
+                            <th style="display:none;">
+                            </th>
+                            <th style="display:none;">
+                            </th>
+                        </tr>
+                    <tbody>
+
+                        @foreach (var item in ViewBag.DirAuthSignGrid)
+                        {
+
+                            <tr>
+                                <td>@item.FirstName</td>
+                                <td>@item.MiddleName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.PassNo</td>
+                                <td>@item.NatCountryName</td>
+                                <td>
+                                    @if (item.UpdPassport != "")
+                                    {
+                                        @*<a href='~/Files/Upload/@item.UpdPassport' target="_blank">View</a>*@
+                                        <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.UpdPOA != "")
+                                    {
+                                        @*<a href='~/Files/Upload/@item.UpdPOA' target="_blank">View</a>*@
+                                        <a href="javascript:void(0);" class="UpdPOA_PopUp" data-id="@item.UpdPOA">View</a>
+                                    }
+                                </td>
+                                <td>@item.CustTypeDesc</td>
+                                <td><a href="#" onclick="ViewDetail('@item.CustomerShareHoldID')">View</a></td>
+                                <td class="UpdPassport" style="display:none;">
+                                    <span>@item.UpdPassport</span>
+                                </td>
+                                <td class="UpdPOA" style="display:none;">
+                                    <span>@item.UpdPOA</span>
+                                </td>      
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+}
+<div class="col-md-12 padoff" id="ShareHolder">
+    @if (Enumerable.Count(@ViewBag.CompSharHoldGrid) > 0 && Enumerable.Count(@ViewBag.CompSharHoldGrid) > 0)
+    {
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12 createusertitle padoff">SHAREHOLDERS</div>
+    }
+    @if (Enumerable.Count(@ViewBag.SharHoldGrid) > 0)
+    {
+
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+
+            <div class="col-md-12">
+                <table id="example12" class="display" cellspacing="0" width="100%" style="margin:0">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Shareholding Percentage</th>
+                            <th>Passport Number</th>
+                            <th>Nationality</th>
+                            <th>Passport Copy</th>
+                            <th>National ID Copy</th>
+                            <th style="display:none;">
+                            </th>
+                            <th style="display:none;">
+                            </th>
+                        </tr>
+                    <tbody>
+
+                        @foreach (var item in ViewBag.SharHoldGrid)
+                        {
+                            <tr>
+                                <td>@item.FirstName</td>
+                                <td>@item.MiddleName</td>
+                                <td>@item.LastName</td>
+                                <td>@string.Format("{0:0,0.00}", @item.SharePer)&nbsp;%</td>
+                                <td>@item.PassNo</td>
+                                <td>@item.NatCountryName</td>
+                                <td>
+                                    @if (item.UpdPassport != "")
+                                    {
+                                        @*<a href='~/Files/Upload/@item.UpdPassport' target="_blank">View</a>*@
+                                        <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.UpdNatIden != "")
+                                    {
+                                        @*<a href='~/Files/Upload/@item.UpdNatIden' target="_blank">View</a>*@
+                                        <a href="javascript:void(0);" class="UpdNatIden_PopUp" data-id="@item.UpdNatIden">View</a>
+                                    }
+                                </td>
+                                <td class="UpdPassport" style="display:none;">
+                                    <span>@item.UpdPassport</span>
+                                </td>
+                                <td class="UpdNatIden" style="display:none;">
+                                    <span>@item.UpdNatIden</span>
+                                </td>  
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    }
+    @if (Enumerable.Count(@ViewBag.CompSharHoldGrid) > 0)
+    {
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+
+            <div class="col-md-12">
+                <table id="example21" class="display" cellspacing="0" width="100%" style="margin:0">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>Name of Company</th>
+                            <th>Shareholding Percentage</th>
+                            <th>Trade License Number</th>
+                            <th>Trade License</th>
+                            <th>Beneficial Owner List</th>
+                            <th style="display:none;">
+                            </th>
+                            <th style="display:none;">
+                            </th>
+                            <th style="display:none;">
+                            </th>
+                        </tr>
+                    <tbody>
+
+                        @foreach (var item in ViewBag.CompSharHoldGrid)
+                        {
+                            if (item.ParentID == 0)
+                            {
+                                <tr>
+                                    <td>@item.ShareCompanyName</td>
+                                    <td>@string.Format("{0:0,0.00}", @item.SharePer)&nbsp;%</td>
+                                    <td>@item.TradeLicNo</td>
+                                    <td>
+                                        @if (item.UpdTradeLic != "")
+                                        {
+                                            @*<a href='~/Files/Upload/@item.UpdTradeLic' target="_blank">View</a>*@
+                                            <a href="javascript:void(0);" class="UpdTradeLic_PopUp" data-id="@item.UpdTradeLic">View</a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.ChildCnt > 0)
+                                        {
+                                            <a href="javascript:void(0);" class="OpenList" data-id="@item.CustomerShareHoldID">View</a>
+                                        }
+                                    </td>
+                                    <td class="CustomerID" style="display:none;">
+                                        <span>@item.CustomerID</span>
+                                    </td>
+                                    <td class="CustomerShareHoldDetID" style="display:none;">
+                                        <span>@item.CustomerShareHoldID</span>
+                                    </td>
+                                    <td class="UpdTradeLic" style="display:none;">
+                                        <span>@item.UpdTradeLic</span>
+                                    </td>  
+                                </tr>
+
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    }
+</div>
+
+@if (Enumerable.Count(@ViewBag.CreditGrid) > 0)
+{
+    <div class="col-md-12 padoff" id="Credit">
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12 createusertitle padoff">CREDIT FACILITY</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12">
+                <table id="example14" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>Bank Name</th>
+                            <th>Facility Type</th>
+                            <th>Currency</th>
+                            <th>Facility Limit</th>
+                            <th>Utilization</th>
+                        </tr>
+                    <tbody>
+
+                        @foreach (var item in ViewBag.CreditGrid)
+                        {
+                            <tr>
+                                <td>@item.BankName</td>
+                                <td>@item.FacType</td>
+                                <td>@item.CurrencyCode</td>
+                                <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.FacLimit)</td>
+                                <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.FacUtilize)</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+}
+@if (Enumerable.Count(@ViewBag.Obligors) > 0)
+{
+    <div class="col-md-12" style="height:15px;"></div>
+    <div class="container padoff" id="Supplier">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="col-md-12 createusertitle" style="margin-bottom: 0px;">SUPPLIER</div>
+            <div class="tab-pane" id="4a">
+
+                <div class="col-md-12 padoff">
+                    <table id="exampleDB5" cellspacing="0" width="100%" style="margin-top:-5px;">
+                        <thead>
+                            <tr class="bgspr" style="display:none;">
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @if (Enumerable.Count(@ViewBag.Obligors) > 0)
+                        {
+                            <tbody>
+                                @foreach (var item in ViewBag.Obligors)
+                                {
+                                    <tr>
+                                        @if (item.IsNew)
+                                        {
+                                            <td><div class="col-md-2"><span class="glyphicon glyphicon-user mkGreen" style="font-size:25px;"></span></div><div class="col-md-10" style="padding-top:10px;"> @item.CompanyName <span style="padding-left:15px;" class="mkGreen"> NEW</span></div></td>
+                                        }
+                                        else
+                                        {
+                                            <td><div class="col-md-2"><span class="glyphicon glyphicon-user" style="font-size:25px;"></span></div><div class="col-md-10" style="padding-top:10px;"> @item.CompanyName </div></td>
+                                        }
+                                        @if (item.IsSupplier)
+                                        {
+                                            <td><a href='@Url.Action("FundingPartnerObligorDetails", "Factoring", new { ObligorID = item.CompanyID, ProgramType = item.ProgramType })'>View</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a href="javascript:void(0);" class="OpenList" data-id="@item.CustomerID">View</a>
+                                            </td>
+                                        }
+                                        <td class="CustomerID" style="display:none;">
+                                            <span>@item.CustomerID</span>
+                                        </td>
+                                        <td class="CompanyID" style="display:none;">
+                                            <span>@item.CompanyID</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+}
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example11,#example12,#example21,#example14,#exampleDB5').DataTable({
+            "pageLength": 5,
+        });
+    });
+
+    $("#example11").on("click", ".UpdPassport_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdPassport").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example11").on("click", ".UpdPOA_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdPOA").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example12").on("click", ".UpdPassport_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdPassport").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $("#example12").on("click", ".UpdNatIden_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdNatIden").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    
+    $("#example21").on("click", ".UpdTradeLic_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdTradeLic").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    
+    ShareCompany();
+    function ViewDetail(id) {
+        var CustomerShareHoldID = id;
+        $.ajax({
+            url: "/CustomerReg/AuthSignDetailsPopUp",
+            type: "POST",
+            data: "{CustomerShareHoldID:'" + CustomerShareHoldID + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('#factoringview').html(result);
+                $('#factoringModal').modal('show');
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+    }
+    $("#exampleDB5").on("click", ".OpenList", function () {
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var row = $(this).closest("tr");
+        var CustomerID = row.find(".CustomerID").find("span").html();
+        var CustomerSuppID = row.find(".CompanyID").find("span").html();
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: "/CustomerReg/SupplierDetailPop?CustomerID=" + CustomerID + "&CustomerSuppID=" + CustomerSuppID + "&IsBank=True",
+            contentType: "application/json; charset=utf-8",
+            data: "{}",
+            datatype: "json",
+            success: function (data) {
+                $('#myModalContent').html(data);
+                $('#process').modal('hide');
+                $('#myModal').modal('show');
+            },
+        });
+    });
+</script>
+<style>
+    #DirAuth {
+        display: none;
+    }
+
+    #ShareHolder {
+        display: none;
+    }
+
+    #Credit {
+        display: none;
+    }
+
+    #Supplier {
+        display: none;
+    }
+</style>

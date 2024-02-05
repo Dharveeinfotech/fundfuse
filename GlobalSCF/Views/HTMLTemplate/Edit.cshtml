@@ -1,0 +1,226 @@
+﻿@model TMP.Models.HTMLTemplate_ListAll_Result
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Edit</h2>
+<div class="container">
+    <div class="col-md-2 nav-panel">
+        <!--left panel-->
+        <div>
+            <!-- logo -->
+            <center><img src="~/image/logo.png" class="logo"></center>
+        </div>
+        <div class="nav-head-text">
+            <p>HTML Template</p>
+        </div>
+
+        <div class="nav-bar-area">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Task</a></li>
+                <li><a href="#">Administration</a></li>
+                <li><a href="#">Service Request</a></li>
+                <li><a href="#">Reminder</a></li>
+            </ul>
+        </div>
+        <div class="copy-right">
+            <!-- Copyrights -->
+            <p>Copyright &copy; 2015 , </br> All Rights Reserved.</p>
+        </div>
+    </div><!--left panel-->
+
+    <div class="col-md-12 header">
+        <!--header-->
+        <div class="col-md-3">
+            <div class="col-md-12">
+                <div class="col-md-3 profilepic">
+                    <img src="~/image/stenet.png">
+                </div>
+                <div class="col-md-9 user-acct">
+                    <ul>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Stenet<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" style="color:#000;">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="bell"><i class="fa fa-bell fa-1x"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-envelope fa-1x"></i></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6"></div>
+
+
+    </div><!--header-->
+
+    <div class="col-md-12">
+        <!--sub header-->
+
+        <div class="location-area">
+            <p>You are here home/administrator/</p>
+        </div>
+
+        <div class="welcome-msg">
+            <h4 class="h3margin">Welcome <span><strong>Stenet</strong></span></h4>
+            <p>What would you like to do today</p>
+        </div>
+
+        <div>
+            <p class="col-md-12 h1head">Template</p>
+        </div>
+
+    </div><!--sub header-->
+    <div class="col-md-12 createusertitle">Edit</div>
+    <div class="col-md-12">
+        <form class="col-md-12">
+            <fieldset>
+                @using (Html.BeginForm("Index", "HTMLTemplate"))
+                {
+                    @Html.AntiForgeryToken()
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(Model => Model.HtmlTemplateID)
+
+                    <div id="divISSMS" class="form-group">
+                        <label class="col-md-2">
+                            @Html.RadioButtonFor(model => Model.IsSMS, "SMS", new { @class = "Redio" }) <span> IS SMS  </span>
+                        </label>
+                        <label class="col-md-10">
+                            @Html.RadioButtonFor(model => Model.IsSMS, "Email", new { @class = "Redio" }) <span> IS Email </span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Dynamic Text</label>
+                        <div class="col-md-8">
+                            @Html.DropDownList("ColumnsName", ViewBag.ColumnsName as SelectList, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" value="Add" id="Add" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+                @using (Html.BeginForm("Edit", "HTMLTemplate", FormMethod.Post))
+                {
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.HtmlName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.HtmlName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HtmlName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.RichText1, htmlAttributes: new { @class = "col-md-2" })
+                        <input id="RichText1Copy" name="RichText1Copy" type="hidden" />
+
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(m => m.RichText1, new { @class = "mceEditor" })
+                            @{
+                                if (Model != null && Model.RichText1FullHtml != null && Model.RichText1FullHtml.Length > 0)
+                                {
+                                    @*<p>
+                                            The submitted text from "Ritch Text 1" is:
+                                        </p>
+                                        <div>*@
+                                    @Model.RichText1FullHtml;
+                                    @*</div>*@
+                                    <input id="RichText1Value" name="RichText1Value" type="hidden" value="@Server.HtmlDecode(Model.RichText1FullHtml)" />
+                                }
+                            }
+                        </div>
+                    </div>
+                                }
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div id="footer" class="col-md-12">
+                        <input type="submit" value="Save" class="btns" />
+                    </div>
+                }
+
+                <div>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/tinymce.min.js")
+}
+<script src="~/Scripts/jquery.min.js"></script>
+<script src="~/ckeditor/build-config.js"></script>
+<script src="~/ckeditor/ckeditor.js"></script>
+<script src="~/ckeditor/config.js"></script>
+<script src="~/ckeditor/styles.js"></script>
+<script src="~/Scripts/tinymce.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js" type="text/javascript"></script>
+<script src="~/Scripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
+<script src="~/Scripts/JHomeIndex.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+    //$('.Redio').click(function () {
+    //    //var a = $(this).val();
+    //    var a = $('#divISSMS input:radio:checked').val();
+    //    if (a == "SMS") {
+    //        $('textarea').show();
+
+    //        CKEDITOR.replace('editor').destroy();
+    //    }
+    //    else if (a == "Email") {
+    //        $('textarea').hide();
+    //        CKEDITOR.replace('editor');
+    //    }
+    //});
+    $('.Redio').click(function () {
+        
+        //var a = $(this).val();
+        var a = $('#divISSMS input:radio:checked').val();
+        if (a == "SMS") {
+            $('textarea').show();
+            // CKEDITOR.replace('editor').destroy();
+            tinyMCE.activeEditor.hide();
+        }
+        else if (a == "Email") {
+            $('textarea').hide();
+            tinyMCE.activeEditor.show();
+            // CKEDITOR.replace('editor');
+        }
+    });
+    $('#Add').click(function () {
+        
+        if (tinyMCE.editors != null && tinyMCE.editors.length > 0) {
+            var a = "{" + $('#ColumnsName').val() + "}";
+            if (a != null) {
+                tinyMCE.activeEditor.setContent(tinyMCE.activeEditor.getContent() + a, { format: 'html' });
+            }
+        }
+    });
+
+
+    //$('#Add').click(function () {
+    
+    //    var a = $('#editor').val();
+    //    $('#editor').val(a + " <" + $('#ColumnsName').val() + "> ");
+
+    //    //var editor = CKEDITOR.instances['editor'];
+    //    //var Data = editor.getData();
+    //    CKEDITOR.instances['editor'] = $('#editor').val();
+
+    //    return false;
+    //});
+
+
+</script>

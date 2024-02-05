@@ -1,0 +1,79 @@
+﻿@model TMP.Models.UserSignDetailModel
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <link href="/Content/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <form action="https://testgateway.emsigner.com/eMsecure/SignerGateway/Index" id="frmdata" method="post">
+        <input id="File" Name="File" type="hidden" />
+        <input id="Name" name="Name" type="hidden" value="eMudhra">
+        <input id="SelectPage" name="SelectPage" type="hidden" value="ALL">
+        <input data-val="true" data-val-number="The field SignatureType must be a number." data-val-required="The SignatureType field is required." id="SignatureType" name="SignatureType" type="hidden" value="4">
+        <input id="SignaturePosition" name="SignaturePosition" type="hidden" value="Middle-Center">
+        <input id="AuthToken" name="AuthToken" type="hidden" value="">
+        <input id="PageNumber" name="PageNumber" type="hidden" value="">
+        <input id="Data" name="Data" type="hidden" value="">
+        <input id="IsCosign" name="IsCosign" type="hidden" value="">
+        <input id="Data" name="Data" type="hidden" value="">
+        <input id="FileType" name="FileType" type="hidden" value="PDF">
+        <input data-val="true" data-val-required="The PreviewRequired field is required." id="PreviewRequired" name="PreviewRequired" type="hidden" value="True">
+        <input id="CustomizeCoordinates" name="CustomizeCoordinates" type="hidden" value="">
+        <input id="PagelevelCoordinates" name="PagelevelCoordinates" type="hidden" value="">
+        <input id="AadhaarNumber" name="AadhaarNumber" type="hidden" value="">
+        <input id="ReferenceNumber" name="ReferenceNumber" type="hidden" value="REF12345679890">
+        <input id="SUrl" name="SUrl" type="hidden" value="https://testgateway.emsigner.com/Success">
+        <input id="CUrl" name="CUrl" type="hidden" value="https://testgateway.emsigner.com/Cancel">
+        <input id="FUrl" name="FUrl" type="hidden" value="https://testgateway.emsigner.com/Error">
+        <input data-val="true" data-val-required="The UploadSignatureOption field is required." id="UploadSignatureOption" name="UploadSignatureOption" type="hidden" value="True">
+        <input data-val="true" data-val-required="The SelectFontOption field is required." id="SelectFontOption" name="SelectFontOption" type="hidden" value="True">
+        <input data-val="true" data-val-required="The DrawSignatureOption field is required." id="DrawSignatureOption" name="DrawSignatureOption" type="hidden" value="True">
+        <input data-val="true" data-val-required="The eSignaturePadOption field is required." id="eSignaturePadOption" name="eSignaturePadOption" type="hidden" value="True">
+        <center style="position:absolute;top:35%;left:33%">
+            <div>
+                <img src="/images/processing.gif">
+                <div>
+                    <h4>
+                        You will be redirected to emSigner signature gateway please wait...
+                    </h4>
+                </div>
+            </div>
+        </center>
+    </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#FileType').val('PDF');
+            $('#File').val('@ViewBag.File');
+            $('#ReferenceNumber').val('@ViewBag.ReferenceNumber');
+            $('#Name').val('@ViewBag.Name');
+            $('#AuthToken').val('@ViewBag.AuthToken');
+            $('#SignatureType').val('4');
+            $('#IsCosign').val('False');
+            $('#AadhaarNumber').val('');
+            $('#SelectPage').val('SPECIFY');
+            $('#PageNumber').val('@ViewBag.PageNumber');
+            $('#PagelevelCoordinates').val('');
+            $('#SignaturePosition').val('Customize');
+            $('#CustomizeCoordinates').val('@ViewBag.CustomizeCoordinates');
+            $('#PreviewRequired').val('True');
+            $('#UploadSignatureOption').val('True');
+            $('#SelectFontOption').val('True');
+            $('#DrawSignatureOption').val('True');
+            $('#eSignaturePadOption').val('True');
+            $('#SUrl').val('@ViewBag.ReturnURL');
+            $('#CUrl').val('@ViewBag.CancelURL');
+            $('#FUrl').val('@ViewBag.ErrorURL');
+            $('#frmdata').submit();
+        });
+
+        $(document).ready(function () {
+            if ('@ViewBag.IsCloseWindow' == "True") {
+                window.close();
+            }
+        });
+    </script>
+</body>
+</html>

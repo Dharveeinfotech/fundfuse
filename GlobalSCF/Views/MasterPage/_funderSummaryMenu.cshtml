@@ -1,0 +1,48 @@
+﻿
+@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    int _currTabIndex = Convert.ToInt32(ViewBag.SelectedTab);
+}
+@if (@Model.InvoiceID > 0)
+{
+    <div class="col-md-12 bgsp">
+        <div id="exTab1">
+            <ul class="nav nav-pills">
+                <li class="@(_currTabIndex ==  1 ? "active" : "valdt")">
+                    <a href="/Factoring/FundingPartnerObligorDetails?InvoiceID=@Model.InvoiceID&ObligorID=@Model.ObligorID&SupplierID=@Model.SupplierID&ProgramType=@Model.ProgramType">BUYER</a>
+                </li>
+                <li class="mFotter1">|</li>
+                <li class="@(_currTabIndex ==  2 ? "active" : "valdt")">
+                    <a href="/Factoring/FundingPartnerObligorDetails?InvoiceID=@Model.InvoiceID&ObligorID=@Model.SupplierID&SupplierID=@Model.SupplierID&ProgramType=@Model.ProgramType&SType=true">SUPPLIER</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
+<style>
+          .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #555555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #dddddd;
+    border-bottom-color: transparent;
+}
+    .valdt{
+        border:1px solid #fff;
+        border-radius:5px;
+        
+    }
+    #exTab1 .nav > li > a {
+    padding: 15px 20px;
+    font-size: 14px;
+    color:#ffffff !important;
+}
+ #exTab1 .nav-pills > li.active > a {
+    background-color: #fff;
+color: #000 !important;
+}
+</style>
+
+
+

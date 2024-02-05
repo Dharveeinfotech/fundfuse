@@ -1,0 +1,81 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  IEnumerable<TMP.Models.CustomerMasterModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+    TMP.Models.CustomerMasterModel _objModul = new TMP.Models.CustomerMasterModel();
+}
+
+<div class="col-md-12 div-border-multitab padoff">
+    <div class="col-md-12" style="height:15px;"></div>
+    <form method="post">
+        <div class="col-md-12">
+            <button id="Maker" name="Maker" value="Maker" type="submit" class="btn btn-tgs">CREATE NEW</button>
+        </div>
+    </form>
+    <div class="col-md-12" style="height:15px;"></div>
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        @*<th>Customer Name</th>*@
+                        <th>Company Name</th>
+                        <th>Company Code</th>
+                        <th>Company Type</th>
+                        <th>Mobile Number</th>
+                        <th>E-Mail</th>
+                        <th>Registration</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    @if (Model.Count() > 0)
+                    {
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.CompanyName</td>
+                                <td>@item.CustomerCode</td>
+                                <td>@item.CustomerTypeName</td>
+                                <td>@item.MobileNo</td>
+                                <td>@item.EmailID</td>
+
+                                @if (item.IsAdminRegister == 1)
+                                {
+                                    <td>Admin Panel</td>
+                                }
+                                else
+                                {
+                                    <td>Online Panel</td>}
+                                <td>@item.StatusDisplay</td>
+                                @if (item.Status == CONT.RQ || item.Status == CONT.ND || item.Status == CONT.NA || item.Status == CONT.UA)
+                                {
+                                    <td>@Html.ActionLink("Edit", "CompanyInfo", new { CustomerID = item.CustomerID, currentStatus = item.Status })</td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        &nbsp;
+
+                                    </td>}
+
+                            </tr>
+                        }
+
+                    </tbody>
+                    }
+                </table>
+            </div>
+            <input type="hidden" value="@ViewBag.MakerIndex.CustomerTypeID" id="CustomerTypeID" name="CustomerTypeID" />
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "pageLength": 10,
+            });
+        });
+    </script>

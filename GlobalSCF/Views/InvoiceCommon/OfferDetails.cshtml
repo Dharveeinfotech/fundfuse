@@ -1,0 +1,285 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    int CustomerType = Convert.ToInt32(Convert.ToString(Session["onlineCustomerTypeID"]));
+}
+<div class="col-md-12 createusertitle">OFFER DETAILS</div>
+<div class="col-md-12" style="height:10px;"></div>
+<div class="container padoff">
+    @if (Model.ProgramType == CONT.FType)
+    {
+        <table id="table-1" class="col-md-5">
+            <tbody>
+                <tr>
+                    <td class="td-bg">Tenor</td>
+                    <td class="td-line">
+                        @Model.Tenor Days
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-bg">Tentative Payment Date</td>
+                    <td class="td-line">
+                        @Convert.ToDateTime(Model.PaymentDate).ToString("dd-MMM-yyyy")
+                    </td>
+                </tr>
+                @if (CustomerType != CONT.FunderCustomerTypeID)
+                {
+                    <tr>
+                        <td class="td-bg">Transaction Fees</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.TranFeeAmt)
+                        </td>
+                    </tr>
+
+                    @*<tr>
+                        <td class="td-bg">Other Fees</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.OtherFeeAmt)
+                        </td>
+                    </tr>*@
+                }
+                @if (CustomerType == CONT.SupplierCustomerTypeID) { }
+                else
+                {
+
+                    <tr>
+                        <td class="td-bg">Extended Tenor</td>
+                        <td class="td-line">
+                            @{
+                                string strVal = "";
+                                strVal = Convert.ToString(Model.ExtTenor) + " Days";
+                            }
+                            <input type="text" name="ExtTenor" id="ExtTenor" class="form-control" style="padding-left:0px;" value="@strVal" disabled />
+
+                        </td>
+                    </tr>
+                                }
+                @if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID && ViewBag._currentUser.IsMaker && (Model.Status == CONT.SA || Model.Status == CONT.IV))
+                {
+                    <tr>
+                        <td class="td-bg">Funder’s Yield</td>
+                        <td class="td-line">
+                            @Html.TextBoxFor(model => model.FunProfitRate, new { @class = "form-control per  validate[required]", style = "padding-left:0px;" })
+                        </td>
+                    </tr>
+                }
+                else if ((Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID) && (ViewBag._currentUser.IsMaker || ViewBag._currentUser.IsChecker))
+                {
+                    <tr>
+                        <td class="td-bg">Funder’s Yield</td>
+                        <td class="td-line">
+                            @string.Format("{0:0,0.00}", Model.FunProfitRate) %
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <table class="col-md-5">
+            <tbody>
+                @if (CustomerType != CONT.FunderCustomerTypeID)
+                {
+                    <tr>
+                        <td class="td-bg">Profit Amount</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.ProfitAmt)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Factor’s Holdback Amount</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.HoldbackAmt)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Amount Payable to Supplier</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.PayToSup)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Total Amount</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.TotAmt)
+                        </td>
+                    </tr>
+                }
+                @if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.SupplierCustomerTypeID) { }
+                else
+                {
+
+                    if (Model.ExtTenor <= 0)
+                    {
+                        <tr>
+                            <td class="td-bg">Settlement Due Date</td>
+                            <td class="td-line">
+                                NA
+                            </td>
+                        </tr>
+                    }
+                    else if (Model.ExtTenor <= 0 && (Model.Status == CONT.SA || Model.Status == CONT.IV))
+                    {
+                        <tr>
+                            <td class="td-bg">Settlement Due Date</td>
+                            <td class="td-line">
+                                <input id="ExtDueDate" name="ExtDueDate" type="text" placeholder="" autocomplete="off" style="padding-left:0px;" class="form-control formattedCalender validate[required]" autocomplete="off" value="@Convert.ToDateTime(Model.ExtDueDate).ToString("dd-MMM-yyyy")">
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="td-bg">Settlement Due Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.ExtDueDate).ToString("dd-MMM-yyyy")
+                            </td>
+                        </tr>
+                    }
+                }
+                @if ((Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID) && ViewBag._currentUser.IsMaker && (Model.Status == CONT.SA || Model.Status == CONT.IV))
+                {
+                    <tr>
+                        <td class="td-bg">Funder’s Profit Amount</td>
+                        <td class="td-line">
+                            @Html.TextBoxFor(model => model.FunProfitAmt, new { @class = "form-control", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                }
+                else if ((Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID) && (ViewBag._currentUser.IsMaker || ViewBag._currentUser.IsChecker))
+                {
+                    <tr>
+                        <td class="td-bg">Funder’s Profit Amount</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.FunProfitAmt)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+                                }
+                                else
+                                {
+                                    <table class="col-md-5">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td-bg">Tenor</td>
+                                                <td class="td-line">
+                                                    @Model.Tenor Days
+                                                </td>
+                                            </tr>
+                                            @if (CustomerType != CONT.FunderCustomerTypeID)
+                                            {
+                                                <tr>
+                                                    <td class="td-bg">Profit %</td>
+                                                    <td class="td-line">
+                                                        @string.Format("{0:0,0.00}", Model.ProfitRate) % (@Model.ProfitTypeDesc)
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td class="td-bg">Settlement Date</td>
+                                                <td class="td-line">
+                                                    @Convert.ToDateTime(Model.SetDueDate).ToString("dd-MMM-yyyy")
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td-bg">Supplier Name</td>
+                                                <td class="td-line">
+                                                    @Model.SupplierName @*@Model.ExporterName*@
+                                                </td>
+                                            </tr>
+                                            @if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID && ViewBag._currentUser.IsMaker && (Model.Status == CONT.BA || Model.Status == CONT.IW))
+                                            {
+                                                <tr>
+                                                    <td class="td-bg">Funder’s Yield</td>
+                                                    <td class="td-line">
+                                                        @Html.TextBoxFor(model => model.FunProfitRate, new { @class = "form-control per  validate[required]", style = "padding-left:0px;" })
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else if ((Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID) && (ViewBag._currentUser.IsMaker || ViewBag._currentUser.IsChecker))
+                                            {
+                                                <tr>
+                                                    <td class="td-bg">Funder’s Yield</td>
+                                                    <td class="td-line">
+                                                       @string.Format("{0:0,0.00}", Model.FunProfitRate) %
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <table class="col-md-5">
+                                        <tbody>
+                                            @if (CustomerType != CONT.FunderCustomerTypeID)
+                                            {
+                                                <tr>
+                                                    <td class="td-bg">Transaction Fee</td>
+                                                    <td class="td-line">
+                                                        @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.TranFeeAmt)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-bg">Profit Amount</td>
+                                                    <td class="td-line">
+                                                        @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.ProfitAmt)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-bg">Total Amount Payable To SCF Platform Upfront By Buyer</td>
+                                                    <td class="td-line">
+                                                        @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.PayToiSCF)
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td class="td-bg">Supplier’s Bank Account</td>
+
+                                                @if (Model.Status == CONT.BA)
+                                                {
+                                                    <td class="td-line" style="padding-left:0px;">
+                                                        @Html.DropDownList("CustomerBankAccID", null, new { @class = "form-control validate[required]" })
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="td-line">
+                                                        @Model.CustomerAccountNo
+                                                    </td>
+                                                }
+                                            </tr>
+                                            @if ((Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID) && ViewBag._currentUser.IsMaker && (Model.Status == CONT.BA || Model.Status == CONT.IW))
+                                            {
+                                                <tr>
+                                                    <td class="td-bg">Funder’s Profit Amount</td>
+                                                    <td class="td-line">
+                                                        @Html.TextBoxFor(model => model.FunProfitAmt, new { @class = "form-control", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else if ((Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ServiceProviderCustomerTypeID) && (ViewBag._currentUser.IsMaker || ViewBag._currentUser.IsChecker))
+                                            {
+                                                <tr>
+                                                    <td class="td-bg">Funder’s Profit Amount</td>
+                                                    <td class="td-line">
+                                                        @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.FunProfitAmt)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+</div>
+<style>
+    table {
+        margin-bottom: 2%;
+        margin-left: 65px;
+        margin-top: 3%;
+    }
+
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+        background-color: white;
+    }
+
+    .form-control {
+        border: 0px;
+    }
+</style>

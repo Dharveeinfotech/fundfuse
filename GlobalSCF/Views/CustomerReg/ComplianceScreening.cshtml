@@ -1,0 +1,2033 @@
+﻿@model  TMP.Models.CustomerDocModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Compliance Screening";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+    bool IsDisplay = true; int i = 0;
+    int iCount = 1;
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    {
+        if (Model.Admin == "Y")
+        {
+            @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 8 })
+        }
+        else
+        {
+            @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 8 })  }
+    }
+    @using (Html.BeginForm("ComplianceScreening", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "DocumentsDetails" }))
+    {
+        if (ViewBag._currentUser.IsMaker == true || ViewBag._currentUser.IsCompScr == true || ViewBag._currentUser.IsCreRevChecker == true || ViewBag._currentUser.IsCreRevApprover == true || ViewBag._currentUser.IsOpTeam == true)
+        {
+            @*<p style="padding-top: 50px;text-align: center;font-size: 20px;">
+                    Report will be display after integration of Thomson Reuters World-Check API.
+                </p>*@
+            <div class="col-md-12" style="height:10px;"></div>
+            
+
+           
+                <div class="container">
+                    <div class="tabbable-panel">
+                        <div class="tabbable-line">
+                            <ul class="nav nav-tabs ">
+                               @if (ViewBag.MenuOrderNo == 1)
+                               {
+                                <li class="active">
+                                    <a href="#tab_default_1" data-toggle="tab">
+                                        <p style="font-weight:bold; font-size:14px;">Compliance Screening</p>
+                                    </a>
+                                </li>
+                               }
+                               else
+                               {
+                                <li class="active">
+                                    <a href="#tab_default_3" data-toggle="tab">
+                                        <p style="font-weight:bold; font-size:14px;">Classification</p>
+                                    </a>
+                                </li>
+                               }
+                                    
+
+                            </ul>
+                            <div class="tab-content">
+                                @if (ViewBag.MenuOrderNo == 1)
+                                {
+                                    <div class="tab-pane active" id="tab_default_1">
+                                        <table id="exampleScr" class="display" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr class="bgspr">
+                                                    <th>Name</th>
+                                                    <th>Type</th>
+                                                    <th>Gender</th>
+                                                    <th>Country</th>
+                                                    <th>Screening</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in ViewBag.GetScreening)
+                                                {
+                                                    
+                                                <tr>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.Type</td>
+                                                    <td>@item.Gender</td>
+                                                    <td>@item.CountryName</td>
+                                                    @*<td>@Html.DropDownListFor(model => model.statusId, new SelectList(ViewBag.DDLStatusID, "value", "text", item.resolution.statusId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>*@
+                                                    <td>
+                                                        @if (item.ScreeningID > 0)
+                                                        {
+                                                            @item.Status
+                                                        }
+                                                        else
+                                                        {
+                                                            <select name="ScrStatus_@iCount" id="ScrStatus_@iCount" class="validate[required]">
+                                                                <option value="">--select--</option>
+                                                                <option value="Not Applicable">Not Applicable</option>
+                                                                <option value="Sanctions">Sanctions</option>
+                                                                <option value="PEP">PEP</option>
+                                                                <option value="Adverse Media">Adverse Media</option>
+                                                                <option value="Screening Risk-Low">Screening Risk-Low</option>
+                                                                <option value="Screening Risk-Medium">Screening Risk-Medium</option>
+                                                                <option value="Screening Risk-High">Screening Risk-High</option>
+                                                            </select>
+                                                        }
+
+
+                                                    </td>
+                                                </tr>
+                                                    iCount = iCount + 1;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="tab-pane active" id="tab_default_3">
+                                        <div class="col-md-12" style="height:10px;"></div>
+                                        <div class="col-md-12">
+                                            <div class="panel-group" id="accordion1">
+                                                <div class="panel panel-default" id="panel_11">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-target="#collapseOne_11" style="cursor:pointer;">
+                                                                <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                                                                ENGAGEMENT STATUS - <label id="lbl_Fst" style="text-transform: uppercase;" class="lblEngStatus"></label>
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapseOne_11" class="panel-collapse collapse">
+                                                        <div class="panel-body">
+                                                            <div class="col-md-12 Question">
+                                                                <div class="col-md-3">
+                                                                    <p>You want to make it Client?</p>
+                                                                    @Html.RadioButtonFor(m => m.rdo_CLIENTY, true, new { id = "rdo_CLIENTY", @class = "ClsEngStatus" }) Yes
+                                                                    @Html.RadioButtonFor(m => m.rdo_CLIENTN, true, new { id = "rdo_CLIENTN", @class = "ClsEngStatus" }) No
+                                                                </div>
+                                                                @*<div class="col-md-3">
+                                                @Html.RadioButtonFor(m => m.rdo_CLIENT, true, new { id = "rdo_CLIENT", @class = "ClsEngStatus" })
+                                                CLIENT
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                @Html.RadioButtonFor(m => m.rdo_BUSINESSPARTNER, true, new { id = "rdo_BUSINESSPARTNER", @class = "ClsEngStatus" })
+                                                BUSINESS PARTNER
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.RadioButtonFor(m => m.rdo_RELATEDPARTY, true, new { id = "rdo_RELATEDPARTY", @class = "ClsEngStatus" })
+                                                RELATED PARTY
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.RadioButtonFor(m => m.rdo_SERVICEPROVIDER, true, new { id = "rdo_SERVICEPROVIDER", @class = "ClsEngStatus" })
+                                                Admin
+                                            </div>*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="col-md-12">
+                        <div class="container createusertitle1">
+                            ENGAGEMENT STATUS
+                        </div>
+                    </div>*@
+
+                                        <div class="col-md-12" style="height:10px;"></div>
+                                        <div class="col-md-12" style="height:10px;"></div>
+                                        <div class="col-md-12">
+                                            <div class="container createusertitle1 Question" id="pro-retail-Client">
+                                                @Html.CheckBoxFor(m => m.cbYes) Retail <label id="lbl_RtlStatus" class="lblEngStatus"></label> &nbsp; &nbsp; &nbsp;
+                                                @Html.CheckBoxFor(m => m.cbNo) Professional <label id="lbl_ProfsnlStatus" class="lblEngStatus"></label> &nbsp; &nbsp; &nbsp;
+
+                                                @*@if (Model.CustomerClassId > 0 && (Model.Status == CONT.NR || Model.Status == CONT.NH || Model.Status == CONT.UR || Model.Status == CONT.UH) && Model.Admin != "Y")
+                            {
+                                <span class="glyphicon glyphicon glyphicon-pencil" id="btnEdit" aria-hidden="true" title="Edit" style="cursor:pointer; float: right; padding-top: 7px;"></span>
+                            }*@
+                                            </div>
+                                        </div>
+
+                                        <div id="DV_AfterSubmit" style="display:none;">
+                                            <div class="col-md-12" style="height:10px;"></div>
+                                            <div class="col-md-12">
+                                                <div class="createusertitle1" style="padding:0px;background-color:#336699;text-align:center;">
+                                                    <label id="lbl_Message" style="color:white;font-size:18px;text-align:center;"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="DV_Main" id="dv_print">
+                                            <div class="col-md-12" style="height:10px;"></div>
+                                            <div class="col-md-12">
+                                                <div class="panel-group" id="accordion">
+                                                    <div class="panel panel-default" id="panel111">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                @*@Html.CheckBoxFor(m => m.IsPC, new { @style = "margin-top:3px;" })*@
+                                                                <a data-toggle="collapse" data-target="#collapseOne" style="cursor:pointer;">
+                                                                    <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseOne" class="panel-collapse collapse">
+                                                            <div class="panel-body">
+                                                                <div class="col-md-12 Question ClsEngCondition">
+                                                                    <div id="DV_One">
+                                                                        <p>@Html.CheckBoxFor(m => m.IsDP, new { @class = "Select-list" })   1.	 Deemed Professional <label id="lbl_Secnd" class="lblEngStatus"></label>  </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP1, new { @class = "ClsOne" }) a supranational organisation whose members are either countries, central banks or national monetary authorities;</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP2, new { @class = "ClsOne" }) a properly constituted government, government agency, central bank or other national monetary authority </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP3, new { @class = "ClsOne" }) a public authority or state investment body;  </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP4, new { @class = "ClsOne" }) an Authorised Market Institution, Regulated Exchange or regulated clearing house;   </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP5, new { @class = "ClsOne" }) an Authorised Firm, a Regulated Financial Institution or the management company of a regulated pension fund;  </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP6, new { @class = "ClsOne" }) a Collective Investment Fund or a regulated pension fund; </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP7, new { @class = "ClsOne" }) a Large Undertaking which meets, as at the date of its most recent financial statements at least 2 of 3:</p>
+
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP71, new { @class = "ClsSubOne", style = "margin-left:25px;" })  it has a balance sheet total of at least $20 million</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP72, new { @class = "ClsSubOne", style = "margin-left:25px;" })  it has a net annual turnover of at least $40 million</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP73, new { @class = "ClsSubOne", style = "margin-left:25px;" })  it has own funds or called up capital of at least $2 million</p>
+
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP8, new { @class = "ClsOne" })  a Body Corporate whose shares are listed or admitted to trading on any exchange of an IOSCO member country; </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP9, new { @class = "ClsOne" })  any other institutional funder whose main activity is to invest in financial instruments, including an entity dedicated to the securitisation of assets or other financial transactions; </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP10, new { @class = "ClsOne" })  a trustee of a trust which has, or had during the previous 12 months, assets of at least $10 million; or </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP11, new { @class = "ClsOne" })  a holder of a licence under the Single Family Office Regulations with respect to its activities carried on exclusively for the purposes of, and only in so far as it is, carrying out its duties as a Single Family Office. </p>
+                                                                    </div>
+                                                                    <hr>
+
+                                                                    <p>@Html.CheckBoxFor(m => m.IsSB, new { @class = "Select-list" })  2.	Service Based Professional <label id="lbl_Third" class="lblEngStatus"></label> </p>
+                                                                    <div id="DV_Two">
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB1, new { @class = "ClsTwo" }) Providing Credit</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB11, new { @class = "ClsTwoSubFirst", style = "margin-left:25px;", onclick = "return false;" })  the person is an Undertaking</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB12, new { @class = "ClsTwoSubFirst", style = "margin-left:25px;", onclick = "return false;" })  for use in the business activities</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB2, new { @class = "ClsTwo" })  “Advising on financial products or credit” or “Arranging credit or deals in Investments”</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB21, new { @class = "ClsTwoSubSecond", style = "margin-left:25px;", onclick = "return false;" })   for corporate structuring and financing acquisition, disposal, structuring, restructuring, financing or refinancing of a corporation or other legal entity.</p>
+                                                                    </div>
+                                                                    <hr>
+
+                                                                    <p>@Html.CheckBoxFor(m => m.IsAP, new { @class = "Select-list" })  3.	Assessed Professional <label id="lbl_Four" class="lblEngStatus"></label>  </p>
+                                                                    <div id="DV_Three">
+                                                                        <p class="lftMargin">
+                                                                            @Html.CheckBoxFor(m => m.IsAP1, new { @class = "ClsThird" })  Individual(s):
+                                                                            @Html.TextBoxFor(model => model.APIndName11, new { @class = "", autocomplete = "off", onkeyup = "syncAPIndName11()" }) (name of assessed individual)
+                                                                        </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsAP11, new { @class = "ClsThirdSubOne", style = "margin-left:25px;", onclick = "return false;" })  net assets of at least $1 million</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsAP12, new { @class = "ClsThirdSubOne", style = "margin-left:25px;", onclick = "return false;" })  sufficient experience and understanding of relevant financial markets, products or transactions and any associated risks @Html.TextBoxFor(model => model.APIndName12, new { @class = "", autocomplete = "off", style = "margin-left:2px;" }) (name of assessed individual)</p>
+
+                                                                        <p class="lftMargin">
+                                                                            @Html.CheckBoxFor(m => m.IsAP2, new { @class = "ClsThird" }) Undertaking
+                                                                            @Html.TextBoxFor(model => model.APIndName21, new { @class = "", autocomplete = "off", onkeyup = "syncAPIndName21()" })  (name of assessed undertaking)
+                                                                        </p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsAP21, new { @class = "ClsThirdSubTwo", style = "margin-left:25px;", onclick = "return false;" })  own funds or called up capital of at least $1 million</p>
+                                                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsAP22, new { @class = "ClsThirdSubTwo", style = "margin-left:25px;", onclick = "return false;" })  sufficient experience and understanding of relevant financial markets, products or transactions and any associated risks @Html.TextBoxFor(model => model.APIndName22, new { @class = "", autocomplete = "off", style = "margin-left:2px;" }) (name of assessed individual)</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="DV_MrktCntprty Question ClsEngCondition" style="display:none;">
+                                                                    <div class="container createusertitle1">
+                                                                        @Html.CheckBoxFor(m => m.IsMC, new { @class = "ClsMC", style = "margin-top:3px;", onclick = "return false;" })  Market Counterparty?
+                                                                    </div>
+                                                                    <p class="lftMargin"> @Html.CheckBoxFor(m => m.IsMC1, new { @class = "ClsMC1", onclick = "return false;" })   1.	a ‘deemed’ Professional <label id="lbl_Five" class="lblEngStatus"></label>  </p>
+                                                                    <p class="lftMargin"> @Html.CheckBoxFor(m => m.IsMC2, new { @class = "ClsMC2", onclick = "return false;" })   2.	an ‘assessed’ Professional <label id="lbl_Six" class="lblEngStatus"></label> which is wholly owned by a Holding Company that is a Large Undertaking or listed entity </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="col-md-12" style="height:15px;"></div>
+                    <div class="form-group">
+                        <label class="col-md-2 Question" for="textinput">Classification Comments : &nbsp;<span style="color:red;width:50px;"></span></label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.Comment, new { @class = "form-control validate[required]", maxlength = "2000", autocomplete = "off" })
+                        </div>
+                    </div>*@
+                                        <div class="col-md-12" style="height:10px;"></div>
+                                        @if ((Model.Status == CONT.NR || Model.Status == CONT.NH || Model.Status == CONT.UR || Model.Status == CONT.UH) && Model.Admin != "Y")
+                        {
+                                            @*<div class="form-group">
+                            <div class="col-md-12" style="text-align:right">
+                                <button id="btn_Classification_Submit" name="btn_Classification_Submit" value="btn_Classification_Submit" type="submit" class="btn btn-tgs CommonDetachValidation">Submit</button>
+                                <button id="btn_Classification_Print" name="btn_Classification_Print" value="btn_Classification_Print" type="submit" class="btn btn-tgs CommonDetachValidation">Print</button>
+                                @Html.HiddenFor(model => model.CustomerClassId)
+                            </div>
+                        </div>*@
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            if ((Model.Status == CONT.NR || Model.Status == CONT.NH || Model.Status == CONT.UR || Model.Status == CONT.UH) && Model.Admin != "Y")
+            {
+                <div class="container padoff ">
+                    <table class="col-md-10" style="width:89%;margin-left:65px;margin-top:20px;">
+                        <tbody>
+                            <tr>
+                                <td class="td-bg" style="width:23.4%;" id="goToLINK"><a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@Model.CustomerID">View All Comments</a> / Comments</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.ProcessRemark, new { @class = "form-control", autocomplete = "off" })</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group clsMenuOrder11">
+                    <div class="col-md-12" style="text-align:right;margin-top:20px;">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-7" style="text-align:right;">
+                            @if (Model.Status == CONT.NR)
+                            {
+                                <button id="Return" name="Return" value="Return" type="submit" class="btn btn-tgs CommonAttachValidation">Return To Originator</button>
+                            }
+                            &nbsp; <button id="Reject" name="Reject" value="Reject" type="submit" class="btn btn-tgs">Reject</button> &nbsp;
+                            @*< button id="onhold" name="onhold" value="onhold" type="submit" class="btn btn-tgs">Save</button>*@
+                            @if (ViewBag.ScrStatus == 'Y' && ViewBag.MenuOrderNo == 1)
+                            {
+                                <button id="btnTR_Submit" name="btnTR_Submit" value="btnTR_Submit" type="submit" class="btn btn-tgs">Save</button>
+                            } 
+                            @if (ViewBag.MenuOrderNo == 2)
+                            {
+                                <button id="btn_Classification_Submit" name="btn_Classification_Submit" value="btn_Classification_Submit" type="submit" class="btn btn-tgs CommonDetachValidation">Save</button>
+                            }
+                            &nbsp;
+                            @if (Model.CustomerClassId > 0 && Model.Category == "Client")
+                            {
+                                <button id="btn_Classification_Print" name="btn_Classification_Print" value="btn_Classification_Print" type="submit" class="btn btn-tgs CommonDetachValidation">Print</button>
+                            }
+                            &nbsp;
+                            @if (ViewBag.ScrStatus == 'N' && ViewBag.MenuOrderNo == 1)
+                            {
+                                <button id="btnScreening_Next" name="btnScreening_Next" value="btnScreening_Next" type="submit" class="btn btn-tgs">Next</button>
+                            }
+                            @if (ViewBag.btnClassificationVisible != false && ViewBag.MenuOrderNo == 2)
+                            {
+                                <button id="btnClassification_Next" name="btnClassification_Next" value="btnClassification_Next" type="submit" class="btn btn-tgs">Next</button>
+                            }
+                            &nbsp;
+                            @if (Model.CustomerClassId > 0 && ViewBag.MenuOrderNo == 2 && (Model.Status == CONT.NR || Model.Status == CONT.NH || Model.Status == CONT.UR || Model.Status == CONT.UH) && Model.Admin != "Y")
+                            {
+                                <button id="btnEdit" name="btnEdit" value="btnEdit" type="submit" class="btn btn-tgs">Edit</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            else if (Model.Status == CONT.NS)
+            {
+                <div class="col-md-12" style="text-align:right;">
+                    @if (ViewBag.btnApproveVisible == true && ViewBag.MenuOrderNo == 1)
+                    {
+                        <button id="btnScreening_Next" name="btnScreening_Next" value="btnScreening_Next" type="submit" class="btn btn-tgs">Next</button>
+                    }
+                    @if (ViewBag.btnClassificationVisible != false && ViewBag.MenuOrderNo == 2)
+                    {
+                        <button id="btnClassification_Next" name="btnClassification_Next" value="btnClassification_Next" type="submit" class="btn btn-tgs">Next</button>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12" style="text-align:right;">
+                    @*<button id="Next" name="Next" value="Next" type="submit" class="btn btn-tgs">Next</button>*@
+                    @if (ViewBag.MenuOrderNo == 1)
+                    {
+                        <button id="btnScreening_Next" name="btnScreening_Next" value="btnScreening_Next" type="submit" class="btn btn-tgs">Next</button>
+                    }
+                    @if (ViewBag.MenuOrderNo == 2)
+                    {
+                        <button id="btnClassification_Next" name="btnClassification_Next" value="btnClassification_Next" type="submit" class="btn btn-tgs">Next</button>
+                    }
+                </div>
+
+                @Html.HiddenFor(x => x.SendToCredit)
+            }
+        }
+        @Html.HiddenFor(x => x.CustomerID)
+        @Html.HiddenFor(x => x.Status)
+        @Html.HiddenFor(x => x.CustomerTypeID)
+        @Html.HiddenFor(x => x.ProgramType)
+        @Html.HiddenFor(x => x.Admin)
+    }
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".ClsEngStatus").each(function (index, item) {
+            $(item).click(function () {
+                $('.ClsEngStatus').not(this).prop('checked', false);
+            });
+        });
+    })
+</script>
+
+<script>
+    function toggleIcon(e) {
+        $(e.target)
+            .prev('.panel-heading')
+            .find(".more-less")
+            .toggleClass('glyphicon-plus glyphicon-minus');
+    }
+    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    $('.panel-group').on('shown.bs.collapse', toggleIcon);
+
+    var ChkOne = 0;
+    var ChkTwo = 0;
+    var ChkThree = 0;
+    var intClsSubOneCount = 0;
+
+
+    //$("#IsDP").change(function () {
+    //    ClearFields();
+    //    $(".ClsTwo").attr("disabled", "disabled");
+    //    $(".ClsTwoSubFirst").attr("disabled", "disabled");
+    //    $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+    //    $(".ClsThird").attr("disabled", "disabled");
+    //    $(".ClsThirdSubOne").attr("disabled", "disabled");
+    //    $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+    //    MarketCounterpartyEnable();
+
+
+    //    $(".DV_MrktCntprty").css("display", "block");
+    //    document.getElementById("IsMC1").checked = false;
+    //    document.getElementById("IsMC2").checked = false;
+    //    if (document.getElementById("IsDP").checked == true) {
+    //        document.getElementById("IsMC").checked = true;
+    //        document.getElementById("IsMC1").checked = true;
+    //    }
+    //    else if (document.getElementById("IsAP").checked == true) {
+    //        document.getElementById("IsMC").checked = true;
+    //        document.getElementById("IsMC2").checked = true;
+    //    }
+    //});
+
+    function ClearFields() {
+        $('.Select-list').on('change', function () {
+            $('.Select-list').not(this).prop('checked', false);
+        });
+
+        $("#APIndName21").val("");
+        $("#APIndName22").val("");
+
+        $("#APIndName11").val("");
+        $("#APIndName12").val("");
+
+        $(".ClsOne").removeAttr("disabled", "disabled");
+        $(".ClsSubOne").removeAttr("disabled", "disabled");
+        $(".ClsTwo").removeAttr("disabled", "disabled");
+        $(".ClsTwoSubFirst").removeAttr("disabled", "disabled");
+        $(".ClsTwoSubSecond").removeAttr("disabled", "disabled");
+        $(".ClsThird").removeAttr("disabled", "disabled");
+        $(".ClsThirdSubOne").removeAttr("disabled", "disabled");
+        $(".ClsThirdSubTwo").removeAttr("disabled", "disabled");
+
+        $(".ClsOne, .ClsSubOne, .ClsTwo, .ClsTwoSubFirst, .ClsTwoSubSecond, .ClsThird, .ClsThirdSubOne, .ClsThirdSubTwo").each(function () {
+            this.checked = false;
+
+        });
+    }
+
+    $("#IsDP").change(function () {
+        ClearFields();
+
+        document.getElementById("IsSB").checked = false;
+        document.getElementById("IsAP").checked = false;
+
+        $(".ClsTwo").attr("disabled", "disabled");
+        $(".ClsTwoSubFirst").attr("disabled", "disabled");
+        $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+        $(".ClsThird").attr("disabled", "disabled");
+        $(".ClsThirdSubOne").attr("disabled", "disabled");
+        $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+        if (document.getElementById("IsDP7").checked == false) {
+            $(".ClsSubOne").attr("disabled", "disabled");
+        }
+        else { $(".ClsSubOne").removeAttr("disabled", "disabled"); }
+
+        MarketCounterpartyEnable();
+
+        $(".DV_MrktCntprty").css("display", "none");
+        document.getElementById("IsMC").checked = false;
+        document.getElementById("IsMC1").checked = false;
+        document.getElementById("IsMC2").checked = false;
+
+        if (document.getElementById("IsDP").checked) {
+            $(".DV_MrktCntprty").css("display", "block");
+            document.getElementById("IsMC1").checked = false;
+            document.getElementById("IsMC2").checked = false;
+            if (document.getElementById("IsDP").checked == true) {
+                document.getElementById("IsMC").checked = true;
+                document.getElementById("IsMC1").checked = true;
+            }
+            else if (document.getElementById("IsAP").checked == true) {
+                document.getElementById("IsMC").checked = true;
+                document.getElementById("IsMC2").checked = true;
+            }
+        }
+
+        $("#APIndName11").attr("disabled", "disabled");
+        $("#APIndName12").attr("disabled", "disabled");
+        $("#APIndName21").attr("disabled", "disabled");
+        $("#APIndName22").attr("disabled", "disabled");
+
+        if (document.getElementById("IsDP").checked) {
+
+        }
+        else {
+            $("#APIndName21").val("");
+            $("#APIndName22").val("");
+
+            $("#APIndName11").val("");
+            $("#APIndName12").val("");
+
+            $(".ClsOne").attr("disabled", "disabled");
+            $(".ClsSubOne").attr("disabled", "disabled");
+
+            $(".ClsTwo").attr("disabled", "disabled");
+            $(".ClsTwoSubFirst").attr("disabled", "disabled");
+            $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+            $(".ClsThird").attr("disabled", "disabled");
+            $(".ClsThirdSubOne").attr("disabled", "disabled");
+            $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+            $("#APIndName21").attr("disabled", "disabled");
+            $("#APIndName22").attr("disabled", "disabled");
+
+            $("#APIndName11").attr("disabled", "disabled");
+            $("#APIndName12").attr("disabled", "disabled");
+        }
+    });
+
+    $("#IsSB").change(function () {
+        ClearFields();
+
+        document.getElementById("IsDP").checked = false;
+        document.getElementById("IsAP").checked = false;
+
+        $(".ClsOne").attr("disabled", "disabled");
+        $(".ClsSubOne").attr("disabled", "disabled");
+
+        $(".ClsThird").attr("disabled", "disabled");
+        $(".ClsThirdSubOne").attr("disabled", "disabled");
+        $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+        MarketCounterpartyEnable();
+
+        $(".DV_MrktCntprty").css("display", "none");
+        document.getElementById("IsMC").checked = false;
+        document.getElementById("IsMC1").checked = false;
+        document.getElementById("IsMC2").checked = false;
+
+        $("#APIndName11").attr("disabled", "disabled");
+        $("#APIndName12").attr("disabled", "disabled");
+        $("#APIndName21").attr("disabled", "disabled");
+        $("#APIndName22").attr("disabled", "disabled");
+
+        if (document.getElementById("IsSB").checked) {
+
+        }
+        else {
+            $("#APIndName21").val("");
+            $("#APIndName22").val("");
+
+            $("#APIndName11").val("");
+            $("#APIndName12").val("");
+
+            $(".ClsOne").attr("disabled", "disabled");
+            $(".ClsSubOne").attr("disabled", "disabled");
+
+            $(".ClsTwo").attr("disabled", "disabled");
+            $(".ClsTwoSubFirst").attr("disabled", "disabled");
+            $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+            $(".ClsThird").attr("disabled", "disabled");
+            $(".ClsThirdSubOne").attr("disabled", "disabled");
+            $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+            $("#APIndName21").attr("disabled", "disabled");
+            $("#APIndName22").attr("disabled", "disabled");
+
+            $("#APIndName11").attr("disabled", "disabled");
+            $("#APIndName12").attr("disabled", "disabled");
+        }
+    });
+
+    $("#IsAP").change(function () {
+        ClearFields();
+
+        document.getElementById("IsDP").checked = false;
+        document.getElementById("IsSB").checked = false;
+
+        $(".ClsOne").attr("disabled", "disabled");
+        $(".ClsSubOne").attr("disabled", "disabled");
+
+        $(".ClsTwo").attr("disabled", "disabled");
+        $(".ClsTwoSubFirst").attr("disabled", "disabled");
+        $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+        MarketCounterpartyEnable();
+
+        $(".DV_MrktCntprty").css("display", "none");
+        document.getElementById("IsMC").checked = false;
+        document.getElementById("IsMC1").checked = false;
+        document.getElementById("IsMC2").checked = false;
+
+        if (document.getElementById("IsAP").checked) {
+            $(".DV_MrktCntprty").css("display", "block");
+            document.getElementById("IsMC1").checked = false;
+            document.getElementById("IsMC2").checked = false;
+            if (document.getElementById("IsDP").checked == true) {
+                document.getElementById("IsMC").checked = true;
+                document.getElementById("IsMC1").checked = true;
+            }
+            else if (document.getElementById("IsAP").checked == true) {
+                document.getElementById("IsMC").checked = true;
+                document.getElementById("IsMC2").checked = true;
+            }
+        }
+
+        if (document.getElementById("IsAP").checked) {
+
+        }
+        else {
+            $("#APIndName21").val("");
+            $("#APIndName22").val("");
+
+            $("#APIndName11").val("");
+            $("#APIndName12").val("");
+
+            $(".ClsOne").attr("disabled", "disabled");
+            $(".ClsSubOne").attr("disabled", "disabled");
+
+            $(".ClsTwo").attr("disabled", "disabled");
+            $(".ClsTwoSubFirst").attr("disabled", "disabled");
+            $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+            $(".ClsThird").attr("disabled", "disabled");
+            $(".ClsThirdSubOne").attr("disabled", "disabled");
+            $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+            $("#APIndName21").attr("disabled", "disabled");
+            $("#APIndName22").attr("disabled", "disabled");
+
+            $("#APIndName11").attr("disabled", "disabled");
+            $("#APIndName12").attr("disabled", "disabled");
+        }
+    });
+
+    function SetDynamicName() {
+        var CustType='@Model.CustomerTypeID';
+        var CustTypeName='';
+        if(CustType=="3"){
+            CustTypeName='Supplier';
+        }
+
+        if(CustType=="2"){
+            CustTypeName='Buyer';
+        }
+        if(CustType=="1"){
+            CustTypeName='Admin';
+        }
+        if(CustType=="4"){
+            CustTypeName='Funder';
+        }
+        if (document.getElementById("rdo_CLIENTY").checked == true) {
+
+            $("#btn_Classification_Print").show();
+            $(".DV_Main").css("display", "block");
+            $("#pro-retail-Client").show();
+            document.getElementById("lbl_RtlStatus").innerHTML = CustTypeName + "(Client)";
+            document.getElementById("lbl_ProfsnlStatus").innerHTML = CustTypeName + "(Client)";
+            document.getElementById("lbl_Fst").innerHTML = CustTypeName + "(Client)";
+            document.getElementById("lbl_Secnd").innerHTML = CustTypeName + "(Client)";
+            document.getElementById("lbl_Third").innerHTML = CustTypeName + "(Client)";
+            document.getElementById("lbl_Four").innerHTML = CustTypeName + "(Client)";
+            document.getElementById("lbl_Five").innerHTML = CustTypeName + "(Client)";
+            document.getElementById("lbl_Six").innerHTML = CustTypeName + "(Client)";
+        }
+        else if (document.getElementById("rdo_CLIENTN").checked == true) {
+            $("#btn_Classification_Print").hide();
+            $(".DV_Main").css("display", "none");
+            $("#pro-retail-Client").hide();
+            document.getElementById("lbl_RtlStatus").innerHTML = CustTypeName;
+            document.getElementById("lbl_ProfsnlStatus").innerHTML = CustTypeName;
+            document.getElementById("lbl_Fst").innerHTML = CustTypeName;
+            document.getElementById("lbl_Secnd").innerHTML = CustTypeName;
+            document.getElementById("lbl_Third").innerHTML = CustTypeName;
+            document.getElementById("lbl_Four").innerHTML = CustTypeName;
+            document.getElementById("lbl_Five").innerHTML = CustTypeName;
+            document.getElementById("lbl_Six").innerHTML = CustTypeName;
+        }
+
+        //if (document.getElementById("rdo_CLIENT").checked == true) {
+        //    document.getElementById("lbl_RtlStatus").innerHTML = "Client";
+        //    document.getElementById("lbl_ProfsnlStatus").innerHTML = "Client";
+        //    document.getElementById("lbl_Fst").innerHTML = "Client";
+        //    document.getElementById("lbl_Secnd").innerHTML = "Client";
+        //    document.getElementById("lbl_Third").innerHTML = "Client";
+        //    document.getElementById("lbl_Four").innerHTML = "Client";
+        //    document.getElementById("lbl_Five").innerHTML = "Client";
+        //    document.getElementById("lbl_Six").innerHTML = "Client";
+        //}
+        //else if (document.getElementById("rdo_BUSINESSPARTNER").checked == true) {
+        //    document.getElementById("lbl_RtlStatus").innerHTML = "Business Partner";
+        //    document.getElementById("lbl_ProfsnlStatus").innerHTML = "Business Partner";
+        //    document.getElementById("lbl_Fst").innerHTML = "Business Partner";
+        //    document.getElementById("lbl_Secnd").innerHTML = "Business Partner";
+        //    document.getElementById("lbl_Third").innerHTML = "Business Partner";
+        //    document.getElementById("lbl_Four").innerHTML = "Business Partner";
+        //    document.getElementById("lbl_Five").innerHTML = "Business Partner";
+        //    document.getElementById("lbl_Six").innerHTML = "Business Partner";
+        //}
+        //else if (document.getElementById("rdo_RELATEDPARTY").checked == true) {
+        //    document.getElementById("lbl_RtlStatus").innerHTML = "Related Party";
+        //    document.getElementById("lbl_ProfsnlStatus").innerHTML = "Related Party";
+        //    document.getElementById("lbl_Fst").innerHTML = "Related Party";
+        //    document.getElementById("lbl_Secnd").innerHTML = "Related Party";
+        //    document.getElementById("lbl_Third").innerHTML = "Related Party";
+        //    document.getElementById("lbl_Four").innerHTML = "Related Party";
+        //    document.getElementById("lbl_Five").innerHTML = "Related Party";
+        //    document.getElementById("lbl_Six").innerHTML = "Related Party";
+        //}
+        //else if (document.getElementById("rdo_SERVICEPROVIDER").checked == true) {
+        //    document.getElementById("lbl_RtlStatus").innerHTML = "Admin";
+        //    document.getElementById("lbl_ProfsnlStatus").innerHTML = "Admin";
+        //    document.getElementById("lbl_Fst").innerHTML = "Admin";
+        //    document.getElementById("lbl_Secnd").innerHTML = "Admin";
+        //    document.getElementById("lbl_Third").innerHTML = "Admin";
+        //    document.getElementById("lbl_Four").innerHTML = "Admin";
+        //    document.getElementById("lbl_Five").innerHTML = "Admin";
+        //    document.getElementById("lbl_Six").innerHTML = "Admin";
+        //}
+    }
+
+    $(".ClsEngStatus").change(function () {
+        SetDynamicName();
+        $('#collapseOne_11').collapse('hide');
+
+        $("#btn_Classification_Submit").show();
+        $(".ClsEngCondition").show();
+        if ('@Model.CustomerClassId' == 0) {
+            $(".DV_MrktCntprty").css("display", "none");
+        }
+
+
+        if (document.getElementById("rdo_CLIENTY").checked) {
+            if (document.getElementById("cbYes").checked) {
+
+                $("#btn_Classification_Submit").hide();
+                $("#btn_Classification_Print").hide();
+                $("#btnClassification_Next").hide();
+                $("#btnEdit").hide();
+                alert("Client - Retail Engagement Not Allowed : Please Reject.");
+            }
+        }
+    });
+
+    $('#btn_Classification_Print').on('click', function () {
+        var URL = "/CustomerReg/PrintClientClassification?CustomerID="+@Model.CustomerID;
+        window.open(URL, '_blank');
+        return false;
+    });
+    //*-*-*-*-*-*- Option One Start *-*-*-*-*-*-
+
+    $("#IsDP7").change(function () {
+        $(".ClsSubOne").attr("disabled", "disabled");
+        if (document.getElementById("IsDP7").checked) {
+            $(".ClsSubOne").removeAttr("disabled", "disabled");
+        }
+
+        $(".ClsSubOne").each(function () {
+            this.checked = false;
+        });
+
+
+        //if (document.getElementById("IsDP7").checked == true) {
+        //    document.getElementById("IsDP71").checked = true;
+        //    document.getElementById("IsDP72").checked = true;
+        //}
+
+        MarketCounterpartyEnable();
+    });
+
+    $("#IsDP").change(function () {
+        if (this.checked == false) {
+            $(".ClsOne").each(function () {
+                this.checked = false;
+            });
+            $(".ClsSubOne").each(function () {
+                this.checked = false;
+            });
+        }
+
+        MarketCounterpartyEnable();
+    });
+
+    //$("#IsPC").change(function () {
+    //    if (this.checked == false) {
+    //        $(".ClsOne").each(function () {
+    //            this.checked = false;
+    //        });
+    //        $(".ClsSubOne").each(function () {
+    //            this.checked = false;
+    //        });
+    //        $("#IsDP").attr("checked", false);
+    //    }
+
+    //    if (document.getElementById("IsPC").checked == true) {
+    //        $(".ClsOne").removeAttr("disabled", "disabled");
+    //        $(".ClsSubOne").removeAttr("disabled", "disabled");
+    //        $("#IsDP").removeAttr("disabled", "disabled");
+    //        // $("#IsDP").attr('disabled', 'readonly');
+    //    }
+    //    else {
+    //        $(".ClsOne").attr("disabled", "disabled");
+    //        $(".ClsSubOne").attr("disabled", "disabled");
+    //        $("#IsDP").attr("disabled", "disabled");
+    //    }
+    //    MarketCounterpartyEnable();
+    //});
+
+    $("#IsAP").change(function () {
+        if (this.checked == false) {
+            $(".ClsOne").each(function () {
+                this.checked = false;
+            });
+            $(".ClsSubOne").each(function () {
+                this.checked = false;
+            });
+        }
+
+        MarketCounterpartyEnable();
+    });
+
+    $(".ClsSubOne").change(function () {
+        if (document.getElementById("IsDP7").checked == false) {
+            $(".ClsOne").each(function () {
+                this.checked = false;
+            });
+        }
+
+        var ChkSubOne = 0;
+        intClsSubOneCount = 0;
+        //document.getElementById("IsDP").checked = false;
+        $(".ClsSubOne").each(function () {
+            if (this.checked) {
+                ChkSubOne = 1;
+                document.getElementById("IsDP7").checked = true;
+                intClsSubOneCount++;
+            }
+
+            if (ChkSubOne > 0) {
+                document.getElementById("IsDP").checked = true;
+                document.getElementById("IsDP7").checked = true;
+            }
+
+            //if (ChkSubOne == 0) {
+            //    document.getElementById("IsDP").checked = false;
+            //    document.getElementById("IsDP7").checked = false;
+            //}
+
+            //else if (ChkSubOne == 0)
+            //{ document.getElementById("IsDP7").checked = false; }
+            //if (intClsSubOneCount == 2) {
+            //    document.getElementById("IsDP").checked = true;
+            //}
+            //if (intClsSubOneCount == 0 || intClsSubOneCount == 1) {
+            //    document.getElementById("IsDP7").checked = false;
+            //}
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $(".ClsOne").change(function () {
+        $('.ClsOne').not(this).prop('checked', false);
+        if (document.getElementById("IsDP7").checked == false) {
+            $(".ClsSubOne").each(function () {
+                this.checked = false;
+
+            });
+        }
+
+        ChkOne = 0;
+        $(".ClsOne").each(function () {
+            if (this.checked) {
+                ChkOne = 1;
+                document.getElementById("IsDP").checked = true;
+                //$('.ClsOne').not(this).prop('disabled', true);
+                if (document.getElementById("IsDP7").checked == false) {
+                    $('.ClsSubOne').not(this).prop('disabled', true);
+                }
+            }
+            if (ChkOne == 0) {
+                //document.getElementById("IsDP").checked = false;
+                $('.ClsOne').not(this).prop('disabled', false);
+
+                if (document.getElementById("IsDP7").checked == false) {
+                    $('.ClsSubOne').not(this).prop('disabled', false);
+                }
+
+                $(".ClsSubOne").attr("disabled", "disabled");
+                if (document.getElementById("IsDP7").checked) {
+                    $(".ClsSubOne").removeAttr("disabled", "disabled");
+                }
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+    //*-*-*-*-*-*- Option One End *-*-*-*-*-*-*-
+
+    //*-*-*-*-*-*- Option Two Start *-*-*-*-*-*-
+    $("#IsSB").change(function () {
+        if (this.checked == false) {
+            $(".ClsTwo").each(function () {
+                this.checked = false;
+            });
+            $(".ClsTwoSubFirst").each(function () {
+                this.checked = false;
+            });
+            $(".ClsTwoSubSecond").each(function () {
+                this.checked = false;
+            });
+        }
+
+        MarketCounterpartyEnable();
+    });
+
+    $("#IsSB1").change(function () {
+        ChkTwo = 0;
+        $(".ClsTwoSubFirst").each(function () {
+            if (document.getElementById("IsSB1").checked == true) {
+                ChkTwo = 1;
+                this.checked = true;
+                document.getElementById("IsSB").checked = true;
+            }
+            else {
+                ChkTwo = 0;
+                this.checked = false;
+                //document.getElementById("IsSB").checked = false;
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $(".ClsTwoSubFirst").change(function () {
+        var ChkSB1 = 0;
+        intSB1Count = 0;
+        document.getElementById("IsSB1").checked = false;
+        //document.getElementById("IsSB").checked = false;
+        $(".ClsTwoSubFirst").each(function () {
+            if (this.checked) {
+                ChkSB1 = 1;
+                intSB1Count++;
+
+                if (document.getElementById("IsSB11").checked == true) {
+                    document.getElementById("IsSB12").checked = true;
+                }
+                if (document.getElementById("IsSB12").checked = true) {
+                    document.getElementById("IsSB11").checked = true
+                }
+            }
+            if (ChkSB1 == 0) {
+                //document.getElementById("IsSB").checked = false;
+            }
+            if (intSB1Count == 1) {
+                document.getElementById("IsSB").checked = true;
+                document.getElementById("IsSB1").checked = true;
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $("#IsSB2").change(function () {
+        ChkTwo = 0;
+        $(".ClsTwoSubSecond").each(function () {
+            if (document.getElementById("IsSB2").checked == true) {
+                ChkTwo = 1;
+                this.checked = true;
+                document.getElementById("IsSB").checked = true;
+            }
+            else {
+                ChkTwo = 0;
+                this.checked = false;
+                //document.getElementById("IsSB").checked = false;
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $(".ClsTwoSubSecond").change(function () {
+        var ChkSB1 = 0;
+        intSB1Count = 0;
+        document.getElementById("IsSB2").checked = false;
+        //document.getElementById("IsSB").checked = false;
+        $(".ClsTwoSubSecond").each(function () {
+            if (this.checked) {
+                ChkSB1 = 1;
+                intSB1Count++;
+                document.getElementById("IsSB").checked = true;
+            }
+            if (ChkSB1 == 0) {
+                //document.getElementById("IsSB").checked = false;
+            }
+            if (intSB1Count == 1) {
+                document.getElementById("IsSB2").checked = true;
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $("#IsSB1").change(function () {
+        if (document.getElementById("IsSB1").checked == true) {
+            $(".ClsTwoSubSecond").each(function () {
+                this.checked = false;
+                document.getElementById("IsSB2").checked = false;
+            });
+        }
+    });
+
+    $(".ClsTwoSubFirst").change(function () {
+        if (document.getElementById("IsSB1").checked == true) {
+            $(".ClsTwoSubSecond").each(function () {
+                this.checked = false;
+                document.getElementById("IsSB2").checked = false;
+            });
+        }
+    });
+
+    $("#IsSB2").change(function () {
+        if (document.getElementById("IsSB2").checked == true) {
+            $(".ClsTwoSubFirst").each(function () {
+                this.checked = false;
+                document.getElementById("IsSB1").checked = false;
+            });
+        }
+    });
+
+    $(".ClsTwoSubSecond").change(function () {
+        if (document.getElementById("IsSB2").checked == true) {
+            $(".ClsTwoSubFirst").each(function () {
+                this.checked = false;
+                document.getElementById("IsSB1").checked = false;
+            });
+        }
+    });
+    //*-*-*-*-*-*- Option Two End *-*-*-*-*-*-*-
+
+
+    //*-*-*-*-*-*- Option Third Start *-*-*-*-*-*-
+    $("#IsAP").change(function () {
+        if (this.checked == false) {
+            $(".ClsThird").each(function () {
+                this.checked = false;
+            });
+            $(".ClsThirdSubOne").each(function () {
+                this.checked = false;
+            });
+            $(".ClsThirdSubTwo").each(function () {
+                this.checked = false;
+            });
+        }
+
+        MarketCounterpartyEnable();
+    });
+
+    $("#IsAP1").change(function () {
+        ChkTwo = 0;
+        $(".ClsThirdSubOne").each(function () {
+            if (document.getElementById("IsAP1").checked == true) {
+                ChkTwo = 1;
+                this.checked = true;
+                document.getElementById("IsAP").checked = true;
+            }
+            else {
+                ChkTwo = 0;
+                this.checked = false;
+                //document.getElementById("IsAP").checked = false;
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $(".ClsThirdSubOne").change(function () {
+        var ChkSB1 = 0;
+        intSB1Count = 0;
+        document.getElementById("IsAP1").checked = false;
+        //document.getElementById("IsAP").checked = false;
+        $(".ClsThirdSubOne").each(function () {
+            if (this.checked) {
+                ChkSB1 = 1;
+                intSB1Count++;
+                if (document.getElementById("IsAP11").checked == true) {
+                    document.getElementById("IsAP12").checked = true;
+                }
+                if (document.getElementById("IsAP12").checked = true) {
+                    document.getElementById("IsAP11").checked = true
+                }
+            }
+            if (ChkSB1 == 0) {
+                //document.getElementById("IsAP").checked = false;
+            }
+            if (intSB1Count == 1) {
+                document.getElementById("IsAP1").checked = true;
+                document.getElementById("IsAP").checked = true;
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $("#IsAP2").change(function () {
+        ChkTwo = 0;
+        $(".ClsThirdSubTwo").each(function () {
+            if (document.getElementById("IsAP2").checked == true) {
+                ChkTwo = 1;
+                this.checked = true;
+                document.getElementById("IsAP").checked = true;
+            }
+            else {
+                ChkTwo = 0;
+                this.checked = false;
+                //document.getElementById("IsAP").checked = false;
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $(".ClsThirdSubTwo").change(function () {
+        var ChkSB1 = 0;
+        intSB1Count = 0;
+        document.getElementById("IsAP2").checked = false;
+        //document.getElementById("IsAP").checked = false;
+        $(".ClsThirdSubTwo").each(function () {
+            if (this.checked) {
+                ChkSB1 = 1;
+                intSB1Count++;
+
+                if (document.getElementById("IsAP21").checked == true) {
+                    document.getElementById("IsAP22").checked = true;
+                }
+                if (document.getElementById("IsAP22").checked = true) {
+                    document.getElementById("IsAP21").checked = true
+                }
+            }
+            if (ChkSB1 == 0) {
+                //document.getElementById("IsAP").checked = false;
+            }
+            if (intSB1Count == 1) {
+                document.getElementById("IsAP2").checked = true;
+                document.getElementById("IsAP").checked = true;
+            }
+        });
+
+        MarketCounterpartyEnable();
+    });
+
+    $("#IsAP1").change(function () {
+        if (document.getElementById("IsAP1").checked == true) {
+            $(".ClsThirdSubTwo").each(function () {
+                this.checked = false;
+                document.getElementById("IsAP2").checked = false;
+                $("#APIndName21").val("");
+                $("#APIndName22").val("");
+
+
+                $("#APIndName11").removeAttr("disabled", "disabled");
+                $("#APIndName12").removeAttr("disabled", "disabled");
+
+                $("#APIndName21").attr("disabled", "disabled");
+                $("#APIndName22").attr("disabled", "disabled");
+            });
+        }
+        else {
+            $("#APIndName11").val("");
+            $("#APIndName12").val("");
+            $("#APIndName11").attr("disabled", "disabled");
+            $("#APIndName12").attr("disabled", "disabled");
+        }
+    });
+
+    $(".ClsThirdSubOne").change(function () {
+        if (document.getElementById("IsAP1").checked == true) {
+            $(".ClsThirdSubTwo").each(function () {
+                this.checked = false;
+                document.getElementById("IsAP2").checked = false;
+                $("#APIndName21").val("");
+                $("#APIndName22").val("");
+
+
+            });
+        }
+    });
+
+    $("#IsAP2").change(function () {
+        if (document.getElementById("IsAP2").checked == true) {
+            $(".ClsThirdSubOne").each(function () {
+                this.checked = false;
+                document.getElementById("IsAP1").checked = false;
+                $("#APIndName11").val("");
+                $("#APIndName12").val("");
+
+                $("#APIndName21").removeAttr("disabled", "disabled");
+                $("#APIndName22").removeAttr("disabled", "disabled");
+
+                $("#APIndName11").attr("disabled", "disabled");
+                $("#APIndName12").attr("disabled", "disabled");
+            });
+        }
+        else {
+            $("#APIndName21").val("");
+            $("#APIndName22").val("");
+            $("#APIndName21").attr("disabled", "disabled");
+            $("#APIndName22").attr("disabled", "disabled");
+        }
+    });
+
+    $(".ClsThirdSubTwo").change(function () {
+        if (document.getElementById("IsAP2").checked == true) {
+            $(".ClsThirdSubOne").each(function () {
+                this.checked = false;
+                document.getElementById("IsAP1").checked = false;
+                $("#APIndName11").val("");
+                $("#APIndName12").val("");
+            });
+        }
+    });
+    //*-*-*-*-*-*- Option Third End *-*-*-*-*-*-*-
+
+
+    //*-*-*-*-*-*- Option Market Counterparty Start *-*-*-*-*-*-
+    $("#IsMC").change(function () {
+        document.getElementById("IsMC1").checked = false;
+        document.getElementById("IsMC2").checked = false;
+    });
+
+    $("#IsMC1").change(function () {
+        if (document.getElementById("IsMC1").checked == true) {
+            document.getElementById("IsMC").checked = true;
+        }
+        else {
+            document.getElementById("IsMC").checked = false;
+        }
+    });
+
+    $("#IsMC2").change(function () {
+        if (document.getElementById("IsMC2").checked == true) {
+            document.getElementById("IsMC").checked = true;
+        }
+        else {
+            document.getElementById("IsMC").checked = false;
+        }
+    });
+
+    function syncAPIndName11() {
+        var APIndName11 = document.getElementById('APIndName11');
+        var APIndName12 = document.getElementById('APIndName12');
+        APIndName12.value = APIndName11.value;
+    }
+
+    function syncAPIndName21() {
+        var APIndName21 = document.getElementById('APIndName21');
+        var APIndName22 = document.getElementById('APIndName22');
+        APIndName22.value = APIndName21.value;
+    }
+
+    //*-*-*-*-*-*- Option Market Counterparty End *-*-*-*-*-*-*-
+
+
+    //*-*-*-*-*-*- Option Market Counterparty Enable Start *-*-*-*-*-*-
+    function MarketCounterpartyEnable() {
+
+        //if (document.getElementById("IsDP").checked == true || document.getElementById("IsAP").checked == true) {
+        //    $(".DV_MrktCntprty").css("display", "block");
+        //    document.getElementById("IsMC1").checked = false;
+        //    document.getElementById("IsMC2").checked = false;
+        //    if (document.getElementById("IsDP").checked == true) {
+        //        document.getElementById("IsMC").checked = true;
+        //        document.getElementById("IsMC1").checked = true;
+        //    }
+        //    else if (document.getElementById("IsAP").checked == true) {
+        //        document.getElementById("IsMC").checked = true;
+        //        document.getElementById("IsMC2").checked = true;
+        //    }
+        //}
+        //else {
+        //    $(".DV_MrktCntprty").css("display", "none");
+        //    document.getElementById("IsMC").checked = false;
+        //    document.getElementById("IsMC1").checked = false;
+        //    document.getElementById("IsMC2").checked = false;
+        //}
+
+        //$("#DV_One").css("display", "block");
+        //$("#DV_Two").css("display", "block");
+        //$("#DV_Three").css("display", "block");
+
+        //if (document.getElementById("IsPC").checked == true) {
+        //    $("#DV_One").css("display", "block");
+        //    $("#DV_Two").css("display", "none");
+        //    $("#DV_Three").css("display", "none");
+        //}
+        //if (document.getElementById("IsSB").checked == true) {
+        //    $("#DV_One").css("display", "none");
+        //    $("#DV_Two").css("display", "block");
+        //    $("#DV_Three").css("display", "none");
+        //}
+        //if (document.getElementById("IsAP").checked == true) {
+        //    $("#DV_One").css("display", "none");
+        //    $("#DV_Two").css("display", "none");
+        //    $("#DV_Three").css("display", "block");
+        //}
+
+        //$('.Select-list').on('change', function () {
+        //    $('.Select-list').not(this).prop('checked', false);
+        //});
+    }
+    //*-*-*-*-*-*- Option Market Counterparty Enable End *-*-*-*-*-*-*-
+
+
+    $("#cbYes").change(function () {
+        $('input[type=checkbox]').each(function () {
+            this.checked = false;
+        });
+        document.getElementById("cbYes").checked = true;
+        //document.getElementById("btn_Classification_Submit").innerHTML = "SAVE";
+
+        if (document.getElementById("cbYes").checked)
+        {
+            if (document.getElementById("rdo_CLIENTY").checked) {
+
+                $("#btn_Classification_Submit").hide();
+                $("#btn_Classification_Print").hide();
+                $("#btnClassification_Next").hide();
+                $("#btnEdit").hide();
+                alert("Client - Retail Engagement Not Allowed : Please Reject.");
+            }
+        }
+        //$("#btn_Classification_Submit").hide();
+    });
+
+    $("#btn_Classification_Submit").click(function () {
+
+
+        $(".ClsEngStatus").removeClass(" input-validation-error");
+        $(".ClsEngStatus").rules('remove');
+
+        //$(".ClsEngStatus").removeClass("input-validation-error");
+        //$(".ClsEngStatus").rules('remove');
+
+        ChkOne = 0;
+        ChkTwo = 0;
+        ChkThree = 0;
+        var EngS = 0;
+        var intsub = 0;
+
+
+        $(".ClsEngStatus").each(function () {
+            if (this.checked) {
+                EngS = 1;
+            }
+        });
+
+        if (EngS == 0) {
+            alert("Please select on at least one engagement status.");
+            $("#rdo_CLIENTY").focus();
+            return false;
+        }
+
+        if (document.getElementById("cbNo").checked == true) {
+            if (document.getElementById("IsDP").checked == true) {
+                $(".ClsOne").each(function () {
+                    if (this.checked) {
+                        ChkOne = 1;
+                    }
+                });
+            }
+
+            if (document.getElementById("IsSB").checked == true) {
+                $(".ClsTwo").each(function () {
+                    if (this.checked) {
+                        ChkTwo = 1;
+                    }
+                });
+            }
+
+            if (document.getElementById("IsAP").checked == true) {
+                $(".ClsThird").each(function () {
+                    if (this.checked) {
+                        ChkThree = 1;
+                    }
+                });
+            }
+
+            if (ChkOne == 1) {
+                $(".ClsSubOne").each(function () {
+                    if (this.checked) {
+                        intsub++;
+                    }
+                });
+
+                if (intsub == 1) {
+                    alert("Please click on at least two conditions related to a Large Undertaking.");
+                    return false;
+                }
+            }
+
+
+            if (document.getElementById("IsDP7").checked == true) {
+                $(".ClsSubOne").each(function () {
+                    if (this.checked) {
+                        intsub++;
+                    }
+                });
+
+                if (intsub == 0) {
+                    alert("Please click on at least two conditions related to a Large Undertaking.");
+                    $("#IsDP71").focus();
+                    return false;
+                }
+            }
+
+            if (ChkThree == 1) {
+                if (document.getElementById("IsAP1").checked == true) {
+                    if ($("#APIndName11").val() == "") {
+                        alert("Please enter name of assessed individual.");
+                        $("#APIndName11").focus();
+                        return false;
+                    }
+                }
+
+                if (document.getElementById("IsAP2").checked == true) {
+                    if ($("#APIndName21").val() == "") {
+                        alert("Please enter name of assessed undertaking.");
+                        $("#APIndName21").focus();
+                        return false;
+                    }
+                }
+            }
+            if (ChkOne == 1 || ChkTwo == 1 || ChkThree == 1) {
+                return true;
+                //alert("Form Submit");
+                //return false;
+            }
+
+            else {
+                if (document.getElementById("rdo_CLIENTY").checked) {
+                    alert("Please select any one option.");
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+
+
+        }
+        else {
+            return true;
+        }
+    });
+
+    //$("#btn_Classification_Print").click(function () {
+    //    var divContents = $("#dv_print").html();
+    //    var printWindow = window.open('', '', 'height=400,width=800');
+    //    printWindow.document.write('<html><head><title>Client Classification</title>');
+    //    printWindow.document.write('</head><body >');
+    //    printWindow.document.write(divContents);
+    //    printWindow.document.write('</body></html>');
+    //    printWindow.document.close();
+    //    printWindow.print();
+    //    return false;
+    //});
+
+
+    $("#cbYes").change(function () {
+        document.getElementById("cbYes").checked = true;
+        document.getElementById("cbNo").checked = false;
+        $(".DV_Main").css("display", "none");
+        $("#cbNo").attr("disabled", "disabled");
+
+        return false;
+    });
+
+    $("#cbNo").change(function () {
+        document.getElementById("cbNo").checked = true;
+        document.getElementById("cbYes").checked = false;
+
+        $("#APIndName11").val("");
+        $("#APIndName12").val("");
+        $("#APIndName21").val("");
+        $("#APIndName22").val("");
+
+        //document.getElementById("btn_Classification_Submit").innerHTML = "SUBMIT";
+        $("#btn_Classification_Print").show();
+        $(".DV_Main").css("display", "block");
+        $("#btn_Classification_Submit").show();
+        return false;
+    });
+
+    $("#btnEdit").click(function () {
+        $('#collapseOne_11').collapse('show');
+        $('#collapseOne').collapse('show');
+
+        $(".ClsEngStatus").removeAttr("disabled", "disabled");
+        $("#btn_Classification_Submit").show();
+        $("#btnClassification_Next").hide();
+
+        $('input[type=checkbox]').each(function () {
+            this.disabled = false;
+        });
+        $('input[type=text]').each(function () {
+            this.disabled = false;
+        });
+
+        $(".ClsEngCondition").show();
+
+
+
+        if (document.getElementById("IsDP").checked == true) {
+            $(".DV_MrktCntprty").css("display", "block");
+
+            $(".ClsTwo").attr("disabled", "disabled");
+            $(".ClsTwoSubFirst").attr("disabled", "disabled");
+            $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+            $(".ClsThird").attr("disabled", "disabled");
+            $(".ClsThirdSubOne").attr("disabled", "disabled");
+            $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+            $("#APIndName21").attr("disabled", "disabled");
+            $("#APIndName22").attr("disabled", "disabled");
+
+            $("#APIndName11").attr("disabled", "disabled");
+            $("#APIndName12").attr("disabled", "disabled");
+        }
+
+        if (document.getElementById("IsSB").checked == true) {
+            $("#DV_AfterSubmit").css("display", "hide");
+            $(".DV_MrktCntprty").css("display", "none");
+
+            $(".ClsOne").attr("disabled", "disabled");
+            $(".ClsSubOne").attr("disabled", "disabled");
+
+
+            $(".ClsThird").attr("disabled", "disabled");
+            $(".ClsThirdSubOne").attr("disabled", "disabled");
+            $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+            $("#APIndName21").attr("disabled", "disabled");
+            $("#APIndName22").attr("disabled", "disabled");
+
+            $("#APIndName11").attr("disabled", "disabled");
+            $("#APIndName12").attr("disabled", "disabled");
+
+        }
+
+        if (document.getElementById("IsAP").checked == true) {
+            $(".DV_MrktCntprty").css("display", "block");
+
+            $(".ClsOne").attr("disabled", "disabled");
+            $(".ClsSubOne").attr("disabled", "disabled");
+
+            $(".ClsTwo").attr("disabled", "disabled");
+            $(".ClsTwoSubFirst").attr("disabled", "disabled");
+            $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+            $(".ClsTwo").attr("disabled", "disabled");
+            $(".ClsTwoSubFirst").attr("disabled", "disabled");
+            $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+        }
+
+
+
+        if (document.getElementById("cbYes").checked == true) {
+            $(".ClsOne").attr("disabled", "disabled");
+            $(".ClsSubOne").attr("disabled", "disabled");
+
+            $(".ClsTwo").attr("disabled", "disabled");
+            $(".ClsTwoSubFirst").attr("disabled", "disabled");
+            $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+            $(".ClsThird").attr("disabled", "disabled");
+            $(".ClsThirdSubOne").attr("disabled", "disabled");
+            $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+            $("#APIndName21").attr("disabled", "disabled");
+            $("#APIndName22").attr("disabled", "disabled");
+
+            $("#APIndName11").attr("disabled", "disabled");
+            $("#APIndName12").attr("disabled", "disabled");
+            $(".DV_MrktCntprty").css("display", "none");
+        }
+
+
+        if (document.getElementById("IsAP1").checked == true) {
+            $("#APIndName21").attr("disabled", "disabled");
+            $("#APIndName22").attr("disabled", "disabled");
+        }
+
+        if (document.getElementById("IsAP2").checked == true) {
+            $("#APIndName11").attr("disabled", "disabled");
+            $("#APIndName12").attr("disabled", "disabled");
+        }
+
+        if (document.getElementById("cbYes").checked == true) {
+            //document.getElementById("btn_Classification_Submit").innerHTML = "SAVE";
+            $("#btn_Classification_Print").hide();
+        }
+
+        $(".ClsEngStatus").removeClass(" input-validation-error");
+        $(".ClsEngStatus").rules('remove');
+        return false;
+    });
+
+    $("#Return, #Reject").click(function () {
+        if ($("#ProcessRemark").val() == "") {
+            alert("Please enter comments.");
+            $("#ProcessRemark").focus();
+            return false;
+        }
+    });
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10,
+            "language": {
+                "emptyTable": "No matches found."
+            }
+        });
+        $('#exampleScr').DataTable({
+            "pageLength": 100,
+            "language": {
+                "emptyTable": "No matches found."
+            }
+        });
+        //$("#btnTR_Submit").attr("disabled", "disabled");
+        //$("#btnTR_Submit").hide();
+        $(".DisableItem").each(function () {
+            var ID = $(this).attr("id");
+            var value = $(this).val();
+            var InvID = ID.split('_')[1];
+            $("#resolutionRemark_" + InvID).attr("disabled", "disabled");
+            $("#statusId_" + InvID).attr("disabled", "disabled");
+            $("#riskId_" + InvID).attr("disabled", "disabled");
+            $("#reasonId_" + InvID).attr("disabled", "disabled");
+            //$("#btnTR_Submit").attr("disabled", "disabled");
+            //$("#btnTR_Submit").hide();
+            $("#chk_" + InvID).prop("checked", false);
+        });
+
+        //if (document.getElementById("IsDP").checked == false) {
+        //    document.getElementById("IsPC").checked = false;
+        //    $(".ClsOne").attr("disabled", "disabled");
+        //    $(".ClsSubOne").attr("disabled", "disabled");
+        //    $("#IsDP").attr("disabled", "disabled");
+        //}
+
+
+        if ('@ViewBag.MenuOrderNo' != 0 && '@ViewBag.MenuOrderNo' == 2) {
+
+            if ('@ViewBag.btnApproveVisible' == 'False') {
+                alert("Please complete screening.");
+                var URL = "/CustomerReg/ComplianceScreening?CustomerID=" +@Model.CustomerID +"&CustomerTypeID=" +@Model.CustomerTypeID +"&MenuOrderNo=1&currentStatus=" + '@Model.Status' + "";
+                window.location.href = URL;
+                return;
+            }
+
+            var intEngStatus = 0;
+            $(".ClsEngStatus").each(function () {
+                if (this.checked) {
+                    intEngStatus = 1;
+                }
+            });
+
+
+            if (intEngStatus == 1) {
+                $("#btn_Classification_Submit").show();
+                $(".ClsEngCondition").show();
+            }
+            else {
+                $("#btn_Classification_Submit").hide();
+                $(".ClsEngCondition").hide();
+            }
+
+
+
+            MarketCounterpartyEnable();
+
+            $(".clsMenuOrder1").css("display", "none");
+            $(".clsMenuOrder2").css("display", "block");
+            $("#btn_Classification_Submit").show();
+            $("#btn_Classification_Print").show();
+
+            if (document.getElementById("cbYes").checked == true) {
+                $(".DV_Main").css("display", "none");
+            }
+
+
+            if ('@Model.CustomerClassId' == 0) {
+
+                $("#btn_Classification_Print").hide();
+                $('#collapseOne_11').collapse('show');
+                $('#collapseOne').collapse({ 'toggle': true });
+            }
+            else {
+                $("#btn_Classification_Submit").hide();
+                $(".ClsEngCondition").show();
+                if ('@Model.Category' == 'Client') {
+                    if (document.getElementById("IsDP").checked == true) {
+                        $(".DV_MrktCntprty").css("display", "block");
+                        if ('@Model.Category' == 'Client') {
+                            document.getElementById("lbl_Message").innerHTML = "Classification - Deemed Professional " + '@Model.Category' + " and a Market Counter Party.";
+                        }
+                        @*else {
+                            document.getElementById("lbl_Message").innerHTML = "Classification - Deemed Professional " + '@Model.Category' + ".";
+                        }*@
+
+                        $("#DV_AfterSubmit").css("display", "block");
+                    }
+
+                    if (document.getElementById("IsSB").checked == true) {
+                        document.getElementById("lbl_Message").innerHTML = "Classification - Service Based Professional " + '@Model.Category' + ".";
+                        $(".DV_MrktCntprty").css("display", "none");
+                        $("#DV_AfterSubmit").css("display", "block");
+                    }
+
+                    if (document.getElementById("IsAP").checked == true) {
+                        $(".DV_MrktCntprty").css("display", "block");
+                        if ('@Model.Category' == 'Client') {
+                            document.getElementById("lbl_Message").innerHTML = "Classification - Assessed Professional " + '@Model.Category' + " and a Market Counter Party.";
+                        }
+                        @*else {
+                            document.getElementById("lbl_Message").innerHTML = "Classification - Assessed Professional " + '@Model.Category' + ".";
+                        }*@
+
+                        $("#DV_AfterSubmit").css("display", "block");
+                    }
+                }
+
+                $('#collapseOne').collapse({ 'toggle': false });
+                $('#collapseOne_11').collapse({ 'toggle': false });
+
+                $('input[type=checkbox]').each(function () {
+                    this.disabled = true;
+                });
+                $('input[type=text]').each(function () {
+                    this.disabled = true;
+                });
+            }
+
+            var strCategoryName = "";
+            if ('@Model.Category' == 'Client') {
+                $("#rdo_CLIENTY").attr('checked', true);
+            }else{
+                $("#rdo_CLIENTN").attr('checked', true);
+            }
+            @*else if ('@Model.Category' == 'Business Partner') {
+                    $("#rdo_BUSINESSPARTNER").attr('checked', true);
+                }
+                else if ('@Model.Category' == 'Related Party') {
+                    $("#rdo_RELATEDPARTY").attr('checked', true);
+                } else if ('@Model.Category' == 'Admin') {
+                    $("#rdo_SERVICEPROVIDER").attr('checked', true);
+                }*@
+            //else {
+            //    //document.getElementById("rdo_CLIENT").checked == true;
+            //    //$("#rdo_CLIENT").attr('checked', true);
+            //}
+
+            $("#ProcessRemark").removeAttr("disabled", "disabled");
+
+            //if (document.getElementById("IsPC").checked == true) {
+            //    $("#DV_One").css("display", "block");
+            //    $("#DV_Two").css("display", "none");
+            //    $("#DV_Three").css("display", "none");
+            //}
+            //(Model.Status == CONT.NR || Model.Status == CONT.NH || Model.Status == CONT.UR || Model.Status == CONT.UH) && Model.Admin != "Y"
+            if ('@Model.CustomerClassId' == 0 && ('@Model.Status' == '@CONT.NR' || '@Model.Status' == '@CONT.NH' ||
+                '@Model.Status' == '@CONT.UR' || '@Model.Status' == '@CONT.UH') && '@Model.Admin' != 'Y') {
+
+                $(".ClsOne").attr("disabled", "disabled");
+                $(".ClsSubOne").attr("disabled", "disabled");
+
+                $(".ClsTwo").attr("disabled", "disabled");
+                $(".ClsTwoSubFirst").attr("disabled", "disabled");
+                $(".ClsTwoSubSecond").attr("disabled", "disabled");
+
+                $(".ClsThird").attr("disabled", "disabled");
+                $(".ClsThirdSubOne").attr("disabled", "disabled");
+                $(".ClsThirdSubTwo").attr("disabled", "disabled");
+
+                $("#APIndName21").attr("disabled", "disabled");
+                $("#APIndName22").attr("disabled", "disabled");
+
+                $("#APIndName11").attr("disabled", "disabled");
+                $("#APIndName12").attr("disabled", "disabled");
+            }
+            else {
+                $("#btn_Classification_Print").show();
+                $(".ClsEngStatus").attr("disabled", "disabled");
+                $('#collapseOne_11').collapse('hide');
+            }
+
+            SetDynamicName();
+
+            if (document.getElementById("cbYes").checked == true) {
+                $("#btn_Classification_Print").hide();
+            }
+        }
+        else if ('@ViewBag.MenuOrderNo' != 0 && '@ViewBag.MenuOrderNo' == 1) {
+            $(".clsMenuOrder2").css("display", "none");
+            $(".clsMenuOrder1").css("display", "block");
+
+            $("#btn_Classification_Submit").hide();
+            $("#btn_Classification_Print").hide();
+        }
+    });
+
+    $(".DisableItem").on("change", function () {
+        var ID = $(this).attr("id");
+        var value = $(this).val();
+        var InvID = ID.split('_')[1];
+        if ($("#chk_" + InvID).is(':checked')) {
+            $("#resolutionRemark_" + InvID).removeAttr("disabled", "disabled");
+            $("#statusId_" + InvID).removeAttr("disabled", "disabled");
+            $("#riskId_" + InvID).removeAttr("disabled", "disabled");
+            $("#reasonId_" + InvID).removeAttr("disabled", "disabled");
+            //$("#btnTR_Submit").removeAttr("disabled", "disabled");
+            //$("#btnTR_Submit").show();
+            $("#chk_" + InvID).prop("checked", true);
+        }
+        else {
+            $("#resolutionRemark_" + InvID).attr("disabled", "disabled");
+            $("#statusId_" + InvID).attr("disabled", "disabled");
+            $("#riskId_" + InvID).attr("disabled", "disabled");
+            $("#reasonId_" + InvID).attr("disabled", "disabled");
+            //$("#btnTR_Submit").attr("disabled", "disabled");
+            //$("#btnTR_Submit").hide();
+            $("#chk_" + InvID).prop("checked", false);
+        }
+
+        var chkcnt = 0;
+        $(".DisableItem").each(function () {
+            if (this.checked) {
+                chkcnt = 1;
+            }
+        });
+        //if (chkcnt == 0) {
+        //    $("#btnTR_Submit").hide();
+        //}
+        //else {
+        //    $("#btnTR_Submit").show();
+        //}
+    });
+
+    /* Resolution Rules */
+
+    $(".ddlstatus").on("change", function () {
+
+        var ID = $(this).attr("id");
+        var ddlID = ID.split('_')[1];
+        var riskId = "#riskId_" + ddlID;
+        var reasonId = "#reasonId_" + ddlID;
+
+        ClearComboData(ID);
+
+        var selectedText = $("#" + ID).val();
+        if (selectedText != "" && typeof (selectedText) != 'undefined') {
+
+            var skillsSelect = document.getElementById(ID);
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Positive") {
+                //9f4
+                $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ec]").attr("disabled", false);
+
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f0]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f2]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f1]").attr("disabled", false);
+            }
+            else if (selectedText == "Possible") {
+                //9f9
+                $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ed]").attr("disabled", false);
+
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f3]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f0]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f2]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f1]").attr("disabled", false);
+            }
+            else if (selectedText == "False") {
+                //9ff
+                $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ee]").attr("disabled", false);
+
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f3]").attr("disabled", false);
+            }
+            else if (selectedText == "Unspecified") {
+                //a02
+                $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ef]").attr("disabled", false);
+
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f3]").attr("disabled", false);
+            }
+
+
+
+            // Auto select option
+            $(reasonId).val("");
+            if (selectedText == "Positive") {
+                $(reasonId).val("0a3687cf-5fe4-105f-9813-f982000009ec");
+            }
+            else if (selectedText == "Possible") {
+                $(reasonId).val("0a3687cf-5fe4-105f-9813-f982000009ed");
+            }
+            else if (selectedText == "False") {
+                $(reasonId).val("0a3687cf-5fe4-105f-9813-f982000009ee");
+            }
+            else if (selectedText == "Unspecified") {
+                $(reasonId).val("0a3687cf-5fe4-105f-9813-f982000009ef");
+            }
+        }
+        else
+        {
+            $(reasonId).val("");
+        }
+    });
+
+    function ClearComboData(ID) {
+        var ddlID = ID.split('_')[1];
+        var riskId = "#riskId_" + ddlID;
+        var reasonId = "#reasonId_" + ddlID;
+
+        $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f3]").attr("disabled", true);
+        $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f0]").attr("disabled", true);
+        $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f1]").attr("disabled", true);
+        $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f2]").attr("disabled", true);
+
+        $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ee]").attr("disabled", true);
+        $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ef]").attr("disabled", true);
+        $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ec]").attr("disabled", true);
+        $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ed]").attr("disabled", true);
+    }
+
+    $("#goToLINK").on("click", ".OpenList", function () {
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var CustomerID = $('#CustomerID').val();
+        if (CustomerID != null && CustomerID > 0) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: "/CustomerReg/RemarksPopup?CustomerID=" + CustomerID,
+                contentType: "application/json; charset=utf-8",
+                data: "{}",
+                datatype: "json",
+                success: function (data) {
+                    $('#Invoiceview').html(data);
+                    $('#process').modal('hide');
+                    $('#InvoiceModal').modal('show');
+                },
+            });
+        }
+    });
+
+    $("#Return,#Reject").on("click", function () {
+        $("#ProcessRemark").addClass("validate[required]");
+    });
+
+    //$("#btnTR_Submit").on("click", function () {
+    //    if ($("#ProcessRemark").hasClass("validate[required]")) {
+    //        $("#ProcessRemark").removeClass("validate[required]");
+    //    }
+    //});
+
+</script>
+
+<style>
+    .panel-default > .panel-heading {
+        height: 35px;
+    }
+
+    .panel-group .panel {
+        border-radius: 0px;
+    }
+
+    .DdlWidth {
+        width: 90px;
+    }
+
+    .active {
+        background-color: #0000 !important;
+    }
+
+    .createusertitle1 {
+        background-color: #e6e7e8;
+        color: #58595b;
+        padding: 0.5%;
+        margin-bottom: 0.5%;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    .Question {
+        color: #58595b;
+    }
+
+    .lftMargin {
+        margin-left: 25px;
+    }
+
+    .lblEngStatus {
+        font-family: 'Roboto', sans-serif;
+        font-size: 12px;
+    }
+</style>

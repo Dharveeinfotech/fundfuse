@@ -1,0 +1,84 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+
+@if (Model != null)
+{
+if (Model.ProgramType == CONT.FType)
+{
+    <div class="form-group">
+        <div class="col-sm-4 summarybg">
+            <div class="col-sm-12 summarytext">Supplier Name</div>
+            <div class="col-sm-12 summaryvalue">@Model.SupplierName</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Total Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.SUPTotLimit)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Utilized Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.SUPTotUtiAmt)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Balance Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.SUPTotBalAmt)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Max. Tenor</div>
+            <div class="col-sm-12 summaryvalue">@Model.SUPTenor</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-4 summarybg">
+            <div class="col-sm-12 summarytext">Buyer Name</div>
+            <div class="col-sm-12 summaryvalue">@Model.ObligorName</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Total Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.OBLTotLimit)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Utilized Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.OBLTotUtiAmt)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Balance Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.OBLTotBalAmt)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Max. Tenor</div>
+            <div class="col-sm-12 summaryvalue">@Model.OBLTenor</div>
+        </div>
+    </div>
+    <div class="col-md-12" style="height:10px; background-color:#336699;"></div>
+    <div class="col-md-12" style="height:15px;"></div>
+    <input type="hidden" id="HDSUPTotBalAmt" name="HDSUPTotBalAmt" value="@Model.SUPTotBalAmt" />
+    }
+    else
+    {
+    <div class="form-group">
+        <div class="col-sm-4 summarybg">
+            <div class="col-sm-12 summarytext">Buyer Name</div>
+            <div class="col-sm-12 summaryvalue">@Model.BuyerName</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Total Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.BUYTotLimit)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Utilized Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.BUYTotUtiAmt)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Balance Limit</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.BUYTotBalAmt)</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Max. Tenor</div>
+            <div class="col-sm-12 summaryvalue">@Model.BUYTenor</div>
+        </div>
+    </div>
+    <div class="col-md-12" style="height:10px; background-color:#336699;"></div>
+    <div class="col-md-12" style="height:15px;"></div>
+    <input type="hidden" id="HDBUYTotBalAmt" name="HDBUYTotBalAmt" value="@Model.BUYTotBalAmt" />
+    }
+}

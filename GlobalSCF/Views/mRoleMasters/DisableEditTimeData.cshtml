@@ -1,0 +1,214 @@
+﻿
+@model IEnumerable<TMP.Models.mRoleMaster>
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<div id="NEW" class="modal-body" style="height: 430px;">
+
+    <!-- inner content form -->
+    <div class="col-md-10 createusertitle">Update Role</div>
+    <div class="col-md-10" style="height:5px;"></div>
+
+
+
+    @using (Html.BeginForm("Edit", "mRoleMasters", FormMethod.Post, new { @class = "col-md-10" }))
+    {
+
+        <fieldset>
+
+            @Html.HiddenFor(model => model.lstRoleMaster[0].RoleID)
+            <div class="col-md-12" style="height:10px;"></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Role Name</label>
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.lstRoleMaster[0].RoleName, new { htmlAttributes = new { @class = "form-control" , @disabled = "disabled" } })
+               
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Role Name</label>
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.lstRoleMaster[0].RoleDesc, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                 
+                    @Html.HiddenFor(model => model.lstRoleMaster[0].Status, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+
+            @if (Model.lstMenuRights != null)
+                {
+
+                <br />
+                    <input type="hidden" name="intMenuRightsCount" id="intMenuRightsCount" value="@Model.lstMenuRights.Count"><h4>Select Right</h4>
+
+                foreach (var item in Model.lstMenuRights)
+                {
+                    if (item.ParentMenuID == 0)
+                    {
+                        <div class="col-md-10">
+                            <!--menu title-->
+                            <div class="col-md-12 adminmenulist">
+                                <div class="col-md-2"><p class="menulist_floatleft">@item.MenuName</p></div>
+                                <div class="col-md-2">
+                                    <p class="menulist_floatleft">Maker</p><br />@if (item.IsMaker == true)
+                                    {
+                                        <input type="checkbox" id="chkMekar" name="chk_M_@item.MenuRightsID" class="chkMekar" value="Mekar_@item.MenuRightsID" style="display:block;" disabled = "disabled" checked="checked" />
+                                    }
+                                    else
+                                    { <input type="checkbox" id="chkMekar" name="chk_M_@item.MenuRightsID" class="chkMekar" value="Mekar_@item.MenuRightsID" disabled = "disabled"  style="display:block;" />
+
+                                    }
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="menulist_floatleft">Checker</p><br />@if (item.IsChecker == true)
+                                    {
+                                        <input type="checkbox" id="chkChecker" name="chk_C_@item.MenuRightsID" disabled = "disabled" class="chkChecker" value="Checker_@item.MenuRightsID" style="display:block;" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="chkChecker" disabled = "disabled" name="chk_C_@item.MenuRightsID" class="chkChecker" value="Checker_@item.MenuRightsID" style="display:block;" />
+                                    }
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="menulist_floatleft">Approval</p><br />@if (item.IsApprover == true)
+                                    {
+                                        <input type="checkbox" id="chkApproval" disabled = "disabled" name="chk_A_@item.MenuRightsID" class="chkApproval" value="Approval_@item.MenuRightsID" style="display:block;" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="chkApproval" disabled = "disabled" name="chk_A_@item.MenuRightsID" class="chkApproval" value="Approval_@item.MenuRightsID" style="display:block;" />
+                                    }
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="menulist_floatleft">IsView</p><br />@if (item.IsView == true)
+                                    {
+
+                                        <input type="checkbox" id="chkIsView" disabled = "disabled" name="chk_V_@item.MenuRightsID" class="chkIsView" value="IsView_@item.MenuRightsID" style="display:block;" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="chkIsView" disabled = "disabled" name="chk_V_@item.MenuRightsID" class="chkIsView" value="IsView_@item.MenuRightsID" style="display:block;" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        foreach (var item1 in Model.lstMenuRights)
+                        {
+                            if (item.MenuID == item1.ParentMenuID)
+                            {
+
+
+                                <div class="col-md-10">
+
+                                    <div class="col-md-12 menusbg">
+                                        <div class="col-md-2"><p class="listp menulist_floatleft"></p>@item1.MenuName</div>
+
+                                        <div class="col-md-2">
+                                            <p class="listp menulist_floatleft"></p>@if (item1.IsMaker == true)
+                                            {
+                                                <input type="checkbox" disabled = "disabled" name="chk_M_@item1.MenuRightsID" id="chk_M_@item1.MenuRightsID" class="mcheckbox_@item.MenuRightsID" checked="checked" />
+
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" disabled = "disabled" name="chk_M_@item1.MenuRightsID" id="chk_M_@item1.MenuRightsID" class="mcheckbox_@item.MenuRightsID" />
+
+                                            }
+                                        </div>
+
+
+
+                                        <div class="col-md-2">
+                                            <p class="listp menulist_floatleft"></p>@if (item1.IsChecker == true)
+                                            {
+                                                <input type="checkbox" disabled = "disabled" name="chk_C_@item1.MenuRightsID" id="chk_C_@item1.MenuRightsID" class="ccheckbox_@item.MenuRightsID" checked="checked" />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" disabled = "disabled" name="chk_C_@item1.MenuRightsID" id="chk_C_@item1.MenuRightsID" class="ccheckbox_@item.MenuRightsID" />
+
+                                            }
+                                        </div>
+
+
+
+                                        <div class="col-md-2">
+                                            <p class="listp menulist_floatleft"></p>@if (item1.IsApprover == true)
+                                            {
+                                                <input type="checkbox" disabled = "disabled" name="chk_A_@item1.MenuRightsID" id="chk_A_@item1.MenuRightsID" class="acheckbox_@item.MenuRightsID" checked="checked" />}
+                                            else
+                                            {
+                                                <input type="checkbox" disabled = "disabled" name="chk_A_@item1.MenuRightsID" id="chk_A_@item1.MenuRightsID" class="acheckbox_@item.MenuRightsID" />
+
+                                            }
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p class="listp menulist_floatleft"></p>@if (item1.IsView == true)
+                                            {
+                                                <input type="checkbox" disabled = "disabled" name="chk_V_@item1.MenuRightsID" id="chk_V_@item1.MenuRightsID" class="vcheckbox_@item.MenuRightsID" checked="checked" />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" disabled = "disabled" name="chk_V_@item1.MenuRightsID" id="chk_v_@item1.MenuRightsID" class="vcheckbox_@item.MenuRightsID" />
+
+                                            }
+                                        </div>
+
+
+
+
+
+                                    </div>
+                                </div>
+                            }
+                        }
+
+
+
+
+
+                    }
+                }
+
+            }
+        </fieldset><br />
+        if (Model.lstRoleMaster[0].Status != "NM")
+        {
+            if (Model.lstRoleMaster[0].IsActive == true)
+            {
+                <input type="checkbox" disabled = "disabled" name="chkActiveInactive" id="chkActiveInactive" checked="checked" /><label>Active/InActive</label>
+            }
+            else
+            {
+                <input type="checkbox" disabled = "disabled" name="chkActiveInactive" id="chkActiveInactive" /><label>Active/InActive</label>
+            }
+        }
+        <input type="checkbox" disabled = "disabled" name="chkDeleteRole" id="chkDeleteRole" /><label>Delete</label>
+            <br />
+            <br />
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Remarks</label>
+                <div class="col-md-6">
+                    <input type="text" id="ProcessRemark" name="ProcessRemark" required="" disabled="disabled" class="form-control" />
+                    @*@Html.TextArea("ProcessRemark", "", 2, 1, new { @class = "create-input", required = "" })*@
+                    @*<textarea name="remarks" cols="1" rows="2" class="create-input" required></textarea>*@
+                </div>
+            </div>
+
+
+
+            <button id="addnew" name="addnew" class="createsave" disabled="disabled">Update</button>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

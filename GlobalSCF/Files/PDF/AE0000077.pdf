@@ -1,0 +1,641 @@
+﻿
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link rel="icon" href="/favicon.ico" type="image/gif" sizes="32x32">
+
+    <link href="/TableJs/jquery-ui.css" rel="stylesheet"/>
+<link href="/TableJs/dataTables.jqueryui.css" rel="stylesheet"/>
+<link href="/Content/all.css" rel="stylesheet"/>
+<link href="/Content/onlineReg.css" rel="stylesheet"/>
+<link href="/Content/ValidationEngine.css" rel="stylesheet"/>
+<link href="/Content/intlTelInput.css" rel="stylesheet"/>
+<link href="/Content/bootstrap-multiselect.css" rel="stylesheet"/>
+
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+<link href="/Content/site.css" rel="stylesheet"/>
+<link href="/Content/onlineReg.css" rel="stylesheet"/>
+
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+
+    <script src="/Scripts/bootstrap.js"></script>
+<script src="/Scripts/respond.js"></script>
+
+    <script src="/Scripts/jquery-ui.min.js"></script>
+<script src="/TableJs/jquery.dataTables.js"></script>
+<script src="/TableJs/dataTables.jqueryui.js"></script>
+<script src="/Scripts/jquery.validationEngine.js"></script>
+<script src="/Scripts/jquery.validationEngine-en.js"></script>
+<script src="/Scripts/onlineJS.js"></script>
+<script src="/Scripts/jquery.maskedinput.js"></script>
+<script src="/Scripts/jquery.maskedinput.min.js"></script>
+<script src="/Scripts/intlTelInput.min.js"></script>
+<script src="/Scripts/loadingoverlay.min.js"></script>
+<script src="/Scripts/loadingoverlay_progress.min.js"></script>
+<script src="/Scripts/bootstrap-multiselect.js"></script>
+
+    <script src="/Scripts/jquery.validate.js"></script>
+<script src="/Scripts/jquery.validate.unobtrusive.js"></script>
+
+</head>
+<div class="container">
+    <div class="container createusertitle" style="text-align:left">
+        <span class="col-xs-2" for="textinput">Company Name</span>
+        <span class="col-xs-3">
+          Both - Awareness Test
+        </span>
+        <div class="col-xs-1"></div>
+
+        <span class="col-xs-2" for="textinput">Company Code&nbsp;<span style="color:red;width:50px;"></span></span>
+        <span class="col-xs-3">
+            AE0000077
+        </span>
+        <div class="col-xs-1"></div>
+    </div>
+    <div class="col-xs-12" style="height:5px;"></div>
+    <div class="col-xs-12" style="height:10px;"></div>
+
+    <div class="col-xs-12 createusertitle">COMPANY INFORMATION</div>
+    <div class="col-xs-12" style="height:5px;"></div>
+    <div class="col-xs-12" style="height:10px;"></div>
+
+    <div class="form-group">
+        <label class="col-xs-2" for="textinput">Name as on Trade License&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control" id="Item1_CompanyName" maxlength="50" name="Item1.CompanyName" type="text" value="Both - Awareness Test" />
+        </div>
+        <div class="col-xs-1"></div>
+
+        <label class="col-xs-2" for="textinput">Trading Name&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control" id="Item1_TradingName" maxlength="50" name="Item1.TradingName" type="text" value="" />
+        </div>
+        <div class="col-xs-1"></div>
+    </div>
+
+    <div class="col-xs-12" style="height:5px;"></div>
+    <div class="form-group">
+        <label class="col-xs-2" for="textinput">Website&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control validate[custom[url]]" id="Item1_Website" maxlength="50" name="Item1.Website" type="text" value="asd.com" />
+        </div>
+        <div class="col-xs-1"></div>
+
+        <label class="col-xs-2" for="textinput">Telephone Number&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control" id="Item1_TelNo" maxlength="50" name="Item1.TelNo" type="text" value="+971323123123" />
+        </div>
+        <div class="col-xs-1"></div>
+    </div>
+        <div class="form-group">
+
+                <label class="col-xs-2" for="textinput">Industry&nbsp;<span style="color:red;width:50px;"></span></label>
+                <div class="col-xs-3">
+                    <input autocomplete="off" class="form-control" id="Item1_IndustryName" maxlength="50" name="Item1.IndustryName" type="text" value="Advertising and Marketing" />
+                </div>
+            <div class="col-xs-1"></div>
+
+                <label class="col-xs-2" for="textinput">Sub Industry&nbsp;<span style="color:red;width:50px;"></span></label>
+                <div class="col-xs-3">
+                    <input autocomplete="off" class="form-control" id="Item1_SubIndustryName" maxlength="50" name="Item1.SubIndustryName" type="text" value="Sales" />
+                </div>
+            <div class="col-xs-1"></div>
+        </div>
+
+
+    <div class="col-xs-12" style="height:5px;"></div>
+
+    <div class="col-xs-12" style="height:10px;"></div>
+    <div class="col-xs-12 createusertitle">REGISTERED / MAILING ADDRESS</div>
+    <div class="col-xs-12" style="height:10px;"></div>
+
+    <div class="col-xs-12" style="height:5px;"></div>
+    <div class="form-group">
+        <label class="col-xs-2" for="textinput">Address</label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control" id="Item1_Address" maxlength="50" name="Item1.Address" type="text" value="Dubai" />
+        </div>
+        <div class="col-xs-1"></div>
+
+        <label class="col-xs-2" for="textinput">P.O. Box</label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control" id="Item1_POBox" maxlength="50" name="Item1.POBox" type="text" value="360002" />
+        </div>
+        <div class="col-xs-1"></div>
+    </div>
+    <div class="form-group">
+
+        <label class="col-xs-2" for="textinput">Country&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control" id="Item1_NationalityName" maxlength="50" name="Item1.NationalityName" type="text" value="United Arab Emirates" />
+        </div>
+        <div class="col-xs-1"></div>
+
+            <label class="col-xs-2" for="textinput">City</label>
+            <div class="col-xs-3">
+                <input class="form-control" id="Item1_CityName" name="Item1.CityName" readonly="readonly" type="text" value="Dubai" />
+            </div>
+    </div>
+
+    <div class="col-xs-12" style="height:10px;"></div>
+
+    <div class="col-md-12 createusertitle">COMPANY INFORMATION</div>
+    <div class="col-md-12" style="height:5px;"></div>
+    <div class="col-md-12" style="height:10px;"></div>
+    
+    <div class="form-group">
+            <label class="col-xs-2" for="textinput">Type of Company&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-xs-3">
+                <input autocomplete="off" class="form-control  disbl-cntrl-cls" id="Item2_CompanyTypeName" maxlength="50" name="Item2.CompanyTypeName" type="text" value="Joint Ventures" />
+            </div>
+
+        <div class="col-xs-1"></div>
+
+        <label class="col-xs-2" for="textinput">Trade License Number&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control  disbl-cntrl-cls" data-val="true" data-val-required="The TradeLicNo field is required." id="Item2_TradeLicNo" maxlength="50" name="Item2.TradeLicNo" type="text" value="121212" />
+        </div>
+        <div class="col-xs-1"></div>
+
+    </div>
+    <div class="col-xs-12" style="height:5px;"></div>
+    <div class="form-group">
+        <label class="col-xs-2" for="textinput">Place of Incorporation&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control disbl-cntrl-cls" id="Item2_IncCountryName" maxlength="50" name="Item2.IncCountryName" type="text" value="Argentina" />
+        </div>
+        <div class="col-xs-1"></div>
+
+        <label class="col-xs-2" for="textinput">Date of Incorporation&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+                <input id="IncDate" name="IncDate" type="text" placeholder="" class="form-control  disbl-cntrl-cls" autocomplete="off" value="01-Mar-2018">
+        </div>
+
+        <div class="col-xs-1"></div>
+
+    </div>
+    <div class="col-xs-12" style="height:5px;"></div>
+    <div class="form-group">
+        <label class="col-xs-2" for="textinput">License Expiry Date&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+                    <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control disbl-cntrl-cls" autocomplete="off" value="31-Mar-2018">
+        </div>
+        <div class="col-xs-1"></div>
+
+        <label class="col-xs-2" for="textinput">Trade License Issuing Authority &nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-xs-3">
+            <input autocomplete="off" class="form-control disbl-cntrl-cls" data-val="true" data-val-required="The IssuingAuth field is required." id="Item2_IssuingAuth" maxlength="50" name="Item2.IssuingAuth" type="text" value="Tet" />
+        </div>
+        <div class="col-xs-1"></div>
+
+    </div>
+
+        <div class="col-xs-12" style="height:5px;"></div>
+        <div class="form-group">
+            <label class="col-xs-2" for="textinput">Brief About Business&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-xs-9">
+                <textarea autocomplete="off" class="form-control disbl-cntrl-cls" cols="20" data-val="true" data-val-required="The AbtBusiness field is required." id="Item2_AbtBusiness" maxlength="250" name="Item2.AbtBusiness" rows="2" style="height: 45px;">
+set</textarea>
+            </div>
+            <div class="col-xs-1"></div>
+        </div>
+        <div class="col-xs-12" style="height:5px;"></div>
+        <div class="form-group">
+            <label class="col-xs-2" for="textinput">Business Activity&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-xs-9">
+                <textarea autocomplete="off" class="form-control disbl-cntrl-cls" cols="20" data-val="true" data-val-required="The BusActivity field is required." id="Item2_BusActivity" maxlength="250" name="Item2.BusActivity" rows="2" style="height: 45px;">
+sdf</textarea>
+            </div>
+            <div class="col-xs-1"></div>
+        </div>
+        <div class="col-xs-12" style="height:5px;"></div>
+        <div class="form-group" style="padding-bottom:60px;">
+            <label class="col-xs-2" for="textinput">Currency</label>
+            <div class="col-xs-3">
+                <input autocomplete="off" class="form-control disbl-cntrl-cls" id="Item2_CurrencyCode" maxlength="50" name="Item2.CurrencyCode" type="text" value="INR" />
+            </div>
+            <div class="col-xs-1"></div>
+
+            <label class="col-xs-2" for="textinput">Annual Turnover</label>
+            <div class="col-xs-3">
+                <input autocomplete="off" class="form-control disbl-cntrl-cls" data-val="true" data-val-number="The field AnnTurnOver must be a number." data-val-required="The AnnTurnOver field is required." id="Item2_AnnTurnOver" maxlength="50" name="Item2.AnnTurnOver" type="text" value="1500000.000000" />
+            </div>
+            <div class="col-xs-1"></div>
+
+        </div>
+        <div class="col-xs-12" style="height:5px;"></div>
+        <div class="form-group">
+            <label class="col-xs-2" for="textinput">Projected Sales Volume</label>
+            <div class="col-xs-3">
+                <input autocomplete="off" class="form-control num disbl-cntrl-cls" data-val="true" data-val-number="The field SaleVolume must be a number." data-val-required="The SaleVolume field is required." id="Item2_SaleVolume" maxlength="50" name="Item2.SaleVolume" type="text" value="5000000.000000" />
+            </div>
+            <div class="col-xs-1"></div>
+
+            <label class="col-xs-2" for="textinput">Net Profit</label>
+            <div class="col-xs-3">
+                <input autocomplete="off" class="form-control num disbl-cntrl-cls" data-val="true" data-val-number="The field NetProfit must be a number." data-val-required="The NetProfit field is required." id="Item2_NetProfit" maxlength="50" name="Item2.NetProfit" type="text" value="145000.000000" />
+            </div>
+            <div class="col-xs-1"></div>
+
+        </div>
+        <div class="col-xs-12" style="height:5px;"></div>
+        <div class="form-group">
+                <label class="col-xs-2" for="textinput">Sales Invoice Terms</label>
+                <div class="col-xs-3">
+                    <input autocomplete="off" class="form-control disbl-cntrl-cls " data-val="true" data-val-required="The SaleInvTerms field is required." id="Item2_SaleInvTerms" maxlength="50" name="Item2.SaleInvTerms" type="text" value="Less than 30 days" />
+                </div>
+
+
+            <div class="col-xs-1"></div>
+            <label class="col-xs-2" for="textinput">Number of Employees</label>
+            <div class="col-xs-3">
+                <input autocomplete="off" class="form-control num validate[required] disbl-cntrl-cls" data-val="true" data-val-required="The EmpCount field is required." id="Item2_EmpCount" maxlength="50" name="Item2.EmpCount" type="text" value="11" />
+            </div>
+            <div class="col-xs-1"></div>
+        </div>
+        <div class="col-xs-12" style="height:5px;"></div>
+        <div class="container padoff">
+        <div class="col-xs-4 padoff">
+            <div class="form-group box-boder-form">
+                <div class="form-group box-form">
+                    <label class="col-md-6" for="textinput">Is the company part of a group?&nbsp;<span style="color:red;width:50px;"></span></label>
+                        <div class="col-md-6" style="padding-top:10px;">
+                            <input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb disbl-cntrl-cls" /> Yes
+                            <input type="checkbox" id="cb2" name="cb2" class="chb disbl-cntrl-cls" checked="checked" /> No
+                        </div>
+
+                </div>
+                <div class="form-group box-form">
+                    <label class="col-md-6" for="textinput">Name of the group&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-6 group">
+                        <input autocomplete="off" class="form-control" id="Item2_GroupName" maxlength="50" name="Item2.GroupName" type="text" value="" />
+                    </div>
+
+                </div>
+                <div class="form-group box-form">
+                    <label class="col-md-6" for="textinput">Group website&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-6 group">
+                        <input autocomplete="off" class="form-control validate[custom[url]]" id="Item2_GroupWebsite" maxlength="50" name="Item2.GroupWebsite" type="text" value="" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 padoff">
+            <div class="form-group box-boder-form">
+                <div class="form-group box-form">
+                    <label class="col-md-6" for="textinput">Is the company supervised by a financial services regulator?&nbsp;<span style="color:red;width:50px;"></span></label>
+                        <div class="col-md-6" style="padding-top:10px;">
+                            <input type="checkbox" id="cb5" name="cb5" value="cb5" class="chb disbl-cntrl-cls" /> Yes
+                            <input type="checkbox" id="cb6" name="cb6" class="chb disbl-cntrl-cls" checked="checked" /> No
+                        </div>
+                </div>
+                <div class="form-group box-form">
+                    <label class="col-md-6" for="textinput">Regulator Name&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-6 financial">
+                        <input autocomplete="off" class="form-control" id="Item2_RegulatorName" maxlength="50" name="Item2.RegulatorName" type="text" value="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 padoff">
+            <div class="form-group box-boder-form">
+                <div class="form-group box-form">
+                    <label class="col-md-6" for="textinput">Is the company publicly listed?&nbsp;<span style="color:red;width:50px;"></span></label>
+                        <div class="col-md-6" style="padding-top:10px;">
+                            <input type="checkbox" id="cb3" name="cb3" value="cb3" class="chb" checked="checked" /> Yes
+                            <input type="checkbox" id="cb4" name="cb4" class="chb disbl-cntrl-cls" /> No
+                        </div>
+
+                </div>
+                <div class="form-group box-form">
+                    <label class="col-md-6" for="textinput">Exchange Name&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-6 publicly">
+                        <input autocomplete="off" class="form-control disbl-cntrl-cls" id="Item2_ExchangeName" maxlength="50" name="Item2.ExchangeName" type="text" value="" />
+                    </div>
+
+                </div>
+                <div class="form-group box-form">
+                    <label class="col-md-6" for="textinput">Ticker Code&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-6 publicly">
+                        <input autocomplete="off" class="form-control disbl-cntrl-cls" id="Item2_TickerCode" maxlength="50" name="Item2.TickerCode" type="text" value="" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">CREDIT LINE FACILITIES PER BANK</div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12">
+                <table id="example1" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>Bank Name</th>
+                            <th>Facility Type</th>
+                            <th>Currency</th>
+                            <th>Facility Limit</th>
+                            <th>Utilization</th>
+                        </tr>
+                    <tbody>
+                            <tr>
+                                <td>Emirates NBD</td>
+                                <td>Funded</td>
+                                <td>INR</td>
+                                <td>INR 152,000.00</td>
+                                <td>INR 15,200.00</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">BANK ACCOUNT DETAILS</div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12">
+                <table id="example2" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>Account Name</th>
+                            <th>Currency</th>
+                            <th>Bank Name</th>
+                            <th>Account Number</th>
+                            <th>Address</th>
+                            <th>IBAN</th>
+                            <th>Country</th>
+                            <th>Swift Code</th>
+                            <th>IFSC Code</th>
+                        </tr>
+                    <tbody>
+                            <tr>
+                                <td>Nikunj</td>
+                                <td>INR</td>
+                                <td>Emirates NBD</td>
+                                <td>21231231231</td>
+                                <td>dubai</td>
+                                <td>B245645</td>
+                                <td>United Arab Emirates</td>
+                                <td>12123</td>
+                                <td></td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">DIRECTORS / SIGNATORIES DETAILS</div>
+        <div class="tab-pane" id="4a">
+            <div class="col-xs-12">
+                <table id="example3" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>E-Mail</th>
+                            <th>Mobile Number</th>
+                            <th>Passport Number</th>
+                            <th>Place of Issuance</th>
+                            <th>Issuance Date</th>
+                            <th>Expiry Date</th>
+                            <th>Nationality</th>
+                            <th>Designation</th>
+                            <th>Company Type</th>
+                        </tr>
+                    <tbody>
+
+                            <tr>
+                                <td>Nikunj</td>
+                                <td></td>
+                                <td>Single</td>
+                                <td>nikunj@tawreeqholdings.com</td>
+                                <td>+971121231231</td>
+                                <td>121211212</td>
+                                <td>Algeria</td>
+                                <td>01-Mar-2018</td>
+                                <td>31-Mar-2018</td>
+                                <td>Canada</td>
+                                    <td>Chief Financial Officer</td>
+                                <td>Authorized Signatories</td>
+                            </tr>
+                            <tr>
+                                <td>Nikunj</td>
+                                <td></td>
+                                <td>Join</td>
+                                <td>nikunj@tawreeqholdings.com</td>
+                                <td>+97123123123123</td>
+                                <td>212123</td>
+                                <td>Algeria</td>
+                                <td>01-Mar-2018</td>
+                                <td>31-Mar-2018</td>
+                                <td>Belgium</td>
+                                    <td>Business Development Officer</td>
+                                <td>Authorized Signatories</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    
+                    <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">AUTHORIZED USERS</div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12">
+                <table id="example7" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th style="width:12%">First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile Number</th>
+                            <th>E-Mail ID</th>
+                            <th>Roles</th>
+                        </tr>
+                    <tbody>
+                            <tr>
+                                <td>Nikunj</td>
+                                <td></td>
+                                <td>Single</td>
+                                <td>+971121231231</td>
+                                <td>nikunj@tawreeqholdings.com</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nikunj</td>
+                                <td></td>
+                                <td>Join</td>
+                                <td>+97123123123123</td>
+                                <td>nikunj@tawreeqholdings.com</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nikunj</td>
+                                <td>user</td>
+                                <td>two</td>
+                                <td>+9712123123123</td>
+                                <td>nikunj@tawreeqholdings.com</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nikunj</td>
+                                <td>user</td>
+                                <td>one</td>
+                                <td>+97121231231</td>
+                                <td>nikunj@tawreeqholdings.com</td>
+                                <td></td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">SUPPLIER / EXPORTER DETAILS</div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12">
+                <table id="example8" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>Company Name</th>
+                            <th>Country of Incorporation</th>
+                            <th>Date of Incorporation</th>
+                            <th>Telephone Number</th>
+                            <th>Mobile Number</th>
+                            <th>E-Mail</th>
+                            <th>License Expiry Date</th>
+                        </tr>
+                    <tbody>
+                            <tr>
+                                <td>Awn</td>
+                                <td>Argentina</td>
+                                <td>01-Mar-2018</td>
+                                <td>+9713232231</td>
+                                <td>+9712121231</td>
+                                <td>nikunj@tawreeqholdings.com</td>
+                                    <td>31-Mar-2018</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+            <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">SUPPLIER / EXPORTER BANK DETAILS</div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12">
+                <table id="example9" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>Supplier / Exporter</th>
+                            <th>Account Name</th>
+                            <th>Currency</th>
+                            <th>Bank Name</th>
+                            <th>Account Number</th>
+                            <th>Branch Name</th>
+                            <th>IBAN</th>
+                            <th>Country</th>
+                            <th>Swift Code</th>
+                            <th>IFSC Code</th>
+                        </tr>
+                    <tbody>
+                            <tr>
+                                <td>Awn</td>
+                                <td>Nikunj</td>
+                                <td>INR</td>
+                                <td>Emirates NBD</td>
+                                <td>21254564564</td>
+                                <td>Dubai</td>
+                                <td>S545456</td>
+                                <td>United Arab Emirates</td>
+                                <td>21421</td>
+                                <td></td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    <p style="font-weight:600;padding-top:40px;">
+        SUPPLIER / EXPORTER DETAILS 
+    </p>
+    <p>
+        We hereby acknowledge and agree that in order for iSCF Capital Limited (iSCF) to provide us with their products and services, iSCF needs to collect, use, share, and store personal and financial information about us, including without limitation, the information contained in this completed form and information obtained from third parties. We further acknowledge and agree that such information may be used to assist iSCF (i) in providing the service we are applying for, (ii) with advising us of other products and services, (iii) to establish our identity, and (iv) confirm, update and enhance iSCF’s records. The information that iSCF collect may be shared, transferred to or stored or processed at iSCF’s offices in other countries outside the jurisdiction of its incorporation.
+    </p>
+    <p style="font-weight:600">
+        Declaration by the Company
+    </p>
+    <p>
+        We hereby confirm that any and all the assets / funds to be invested or credit facilties provided pursuant to the advice / arrangements of iSCF have been lawfully acquired and are not derived from, either directly or indirectly, or otherwise connected with any criminal or unlawful activity.
+    </p>
+    <p>
+        We hereby (i) declare that the information contained in this form is true and correct to the best of our knowledge and has been provided in good faith, and further (ii) acknowledge and agree that iSCF will rely on this information to fulfil its regulatory requirements.
+    </p>
+</div>
+
+
+<script>
+    $('.form-control').attr('readonly', 'true');
+
+    $("#Item2_AnnTurnOver").val(parseFloat($("#Item2_AnnTurnOver").val(), 10).toFixed(2));
+    $("#Item2_SaleVolume").val(parseFloat($("#Item2_SaleVolume").val(), 10).toFixed(2));
+    $("#Item2_NetProfit").val(parseFloat($("#Item2_NetProfit").val(), 10).toFixed(2));
+    $("input.chb").attr("disabled", true);
+
+    var CompanyTypeName = $("#CompanyTypeName").val();
+    if (CompanyTypeName != "") {
+        if (CompanyTypeName == '') {
+            $('.disbl-cntrl-cls').attr('disabled', true);
+        }
+    }
+    $('#example1,#example2,#example3,#example4,#example5,#example6,#example7,#example8,#example9').DataTable({
+        //"pageLength": 10,
+
+    });
+    $(document).ready(function () {
+
+    });
+</script>
+
+
+<style>
+    .dataTables_filter, .dataTables_info, .dataTables_paginate {
+        display: none;
+    }
+
+    .form-group {
+        padding-bottom: 40px;
+    }
+
+    .box-form {
+        padding-bottom: 0%;
+    }
+
+    .box-boder-form {
+        padding-bottom: 0px;
+        border: 1px dotted #1886b4;
+        height: 220px;
+    }
+    p{
+        font-size:14px;
+    }
+</style>

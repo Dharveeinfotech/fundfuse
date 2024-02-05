@@ -1,0 +1,267 @@
+﻿@model TMP.Models.CustomerInfoModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Investing Partner Buyer Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+    int CustomerType = Convert.ToInt32(Session["onlineCustomerTypeID"]);
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @using (Html.BeginForm("FundingPartnerBuyerDetails", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", enctype = "multipart/form-data" }))
+    {
+        if (Model.ProgramType == CONT.FType)
+        {
+            if (Model.InvoiceID > 0)
+            {
+                @Html.Action("_funderSummaryMenu", "MasterPage", new { InvoiceID = Model.InvoiceID, ObligorID = Model.ObligorID, SupplierID = Model.SupplierID, _tab = 1, ProgramType = Model.ProgramType })
+            }
+        }
+        if (Enumerable.Count(@ViewBag.BuyerGrid) > 0 && CustomerType == CONT.FunderCustomerTypeID)
+        {
+            <div class="tab-pane" id="4a">
+                <!--tab 4a-->
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12">
+                    <table id="example25" class="display" cellspacing="0" width="91%" style="margin-top:20px;">
+                        <thead>
+                            <tr class="bgspr">
+                                <th>Currency</th>
+                                <th>Product</th>
+                                <th>Total Transactions</th>
+                                <th>Settled Transactions</th>
+                                <th>Current Outstanding</th>
+                                
+                            </tr>
+                        <tbody>
+                            @foreach (var item in ViewBag.BuyerGrid)
+                            {
+                                <tr>
+                                    <td>@item.CurrencyCode</td>
+                                    <td>@item.ProgramTypeDesc</td>
+                                    <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotTranAmt)</td>
+                                    <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotSetAmt)</td>
+                                    <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotOutStand)</td>
+                                   
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        <div class="col-md-12" style="height:20px;"></div>
+        <div class="container">
+            <table class="col-md-5">
+                <tbody>
+                    <tr>
+                        <td class="td-bg">Company Name</td>
+                        <td class="td-line">
+                            @Model.CompanyName
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Trade License Number</td>
+                        <td class="td-line">
+                            @Model.TradeLicNo
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Trade License Copy</td>
+                        <td class="td-line">
+                            @*<a href='~/Files/Upload/@Model.UpdTradeLic' target="_blank">View</a>*@
+                            <a href="javascript:void(0);" class="UpdTradeLic_PopUp" data-id="@Model.UpdTradeLic">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">In house Financials </td>
+                        <td class="td-line">
+                            @*<a href='~/Files/Upload/@Model.UpdInHouseFin' target="_blank">View</a>*@
+                            <a href="javascript:void(0);" class="UpdInHouseFin_PopUp" data-id="@Model.UpdInHouseFin">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Company website</td>
+                        <td class="td-line">
+                            @Model.Website
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Date of Incorporation</td>
+                        <td class="td-line">
+                            @Convert.ToDateTime(Model.IncDate).ToString("dd-MMM-yyyy")
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-bg">Supplier List</td>
+                        <td class="td-line">
+                            <a href='@Url.Action("FundingPartnerSuppliers", "Factoring", new { ProgramType = Model.ProgramType, IsConnected = true })'>View</a>
+                        </td>
+                    </tr>
+                    @if (CustomerType == CONT.FunderCustomerTypeID || CustomerType == CONT.InsuranceProviderTypeID || CustomerType == CONT.InsuranceBrokerTypeID)
+                    {
+                        <tr>
+                            <td class="td-bg">Credit & Risk Review report</td>
+                            <td class="td-line"><a href='~/Files/' target="_blank">View</a></td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+
+            <table class="col-md-5">
+                <tbody>
+                    <tr>
+                        <td class="td-bg">Business Profile</td>
+                        <td class="td-line">
+                            @*<a href='~/Files/Upload/@Model.UpdBusProfile' target="_blank">View</a>*@
+                            <a href="javascript:void(0);" class="UpdBusProfile_PopUp" data-id="@Model.UpdBusProfile">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Expiry date</td>
+                        <td class="td-line">
+                            @Convert.ToDateTime(Model.LicExpDate).ToString("dd-MMM-yyyy")
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="td-bg">Audited Financials</td>
+                        <td class="td-line">
+                            @*<a href='~/Files/Upload/@Model.UpdAuditFin' target="_blank">View</a>*@
+                            <a href="javascript:void(0);" class="UpdAuditFin_PopUp" data-id="@Model.UpdAuditFin">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Memorandum of Association copy</td>
+                        <td class="td-line">
+                            @if (@ViewBag.Document != null)
+                            {
+                                @*<a href='~/Files/Upload/@ViewBag.Document.DocumetUpload' target="_blank">View</a>*@
+                                <a href="javascript:void(0);" class="DocumetUpload_PopUp" data-id="@ViewBag.Document.DocumetUpload">View</a>
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-bg">Annual Turnover</td>
+                        <td class="td-line">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.AnnTurnOver)</td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Country of Incorporation</td>
+                        <td class="td-line">
+                            @Model.IncCountryName
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Financials</td>
+                        <td class="td-line"><a href='~/Files/' target="_blank">View</a></td>
+                    </tr>
+                    @if (CustomerType == CONT.FunderCustomerTypeID || CustomerType == CONT.InsuranceProviderTypeID || CustomerType == CONT.InsuranceBrokerTypeID)
+                    {
+                        <tr>
+                            <td class="td-bg">Company Due Diligence</td>
+                            <td class="td-line"><a href='~/Files/' target="_blank">View</a></td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+        <div class="col-md-12" style="padding-left:75px;padding-bottom:15px;">
+            <p>Brief about the company: @Model.AbtBusiness</p>
+        </div>
+        if (CustomerType == CONT.FunderCustomerTypeID || CustomerType == CONT.InsuranceBrokerTypeID || CustomerType == CONT.InsuranceProviderTypeID)
+        {
+        <div class="container padoff">
+            @Html.Action("FunderCompanyMoreInfo", "Factoring", new { CustomerID = Model.CustomerID })
+        </div>
+        }
+        @Html.HiddenFor(x => x.InvoiceID)
+        @Html.HiddenFor(x => x.BuyerID)
+        @Html.HiddenFor(x => x.ProgramType)
+        if (Model.InvoiceID > 0)
+        {
+            <div class="container" style="text-align:right;margin-top:20px;">
+                <button id="Back" name="Back" value="Back" type="submit" class="btn btn-tgs">GO BACK</button>&nbsp;&nbsp;&nbsp;
+            </div>
+        }
+        else
+        {
+            <div class="container" style="text-align:right;margin-top:20px;">
+               
+                @*@if (Model._currentUser == CONT.mInsurance_Maker || Model._currentUser == CONT.mInsurance_Checker)
+                {
+                    <button id="BackIndex" name="BackIndex" value="BackIndex" type="submit" class="btn btn-tgs">GO BACK</button>
+                }
+                else
+                {*@
+                    <button id="Home" name="Home" value="Home" type="submit" class="btn btn-tgs">Home</button>
+                @*}*@
+            </div>
+        }
+    }
+</div>
+<style>
+    table {
+        margin-bottom: 2%;
+        margin-left: 65px;
+        margin-top: 1%;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        padding-right: 40px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#example25').DataTable({
+            "pageLength": 5,
+        });
+    });
+
+    $(".UpdTradeLic_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdTradeLic' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+
+    $(".UpdInHouseFin_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdInHouseFin' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+
+    $(".UpdBusProfile_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdBusProfile' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+
+    $(".UpdAuditFin_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdAuditFin' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+
+    $(".DocumetUpload_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@ViewBag.Document.DocumetUpload' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+</script>

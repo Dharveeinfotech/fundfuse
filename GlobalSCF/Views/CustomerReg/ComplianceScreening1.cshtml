@@ -1,0 +1,138 @@
+﻿@model  TMP.Models.CustomerDocModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Compliance Screening";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+    bool IsDisplay = true;
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    {
+        if (Model.Admin == "Y")
+        {
+            @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 8 })
+        }
+        else
+        {
+            @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 8 })  }
+    }
+    @using (Html.BeginForm("ComplianceScreening", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "DocumentsDetails" }))
+    {
+        if (ViewBag._currentUser.IsMaker == true || ViewBag._currentUser.IsCompScr == true || ViewBag._currentUser.IsCreRevChecker == true || ViewBag._currentUser.IsCreRevApprover == true || ViewBag._currentUser.IsOpTeam == true)
+        {
+            @*<p style="padding-top: 50px;text-align: center;font-size: 20px;">
+                    Report will be display after integration of Thomson Reuters World-Check API.
+                </p>*@
+            <div class="col-md-12" style="height:10px;"></div>
+
+
+
+            <div class="container">
+                
+            </div>
+
+
+            if ((Model.Status == CONT.NR || Model.Status == CONT.NH || Model.Status == CONT.UR || Model.Status == CONT.UH) && Model.Admin != "Y")
+            {
+                <div class="container padoff ">
+                    <table class="col-md-10" style="width:89%;margin-left:65px;margin-top:20px;">
+                        <tbody>
+                            <tr>
+                                <td class="td-bg" style="width:23.4%;" id="goToLINK"><a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@Model.CustomerID">View All Comments</a> / Comments</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.ProcessRemark, new { @class = "form-control", autocomplete = "off" })</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group clsMenuOrder11">
+                    <div class="col-md-12" style="text-align:right;margin-top:20px;">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-7" style="text-align:right;">
+                            @if (Model.Status == CONT.NR)
+                            {
+                                <button id="Return" name="Return" value="Return" type="submit" class="btn btn-tgs CommonAttachValidation">Return To Originator</button>
+                            }
+                            &nbsp; <button id="Reject" name="Reject" value="Reject" type="submit" class="btn btn-tgs">Reject</button> &nbsp;
+                            @*<button id="onhold" name="onhold" value="onhold" type="submit" class="btn btn-tgs">Save</button> &nbsp;*@
+
+                            @if (ViewBag.MenuOrderNo == 2)
+                            {
+                                <button id="btn_Classification_Submit" name="btn_Classification_Submit" value="btn_Classification_Submit" type="submit" class="btn btn-tgs CommonDetachValidation">Save</button>
+                            }
+                            &nbsp;
+                            @if (Model.CustomerClassId > 0 && Model.Category == "Client")
+                            {
+                                <button id="btn_Classification_Print" name="btn_Classification_Print" value="btn_Classification_Print" type="submit" class="btn btn-tgs CommonDetachValidation">Print</button>
+                            }
+                            &nbsp;
+                            @if (ViewBag.btnApproveVisible == true && ViewBag.MenuOrderNo == 1)
+                            {
+                                <button id="btnScreening_Next" name="btnScreening_Next" value="btnScreening_Next" type="submit" class="btn btn-tgs">Next</button>
+                            }
+                            @if (ViewBag.btnClassificationVisible != false && ViewBag.MenuOrderNo == 2)
+                            {
+                                <button id="btnClassification_Next" name="btnClassification_Next" value="btnClassification_Next" type="submit" class="btn btn-tgs">Next</button>
+                            }
+                            &nbsp;
+                            @if (Model.CustomerClassId > 0 && ViewBag.MenuOrderNo == 2 && (Model.Status == CONT.NR || Model.Status == CONT.NH || Model.Status == CONT.UR || Model.Status == CONT.UH) && Model.Admin != "Y")
+                            {
+                                <button id="btnEdit" name="btnEdit" value="btnEdit" type="submit" class="btn btn-tgs">Edit</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            else if (Model.Status == CONT.NS)
+            {
+                <div class="col-md-12" style="text-align:right;">
+                    @if (ViewBag.btnApproveVisible == true && ViewBag.MenuOrderNo == 1)
+                    {
+                        <button id="btnScreening_Next" name="btnScreening_Next" value="btnScreening_Next" type="submit" class="btn btn-tgs">Next</button>
+                    }
+                    @if (ViewBag.btnClassificationVisible != false && ViewBag.MenuOrderNo == 2)
+                    {
+                        <button id="btnClassification_Next" name="btnClassification_Next" value="btnClassification_Next" type="submit" class="btn btn-tgs">Next</button>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12" style="text-align:right;">
+                    @*<button id="Next" name="Next" value="Next" type="submit" class="btn btn-tgs">Next</button>*@
+                    @if (ViewBag.MenuOrderNo == 1)
+                    {
+                        <button id="btnScreening_Next" name="btnScreening_Next" value="btnScreening_Next" type="submit" class="btn btn-tgs">Next</button>
+                    }
+                    @if (ViewBag.MenuOrderNo == 2)
+                    {
+                        <button id="btnClassification_Next" name="btnClassification_Next" value="btnClassification_Next" type="submit" class="btn btn-tgs">Next</button>
+                    }
+                </div>
+
+                @Html.HiddenFor(x => x.SendToCredit)
+            }
+        }
+        @Html.HiddenFor(x => x.CustomerID)
+        @Html.HiddenFor(x => x.Status)
+        @Html.HiddenFor(x => x.CustomerTypeID)
+        @Html.HiddenFor(x => x.ProgramType)
+        @Html.HiddenFor(x => x.Admin)
+    }
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

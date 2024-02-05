@@ -1,0 +1,44 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    int CustomerType = Convert.ToInt32(Session["onlineCustomerTypeID"]);
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @Html.Action("TransactionSummary", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+    <div class="container">
+        @Html.Action("InvoiceDetails", "InvoiceCommon", new { InvoiceId = Model.InvoiceID, IsAdd = false })
+    </div>
+    @if(CustomerType == CONT.ServiceProviderCustomerTypeID && (Model.Status == CONT.CA || Model.Status == CONT.CB || Model.Status==CONT.FB || Model.Status == CONT.SB || Model.Status == CONT.CC || Model.Status == CONT.CD) || CustomerType == CONT.SupplierCustomerTypeID && Model.Status==CONT.FB)
+    {
+
+    }
+    else if (CustomerType == CONT.ServiceProviderCustomerTypeID || CustomerType == CONT.FunderCustomerTypeID || CustomerType == CONT.FunderCustomerTypeID || CustomerType == CONT.SupplierCustomerTypeID && (Model.Status == CONT.SB || Model.Status == CONT.CC || Model.Status == CONT.CD))
+    {
+        @Html.Action("OfferDetails", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+    }
+    <div class="container padoff">
+        @if (Model.InsCnt > 0)
+        {
+            if (ViewBag._currentUser.IsMaker && (CustomerType == CONT.InsuranceProviderTypeID || CustomerType == CONT.InsuranceBrokerTypeID))
+            {
+                @Html.Action("InsuranceDetails", "InvoiceCommon", new { InvoiceId = Model.InvoiceID, IsSelected = false })
+            }
+            else
+            {
+                if (Model.InvoiceInsID > 0)
+                {
+                    @Html.Action("InsuranceDetails", "InvoiceCommon", new { InvoiceId = Model.InvoiceID, IsSelected = true })
+                }
+            }
+
+        }
+    </div>
+
+   
+</div>
+
+
+<style>
+
+</style>

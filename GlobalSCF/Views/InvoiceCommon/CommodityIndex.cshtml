@@ -1,0 +1,106 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Commodity Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("CommodityIndex", "InvoiceCommon", FormMethod.Post, new { @class = "container padoff CommonValidations" }))
+    {
+        @Html.HiddenFor(model => model.ProgramType)
+        <div class="col-md-12 createusertitle">RECEIVABLES FINANCE TRANSACTION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="container">
+
+            <div class="col-md-4"> </div>
+
+            <table class="col-md-4">
+                <tbody>
+
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Bank Confirmation Funder to Admin", "FunderToiSCF", new { ProgramType = CONT.FType, Status = CONT.RB + "," + CONT.OE })
+                        </td>
+                    </tr>
+                    @*<tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Buy Commodity Confirmation", "BuyCommodityConfirmation", new { ProgramType = CONT.FType, Status = CONT.CA })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Sell Commodity Confirmation", "SellCommodityConfirmation", new { ProgramType = CONT.FType, Status = CONT.SB + "," + CONT.FB })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Bank Confirmation Admin to Supplier", "iSCFToSupplier", new { ProgramType = CONT.FType, Status = CONT.CC + "," + CONT.FB })
+                        </td>
+                    </tr>*@
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Bank Confirmation Admin to Supplier", "iSCFToSupplier", new { ProgramType = CONT.FType, Status = CONT.SB + "," + CONT.FB })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Bank Transfer History", "CommodityHistory", new { ProgramType = CONT.FType })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="col-md-4"> </div>
+        </div>
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12 createusertitle">PAYABLES FINANCE TRANSACTION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="container">
+            <div class="col-md-4"> </div>
+            <table class="col-md-4">
+                <tbody>
+
+                    @*<tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Bank Confirmation Funder to Admin", "iSCFToFunder", new { ProgramType = CONT.RType, Status = CONT.RD + "," + CONT.IE })
+                        </td>
+                    </tr>*@
+
+                    @*<tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Buy Commodity Confirmation", "BuyCommodityConfirmation", new { ProgramType = CONT.RType, Status = CONT.CG})
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Sell Commodity Confirmation", "SellCommodityConfirmation", new { ProgramType = CONT.RType, Status = CONT.BB+","+CONT.ID+","+CONT.FD })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Bank Confirmation Admin to Supplier", "TIToExpoter", new { ProgramType = CONT.RType, Status = CONT.CF+"," + CONT.ID + "," + CONT.FD })
+                        </td>
+                    </tr>*@
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Bank Confirmation Admin to Supplier", "TIToExpoter", new { ProgramType = CONT.RType, Status = CONT.BB + "," + CONT.ID + "," + CONT.FD })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-line">
+                            @Html.ActionLink("Bank Transfer History", "CommodityHistory", new { ProgramType = CONT.RType })
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="col-md-4"></div>
+        </div>
+    }
+</div>
+<style>
+    .td-line {
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+</style>

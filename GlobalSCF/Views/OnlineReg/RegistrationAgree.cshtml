@@ -1,0 +1,45 @@
+﻿@model TMP.Models.mCustomerMasterModel
+@{
+    ViewBag.Title = "Registration Agree";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-1"></div>
+<div class="col-md-10 div-border padoff">
+    <div class="col-md-12 createusertitle">ENROLLMENT TERMS AND CONDITIONS</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @using (Html.BeginForm("RegistrationAgree", "OnlineReg", FormMethod.Post, new { @class = "col-md-12 CommonValidations" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="col-md-12 scroll" style="height:240px;background-color:#f1f2f2;">
+            @Html.Raw(ViewBag.RegistrationAgree)
+            <div class="col-md-12" style="height:15px;"></div>
+        </div>
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12">
+            <p><input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb validate[required]" /> I HAVE READ AND I AGREE TO THE TERMS AND CONDITIONS</p>
+        </div>
+        <div class="col-md-12" style="height:15px;"></div>
+            @Html.HiddenFor(x => x.CustomerID)
+            @Html.HiddenFor(x => x.Status)
+            @Html.HiddenFor(x => x.AuthorizedUser)
+        @Html.HiddenFor(x => x.ProgramType)
+            <div class="col-md-12">
+                <button id="Agree" name="Agree" value="Agree" type="submit" class="CommonAttachValidation btn btn-tgs">I AGREE</button>&nbsp;&nbsp;&nbsp;
+                <button id="notAgree" name="notAgree" value="notAgree" type="submit" class="CommonDetachValidation btn btn-tgs">I DO NOT AGREE</button>
+            </div>
+    }
+</div>
+<div class="col-md-1"></div>
+<style>
+    .footeronline {
+        position: fixed;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function () {
+        document.getElementById('cb1').focus();
+    });
+
+</script>

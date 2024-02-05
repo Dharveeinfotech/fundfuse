@@ -1,0 +1,93 @@
+﻿@model TMP.Models.CountryMaster
+@{
+    ViewBag.Title = "Create FAQ";
+    Layout = "~/Views/MasterPage/_SCFLayoutMaster.cshtml";
+
+}
+<div class="col-md-12">
+    @Html.Action("_MenuPartialPage", "MasterPage")
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <label style="color:red;">@ViewBag.ErrorMessage</label>
+    }
+    <form method="post" id="PUForm" enctype="multipart/form-data">
+
+        <div class="col-sm-12">
+            <label class="col-sm-2" for="name">Type Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+
+            <div class="col-sm-6">
+                @Html.DropDownList("CustomerTypeID", null, "--  Select  --", new { @class = "form-control validate[required]" })
+            </div>
+        </div>
+        <div class="col-sm-12 blank"></div>
+        <div class="col-sm-12">
+            <label class="col-sm-2" for="name">File Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-sm-6">
+                <input type="hidden" id="PdfID" name="PdfID" value="@Model.PdfID" />
+                <input type="hidden" id="HDFileName" name="HDFileName" value="@Model.Name" />
+                <input type="text" class="col-sm-12  form-control validate[required]" style="display:none;" id="Name" name="Name" value="@Model.Name" />
+                <input type="file" name="file" id="file" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.pdf)$" class="col-sm-12  form-control validate[required]" />
+            </div>
+            @*<div class="col-sm-3">*@
+                @*<input type="file" class="col-sm-12  create-input validate[required]" id="FlFileName" name="FlFileName" value="@Model.Name" />*@
+                
+            @*</div>*@
+        </div>
+
+        <div class="col-sm-12" style="height:5px;"></div>
+        <div class="col-sm-10">
+            @if (Model.PdfID != 0)
+            {
+                <label class="col-sm-2" for="name">IsActive&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-sm-3">
+                    @if (Model.IsActive == false)
+                    {
+                        <input type="checkbox" class="chkbox" name="IsActive" id="IsActive">
+                    }
+                    else
+                    {
+                        <input type="checkbox" checked="checked" class="chkbox" name="IsActive" id="IsActive">
+                    }
+                </div>
+            }
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+
+            <div class="col-sm-3">
+                <button id="Submit" name="Submit" class="btnscr" formnovalidate>Submit</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    $("#Submit").on("click", function () {
+
+        $("#PUForm").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+
+    });
+
+    $('input[type=file]').change(function () {
+
+        var val = $(this).val().toLowerCase();
+        var regex = new RegExp("(.*?)\.(pdf)$");
+
+        if (!(regex.test(val))) {
+            $(this).val('');
+            $("#errorMsg").html("Unsupported file.");
+            $('#Error').modal('show');
+            return false;
+        }
+    });
+</script>

@@ -1,0 +1,53 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+
+@if (Model.ProgramType == CONT.FType)
+{
+    <div class="form-group">
+        <div class="col-sm-6 summarybg">
+            <div class="col-sm-12 summarytext">Supplier Name</div>
+            <div class="col-sm-12 summaryvalue">@Model.SupplierName</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Supplier CIF No.</div>
+            <div class="col-sm-12 summaryvalue">@Model.SupplierCode</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Currency</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Outstanding Amount</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.SUPTotBalAmt)</div>
+        </div>
+    </div>
+    <div class="col-md-12" style="height:10px; background-color:#336699;"></div>
+    <div class="col-md-12" style="height:15px;"></div>
+        }
+        else if (Convert.ToString(Session["onlineCustomerTypeID"]) == "9")
+            {
+
+            }
+else
+            {
+    <div class="form-group">
+        <div class="col-sm-6 summarybg">
+            <div class="col-sm-12 summarytext">Buyer Name</div>
+            <div class="col-sm-12 summaryvalue">@Model.BuyerName</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Buyer CIF No.</div>
+            <div class="col-sm-12 summaryvalue">@Model.BuyerCode</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Currency</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode</div>
+        </div>
+        <div class="col-sm-2 summarybg">
+            <div class="col-sm-12 summarytext">Outstanding Amount</div>
+            <div class="col-sm-12 summaryvalue">@Model.CurrencyCode @string.Format("{0:0,0.00}", Model.BUYTotBalAmt)</div>
+        </div>
+    </div>
+    <div class="col-md-12" style="height:10px; background-color:#336699;"></div>
+    <div class="col-md-12" style="height:15px;"></div>
+}

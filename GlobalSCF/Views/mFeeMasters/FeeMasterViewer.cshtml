@@ -1,0 +1,120 @@
+﻿@model TMP.Models.FeeMaster_ListAll_Model
+@{
+    ViewBag.Title = "Viewer";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">Fee Master</div>
+    <fieldset>
+        @using (Html.BeginForm("Edit", "mFeeMasters", FormMethod.Post, new { id = "AAFForm" }))
+            {
+            @Html.AntiForgeryToken()
+
+            if (ViewBag.ErrorMsg != null)
+            {
+                <span class="text-danger"> @ViewBag.ErrorMsg</span>
+            }
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Fee Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    <input id="FeeName" name="FeeName" disabled="disabled" type="text" value="@Model.lstFeeMasterListBind[0].FeeName" class="form-control validate[required,custom[onlyLetterSp]]" maxlength="100" autocomplete="off">
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2"></label>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Fixed</label>
+                <div class="col-md-3">
+                    @if (Model.lstFeeMasterListBind[0].IsFix == true)
+                    {
+                        <div class="col-md-10"><input type="checkbox" disabled="disabled" id="chkIsFix" name="chkIsFix" value="@Model.IsFix" checked="checked" style="display:block;" /></div>
+                    }
+                    else
+                    {
+                        <div class="col-md-10"><input type="checkbox" disabled="disabled" id="chkIsFix" name="chkIsFix" value="@Model.IsFix" style="display:block;" /></div>
+                    }
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2"></label>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">                           
+                            <th>Company Type</th>
+                            <th>Percentage</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.lstCustomerTypeMaster)
+                        {
+                            foreach (var itemFeeDetailSelected in Model.lstFeeDetPHListBind)
+                            {
+                                if (item.CustomerTypeID == itemFeeDetailSelected.CustomerTypeID)
+                                {
+                                    <tr>                                     
+                                        <td>
+                                            @item.CustomerTypeName
+                                        </td>
+                                        <td>
+                                            @if (itemFeeDetailSelected.FeePer > 0)
+                                            {
+                                                <label>@string.Format("{0:0,0.00}", itemFeeDetailSelected.FeePer)</label>
+                                            }
+                                            else
+                                            {
+                                                <label>0.00</label>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (itemFeeDetailSelected.FeeAmt > 0)
+                                            {
+                                                <label>@string.Format("{0:0,0.00}", itemFeeDetailSelected.FeeAmt)</label>
+                                            }
+                                            else
+                                            {
+                                                <label>0.00</label>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </fieldset>
+
+</div>
+<script type="text/javascript">
+    $("#amend").on("click", function () {
+        $("#AAFForm").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+
+    $("#approve").on("click", function () {
+        $("#AAFForm").validationEngine('detach');
+    });
+</script>

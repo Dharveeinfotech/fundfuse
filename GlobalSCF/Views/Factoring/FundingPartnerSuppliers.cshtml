@@ -1,0 +1,53 @@
+﻿@model  IEnumerable<TMP.Models.CustomerMasterModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    <div class="container padoff">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="tab-pane" id="4a">
+                <!--tab 4a-->
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th>Supplier Name</th>
+                                <th>Action</th>
+                            </tr>
+                            @if (Model.Count() > 0)
+                    {
+                            <tbody>
+                                @foreach (var item in Model)
+                        {
+                                    <tr>
+                                        <td>@item.CompanyName</td>
+                                        <td>@Html.ActionLink("View", "FundingPartnerSupplierDetails", new { SupplierID = item.CustomerID, ProgramType = item.ProgramType })</td>
+
+                                    </tr>
+                        }
+                            </tbody>
+                    }
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+            <script>
+                $(document).ready(function () {
+                    $('#example').DataTable({
+                        "pageLength": 10,
+                    });
+                });
+            </script>
+<style>
+     #example_filter {
+        display: none;
+    }
+</style>

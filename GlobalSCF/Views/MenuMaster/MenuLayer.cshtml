@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TMP.Models.MenuMaster>
+@{
+    ViewBag.Title = "Menu Layer";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12"></div>
+    <div class="col-md-12 createusertitle">Company Process Level Configuration</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @using (Html.BeginForm("MenuLayer", "MenuMaster", FormMethod.Post, new { @class = "col-md-12 padoff", id = "UMForm" }))
+    {
+        <fieldset>
+            <div class="col-md-12 scroll padoff">
+                <input type="hidden" name="intMenuCount" id="intMenuCount" value="@ViewBag.listMenuName.Count">
+                @foreach (var item in ViewBag.listMenuName)
+                {
+                    <div class="col-md-12" style="height:10px;"></div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @if (item.Level > 0)
+                        {
+                            <div class="col-md-3" style="margin-left:20px;">
+                                @item.MenuName
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-3">
+                                @item.MenuName
+                            </div>
+                        }
+                        <div class="col-md-2">
+                            @if (item.Level > 0)
+                            {
+                                <input type="checkbox" onclick="checkbox(@item.MenuID);" checked="@item.IsEnable" name="checkbox_C_@item.MenuID" class="checkbox_@item.MenuID" />
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12" style="text-align:right;">
+                <button id="addnew" name="addnew" class="btn-tgs">Save</button>
+            </div>
+        </fieldset>
+    }
+</div>

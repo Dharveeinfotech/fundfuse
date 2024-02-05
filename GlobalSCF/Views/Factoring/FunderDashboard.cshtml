@@ -1,0 +1,63 @@
+﻿@model List<TMP.Models.InvoiceTransactionModel>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "funder Dashboard";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab">
+    @Html.Action("_TransactionButton", "MasterPage", new { ProgramType = ViewBag.ProgramType })
+    @using (Html.BeginForm("FunderDashboard", "Factoring", FormMethod.Post, new { @class = "container padoff CommonValidations", id = "SMCForm", enctype = "multipart/form-data" }))
+    {
+        if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <div class="col-md-4" style="text-align:center;padding-top:30px;">
+                    <div style="background:#005982;color:#fff;height:30px;padding-top:7px;" >
+                        @item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)
+                    </div>
+                    <div style="border: 1px solid #005982;padding-top: 10px;padding-bottom: 10px;">
+
+                        <p>Transaction Number: @item.TranRefNo</p>
+
+                        @if (item.ProgramType == CONT.FType)
+                        {
+                            <p>Program: Receivables Finance</p>
+                        }
+                        else
+                        {
+                            <p>Program: Payables Finance</p>
+                        }
+                        @if (item.ProgramType == CONT.FType)
+                        {
+                            <p>
+                                Obligor: @item.ObligorName
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                Buyer: @item.BuyerName
+                            </p>
+                        }
+
+                        <p>
+                            Profit Rate: @string.Format("{0:0,0.00}", item.FunProfitRate) %
+                        </p>
+                        <p>
+                            Tenor: @item.Tenor Days
+                        </p>
+
+                        <a href='@Url.Action("FunderTransaction", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>View</a>&nbsp;&nbsp;&nbsp;
+                        @if (item.FunderID == 0)
+                        {
+                            <a href='@Url.Action("FunderTransaction", "Factoring", new { InvoiceID = item.InvoiceID,ProgramType = item.ProgramType })'>Fund</a>
+                        }
+                       
+                    </div>
+                </div>
+
+            }
+        }
+    }
+</div>

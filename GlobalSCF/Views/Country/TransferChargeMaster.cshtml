@@ -1,0 +1,87 @@
+﻿@model TMP.Models.CountryMaster
+@{
+    ViewBag.Title = "Transfer Charge Master";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">Transfer Charge Master</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @using (Html.BeginForm("TransferChargeMaster", "Country", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "frmTransferChargeMaster" }))
+    {
+        <input type="text" name="TransChargeID" id="TransChargeID" value="@Model.TransChargeID" style="display:none;" />
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Country&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.CountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.CountryID), "--Select--", new { @class = "form-control" })
+            </div>
+            <div class="col-md-1"></div>
+           
+                <label class="col-md-2" for="textinput">Transaction Currency&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control" })
+                </div>
+                <div class="col-md-1"></div>
+           
+        </div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Fee Percentage&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.FeePer, new { @class = "form-control per", maxlength = "3", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Fee Amount&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.FeeAmt, new { @class = "form-control num", maxlength = "7", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+           
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">Charge Currency&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.ConvCurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.ConvCurrencyID), "--Select--", new { @class = "form-control" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2"></label>
+            <div class="col-md-3" style="text-align:right;">
+                <button id="btnSave" name="btnSave" value="btnSave" class="CommonAttachValidation btn btn-tgs">&nbsp;SAVE</button>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    }
+    <div class="col-md-12 createusertitle" style="text-align:center;">Transfer Charge</div>
+    <div class="col-md-12 padoff">
+        @Html.Action("GridTransferCharge", "Country")
+    </div>
+</div>
+<script>
+    $("#btnSave").click(function () {
+        document.getElementById("FeePer").className = document.getElementById("FeePer").className.replace(" input-validation-error", "");
+        document.getElementById("FeeAmt").className = document.getElementById("FeeAmt").className.replace(" input-validation-error", "");
+
+        document.getElementById("CountryID").className = document.getElementById("CountryID").className.replace(" input-validation-error", "");
+        document.getElementById("CurrencyID").className = document.getElementById("CurrencyID").className.replace(" input-validation-error", "");
+        document.getElementById("ConvCurrencyID").className = document.getElementById("ConvCurrencyID").className.replace(" input-validation-error", "");
+
+        $('#FeePer').rules('remove'); $('#FeeAmt').rules('remove'); $('#CountryID').rules('remove'); $('#CurrencyID').rules('remove'); $('#ConvCurrencyID').rules('remove');
+        if (document.getElementById("FeePer").value == "" && document.getElementById("FeeAmt").value == "")
+        {
+            $("#errorMsg").html("Please enter Fee Percentage Or Fee Amount.");
+            $('#Error').modal('show');
+            return false;
+        }
+    });
+    
+    $("#FeePer").keypress(function () {        
+        document.getElementById("FeeAmt").value = "";
+        document.getElementById("FeePer").className = document.getElementById("FeePer").className.replace(" input-validation-error", "");
+    });
+
+    $("#FeeAmt").keypress(function () {        
+        document.getElementById("FeePer").value = "";
+        document.getElementById("FeeAmt").className = document.getElementById("FeeAmt").className.replace(" input-validation-error", "");
+    });
+</script>

@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "About Us";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+
+<div class="col-md-12 div-border padoff">
+    <div class="viewmargin boxbg col-sm-12">
+        <div class="col-sm-12">
+            @ViewBag.ErrorMsg
+            @if (ViewBag.AboutUSContant != null)
+            {
+                @Html.Raw(Convert.ToString(ViewBag.AboutUSContant));
+            }
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-12">
+
+            <div class="col-sm-12 contact">
+                OUR GROUP
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="col-sm-12" style="height:20px;"></div>
+            <div class="col-sm-2 aboutlogos">
+                <img src="../images/about_TH_logo.png" />
+                <p class="readmore">Read More</p>
+            </div>
+            <div class="col-sm-3 aboutlogos">
+                <img src="../images/about_DAT_logo.png" />
+                <p class="readmore">Read More</p>
+            </div>
+            <div class="col-sm-3 aboutlogos">
+                <img src="../images/about_iSCF_logo.png" />
+                <p class="readmore">Read More</p>
+            </div>
+            <div class="col-sm-2 aboutlogos">
+                <img src="../images/about_TI_logo.png" />
+                <p class="readmore">Read More</p>
+            </div>
+            <div class="col-sm-2 aboutlogos" style="background-image:none;">
+                <img src="../images/about_HMR_logo.png" />
+                <p class="readmore">Read More</p>
+            </div>
+            <div class="col-sm-12 contact">
+                Contact us at : 800XXXXXX | xxxx@xxxxx.ae / xxxxx@xxxxxxx.com
+            </div>
+        </div>
+    </div>
+</div>

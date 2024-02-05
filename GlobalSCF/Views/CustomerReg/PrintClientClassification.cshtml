@@ -1,0 +1,192 @@
+﻿@{
+    Layout = null;
+}
+
+@model  TMP.Models.CustomerDocModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Print Classification</title>
+    <link rel="icon" href="~/favicon.ico" type="image/gif" sizes="32x32">
+
+    @Styles.Render("~/Content/onlineCss")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/onlineJS")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <style>
+        .lblEngStatus {
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+        }
+            .lftMargin {
+        margin-left: 25px;
+    }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('#collapseOne').collapse({ 'toggle': true });
+            $('#collapseOne_11').collapse({ 'toggle': true });
+        });
+        function toggleIcon(e) {
+            $(e.target)
+                .prev('.panel-heading')
+                .find(".more-less")
+                .toggleClass('glyphicon-plus glyphicon-minus');
+        }
+        $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+        $('.panel-group').on('shown.bs.collapse', toggleIcon);
+    </script>
+
+</head>
+<body class="btmmargin tgs-bg">
+    <div class="container">
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <div class="panel-group" id="accordion1">
+
+                <div class="panel panel-default" id="panel_11">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-target="#collapseOne_11" style="cursor:pointer;">
+                                <i  style="float:right;"></i>
+                                ENGAGEMENT STATUS - <label id="lbl_Fst" style="text-transform: uppercase;font-family: 'Roboto', sans-serif; font-size: 12px;" class="lblEngStatus">@Model.Category</label>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_11" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="col-md-12 Question">
+                                <div class="col-md-3">
+                                    @Html.RadioButtonFor(m => m.rdo_CLIENT, true, new { id = "rdo_CLIENT", @class = "ClsEngStatus" })
+                                    CLIENT
+                                </div>
+
+                                <div class="col-md-3">
+                                    @Html.RadioButtonFor(m => m.rdo_BUSINESSPARTNER, true, new { id = "rdo_BUSINESSPARTNER", @class = "ClsEngStatus" })
+                                    BUSINESS PARTNER
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.RadioButtonFor(m => m.rdo_RELATEDPARTY, true, new { id = "rdo_RELATEDPARTY", @class = "ClsEngStatus" })
+                                    RELATED PARTY
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.RadioButtonFor(m => m.rdo_SERVICEPROVIDER, true, new { id = "rdo_SERVICEPROVIDER", @class = "ClsEngStatus" })
+                                    Admin
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <div class="container createusertitle1 Question">
+                @Html.CheckBoxFor(m => m.cbYes) Retail <label id="lbl_RtlStatus" class="lblEngStatus">@Model.Category</label> &nbsp; &nbsp; &nbsp;
+                @Html.CheckBoxFor(m => m.cbNo) Professional <label id="lbl_ProfsnlStatus" class="lblEngStatus">@Model.Category</label> &nbsp; &nbsp; &nbsp;
+            </div>
+
+        </div>
+
+
+
+        <div class="DV_Main" id="dv_print">
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default" id="panel111">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                @*@Html.CheckBoxFor(m => m.IsPC, new { @style = "margin-top:3px;" })*@
+                                <a data-toggle="collapse" data-target="#collapseOne" style="cursor:pointer;">
+                                    <i style="float:right;"></i>
+                                    Summary
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="col-md-12 Question">
+                                    <div id="DV_One">
+                                        <p>@Html.CheckBoxFor(m => m.IsDP, new { @class = "Select-list" })   1.	 Deemed Professional  <label style="font-family: 'Roboto', sans-serif; font-size: 12px;" class="lblEngStatus">@Model.Category</label>  </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP1, new { @class = "ClsOne" }) a supranational organisation whose members are either countries, central banks or national monetary authorities;</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP2, new { @class = "ClsOne" }) a properly constituted government, government agency, central bank or other national monetary authority </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP3, new { @class = "ClsOne" }) a public authority or state investment body;  </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP4, new { @class = "ClsOne" }) an Authorised Market Institution, Regulated Exchange or regulated clearing house;   </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP5, new { @class = "ClsOne" }) an Authorised Firm, a Regulated Financial Institution or the management company of a regulated pension fund;  </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP6, new { @class = "ClsOne" }) a Collective Investment Fund or a regulated pension fund; </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP7, new { @class = "ClsOne" }) a Large Undertaking which meets, as at the date of its most recent financial statements at least 2 of 3:</p>
+
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP71, new { @class = "ClsSubOne", style = "margin-left:25px;" })  it has a balance sheet total of at least $20 million</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP72, new { @class = "ClsSubOne", style = "margin-left:25px;" })  it has a net annual turnover of at least $40 million</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP73, new { @class = "ClsSubOne", style = "margin-left:25px;" })  it has own funds or called up capital of at least $2 million</p>
+
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP8, new { @class = "ClsOne" })  a Body Corporate whose shares are listed or admitted to trading on any exchange of an IOSCO member country; </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP9, new { @class = "ClsOne" })  any other institutional funder whose main activity is to invest in financial instruments, including an entity dedicated to the securitisation of assets or other financial transactions; </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP10, new { @class = "ClsOne" })  a trustee of a trust which has, or had during the previous 12 months, assets of at least $10 million; or </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsDP11, new { @class = "ClsOne" })  a holder of a licence under the Single Family Office Regulations with respect to its activities carried on exclusively for the purposes of, and only in so far as it is, carrying out its duties as a Single Family Office. </p>
+                                    </div>
+                                    <hr>
+
+                                    <p>@Html.CheckBoxFor(m => m.IsSB, new { @class = "Select-list" })  2.	Service Based Professional <label style="font-family: 'Roboto', sans-serif; font-size: 12px;" class="lblEngStatus">@Model.Category</label> </p>
+                                    <div id="DV_Two">
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB1, new { @class = "ClsTwo" }) Providing Credit</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB11, new { @class = "ClsTwoSubFirst", style = "margin-left:25px;", onclick = "return false;" })  the person is an Undertaking</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB12, new { @class = "ClsTwoSubFirst", style = "margin-left:25px;", onclick = "return false;" })  for use in the business activities</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB2, new { @class = "ClsTwo" })  “Advising on financial products or credit” or “Arranging credit or deals in Investments”</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsSB21, new { @class = "ClsTwoSubSecond", style = "margin-left:25px;", onclick = "return false;" })   for corporate structuring and financing acquisition, disposal, structuring, restructuring, financing or refinancing of a corporation or other legal entity.</p>
+                                    </div>
+                                    <hr>
+
+                                    <p>@Html.CheckBoxFor(m => m.IsAP, new { @class = "Select-list" })  3.	Assessed Professional <label style="font-family: 'Roboto', sans-serif; font-size: 12px;" class="lblEngStatus">@Model.Category</label> </p>
+                                    <div id="DV_Three">
+                                        <p class="lftMargin">
+                                            @Html.CheckBoxFor(m => m.IsAP1, new { @class = "ClsThird" })  Individual(s):
+                                            @Html.TextBoxFor(model => model.APIndName11, new { @class = "", autocomplete = "off", onkeyup = "syncAPIndName11()" }) (name of assessed individual)
+                                        </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsAP11, new { @class = "ClsThirdSubOne", style = "margin-left:25px;", onclick = "return false;" })  net assets of at least $1 million</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsAP12, new { @class = "ClsThirdSubOne", style = "margin-left:25px;", onclick = "return false;" })  sufficient experience and understanding of relevant financial markets, products or transactions and any associated risks @Html.TextBoxFor(model => model.APIndName12, new { @class = "", autocomplete = "off", style = "margin-left:2px;" }) (name of assessed individual)</p>
+
+                                        <p class="lftMargin">
+                                            @Html.CheckBoxFor(m => m.IsAP2, new { @class = "ClsThird" }) Undertaking
+                                            @Html.TextBoxFor(model => model.APIndName21, new { @class = "", autocomplete = "off", onkeyup = "syncAPIndName21()" })  (name of assessed undertaking)
+                                        </p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsAP21, new { @class = "ClsThirdSubTwo", style = "margin-left:25px;", onclick = "return false;" })  own funds or called up capital of at least $1 million</p>
+                                        <p class="lftMargin">@Html.CheckBoxFor(m => m.IsAP22, new { @class = "ClsThirdSubTwo", style = "margin-left:25px;", onclick = "return false;" })  sufficient experience and understanding of relevant financial markets, products or transactions and any associated risks @Html.TextBoxFor(model => model.APIndName22, new { @class = "", autocomplete = "off", style = "margin-left:2px;" }) (name of assessed individual)</p>
+                                    </div>
+                                </div>
+                                @if (Model.IsDP == true || Model.IsAP == true)
+                                {
+                                    <br />
+                                    <hr>
+                                    <div class="DV_MrktCntprty Question">
+                                        <div class="container createusertitle1">
+                                            @Html.CheckBoxFor(m => m.IsMC, new { @class = "ClsMC", style = "margin-top:3px;", onclick = "return false;" })  Market Counterparty?
+                                        </div>
+                                        <p class="lftMargin"> @Html.CheckBoxFor(m => m.IsMC1, new { @class = "ClsMC1", onclick = "return false;" })   1.	a ‘deemed’ Professional <label style="font-family: 'Roboto', sans-serif; font-size: 12px;" class="lblEngStatus">@Model.Category</label> </p>
+                                        <p class="lftMargin"> @Html.CheckBoxFor(m => m.IsMC2, new { @class = "ClsMC2", onclick = "return false;" })   2.	an ‘assessed’ Professional <label style="font-family: 'Roboto', sans-serif; font-size: 12px;" class="lblEngStatus">@Model.Category</label> which is wholly owned by a Holding Company that is a Large Undertaking or listed entity </p>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

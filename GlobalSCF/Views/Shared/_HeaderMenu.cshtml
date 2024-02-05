@@ -1,0 +1,61 @@
+﻿<div class="col-md-8 menu-container visible-desktop">
+    <ul class="nav navbar-nav tab_menu">
+        <li>
+            <a href="@Url.Action("Index", "OnlineReg")"><span id="index" class="menutext">HOME</span></a>
+        </li>
+        <li>
+            <a href='http://www.xxx.com/' target="_blank"><span id="about" class="menutext">ABOUT global</span></a>
+        </li>
+        <li>
+            <a href="@Url.Action("Login", "mUserMasters")"><span id="login" class="menutext">LOGIN</span></a>
+        </li>
+        <li>
+            <a href="@Url.Action("Contact", "Home")"><span id="contactus" class="menutext">CONTACT US</span></a>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $('.navbar-header').click(function () {
+        $("#mob-sel-menu").css("display", "none");
+    });
+</script>
+<style>
+    li {
+        border: 1px solid #336699;
+        border-radius: 15px;
+        width: 95px;
+        text-align: center;
+        margin-left: 20px;
+    }
+
+    .nav > li > a {
+        position: relative;
+        display: block;
+        padding: 0px 15px;
+        color: #6d6e71;
+    }
+
+    .nav > li:hover,
+    .nav > li:focus {
+        text-decoration: none;
+        background-color: #336699 !important;
+        color: #ffffff !important;
+        border-radius: 15px;
+    }
+
+    .nav > li > a:hover,
+    .nav > li > a:focus {
+        background-color: transparent !important;
+        color: #ffffff !important;
+    }
+   .menutext:hover,
+   .menutext:focus{
+       /*color: #ffffff !important;*/
+   }
+</style>
+<script>
+    $(".menutext").click(function () {
+        $(this).css("color", "#6d6e71");
+    });
+</script>

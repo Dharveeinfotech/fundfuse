@@ -1,0 +1,74 @@
+﻿@model TMP.Models.CustomerTempModel
+@{
+    ViewBag.Title = "Activation Code";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-1"></div>
+<div class="col-md-10 div-border padoff" style="text-align:center;">
+    <div class="col-md-12 createusertitle" style="font-weight: normal;font-size: 12px;">
+        Your registered email address has been confirmed. An activation code has been sent to your registered email id.<br />
+        To confirm your account, please enter the code you have received on your email id.
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @using (Html.BeginForm("ActivationCode", "OnlineReg", FormMethod.Post, new { @class = "col-md-12 CommonValidations" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="col-md-4"></div>
+        <div class="col-md-4 padoff">
+            <div class="col-md-12">
+                @Html.TextBoxFor(model => model.ActivationCode, new { @class = "form-control validate[required] num", maxlength = "50", autocomplete = "off", placeholder = "Enter the activation code" })
+            </div>
+            <div class="col-md-12" style="height:30px;"></div>
+            <div class="col-md-12">
+                <button id="ACTIVATE" name="ACTIVATE" value="ACTIVATE" type="submit" class="CommonAttachValidation btn-tgs" style="width: 100%;">ACTIVATE</button>
+            </div>
+            <div class="col-md-12" style="height:30px;"></div>
+            <div class="col-md-12">
+                <button id="RESEND" name="RESEND" value="RESEND" type="submit" class="CommonDetachValidation btn-tgs" style="width: 100%;">RESEND ACTIVATION CODE</button>
+            </div>
+            <div class="col-md-12" style="height:30px;"></div>
+            <div class="col-md-12">
+                <button id="EDIT" name="EDIT" value="EDIT" type="submit" class="CommonDetachValidation btn-tgs" style="width: 100%;">EDIT ACCOUNT DETAILS</button>
+            </div>
+            @Html.HiddenFor(x => x.CustomerTempID)
+            @Html.HiddenFor(x => x.CustomerTypeID)
+            @Html.HiddenFor(x => x.ProgramType)
+        </div>
+        <div class="col-md-4"></div>
+    }
+</div>
+<div class="col-md-1"></div>
+<script type="text/javascript">
+    $(function () {
+        if (document.getElementById('ActivationCode').value == "") {
+            document.getElementById('ActivationCode').focus();
+        }
+    });
+
+    $("#ActivationCode").keyup(function (event) {
+        if (event.keyCode == 13) {
+            //$("#ACTIVATE").click();
+        }
+    });
+</script>
+<style>
+    .footeronline {
+        position: fixed;
+    }
+</style>
+<style>
+    .btn-tgs-ext {
+            background-color: #336699;
+            padding: 6px 5px;
+        }
+    
+
+    .btn-tgs-ext:hover,
+    .btn-tgs-ext:focus {
+        background-color: #ffffff;
+         padding: 5px 4px;
+        color: #336699;
+        text-decoration: none;
+        border:1px solid #336699;
+    }
+</style>

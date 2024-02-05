@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "User Development";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 container" style="margin-top:9%; text-align:center;">
+
+    <form method="post">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 div-thankmsg" style="padding-top:2%">
+            @Html.Raw(ViewBag.ThankYouMsg)
+            <div class="form-group" id="div1">
+
+            </div>
+            <div class="form-group" style="padding-bottom: 5%;" id="div2">
+
+            </div>
+            </div>
+        <div class="col-md-3"></div>
+    </form>
+
+</div>
+<input type="text" id="count" name="count">
+<button onclick="createFunction()">create it</button>
+<button id="addCombo">Add Combo</button>
+
+<script>
+    function createFunction() {
+        var count = $("#count").val();
+        alert(count);
+        for (i = 0; i < count; i++) {
+          
+            var id = "add_" + i;
+            //var data = { 'Country0': 'India', 'Country1': 'Sri Lanka', 'Country2': 'USA', 'Country3': 'Australia', 'Country4': 'Newzeland' };
+            //var s = $('<select id="' + id + '" name="' + id + '"/>');
+            //for (var val in data) {
+            //    $('<option />', { value: val, text: data[val] }).appendTo(s);
+            //}
+            var t = $('<div class="col-md-3">First Name<input id="' + id + '" name="' + id + '" type="text" class="ShareFirstName form-control" autocomplete="off" placeholder="First Name"></div><div class="col-md-3">Middle Name<input id="' + id + '" name="' + id + '" type="text" class="form-control" autocomplete="off" placeholder="Middle Name"></div></div><div class="col-md-3">Last Name<input id="' + id + '" name="' + id + '" type="text" class="ShareLastName form-control" autocomplete="off" placeholder="Last Name"></div><div class="col-md-3">Share Percentage<input id="' + id + '" name="' + id + '" type="text" class="childSharePer form-control per2" autocomplete="off" value="0" placeholder="Share % "></div><div class="col-md-12"><p class="col-md-10 padoff name-msg" style="margin:0;">**Please ensure that the names you enter match the ones in your passport, and please use English characters only.</p>');
+
+            t.appendTo('#div1');
+            t.appendTo('#div2');
+        }
+    }
+   
+ 
+</script>
+<style>
+    .footeronline {
+     padding-top:230px;
+    }
+    .footertop {        
+    border-top: 0px;
+}
+</style>

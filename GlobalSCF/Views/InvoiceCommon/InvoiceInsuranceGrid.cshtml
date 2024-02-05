@@ -1,0 +1,54 @@
+﻿@model  IEnumerable<TMP.Models.InvoiceTransactionModel>
+@if (Model.Count() > 0)
+{
+    <div class="tab-pane" id="4a">
+        <div class="col-md-12">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>Insurance Name</th>
+                        <th>Policy Number</th>
+                        <th>Insurance Broker</th>
+                        <th>Insured Amount</th>
+                        <th>Premium %</th>
+                        <th>Premium Amount</th>
+                        <th>Comment</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@item.InsuranceName</td>
+                            <td>@item.PolicyNo</td>
+                            <td>@item.InsuranceBrokerName</td>
+                            <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.InsAmt)</td>
+                            <td>@string.Format("{0:0,0.00}", item.PremPer)</td>
+                            <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.PremAmt)</td>
+                            <td>@item.Comment</td>
+                            <td>@Html.ActionLink("Edit", "InvoiceInsuranceAdd", new { InvoiceID = item.InvoiceID, EditID = item.InvoiceInsID, DeleteID = 0, ProgramType = item.ProgramType })</td>
+                            <td>@Html.ActionLink("Delete", "InvoiceInsuranceAdd", new { InvoiceID = item.InvoiceID, EditID = 0, DeleteID = item.InvoiceInsID, ProgramType = item.ProgramType })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+        });
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+
+

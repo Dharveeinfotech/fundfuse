@@ -1,0 +1,234 @@
+﻿@model TMP.Models.DocumentMaster_ListAll_Result
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">
+        Edit Document
+    </div>
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="container">
+        @using (Html.BeginForm("Edit", "mDocumentMasters", FormMethod.Post, new { @class = "col-md-12", @id = "DMEForm", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="col-md-12" style="height:10px;"></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.lstmDocumentMasterList[0].DocumentID)
+            @Html.HiddenFor(model => model.lstmDocumentMasterList[0].Status)
+            <input type='hidden' value="@Model.lstmDocumentMasterList[0].DocumentID" name="hdnDocumentID" id="hdnDocumentID" />
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Document Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.lstmDocumentMasterList[0].DocumentName, new { htmlAttributes = new { @onkeypress = "return isNumberKey(event)", @class = "form-control validate[required]" } })                    
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Document Description</label>
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.lstmDocumentMasterList[0].DocumentDesc, new { htmlAttributes = new { @onkeypress = "return isNumberKey(event)", @class = "form-control", rows = "3", cols = "41" } })                    
+                </div>
+            </div>
+            <br />
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Admin Document</label>
+                <div class="col-md-7">
+                    @Html.CheckBoxFor(model => model.lstmDocumentMasterList[0].IsUserDoc, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Company Document</label>
+                <div class="col-md-7">
+                    @Html.CheckBoxFor(model => model.lstmDocumentMasterList[0].IsInvestor, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-7">
+                    <table border="1">
+                        <tr>
+                            <th class="col-md-1">
+                                Select
+                            </th>
+                            <th class="col-md-3">
+                                Document for
+                            </th>
+                            <th class="col-md-3">
+                                Attachment
+                            </th>
+                        </tr>
+                        @foreach (var item in Model.lstCustomerTypeList)
+                        {
+                            <tr>
+                                <td class="col-md-1 listtext">
+                                    @{
+                                        bool Found = false;
+                                        foreach (var item1 in Model.lstCustomerTypeIDList)
+                                        {
+                                            if (item1.IsActive == true)
+                                            {
+                                                if (item.CustomerTypeID == item1.CustomerTypeID)
+                                                {
+                                                    Found = true;
+                                                    <input type="checkbox" id="chkBox[]" name="chkBox[]" class="checkbox checkboxunselect" value="@item.CustomerTypeID" checked="checked" />
+                                                    <input type="checkbox" id="chkBoxunselected_@item.CustomerTypeID" name="chkBoxunselected[]" class="checkbox" value="@item1.CustomerTypeDocDetID _@item1.CustomerTypeID" style="position:absolute;top:-100000px;" />
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (Found == false)
+                                        {
+                                            <input type="checkbox" id="chkBox[]" name="chkBox[]" class="checkbox" value="@item.CustomerTypeID" />
+                                        }
+                                    }
+                                </td>
+                                <td class="col-md-3 listtext">
+                                    @item.CustomerTypeName
+                                </td>
+                                <td class="col-md-3 listtext">
+                                    @{
+                                        bool Found2 = false;
+                                        foreach (var item2 in Model.lstCustomerTypeIDList)
+                                        {
+                                            <input type="hidden" id="hdAttchFileName_@item2.CustomerTypeID" value="@item2.Attachment" />
+                                            if (item2.IsActive == true)
+                                            {
+                                                if (item.CustomerTypeID == item2.CustomerTypeID)
+                                                {
+                                                    Found2 = true;
+                                                    <input type="file" name="fileCantrol_@item.CustomerTypeID" id="fileCantrol_@item.CustomerTypeID" />
+                                                    <p style="padding-left:200px; margin-top:-20px;">
+                                                        <a href='~/Files/Upload/@item2.Attachment' target="_blank">View</a>
+                                                    </p>
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (Found2 == false)
+                                        {
+                                            <input type="file" name="fileCantrol_@item.CustomerTypeID" id="fileCantrol_@item.CustomerTypeID" />
+                                        }
+                                    }
+
+                                </td>
+                            </tr>
+                                        }
+                    </table>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+            
+            <br />
+            <div class="col-md-7">
+                @Html.TextArea("ProcessRemark", "", 1, 1, new { @class = "col-md-12 footerbox validate[required]", placeholder = "Process Remark" })
+            </div>
+            <div class="col-md-2" style="text-align:right;">
+                <input type="submit" id="Save" name="Save" value="Save" class="btn-tgs CommonAttachValidation" />
+            </div>
+                                        }
+
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:500px;">
+                    <div id='myModalContent'></div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/jscript">
+        $("#Save").click(function () {
+
+            var ChkRadio = 0;
+            $(".checkbox").each(function () {
+                if (this.checked) {
+                    ChkRadio = 1;
+                }
+            });
+            if (ChkRadio == 0) {
+                $("#errorMsg").html("Please select atleast one Document !!");
+                $('#Error').modal('show');
+                return false;
+            }
+
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#popup').click(function () {
+
+                var DocumentID = $("#hdnDocumentID").val();
+
+                $.ajax({
+                    url: "/mDocumentMasters/CommentResult?DocumentID=" + DocumentID,
+                    type: "POST",
+                    data: "{}",
+                    datatype: "json",
+                    contentType: "application/json; charset=utf-8",
+                    //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal('show');
+                        //$("#NEW2").html(data);
+                        $("table.display").DataTable();
+                        event.preventDefault();
+                        return false;
+                    },
+
+                });
+
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#DMEForm").validationEngine(
+     'attach', {
+         promptPosition: "bottomLeft",
+         scroll: false,
+         autoHidePrompt: true,
+         autoHideDelay: 3500,
+         fadeDuration: 0.3,
+         focusFirstField: false,
+         MaxErrorsPerField: 1
+     });
+        $(".checkboxunselect").click(function () {
+
+            var ID = $(this).val();
+            if (this.checked) {
+                $("#chkBoxunselected_" + ID).prop("checked", false);
+            }
+            else {
+                $("#chkBoxunselected_" + ID).prop("checked", true);
+            }
+
+        });
+    </script>
+}
+

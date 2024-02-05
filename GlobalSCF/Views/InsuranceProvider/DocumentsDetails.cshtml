@@ -1,0 +1,186 @@
+﻿@model  TMP.Models.CustomerDocModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Documents Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    { @Html.Action("InsuranceProviderPartialPageView", "MasterPage", new { CustomerID = Model.CustomerID, CustomerTypeID = Model.CustomerTypeID, _tab = 4 })  }
+
+    @if (@ViewBag.attachList != null)
+    {
+
+        <div class="col-md-12 createusertitle">DOCUMENT DETAILS</div>
+        <div class="col-md-12" style="height:10px;"></div>
+            <div class="tab-pane" id="4a">
+                <!--tab 4a-->
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th style="width:10%">Sr. No.</th>
+                                <th style="width:50%">Document Name</th>
+                                <th style="width:40%">Attachments</th>
+                                <th style="display:none;">
+                                </th>
+                                <th style="display:none;">
+                                </th>
+                            </tr>
+                        <tbody>
+                            @foreach (var item in ViewBag.attachList)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@item.DocumentName</td>
+
+                                    @foreach (var item1 in ViewBag.DocCheck)
+                                    {
+                                        if (item.Attachment == item1.Attachment)
+                                        {
+                                            <td>
+                                                @*<a href='~/Files/Upload/@item.Attachment' target="_blank">View</a>*@
+                                                <a href="javascript:void(0);" class="Attachment_PopUp" data-id="@item.Attachment">View</a>
+                                            </td>
+                                            <td class="Attachment" style="display:none;">
+                                                <span>@item.Attachment</span>
+                                            </td>
+                                            <td style="display:none;">
+                                                
+                                            </td>
+                                        }
+                                        else
+                                        {
+
+                                            if (item.CustomerDocID == item1.CustomerDocID)
+                                            {
+                                                <td>
+                                                    @*<a href='~/Files/Upload/@item.Attachment' target="_blank">View</a>*@
+                                                    <a href="javascript:void(0);" class="Attachment_PopUp" data-id="@item.Attachment">View</a><br />
+                                                    <span>
+                                                        Old Document
+                                                        @*<a href='~/Files/Upload/@item1.Attachment' target="_blank">View</a>*@
+                                                        <a href="javascript:void(0);" class="OldAttachment_PopUp" data-id="@item1.Attachment">View</a>
+                                                        <br />
+                                                    </span>
+                                                </td>
+                                                <td class="Attachment" style="display:none;">
+                                                    <span>@item.Attachment</span>
+                                                </td>
+
+                                            }
+
+                                        }
+
+                                    }
+
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="col-md-12" style="height:15px;"></div>
+    }
+
+
+    <form method="post" id="SPCHKPAge">
+        <div class="col-md-12">
+            <div class="col-md-7">
+                @Html.Hidden("CustomerID", ViewData["CustomerID"])
+                @if (ViewBag.IsCheckerOrApprover != "Viewer")
+                {
+                <textarea class="col-md-12 footerbox validate[required]" placeholder="Remarks" id="Remarks" name="Remarks" cols="1" rows="1"></textarea>
+                }
+
+                <input type="hidden" id="hdnCustomerID" name="CustomerID" value="@Model.CustomerID" />
+                <input type="hidden" id="Status" name="Status" value="@Model.Status" />
+                <input type="hidden" id="CustomerTypeID" name="CustomerTypeID" value="@Model.CustomerTypeID" />
+            </div>
+            <div class="col-md-5" style="text-align:right;">
+                @if (Model.Status == CONT.NM || Model.Status == CONT.RQ || Model.Status == CONT.NA || Model.Status == CONT.UA
+|| Model.Status == CONT.UJ || Model.Status == CONT.UM)
+                {
+                    if (ViewBag.IsCheckerOrApprover == "Maker")
+                    {
+                <button id="btnNext" name="command" value="Maker" class="btn-tgs" formnovalidate>Submit</button>
+                    }
+                }
+                else if (Model.Status == CONT.NR || Model.Status == CONT.UR)
+                {
+                    if (ViewBag.IsCheckerOrApprover == "Checker")
+                    {
+                <button id="btnCheckerReturn" name="btnCheckerReturn" value="btnCheckerReturn" class="btn-tgs" formnovalidate>Return to Maker</button>
+                <button id="btnCheckerSubmit" name="btnCheckerSubmit" value="btnCheckerSubmit" class="btn-tgs" formnovalidate>Submit</button>
+                    }
+                }
+                else if (Model.Status == CONT.NC || Model.Status == CONT.UC)
+                {
+                    if (ViewBag.IsCheckerOrApprover == "Approver")
+                    {
+                <button id="btnApproverReject" name="btnApproverReject" value="btnApproverReject" class="btn-tgs" formnovalidate>Reject</button>
+                <button id="btnApprove" name="btnApprove" value="btnApprove" class="btn-tgs" formnovalidate>Approve</button>
+                    }
+                }
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    $("#example").on("click", ".Attachment_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".Attachment").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    $("#example").on("click", ".OldAttachment_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".OldAttachment").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(document).ready(function () {
+        var t = $('#example').DataTable({
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'desc']]
+        });
+
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+        var t1 = $('#example1').DataTable({
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'desc']]
+        });
+
+        t1.on('order.dt search.dt', function () {
+            t1.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>

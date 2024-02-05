@@ -1,0 +1,445 @@
+﻿
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  IEnumerable<TMP.Models.InvoiceTransactionModel>
+<script src="~/Scripts/canvasjs.min.js"></script>
+
+@if (Enumerable.Count(@ViewBag.FTranst) == 0 && Enumerable.Count(@ViewBag.RTranst) == 0)
+{
+    <div class="col-md-12 notras-div">
+        <p class="notras-p">WELCOME TO SCF Platform</p>
+        <p class="notras-sub-p">The global Supply Chain marketplace for working capital</p>
+
+        <p style="margin-top:25px;">If you have any questions, please call <b style="color:#336699;">800XXXXX</b> or write to us at <b style="color:#336699">xxxx@xxxx.com</b></p>
+    </div>
+}
+
+@if (Enumerable.Count(@ViewBag.FTranst) > 0)
+{
+    <div class="col-md-12" style="height:15px;"></div>
+    <div class="col-md-12 dashboard-titel">RECEIVABLES FINANCE</div>
+
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12">
+            <table id="exampleDB2" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>Total Amount</th>
+                        <th>Transaction Number</th>
+                        <th>Product</th>
+                        <th>Transaction Date</th>
+                        <th>Buyer Name</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                        <th style="display:none;">
+                        </th>
+                        <th style="display:none;">
+                        </th>
+                    </tr>
+                    @if (Enumerable.Count(@ViewBag.FTranst) > 0)
+                {
+                    <tbody>
+                        @foreach (var item in ViewBag.FTranst)
+                    {
+                            <tr>
+
+                                <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
+                                <td>@item.TranRefNo</td>
+                                @if (item.ProgramType == CONT.FType)
+                                {
+                                    <td>Receivables Finance</td>
+                                }
+                                else
+                                {
+                                    <td>Payables Finance</td>
+                                }
+                                <td>@Convert.ToDateTime(item.TranDate).ToString("dd-MMM-yyyy")</td>
+                                <td>
+                                    @item.ObligorName
+                                </td>
+                                <td>@Convert.ToDateTime(item.DueDate).ToString("dd-MMM-yyyy")</td>
+                                @if (ViewBag._currentUser.IsMaker && item.Status == CONT.IB)
+                                {
+                                    <td><a href='@Url.Action("ObligorMaker", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Approve</a></td>
+                                }
+                                else if (ViewBag._currentUser.IsChecker && (item.Status == CONT.OA || item.Status == CONT.OP))
+                                {
+                                    <td><a href='@Url.Action("ObligorChecker", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Accept</a></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a href="javascript:void(0);" class="factoringView" data-id="@item.InvoiceID">View</a>
+                                    </td>
+                                }
+
+                                <td class="InvoiceID" style="display:none;">
+                                    <span>@item.InvoiceID</span>
+                                </td>
+                                <td class="ProgramType" style="display:none;">
+                                    <span>@item.ProgramType</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    }
+                </table>
+
+            </div>
+
+            @if (Enumerable.Count(@ViewBag.FTranst) > 3 && ViewBag.HideBtn)
+            {
+                <div class="col-md-12" style="text-align:right">
+                    <button id="viewall1" name="viewall1" value="viewall1" class="btn btn-tgs">VIEW ALL</button>&nbsp;&nbsp;
+                </div>
+            }
+        </div>
+        <hr />
+}
+<div class="col-md-12" style="height:15px;"></div>
+@if (Enumerable.Count(@ViewBag.RTranst) > 0)
+{
+    <div class="col-md-12 dashboard-titel">Payables Finance</div>
+
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12">
+            <table id="exampleDB3" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>Total Amount</th>
+                        <th>Transaction Number</th>
+                        <th>Product</th>
+                        <th>Transaction Date</th>
+                        <th>Buyer Name</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                        <th style="display:none;">
+                        </th>
+                        <th style="display:none;">
+                        </th>
+                    </tr>
+                    @if (Enumerable.Count(@ViewBag.RTranst) > 0)
+                {
+                    <tbody>
+                        @foreach (var item in ViewBag.RTranst)
+                    {
+                            <tr>
+
+                                <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
+                                <td>@item.TranRefNo</td>
+                                @if (item.ProgramType == CONT.FType)
+                                {
+                                    <td>Receivables Finance</td>
+                                }
+                                else
+                                {
+                                    <td>Payables Finance</td>
+                                }
+                                <td>@Convert.ToDateTime(item.TranDate).ToString("dd-MMM-yyyy")</td>
+                                <td>
+                                    @item.BuyerName
+                                </td>
+                                <td>@Convert.ToDateTime(item.DueDate).ToString("dd-MMM-yyyy")</td>
+                                @if ((ViewBag._currentUser.IsMaker) && (item.Status == CONT.BQ || item.Status == CONT.BP))
+                                {
+                                    <td><a href='@Url.Action("UploadInvoice", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Initiate</a></td>
+                                }
+                                else if ((ViewBag._currentUser.IsChecker) && (item.Status == CONT.BR || item.Status == CONT.CE))
+                                {
+                                    if (item.Status == CONT.CE)
+                                    {
+                                        <td><a href='@Url.Action("SupplierChecker", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Accept</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a href='@Url.Action("SupplierChecker", "Factoring", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Approve</a></td>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a href="javascript:void(0);" class="factoringView" data-id="@item.InvoiceID">View</a>
+                                    </td>
+                                }
+                                <td class="InvoiceID" style="display:none;">
+                                    <span>@item.InvoiceID</span>
+                                </td>
+                                <td class="ProgramType" style="display:none;">
+                                    <span>@item.ProgramType</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    }
+                </table>
+
+            </div>
+            @if (Enumerable.Count(@ViewBag.RTranst) > 5 && ViewBag.HideBtn)
+            {
+                <div class="col-md-12" style="text-align:right">
+                    <button id="viewall2" name="viewall2" value="viewall2" class="btn btn-tgs">VIEW ALL</button>&nbsp;&nbsp;
+                </div>
+            }
+        </div>
+        <hr />
+}
+@if (Enumerable.Count(@ViewBag.Obligors) > 0 && ViewBag.HideBtn)
+{
+    <div class="col-md-12" style="height:15px;"></div>
+    <div class="container padoff">
+        <div class="col-md-5">
+            <div class="col-md-12 createusertitle" style="margin-bottom: 0px;">SUPPLIER</div>
+            <div class="tab-pane" id="4a">
+
+                <div class="col-md-12 padoff">
+                    <table id="exampleDB5" cellspacing="0" width="100%" style="margin-top:-5px;">
+                        <thead>
+                            <tr class="bgspr" style="display:none;">
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @if (Enumerable.Count(@ViewBag.Obligors) > 0)
+                        {
+                            <tbody>
+                                @foreach (var item in ViewBag.Obligors)
+                                {
+                                    <tr>
+                                        @if (item.IsNew)
+                                        {
+                                            <td><div class="col-md-2"><span class="glyphicon glyphicon-user mkGreen" style="font-size:25px;"></span></div><div class="col-md-10" style="padding-top:10px;"> @item.SupplierName <span style="padding-left:15px;" class="mkGreen"> NEW</span></div></td>
+                                        }
+                                        else
+                                        {
+                                            <td><div class="col-md-2"><span class="glyphicon glyphicon-user" style="font-size:25px;"></span></div><div class="col-md-10" style="padding-top:10px;"> @item.SupplierName </div></td>
+                                        }
+                                        @if (item.IsSupplier)
+                                        {
+                                            <td><a href='@Url.Action("FundingPartnerObligorDetails", "Factoring", new { ObligorID = item.SupplierID, ProgramType = item.ProgramType })'>View</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a href="javascript:void(0);" class="OpenList" data-id="@item.CustomerID">View</a>
+                                            </td>
+                                        }
+                                        <td class="CustomerID" style="display:none;">
+                                            <span>@item.CustomerID</span>
+                                        </td>
+                                        <td class="SupplierID" style="display:none;">
+                                            <span>@item.SupplierID</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+            @if (Enumerable.Count(@ViewBag.Obligors) > 5 && ViewBag.HideBtn)
+                {
+                <div class="col-md-12" style="text-align:right">
+                    <button id="viewall4" name="viewall4" value="viewall4" class="btn btn-tgs">VIEW ALL</button>&nbsp;&nbsp;
+                </div>
+            }
+            @if (Enumerable.Count(@ViewBag.reminder) == 0 && ViewBag.HideBtn)
+            {
+                <div class="container tab-pane" id="4a">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10 reminder-div" style="height:inherit;">
+                        <div class="thumbnail noBorder" style="background-color:transparent;padding-top:15px;">
+                            <img src="~/images/notification.png" style="width:25%;" />
+                        </div>
+                        <div class="reminder-div-notification" style="padding-bottom:15px;">NO ALERTS</div>
+
+                    </div>
+
+                    <div class="col-md-1"></div>
+                </div>
+            }
+        </div>
+        <div class="col-md-7">
+            <div class="col-md-12 createusertitle">PORTFOLIO</div>
+            @if (Enumerable.Count(ViewBag.CurrencyID) == 0)
+            {
+                <div class="thumbnail noBorder">
+                    <img src="~/images/portflio-background.png" />
+                </div>
+            }
+            else
+            {
+                <div class="container">
+                    <div class="col-md-4" style="float:right;">
+                        <div id="DV_Currency" style="display:none;">
+                            @Html.DropDownList("CurrencyID", null, "-- Select --", new { @class = "form-control validate[required]" })
+                        </div>
+
+                    </div>
+                </div>
+                <div id="chartCustomerPortFolio" style="height:250px; width: 100%;"></div>
+                if (ViewBag.HideBtn)
+                {
+                    <div class="col-md-12" style="text-align:right">
+                        <button id="viewall5" name="viewall5" value="viewall5" class="btn btn-tgs">VIEW PORTFOLIO</button>&nbsp;&nbsp;
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <hr />
+}
+
+@if (Enumerable.Count(@ViewBag.reminder) > 0 && ViewBag.HideBtn)
+{
+    <div class="col-md-12" style="height:15px;"></div>
+
+    <div class="container tab-pane" id="4a">
+        <div class="col-md-1"></div>
+        <div class="col-md-2 reminder-div">
+            <div class="thumbnail noBorder" style="background-color:transparent;padding-top:15px;">
+                <img src="~/images/notification.png" style="width:25%;" />
+            </div>
+            <div class="reminder-div-notification">NOTIFICATIONS</div>
+            @if (Enumerable.Count(@ViewBag.reminder) > 5 && ViewBag.HideBtn)
+            {
+                <div class="col-md-12">
+                    <button id="viewall3" name="viewall3" value="viewall3" class="btn btn-tgs reminder-div-btn">VIEW ALL</button>&nbsp;&nbsp;
+                </div>
+            }
+        </div>
+        <div class="col-md-8 padoff">
+            @Html.Action("_ReminderAlert", "Home")
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+}
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#viewall1,#viewall2").click(function () {
+        document.location = '@Url.Action("Transactions", "Home")';
+        return false;
+    });
+    $("#viewall3").click(function () {
+        document.location = '@Url.Action("DocumentReminder", "Home")';
+        return false;
+    });
+    $("#viewall4").click(function () {
+        document.location = '@Url.Action("ObligorSupplier", "Home")';
+        return false;
+    });
+    $("#viewall5").click(function () {
+        document.location = '@Url.Action("Portfolio", "Home")';
+        return false;
+    });
+    $(document).ready(function () {
+        var CurrencyID = $("#CurrencyID").val();
+        if (CurrencyID != "") {
+            BindData(CurrencyID);
+        }
+    });
+
+    $("#CurrencyID").on("change", function () {
+        var CurrencyID = $(this).val();
+        BindData(CurrencyID);
+    });
+
+    function BindData(CurrencyID) {
+        $.getJSON("/Home/GetCustomerPortFolio?CurrencyID=" + CurrencyID, function (data) {
+            var dataPoints = [];
+            var TotTranAmt = 0;
+            for (var i = 0; i < data.length; i++) {
+                $("#DV_Currency").show();
+                TotTranAmt = parseFloat(data[i].TotTranAmt, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+                dataPoints.push({ y: data[i].TotTranAmt, label: data[i].Type, legendText: data[i].Type, x: TotTranAmt });
+            }
+            CanvasJS.addColorSet("ColorSet",
+               ["#faaf3a", "#3ea8f4", "#bdcad0", "#7bc844"]);
+
+            var chart = new CanvasJS.Chart("chartCustomerPortFolio", {
+                colorSet: "ColorSet",
+                animationEnabled: true,
+                legend: {
+                    cursor: "pointer",
+                    horizontalAlign: "right",
+                    verticalAlign: "center",
+                    fontSize: 13,
+                    fontColor: "#58595b",
+                    fontWeight: "lighter",
+                    fontFamily: "Open Sans, sans-serif",
+                    itemclick: explodePie
+                },
+                toolTip: {
+                    fontColor: "#58595b",
+                    fontFamily: "Open Sans, sans-serif",
+                    fontSize: 12
+                },
+                data: [{
+                    legendMarkerType: "square",
+                    indexLabelPlacement: "outside",
+                    type: "pie",
+                    startAngle: 100,
+                    showInLegend: true,
+                    indexLabelFontFamily: "Open Sans, sans-serif",
+                    indexLabelFontSize: 12,
+                    indexLabel: "{label} : {x}",
+                    indexLabelFontFamily: "Open Sans, sans-serif",
+                    indexLabelFontColor: "#58595b",
+                    dataPoints: dataPoints,
+                    toolTipContent: "{label}: <strong>{x}</strong>",
+                }]
+            });
+            chart.render();
+        });
+    }
+
+    function explodePie(e) {
+        if (typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
+            e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
+        } else {
+            e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+        }
+        e.chart.render();
+    }
+
+    $("#exampleDB5").on("click", ".OpenList", function () {
+        var row = $(this).closest("tr");
+        var CustomerID = row.find(".CustomerID").find("span").html();
+        var CustomerSuppID = row.find(".SupplierID").find("span").html();
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: "/CustomerReg/SupplierDetailPop?CustomerID=" + CustomerID + "&CustomerSuppID=" + CustomerSuppID + "&IsBank=True",
+            contentType: "application/json; charset=utf-8",
+            data: "{}",
+            datatype: "json",
+            success: function (data) {
+
+                $('#myModalContent').html(data);
+                $('#myModal').modal('show');
+            },
+        });
+    });
+</script>
+<style>
+    .canvasjs-chart-credit {
+        display: none;
+    }
+</style>

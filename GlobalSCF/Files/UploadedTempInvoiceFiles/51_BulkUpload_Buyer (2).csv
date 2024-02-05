@@ -1,0 +1,2 @@
+Item No.,Supplier CIF,Supplier Name,Invoice No.,Invoice Date (dd/mm/yyyy),Invoice Due Date (dd/mm/yyyy),Invoice Currency,Invoice Amount,Attachment
+1,CIF0000007,Payable Supplir,BCC001,31/01/2018,27/02/2018,AED,5000,test.pdf

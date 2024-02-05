@@ -1,0 +1,88 @@
+﻿@model IEnumerable<TMP.Models.ServiceProviderModel>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+
+    <div class="col-md-12" style="height:10px;"></div>
+    @if (ViewBag.UserRight != null && ViewBag.UserRight == "Maker")
+    {
+        <form>
+            <div class="col-md-12">
+                <button name="createnew" formaction="~/ServiceProvider/CreateNew" formmethod="post" formnovalidate type="submit" class="btn-tgs">Create New</button>
+            </div>
+        </form>
+    }
+    <div class="col-md-12">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgum">
+                    <th>Company Name</th>
+                    <th>Company Code</th>
+                    <th>Mobile Number</th>
+                    <th>E-Mail</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.CompanyName</td>
+                            <td>@item.CustomerCode</td>
+                            <td>@item.MobileNo</td>
+                            <td>@item.EmailID</td>
+                            <td>@item.StatusDisplay</td>
+                            <td>
+                                @if (ViewBag.UserRight != null && ViewBag.UserRight == "Viewer")
+                                {
+                                    @Html.ActionLink("View", "MakerDetails", new { CustomerID = item.CustomerID })
+                                }
+                                else
+                                {
+                                    if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
+                                    {
+                                        if (ViewBag.UserRight != null && ViewBag.UserRight == "Maker")
+                                        {
+                                            @Html.ActionLink("Edit", "CompanyInfo", new { CustomerID = item.CustomerID })
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("View", "MakerDetails", new { CustomerID = item.CustomerID })
+                                        }
+                                    }
+                                    else if (item.Status == CONT.NC || item.Status == CONT.UC || item.Status == CONT.NR || item.Status == CONT.UR)
+                                    {
+                                        @Html.ActionLink("View", "MakerDetails", new { CustomerID = item.CustomerID })
+                                    }
+                                    else
+                                    {
+                                        @item.CompanyName
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10
+        });
+    });
+</script>

@@ -1,0 +1,156 @@
+﻿@model IEnumerable<TMP.Models.MenuRoleRights>
+
+@{
+    ViewBag.Title = "Administration";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12">
+
+    <div class="col-md-12 scroll" style="height:460px;">
+
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+
+                //if (item.MenuName == "User Management")
+                //{
+                foreach (var itemMenu in ViewBag.ParentMenuName)
+                {
+
+                    if (item.MenuID == itemMenu.MenuID)
+                    {
+                        <div class="col-md-4 Parent">
+                            <div id="ummaroon" class="col-md-12 dashbox1 Parent-sub">
+                                <div class="col-md-3"><img src="~/image/um_image.png" class="adminimages"></div>
+                                <div class="col-md-9"><p class="admintitles">@item.MenuName</p></div>
+                            </div>
+
+
+
+                            <div class="blank col-md-12"></div>
+                            <div id="umdrop" class="col-md-12 child">
+                                @foreach (var subitem in Model)
+                            {
+                                if (item.MenuID == subitem.ParentMenuID)
+                                {
+                            <div class="col-md-10 crdrop headermenu">
+                                <p class="addnewtitles">
+                                    @subitem.MenuName
+                                </p>
+                            </div>
+
+                                    foreach (var Menuitem in Model)
+                                    {
+                                        if (subitem.MenuID == Menuitem.ParentMenuID)
+                                        {
+                            <div class="col-md-10 crdrop mainmenu" style="margin-left:50px; width:190px;">
+                                <p class="addnewtitles">
+                                    <a href="Javascript:void(0)" onclick="RedirectToPageName(@Menuitem.MenuID,'@item.MenuName')">@Menuitem.MenuName</a>
+                                </p>
+                            </div>
+
+                                            foreach (var Makeritem in Model)
+                                            {
+                                                if (Menuitem.MenuID == Makeritem.ParentMenuID)
+                                                {
+                                                    if (Menuitem.IsMaker)
+                                                    {
+                            <div class="col-md-10 crdrop submenu">
+                                <p class="addnewtitles">
+                                    <a href="Javascript:void(0)" onclick="RedirectToPageName(@Makeritem.MenuID,'@item.MenuName')">@Makeritem.MenuName</a>
+                                </p>
+                            </div>
+
+                                                    }
+
+                                                }
+
+                                            }
+
+                                        }
+                                    }
+
+                                }
+
+
+                            }
+                            </div>
+                        </div>
+
+                    }
+                }
+            }
+        }
+    </div>
+
+</div>
+
+<style>
+    .headermenu {
+    }
+
+        .headermenu :hover {
+            background-color: gainsboro;
+        }
+
+    .mainmenu {
+        margin-left: 50px;
+        width: 190px;
+    }
+
+        .mainmenu :hover {
+            background-color: gainsboro;
+        }
+
+    .submenu {
+        margin-left: 100px;
+        width: 140px;
+    }
+
+        .submenu :hover {
+            background-color: gainsboro;
+        }
+
+    .child {
+        display: none;
+    }
+
+    .Open {
+        display: block !important;
+    }
+</style>
+
+<script>
+    function RedirectToPageName(id, bredCrum) {
+        $.ajax({
+            url: "/mUserMasters/RedirectToPageName",
+            type: "POST",
+            data: '{id:"' + id + '",bredCrum:"' + bredCrum + '"}',
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                window.location = result;
+                return true;
+            },
+            error: function () {
+                return false;
+            }
+        });
+
+    }
+
+    $(document).ready(function () {
+        $('.Parent-sub').click(function (evant) {
+            // event.stopPropagation();
+            if ($(this).parent('.Parent').find('.child').hasClass('Open') == false) {
+                $('.Parent').find('.child').removeClass('Open');
+                $(this).parent('.Parent').find('.child').addClass('Open');
+            }
+            else {
+                $('.Parent').find('.child').removeClass('Open');
+            }
+        });
+    });
+</script>

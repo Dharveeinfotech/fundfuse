@@ -1,0 +1,89 @@
+﻿@model List<TMP.Models.InvoiceTransactionModel>
+<div class="col-md-12" style="padding:0px;">
+    @if (Model != null)
+            {
+        <table id="example20" class="display" cellspacing="0" width="91%">
+            <thead>
+                <tr class="bgfact">
+                    <th style="width:60px;">Sr. No.</th>
+                    <th>Invoice Number</th>
+                    <th>Currency</th>
+                    <th>Invoice Amount</th>
+                    <th>Invoice Date</th>
+                    <th>Attachment</th>
+                    @if (ViewBag.IsAdd == true)
+                    {
+                        <th>Edit</th>
+                        <th>Delete</th> 
+                    }
+                    else
+                    { }
+                    <th style="display:none;">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int intNo = 1; }
+                @foreach (var items in Model)
+                {
+                    <tr>
+                        <td>
+                            @intNo
+                            @if (intNo == 1)
+                            {
+                                <input type="hidden" id="InvoiceDueDate" name="InvoiceDueDate" value="@Convert.ToDateTime(items.DueDate).ToString("dd-MMM-yyyy")" />
+                            }
+                        </td>
+                        <td>@items.InvoiceNo</td>
+                        <td>@items.CurrencyCode</td>
+                        <td>@items.CurrencyCode @string.Format("{0:0,0.00}", items.Amt)</td>
+                        <td>@Convert.ToDateTime(items.InvoiceDate).ToString("dd-MMM-yyyy")</td>
+                        <td>
+                            <a href="javascript:void(0);" class="docPopUp" data-id="@items.Attach">Attachment</a>
+                        </td>
+                        @if (ViewBag.IsAdd == true)
+                        {
+                            <td><a href="@Url.Action("UploadInvoice","Factoring", new { InvoiceID=items.InvoiceID,  InvoiceEditID = items.InvoiceDetID, ProgramType = items.ProgramType })">Edit</a></td>
+                            <td><a href="@Url.Action("UploadInvoice","Factoring", new { InvoiceID=items.InvoiceID,  InvoiceDetID = items.InvoiceDetID, ProgramType = items.ProgramType })">Delete</a></td>
+                        }
+                        else
+                        {
+                        }
+                        <td class="fileName" style="display:none;">
+                            <span>@items.Attach</span>
+                        </td>
+                    </tr>
+                    intNo++;
+                }
+            </tbody>
+        </table>
+                    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example20').DataTable({
+            "pageLength": 5,
+        });
+    });
+    $("#example20").on("click", ".docPopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".fileName").find("span").html();
+        var url = '/Files/Invoice/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+
+    });
+</script>
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        padding-left: 47px;
+    }
+
+    .dataTables_paginate {
+        padding-right: 40px;
+    }
+</style>

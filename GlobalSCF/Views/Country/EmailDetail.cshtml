@@ -1,0 +1,85 @@
+﻿@model IEnumerable<TMP.Models.CountryMaster>
+
+<div class="col-md-12">
+    <form method="post" id="Email">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgpc">
+                    <th>SMTP Name</th>
+                    <th>User Name</th>
+                    <th>Password</th>
+                    <th>From E-Mail</th>
+                    <th>CC E-Mail</th>
+                    <th>BCC E-Mail</th>
+                    <th>In Port</th>
+                    <th>Out Port</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.SmtpName</td>
+                        <td>@item.UserName </td>
+                        <td>@item.Pwd</td>
+                        <td>@item.FromEmailID</td>
+                        <td>@item.CCEmailID</td>
+                        <td>@item.BCCEmailID</td>
+                        <td>@item.InPort</td>
+                        <td>@item.OutPort</td>
+
+                        <td>@Html.ActionLink("Edit", "CreateEmail", new { EmailConfigID = item.EmailConfigID, DeleteID = 0 })</td>
+                        <td>
+                            @*@Html.ActionLink("Delete", "CreateEmail", new { EmailConfigID = 0, DeleteID =item.EmailConfigID })*@
+                            <a id="DeleteID_@item.EmailConfigID" style="cursor:pointer;" class="Delete" name="DeleteID_@item.EmailConfigID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    $(".Delete").click(function () {
+
+        var id = $(this).attr("id");
+        var DeleteID = id.split("_")[1];
+        var EmailConfigID = 0;
+
+        if (confirm("are you sure you want to delete !!")) {
+
+            $.ajax({
+                url: "/Country/CreateEmailDelete?DeleteID=" + DeleteID + "&EmailConfigID=" + EmailConfigID,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function (data) {
+
+                    if (data == "Successfully") {
+                        var DeleteID = $("#DeleteID").val();
+                        var EmailConfigID = 0;
+
+                        window.location.href = "/Country/CreateEmail";
+
+                    }
+
+
+                },
+                error: function () {
+                    $("#errorMsg").html(Error);
+                    $('#Error').modal('show');
+                }
+            });
+        }
+        return false;
+    });
+
+</script>

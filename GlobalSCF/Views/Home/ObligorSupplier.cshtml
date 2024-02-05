@@ -1,0 +1,105 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  IEnumerable<TMP.Models.InvoiceTransactionModel>
+@{
+    ViewBag.Title = "Transaction";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ObligorCustomerTypeID)
+    {
+        
+    }
+    else
+    {
+       
+    }
+    @if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ObligorCustomerTypeID)
+    {
+        <div class="col-md-12 dashboard-titel">SUPPLIER</div>
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.SupplierCustomerTypeID)
+    {
+        <div class="col-md-12 dashboard-titel">OBLIGOR</div>
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.BuyerCustomerTypeID)
+    {
+        <div class="col-md-12 dashboard-titel">SUPPLIER</div>
+    }
+    else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.BothObligorAndBuyerTypeID)
+    {
+        <div class="col-md-12 dashboard-titel">SUPPLIER</div>
+    }
+  
+    <div class="col-md-12" style="height:15px;"></div>
+    @if (Enumerable.Count(@ViewBag.Obligors) > 0)
+    {
+
+        <div class="container tab-pane" id="4a">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 padoff">
+                <table id="exampleDB4" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr" style="display:none;">
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @if (Enumerable.Count(@ViewBag.Obligors) > 0)
+                {
+                        <tbody>
+                            @foreach (var item in ViewBag.Obligors)
+                            {
+                                <tr>
+                                    @if (item.IsNew)
+                                    {
+                                        <td><div class="col-md-2"><span class="glyphicon glyphicon-user mkGreen" style="font-size:25px;"></span></div><div class="col-md-10" style="padding-top:10px;"> @item.CompanyName <span style="padding-left:15px;" class="mkGreen"> NEW</span></div></td>
+                                    }
+                                    else
+                                    {
+                                        <td><div class="col-md-2"><span class="glyphicon glyphicon-user" style="font-size:25px;"></span></div><div class="col-md-10" style="padding-top:10px;"> @item.CompanyName </div></td>
+                                    }
+                                   
+                                        <td><a href='@Url.Action("FundingPartnerObligorDetails", "Factoring", new { ObligorID = item.CompanyID, ProgramType = item.ProgramType })'>View</a></td>
+                                   
+                                    
+                                    <td class="CustomerID" style="display:none;">
+                                        <span>@item.CustomerID</span>
+                                    </td>
+                                    <td class="CompanyID" style="display:none;">
+                                        <span>@item.CompanyID</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                </table>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#exampleDB4').DataTable({
+            "pageLength": 10, "ordering": false
+        });
+    });
+</script>
+<style>
+    table.dataTable th.dt-center, table.dataTable td.dt-center, table.dataTable td.dataTables_empty {
+        text-align: center !important;
+        height: 10px;
+    }
+
+    .reminder-div {
+        margin-top: 46px;
+    }
+
+    
+
+    #exampleDB4_filter {
+        display: none;
+    }
+</style>

@@ -1,0 +1,103 @@
+﻿@model  IEnumerable<TMP.Models.CustomerShareHolderModel>
+@if (Model.Count() > 0)
+{
+    <div class="tab-pane col-md-12" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <table id="example4" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>Country of Residence</th>
+                        <th>Share Percentage</th>
+                        <th>Nationality</th>
+                        <th>Passport Number</th>
+                        <th>Place of Issuance</th>
+                        <th>Issuance Date</th>
+                        <th>Expiry Date</th>
+                        <th>Passport Copy</th>
+                        <th>National ID Copy</th>
+                        <th style="display:none;">
+                        </th> 
+                        <th style="display:none;">
+                        </th> 
+                    </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.ParentID > 0)
+                        {
+                            <tr>
+                                <td>@item.FirstName</td>
+                                <td>@item.MiddleName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.Gender</td>
+                                <td>@item.LocCountryName</td>
+                                <td>@string.Format("{0:0,0.00}", @item.SharePer)&nbsp;%</td>
+                                <td>@item.NatCountryName</td>
+                                <td>@item.PassNo</td>
+                                <td>@item.PassCountryName</td>
+                                <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate))</td>
+                                <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                <td>
+                                    @if (item.UpdPassport != "")
+                                    {
+                                        @*<a href='~/Files/Upload/@item.UpdPassport' target="_blank">View</a>*@
+                                        <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.UpdNatIden != "")
+                                    {
+                                        @*<a href='~/Files/Upload/@item.UpdNatIden' target="_blank">View</a>*@
+                                        <a href="javascript:void(0);" class="UpdNatIden_PopUp" data-id="@item.UpdNatIden">View</a>
+                                    }
+                                </td>
+                                <td class="UpdPassport" style="display:none;">
+                                    <span>@item.UpdPassport</span>
+                                </td>
+                                <td class="UpdNatIden" style="display:none;">
+                                    <span>@item.UpdNatIden</span>
+                                </td>
+                                @*<td>@Html.ActionLink("Delete", "Shareholders", new { CustomerID = item.CustomerID, did = item.CustomerShareHoldID,CIid=0,CCid=0, CBid = 0, status = item.Status })</td>*@
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+}
+<script>
+    $("#example4").on("click", ".UpdPassport_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdPassport").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    $("#example4").on("click", ".UpdNatIden_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdNatIden").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    $(document).ready(function () {
+        $('#example4').DataTable({
+            "pageLength": 5,
+        });
+     });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+

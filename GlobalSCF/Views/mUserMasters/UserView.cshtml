@@ -1,0 +1,117 @@
+﻿@model TMP.Models.UserMaster_ListAll_Result
+<div class="col-md-12 div-border padoff" style="background-color:white;">
+    <div class="col-md-12 padoff">
+        <fieldset>
+            <div class="col-md-12 createusertitle"><p>Authorized User Information</p></div>
+            @Html.HiddenFor(model => model.UserID)
+            @Html.HiddenFor(model => model.Status)
+            <div class="form-group">
+                <label class="col-md-2" for="companyname">Company Name</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Full Name</label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Gender</label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.Gender, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Country of Residence</label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.LocCountryName, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Official E-Mail</label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control isEmailGood validate[custom[email]" } })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Mobile Number</label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Designation</label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.DesignationName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Length of Service (Year)</label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.ServLength, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">ID Type</label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.DocumentName, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">ID Number</label>
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.DocNo, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">ID Copy</label>
+                <div class="col-md-3">
+                    @if (Model.Attach != null)
+                    {
+                        if (Model.Attach != "")
+                        {
+                            @Html.HiddenFor(x => x.Attach)
+                            <p class="p-view">
+                                @*<a href='~/Files/Upload/@Model.Attach' target="_blank">View</a>*@
+                                <a href="javascript:void(0);" class="Attach_PopUp" data-id="@Model.Attach">View</a>
+                            </p>
+                        }
+                    }
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Role</label>
+                <div class="col-md-3">
+                    <label for="textinput">@Model.SelectedRole</label>
+
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+    </div>
+  
+
+    <div class="col-md-12">
+        @*<button id="btnClose" name="btnClose" onclick="HideDialog();" style="float:right;" class="btn-tgs">Close</button>*@
+    </div>
+    </fieldset>
+</div>
+</div>
+<script>
+    $(".Attach_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.Attach' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+</script>

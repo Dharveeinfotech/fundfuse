@@ -1,0 +1,60 @@
+﻿@model TMP.Models.HTMLTemplate_ListAll_Result
+@using TMP.Models;
+
+@using (Html.BeginForm("ViewHTML", "HTMLTemplate", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div id="NEW" class="modal-body">
+        <div class="col-md-12">
+            @{
+                if (Model != null && Model.RichText1FullHtml != null && Model.RichText1FullHtml.Length > 0)
+                {
+                    <p>
+                        The submitted text from "Ritch Text 1" is:
+                    </p>
+                    <div>
+                        @Model.RichText1FullHtml
+                    </div>
+                    <div>
+                        <input id="Showplaintext" name="Showplaintext" value="@Html.Raw(@Model.RichText1FullHtml)" />
+                    </div>
+                    <input id="RichText1Value" name="RichText1Value" type="hidden" value="@Server.HtmlDecode(Model.RichText1FullHtml)" />
+                }
+            }
+            <p>
+                @Html.LabelFor(m => m.RichText1)
+                <input id="RichText1Copy" name="RichText1Copy" type="hidden" />
+                @Html.TextAreaFor(m => m.RichText1, new { @class = "mceEditor" })
+            </p>
+        </div>
+    </div>
+
+                }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@*<script src="~/Scripts/jquery.min.js"></script>*@
+<script src="~/ckeditor/build-config.js"></script>
+<script src="~/ckeditor/ckeditor.js"></script>
+<script src="~/ckeditor/config.js"></script>
+<script src="~/ckeditor/styles.js"></script>
+<script src="~/Scripts/tinymce.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js" type="text/javascript"></script>
+<script src="~/Scripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
+<script src="~/Scripts/JHomeIndex.js" type="text/javascript"></script>
+<script src="~/Scripts/1.11.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#RichText1Value").val() != null) {
+            
+            var a = $("#RichText1Value").val();
+            
+            //  tinyMCE.get("#RichText1").setContent(a);
+            //tinyMCE.activeEditor.setContent(a);
+            tinyMCE.activeEditor.setContent(tinyMCE.activeEditor.getContent() + "Hi", { format: 'text' });
+            alert(tinyMCE.activeEditor.getContent())
+        }
+    });
+</script>

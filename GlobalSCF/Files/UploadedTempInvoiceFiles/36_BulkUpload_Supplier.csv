@@ -1,0 +1,3 @@
+Item No.,Obligor CIF,Obligor Name,Invoice No.,Invoice Date (dd/mm/yyyy),Invoice Due Date (dd/mm/yyyy),Invoice Currency,Invoice Amount,Attachment
+1,IN0000005,Max Obligor,N123,8/4/2018,8/5/2018,AED,1000,sample.pdf
+2,,Max Obligor,N125,8/4/2018,8/5/2018,AED,500,sample1.pdf

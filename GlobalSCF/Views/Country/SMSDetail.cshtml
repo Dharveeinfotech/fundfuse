@@ -1,0 +1,72 @@
+﻿@model IEnumerable<TMP.Models.CountryMaster>
+
+<div class="col-md-12">
+    <form method="post" id="SMS">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgpc">
+                    <th>URL</th>
+                    <th>User Name</th>
+                    <th>Password</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.URL</td>
+                        <td>@item.UserName </td>
+                        <td>@item.Pwd</td>
+                      
+                        <td>@Html.ActionLink("Edit", "SMSConfig", new { SMSConfigID = item.SMSConfigID, DeleteID = 0 })</td>
+                        <td>                            
+                            <a id="DeleteID_@item.SMSConfigID" style="cursor:pointer;" class="Delete" name="DeleteID_@item.SMSConfigID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+ $(".Delete").click(function () {
+     
+                var id = $(this).attr("id");
+                var DeleteID = id.split("_")[1];
+                var SMSConfigID = 0;
+
+                if (confirm("are you sure you want to delete !!")) {
+
+                    $.ajax({
+                        url: "/Country/SMSConfigDelete?DeleteID=" + DeleteID + "&SMSConfigID=" + SMSConfigID,
+                        type: "POST",
+                        data: "{}",
+                        datatype: "json",
+                        contentType: "application/json; charset=utf-8",
+                        //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                        success: function (data) {
+
+                            if (data == "Successfully") {
+                                var DeleteID = $("#DeleteID").val();
+                                var SMSConfigID = 0;
+
+                                window.location.href = "/Country/SMSConfig";
+                            }
+
+
+                        },
+                        error: function () {
+                            $("#errorMsg").html(Error);
+                            $('#Error').modal('show');
+                        }
+                    });
+                }
+                return false;
+            });
+
+</script>

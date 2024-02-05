@@ -1,0 +1,472 @@
+﻿@model TMP.Models.CustomerInfoModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Investing Partner Buyer Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+    int CustomerType = Convert.ToInt32(Session["onlineCustomerTypeID"]);
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @using (Html.BeginForm("FundingPartnerObligorDetails", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", enctype = "multipart/form-data" }))
+    {
+        if (Model.ProgramType == CONT.FType && CustomerType == CONT.FunderCustomerTypeID)
+        {
+            int tab = 0;
+            if (Model.CustomerTypeID == CONT.ObligorCustomerTypeID)
+            {
+                tab = 1;
+            }
+            else
+            {
+                tab = 2;
+            }
+            if (Model.InvoiceID > 0)
+            {
+                @Html.Action("_funderSummaryMenu", "MasterPage", new { InvoiceID = Model.InvoiceID, ObligorID = Model.ObligorID, SupplierID = Model.SupplierID, _tab = tab, ProgramType = Model.ProgramType })
+            }
+        }
+
+        if (Enumerable.Count(@ViewBag.ObligorGrid) > 0 && CustomerType == CONT.FunderCustomerTypeID)
+        {
+            <div class="col-md-12 company-name-header">
+                @Model.CompanyName
+            </div>
+            <div class="tab-pane" id="4a">
+                <!--tab 4a-->
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12">
+                    <table id="example25" class="display" cellspacing="0" width="91%" style="margin-top:20px;">
+                        <thead>
+                            <tr class="bgspr">
+                                <th>Currency</th>
+                                <th>Product</th>
+                                <th>Total Transactions</th>
+                                <th>Settled  Transactions</th>
+                                <th>Current Outstanding</th>
+
+                            </tr>
+                        <tbody>
+                            @foreach (var item in ViewBag.ObligorGrid)
+                            {
+                                <tr>
+                                    <td>@item.CurrencyCode</td>
+                                    <td>@item.ProgramTypeDesc</td>
+                                    <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotTranAmt)</td>
+                                    <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotSetAmt)</td>
+                                    <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotOutStand)</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        <div class="col-md-12" style="height:20px;"></div>
+        <div class="col-md-12 company-name-header" style="padding-top:0;font-weight:400">
+            ABOUT @Model.CompanyName
+        </div>
+        <div class="col-md-12 company-profile">
+                @Model.AbtBusiness
+        </div>
+        if (Model.MstWebsite != "")
+        {
+            <div class="col-md-12 company-profile" style="text-align:center;">
+                <a href="//@Model.MstWebsite" target="_blank" style="font-size:14px;text-decoration: underline;">@Model.MstWebsite</a>
+            </div>
+        }
+        <div class="container profilr-btn-div">
+            @if (Model.UpdBusProfile != "")
+            {
+                <div class="col-md-3">
+                    <p class="btn btn-tgs p-btn" id="btnBusiness"> Business Profile</p>
+                </div>
+            }
+
+            <div class="col-md-3">
+                <p class="btn btn-tgs p-btn" id="btnTrade"> Trade License</p>
+            </div>
+            @if (CustomerType != CONT.BothObligorAndBuyerTypeID && CustomerType != CONT.SupplierCustomerTypeID && Model.CustomerTypeID != CONT.SupplierCustomerTypeID)
+            {
+                <div class="col-md-3">
+                    <p class="btn btn-tgs p-btn" id="btnFinacials">Financials</p>
+                </div>
+                if (Model.UpdDiligRpt != "")
+                {
+                    <div class="col-md-3">
+                        <p class="btn btn-tgs p-btn" id="btnDiligence"> Due Diligence</p>
+                    </div>
+                }
+                if (CustomerType != CONT.ObligorCustomerTypeID)
+                {
+                    if (ViewBag.CustGetCount != null && (ViewBag.CustGetCount.CustomerSupplierDetail > 0 || ViewBag.CustGetCount.CustomerObligorDetail > 0))
+                    {
+                        <div class="col-md-3">
+                            <p class="btn btn-tgs p-btn" id="btnSuppliers"> Suppliers</p>
+                        </div>
+                    }
+                }
+            }
+            @if (CustomerType == CONT.FunderCustomerTypeID || CustomerType == CONT.InsuranceBrokerTypeID || CustomerType == CONT.InsuranceProviderTypeID)
+            {
+                if (ViewBag.CustGetCount != null)
+                {
+                    if (ViewBag.CustGetCount.CustomerBankCreditDetail > 0 && Model.CustomerTypeID != CONT.SupplierCustomerTypeID)
+                    {
+                        <div class="col-md-3">
+                            <p class="btn btn-tgs p-btn" id="btnCredit"> Credit Facilities</p>
+                        </div>
+                    }
+                    if (ViewBag.CustGetCount.CustomerShareHoldDetailAuth > 0)
+                    {
+                        <div class="col-md-3">
+                            <p class="btn btn-tgs p-btn" id="btnDirAuth"> Directors/Sign.</p>
+                        </div>
+                    }
+                    if (ViewBag.CustGetCount.CustomerShareHoldDetail > 0)
+                    {
+                        <div class="col-md-3">
+                            <p class="btn btn-tgs p-btn" id="btnShare"> Shareholders</p>
+                        </div>
+                    }
+                }
+
+            }
+        </div>
+
+
+        <div class="container divtrade" id="divTrade">
+            <div class="col-md-3">
+                <p> Trade License Copy</p>
+                <p href="" class="p-trade-l" id="">
+                    @if (Model.UpdTradeLic != null)
+                    {
+                        <span id="btnTradeCopy" style="text-decoration:underline;cursor:pointer;">View</span>
+                    }
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p> MOA</p>
+
+                <p class="p-trade-l">
+                    @if (@ViewBag.Document != null)
+                    {
+                        <span id="btnMOACopy" style="text-decoration:underline;cursor:pointer;">View</span>
+                        <input type="hidden" value="@ViewBag.Document.DocumetUpload" id="MOA" name="MOA" />
+                    }
+                    else
+                    {
+                        <span>&nbsp;&nbsp;</span>
+                    }
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p class="">Date of Incorporation</p>
+                <p class="p-trade-l">
+                    @Convert.ToDateTime(Model.IncDate).ToString("dd-MMM-yyyy")
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p>Country of Incorporation</p>
+                <p class="p-trade-l">
+                    @Model.IncCountryName
+                </p>
+            </div>
+        </div>
+
+        <div class="container divtrade" id="divFinacials">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <p> Audited Financials</p>
+                <p class="p-trade-l" id="">
+                    @if (Model.UpdAuditFin != null)
+                    {
+                        <span id="btnFAudit" style="text-decoration:underline;cursor:pointer;">View</span>
+                    }
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>In-house Financials</p>
+                <p class="p-trade-l" id="">
+                    @if (Model.UpdInHouseFin != null)
+                    {
+                        <span id="btnFhouse" style="text-decoration:underline;cursor:pointer;">View</span>
+                    }
+                </p>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+        <div class="container divtrade" id="divDueDeli">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <p>Due Diligence Report</p>
+                <p class="p-trade-l" id="">
+                    @if (Model.UpdDiligRpt != null)
+                    {
+                        <span id="btnFDili" style="text-decoration:underline;cursor:pointer;">View</span>
+                    }
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>Credit & Risk Review Report</p>
+                <p class="p-trade-l" id="">
+                    @if (Model.UpdCredRpt != null)
+                    {
+                        <span id="btnFCredit" style="text-decoration:underline;cursor:pointer;">View</span>
+                    }
+                </p>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+        <div class="container padoff">
+            @Html.Action("FunderCompanyMoreInfo", "Factoring", new { CustomerID = Model.CustomerID })
+        </div>
+        @Html.HiddenFor(x => x.InvoiceID)
+        @Html.HiddenFor(x => x.ObligorID)
+        @Html.HiddenFor(x => x.SupplierID)
+        @Html.HiddenFor(x => x.ProgramType)
+        if (Model.InvoiceID > 0)
+        {
+
+            <div class="container" style="text-align:right;margin-top:20px;">
+                <button id="Back" name="Back" value="Back" type="submit" class="btn btn-tgs">GO BACK</button>&nbsp;&nbsp;&nbsp;
+            </div>
+        }
+        else
+        {
+            <div class="container" style="text-align:right;margin-top:20px;">
+
+                <button id="Home" name="Home" value="Home" type="submit" class="btn btn-tgs">Home</button>
+            </div>
+        }
+    }
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    table {
+        margin-bottom: 2%;
+        margin-left: 65px;
+        margin-top: 1%;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        padding-right: 40px;
+    }
+
+    .company-name-header {
+        text-align: center;
+        padding-top: 35px;
+        padding-bottom: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .company-profile {
+        padding-left: 8%;
+        padding-right: 8%;
+        text-align: justify;
+        padding-bottom: 20px;
+    }
+
+    .profilr-btn-div {
+        padding-left: 8%;
+        padding-right: 8%;
+        text-align: center;
+    }
+
+    .p-btn {
+        padding-bottom: 10px;
+        padding-top: 10px;
+        margin-bottom: 20px;
+        width: 198px;
+        border-radius: 25px;
+    }
+
+    .p-btn-Active {
+        color: #ffffff;
+        text-decoration: none;
+        background: #336699;
+    }
+
+    #divTrade {
+        display: none;
+    }
+
+    #divFinacials {
+        display: none;
+    }
+
+    #divDueDeli {
+        display: none;
+    }
+
+    .divtrade {
+        margin-left: 7%;
+        margin-right: 6%;
+        background: #e6e7e8;
+        padding-top: 20px;
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    .p-trade-l {
+        background: #fff;
+        margin-left: 20%;
+        margin-right: 20%;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        margin-top: 20px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#example25').DataTable({
+            "pageLength": 5,
+        });
+    });
+    $("#btnDirAuth").click(function () {
+        $("#DirAuth").css("display", "block");
+        $("#ShareHolder").css("display", "none");
+        $("#Credit").css("display", "none");
+        $("#divTrade").css("display", "none");
+        $("#divFinacials").css("display", "none");
+        $("#Supplier").css("display", "none");
+        $("#divDueDeli").css("display", "none");
+        $(".p-btn").removeClass("p-btn-Active")
+        $(this).addClass("p-btn-Active");
+    });
+    $("#btnShare").click(function () {
+        $("#ShareHolder").css("display", "block");
+        $("#Credit").css("display", "none");
+        $("#DirAuth").css("display", "none");
+        $("#divTrade").css("display", "none");
+        $("#divFinacials").css("display", "none");
+        $("#Supplier").css("display", "none");
+        $("#divDueDeli").css("display", "none");
+        $(".p-btn").removeClass("p-btn-Active")
+        $(this).addClass("p-btn-Active");
+    });
+    $("#btnCredit").click(function () {
+        $("#Credit").css("display", "block");
+        $("#DirAuth").css("display", "none");
+        $("#ShareHolder").css("display", "none");
+        $("#divTrade").css("display", "none");
+        $("#divFinacials").css("display", "none");
+        $("#Supplier").css("display", "none");
+        $("#divDueDeli").css("display", "none");
+        $(".p-btn").removeClass("p-btn-Active")
+        $(this).addClass("p-btn-Active");
+    });
+    $("#btnBusiness").click(function () {
+        var fileName = '@Model.UpdBusProfile';
+        DocView(fileName);
+        $("#Credit").css("display", "none");
+        $("#DirAuth").css("display", "none");
+        $("#ShareHolder").css("display", "none");
+        $("#divTrade").css("display", "none");
+        $("#divFinacials").css("display", "none");
+        $("#Supplier").css("display", "none");
+        $("#divDueDeli").css("display", "none");
+        $(".p-btn").removeClass("p-btn-Active")
+        $(this).addClass("p-btn-Active");
+    });
+    $("#btnDiligence").click(function () {
+        $("#divDueDeli").css("display", "block");
+        $("#Credit").css("display", "none");
+        $("#DirAuth").css("display", "none");
+        $("#ShareHolder").css("display", "none");
+        $("#divTrade").css("display", "none");
+        $("#divFinacials").css("display", "none");
+        $("#Supplier").css("display", "none");
+        $(".p-btn").removeClass("p-btn-Active")
+        $(this).addClass("p-btn-Active");
+    });
+    $("#btnTrade").click(function () {
+        $("#divTrade").css("display", "block");
+        $("#divFinacials").css("display", "none");
+        $("#Credit").css("display", "none");
+        $("#DirAuth").css("display", "none");
+        $("#ShareHolder").css("display", "none");
+        $("#Supplier").css("display", "none");
+        $("#divDueDeli").css("display", "none");
+        $(".p-btn").removeClass("p-btn-Active")
+        $(this).addClass("p-btn-Active");
+    });
+    $("#btnFinacials").click(function () {
+        $("#divFinacials").css("display", "block");
+        $("#divTrade").css("display", "none");
+        $("#Credit").css("display", "none");
+        $("#DirAuth").css("display", "none");
+        $("#ShareHolder").css("display", "none");
+        $("#Supplier").css("display", "none");
+        $("#divDueDeli").css("display", "none");
+        $(".p-btn").removeClass("p-btn-Active")
+        $(this).addClass("p-btn-Active");
+    });
+    $("#btnSuppliers").click(function () {
+        $("#Supplier").css("display", "block");
+        $("#divFinacials").css("display", "none");
+        $("#divTrade").css("display", "none");
+        $("#Credit").css("display", "none");
+        $("#DirAuth").css("display", "none");
+        $("#ShareHolder").css("display", "none");
+        $("#divDueDeli").css("display", "none");
+        $(".p-btn").removeClass("p-btn-Active")
+        $(this).addClass("p-btn-Active");
+    });
+
+    $("#btnTradeCopy").click(function () {
+        var fileName = '@Model.UpdTradeLic';
+        DocView(fileName);
+    });
+    $("#btnMOACopy").click(function () {
+        var fileName = $("#MOA").val();
+        DocView(fileName);
+    });
+
+    $("#btnFAudit").click(function () {
+        var fileName = '@Model.UpdAuditFin';
+        DocView(fileName);
+    });
+    $("#btnFhouse").click(function () {
+        var fileName = '@Model.UpdInHouseFin';
+        DocView(fileName);
+    });
+    $("#btnFCredit").click(function () {
+        var fileName = '@Model.UpdCredRpt';
+        DocView(fileName);
+    });
+    $("#btnFDili").click(function () {
+        var fileName = '@Model.UpdDiligRpt';
+        DocView(fileName);
+    });
+    function DocView(fileName) {
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    }
+</script>

@@ -1,0 +1,23 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript">
+        window.setTimeout(function () {
+            window.open('/Home/CMNDashboard', '_blank', 'status=no, addressbar=no, fullscreen=1,scrollbars=yes');
+            window.open('', '_self', '');
+            window.close();
+            try {
+                if (chrome) {
+                    window.document.clear();
+                    window.document.write("");
+                }
+            }
+            catch (e) { }
+        }, 10);
+    </script>
+</head>
+<body>    
+</body>
+</html>
+

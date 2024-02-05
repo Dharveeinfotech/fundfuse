@@ -1,0 +1,6 @@
+Item No.,Obligor CIF,Obligor Name,Invoice No.,Invoice Date (dd/mm/yyyy),Invoice Due Date (dd/mm/yyyy),Invoice Currency,Invoice Amount,Attachment
+1,A930000045,Hero FinCorp,INV 001,30/01/2018,27/02/2018,AED,20000,Please provide template.pdf
+2,A930000045,Hero FinCorp,INV 002,30/01/2018,27/02/2018,AED,10000,Please provide template1.pdf
+3,A930000045,Hero FinCorp,INV 003,30/01/2018,27/02/2018,AED,5000,Please provide template2.pdf
+4,A930000045,Hero FinCorp,INV 004,30/01/2018,27/02/2018,AED,4000,Please provide template3.pdf
+5,A930000045,Hero FinCorp,INV 005,30/01/2018,27/02/2018,AED,1000,Please provide template4.pdf

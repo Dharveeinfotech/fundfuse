@@ -1,0 +1,101 @@
+﻿@model TMP.Models.ContactUsModel
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/MasterPage/_TMPWebsite.cshtml";
+}
+@*<address>
+        One Microsoft Way<br />
+        Redmond, WA 98052-6399<br />
+        <abbr title="Phone">P:</abbr>
+        425.555.0100
+    </address>
+
+    <address>
+        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+    </address>*@
+
+<div class="container div-border padoff">
+    <div class="col-md-12 createusertitle ">CONTACT US</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "UMForm" }))
+    {
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">First Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Last Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Company Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Contact Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control tel validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">E-Mail&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control isEmailGood validate[required,custom[email]]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Website&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Website, new { @class = "form-control validate[custom[url]]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-11">
+            <button id="Save" name="Save" value="Save" style="float:right;" type="submit" class="btn CommonAttachValidation btn-tgs">SUBMIT</button>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+    }
+</div>
+<div class="modal fade" id="ContactusPopup" role="dialog">
+    <div class="modal-dialog " style="width:600px">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div id='ContactusMsgview'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" id="btnCont" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    if ('@ViewBag.PopupMsg' == "True") {
+        $("#ContactusPopup").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        $('#ContactusMsgview').html("<p>THANK YOU FOR REACHING OUT TO US.</p> <p>Our team is diligently working on your enquiry and will contact you at the earliest.</p>");
+        $('#ContactusPopup').modal('show');
+    }
+    else {
+        $('#ContactusPopup').modal('hide');
+    }
+</script>

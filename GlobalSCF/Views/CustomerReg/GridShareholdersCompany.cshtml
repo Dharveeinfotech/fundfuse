@@ -1,0 +1,126 @@
+﻿@model  IEnumerable<TMP.Models.CustomerShareHolderModel>
+@if (Model.Count() > 0)
+{
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <table id="example21" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>Name of Company</th>
+                        <th>Shareholding Percentage</th>
+                        <th>Trade License Number</th>
+                        <th>Registered Country</th>
+                        <th>Trade License</th>
+                        <th>Beneficial Owner List</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th style="display:none;">
+                        </th>
+                        <th style="display:none;">
+                        </th>
+                        <th style="display:none;">
+                        </th>                       
+                    </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.ParentID == 0)
+                        {
+                            <tr>
+                                <td>@item.ShareCompanyName</td>
+                                <td>@string.Format("{0:0,0.00}", @item.SharePer)&nbsp;%</td>
+                                <td>@item.TradeLicNo</td>
+                                <td>@item.NatCountryName</td>
+                                <td>
+                                    @if (item.UpdTradeLic != "")
+                                    {
+                                        @*<a href='~/Files/Upload/@item.UpdTradeLic' target="_blank">View</a>*@
+                                        <a href="javascript:void(0);" class="UpdTradeLic_PopUp" data-id="@item.UpdTradeLic">View</a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.ChildCnt > 0)
+                                    {
+                                        <a href="javascript:void(0);" class="OpenList" data-id="@item.CustomerShareHoldID">View</a>
+                                    }
+                                </td>
+                                <td>@Html.ActionLink("Edit", "Shareholders", new { CustomerID = item.CustomerID, CIid = 0, did = 0, CBid = 0, CCid = item.CustomerShareHoldID})</td>
+                                <td>@Html.ActionLink("Delete", "Shareholders", new { CustomerID = item.CustomerID, did = item.CustomerShareHoldID, CCid=0,CBid = 0})</td>
+                                <td class="CustomerID" style="display:none;">
+                                    <span>@item.CustomerID</span>
+                                </td>
+                                <td class="CustomerShareHoldDetID" style="display:none;">
+                                    <span>@item.CustomerShareHoldID</span>
+                                </td>
+                                <td class="UpdTradeLic" style="display:none;">
+                                    <span>@item.UpdTradeLic</span>
+                                </td>                               
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog " style="width:1000px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:300px;">
+                    <div id='myModalContent'></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .Share-company-header {
+            display: block !important;
+        }
+    </style>
+}
+else
+{
+    <style>
+        .Share-company-header {
+            display: none;
+        }
+    </style>
+}
+<script>
+    $(document).ready(function () {
+        $('#example21').DataTable({
+            "pageLength": 5,
+        });
+    });
+   
+    $("#example21").on("click", ".UpdTradeLic_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".UpdTradeLic").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    ShareCompany();
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+
+
+
+

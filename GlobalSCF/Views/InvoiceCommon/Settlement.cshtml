@@ -1,0 +1,603 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Settlement";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("Settlement", "InvoiceCommon", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations" }))
+    {
+        @Html.HiddenFor(model => model.IndexStatus)
+        @Html.HiddenFor(model => model.ProgramType)
+        @Html.HiddenFor(model => model.InvoiceID)
+        @Html.HiddenFor(model => model.SettlementType)
+        @Html.Action("ISCFHeader", "InvoiceCommon", new { InvoiceID = Model.InvoiceID })
+
+        <div class="col-md-12 createusertitle">TRANSACTION SETTLEMENT DETAILS</div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        <div class="container padoff">
+            <table class="col-md-5">
+                <tbody>
+                    <tr>
+                        <td class="td-bg">Transaction Number</td>
+                        <td class="td-line">
+                            @Model.TranRefNo
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Currency</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Total Amount</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.TotAmt)
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="td-bg">Paid Amount</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.SettledAmt)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Remaining Amount</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.RemainingAmt)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Yield</td>
+                        <td class="td-line">
+                            @string.Format("{0:0,0.00}", Model.ProfitRate) % (@Model.ProfitTypeDesc)
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (Model.ProgramType == CONT.FType)
+                        {
+                        <td class="td-bg">Extended Tenor</td>
+                        <td class="td-line">
+                            @Model.ExtTenor Days
+                        </td>
+                        }
+                        else
+                        {
+
+                        <td class="td-bg">Tenor</td>
+                        <td class="td-line">
+                            @Model.Tenor Days
+                        </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Funding Partner</td>
+                        <td class="td-line">
+                            @Model.FunderName
+                        </td>
+                    </tr>
+
+                    <tr>
+                        @if (Model.SettlementType == "Pending")
+                        {
+                            <td class="td-bg">Paid Date</td>
+                        }
+                        else
+                        {
+                            <td class="td-bg">Settlement Date</td>
+                        }
+                        <td class="td-line">
+                            @Html.EditorFor(model => model.PayDate, new { htmlAttributes = new { @class = "form-control formattedCalenderAll validate[required]", maxlength = "50", autocomplete = "off" } })
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (Model.SettlementType == "Pending")
+                        {
+                            <td class="td-bg">Paid Reference No.</td>
+                        }
+                        else
+                        {
+                            <td class="td-bg">Settlement Reference No.</td>
+                        }
+                        <td class="td-line">
+                            @Html.TextBoxFor(model => model.RefNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="col-md-5">
+                <tbody>
+                    <tr>
+                        <td class="td-bg">Transaction Date</td>
+                        <td class="td-line">
+                            @Convert.ToDateTime(Model.TranDate).ToString("dd-MMM-yyyy")
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (Model.ProgramType == CONT.FType)
+                        {
+
+                            <td class="td-bg">Settlement Due Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.ExtDueDate).ToString("dd-MMM-yyyy")
+                            </td>}
+                        else
+                        {
+                            <td class="td-bg">Tentative Payment Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.PaymentDate).ToString("dd-MMM-yyyy")
+                            </td>
+                        }
+                    </tr>
+                   
+                    <tr>
+                        <td class="td-bg">Invoice Due Date</td>
+                        <td class="td-line">
+                            @Convert.ToDateTime(Model.DueDate).ToString("dd-MMM-yyyy")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Factor’s Holdback</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.HoldbackAmt)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-bg">Number of Invoices</td>
+                        <td class="td-line">
+                            @Model.InvCnt
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (Model.ProgramType == CONT.FType)
+                        {
+                            <td class="td-bg">Supplier Name</td>
+                            <td class="td-line">
+                                @Model.SupplierName
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="td-bg">Supplier Name</td>
+                            <td class="td-line">
+                                @Model.ExporterName
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        @if (Model.ProgramType == CONT.FType)
+                        {
+                            <td class="td-bg">Buyer Name</td>
+                            <td class="td-line">
+                                @Model.ObligorName
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="td-bg">Buyer Name</td>
+                            <td class="td-line">
+                                @Model.BuyerName
+                            </td>
+                        }
+
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Insurance Provider</td>
+                        <td class="td-line">
+                            @Model.InsuranceName
+                        </td>
+                    </tr>
+
+                    <tr>
+                        @if (Model.SettlementType == "Pending")
+                        {
+                            <td class="td-bg">Paid Amount Received</td>
+                        }
+                        else
+                        {
+                            <td class="td-bg">Settlement Amount Received</td>
+                        }
+                        <td class="td-line">
+                            @Html.TextBoxFor(model => model.Amt, new { @class = "form-control num validate[required] RecAmt", maxlength = "50", autocomplete = "off" })
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (Model.SettlementType == "Pending")
+                        {
+                            <td class="td-bg">Paid Status</td>
+                        }
+                        else
+                        {
+                            <td class="td-bg">Settlement Status</td>
+                        }
+                        <td class="td-line">
+                            @Html.DropDownListFor(model => model.TypeStatus, new SelectList(ViewBag.DDLSettlementStatusID, "value", "text", Model.TypeStatus), "--Select--", new { @class = "form-control validate[required]" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        if (Model.ProgramType == CONT.RType)
+        {
+            <div class="col-md-12 createusertitle">ADDITIONAL CHARGES FROM BUYER</div>
+            <div class="container padoff">
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #58595b !important; text-align:center; padding-right:10px;" valign="middle">
+                                <input type="checkbox" name="chk_Buyer" id="chk_Buyer" />
+                            </td>
+                            <td class="td-bg">Payment Amount Received</td>
+                            <td class="td-line">
+                                @Html.TextBoxFor(model => model.Buyer_PaidAmt, new { @class = "form-control num validate[required] Buyer_Disable", maxlength = "50", autocomplete = "off" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Payment Date</td>
+                            <td class="td-line">
+                                @Html.EditorFor(model => model.Buyer_PaidDate, new { htmlAttributes = new { @class = "form-control formattedCalender validate[required] Buyer_Disable", maxlength = "50", autocomplete = "off" } })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5" style="width: 430px;margin-left: 108px;margin-top: 0;">
+                    <tbody>
+                        <tr>
+
+                            <td class="td-bg" style="width:236px;">Payment Reference No.</td>
+                            <td class="td-line">
+                                @Html.TextBoxFor(model => model.Buyer_RefNo, new { @class = "form-control validate[required] Buyer_Disable", maxlength = "50", autocomplete = "off" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5" style="margin-top: 0;">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Comment</td>
+                            <td class="td-line">
+                                @Html.EditorFor(model => model.Buyer_ProcessRemark, new { htmlAttributes = new { @class = "form-control validate[required] Buyer_Disable", maxlength = "50", autocomplete = "off" } })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-md-12 createusertitle">ADDITIONAL CHARGES PAYMENT TO FUNDER</div>
+            <div class="container padoff">
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #58595b !important; text-align:center; padding-right:10px;" valign="middle">
+                                <input type="checkbox" name="chk_Funder" id="chk_Funder" />
+                            </td>
+                            <td class="td-bg">Payment Amount Received</td>
+                            <td class="td-line">
+                                @Html.TextBoxFor(model => model.Funder_PaidAmt, new { @class = "form-control num validate[required] Funder_Disable", maxlength = "50", autocomplete = "off" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Payment Date</td>
+                            <td class="td-line">
+                                @Html.EditorFor(model => model.Funder_PaidDate, new { htmlAttributes = new { @class = "form-control formattedCalender validate[required] Funder_Disable", maxlength = "50", autocomplete = "off" } })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="col-md-5" style="width: 430px;margin-left: 108px;margin-top: 0;">
+                    <tbody>
+                        <tr>
+
+                            <td class="td-bg" style="width:236px;">Payment Reference No.</td>
+                            <td class="td-line">
+                                @Html.TextBoxFor(model => model.Funder_RefNo, new { @class = "form-control validate[required] Funder_Disable", maxlength = "50", autocomplete = "off" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5" style="margin-top: 0;">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Comment</td>
+                            <td class="td-line">
+                                @Html.EditorFor(model => model.Funder_ProcessRemark, new { htmlAttributes = new { @class = "form-control validate[required] Funder_Disable", maxlength = "50", autocomplete = "off" } })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-12 createusertitle">FACTOR’S HOLDBACK</div>
+            <div class="container padoff">
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #58595b !important; text-align:center; padding-right:10px;" valign="middle">
+                                <input type="checkbox" name="chk_Security" id="chk_Security" />
+                            <td class="td-bg">Payment Amount Received</td>
+                            <td class="td-line">
+                                @Html.TextBoxFor(model => model.Security_PaidAmt, new { @class = "form-control num validate[required] Security_Disable", maxlength = "50", autocomplete = "off" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Payment Date</td>
+                            <td class="td-line">
+                                @Html.EditorFor(model => model.Security_PaidDate, new { htmlAttributes = new { @class = "form-control formattedCalender validate[required] Security_Disable", maxlength = "50", autocomplete = "off" } })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="col-md-5" style="width: 430px;margin-left: 108px;margin-top: 0;">
+                    <tbody>
+                        <tr>
+
+                            <td class="td-bg" style="width:236px;">Payment Reference No.</td>
+                            <td class="td-line">
+                                @Html.TextBoxFor(model => model.Security_RefNo, new { @class = "form-control validate[required] Security_Disable", maxlength = "50", autocomplete = "off" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5" style="margin-top: 0;">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Comment</td>
+                            <td class="td-line">
+                                @Html.EditorFor(model => model.Security_ProcessRemark, new { htmlAttributes = new { @class = "form-control validate[required] Security_Disable", maxlength = "50", autocomplete = "off" } })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+        else if (Model.ProgramType==CONT.FType)
+        {
+            @*<div class="col-md-12 createusertitle">FACTOR’S HOLDBACK</div>
+            <div class="container padoff">
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #58595b !important; text-align:center; padding-right:10px;" valign="middle">
+                                <input type="checkbox" name="chk_Security" id="chk_Security" />
+                            <td class="td-bg">Payment Amount Received</td>
+                            <td class="td-line">
+                                @Html.TextBoxFor(model => model.Security_PaidAmt, new { @class = "form-control num validate[required] Security_Disable", maxlength = "50", autocomplete = "off" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Payment Date</td>
+                            <td class="td-line">
+                                @Html.EditorFor(model => model.Security_PaidDate, new { htmlAttributes = new { @class = "form-control formattedCalender validate[required] Security_Disable", maxlength = "50", autocomplete = "off" } })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="col-md-5" style="width: 430px;margin-left: 108px;margin-top: 0;">
+                    <tbody>
+                        <tr>
+
+                            <td class="td-bg" style="width:236px;">Payment Reference No.</td>
+                            <td class="td-line">
+                                @Html.TextBoxFor(model => model.Security_RefNo, new { @class = "form-control validate[required] Security_Disable", maxlength = "50", autocomplete = "off" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5" style="margin-top: 0;">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Comment</td>
+                            <td class="td-line">
+                                @Html.EditorFor(model => model.Security_ProcessRemark, new { htmlAttributes = new { @class = "form-control validate[required] Security_Disable", maxlength = "50", autocomplete = "off" } })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>*@
+        }
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="container">
+            <div class="col-md-6">
+                @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+            </div>
+            <div class="col-md-6" style="text-align:right; padding-right:60px; padding-top:35px;">
+                <button id="btnSettlementHistory" name="btnSettlementHistory" data-id="@Model.InvoiceID" value="btnSettlementHistory" type="submit" class="btn btn-tgs">Settlement History</button> &nbsp; &nbsp;
+                <button id="btnBack" name="btnBack" value="btnBack" type="submit" class="btn CommonDetachValidation btn-tgs">Back</button> &nbsp; &nbsp;
+                <button id="btnSubmit" name="btnSubmit" value="submit" type="submit" class="btn CommonAttachValidation btn-tgs">Submit</button>
+            </div>
+        </div>
+    }
+</div>
+<style>
+    table {
+        margin-bottom: 2%;
+        margin-left: 65px;
+        margin-top: 1%;
+    }
+
+    .error {
+        border-color: #a94442 !important;
+    }
+
+        .error:focus {
+            box-shadow: 0 0 2px #a94442 !important;
+        }
+</style>
+<script>
+    $('#PayDate').val("");
+    $('#Security_PaidDate').val("");
+    $(".Security_Disable").attr("disabled", "disabled");
+
+    if ('@Model.ProgramType' == 'R') {
+        $('#Buyer_PaidDate').val("");
+        $('#Funder_PaidDate').val("");
+        $(".Buyer_Disable").attr("disabled", "disabled");
+        $(".Funder_Disable").attr("disabled", "disabled");
+    }
+
+    $("#btnSettlementHistory").on("click", function () {
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: "/InvoiceCommon/SettlementHistoryPopup?InvoiceID=" + '@Model.InvoiceID' + "&ProgramType=" + '@Model.ProgramType',
+            contentType: "application/json; charset=utf-8",
+            data: "{}",
+            datatype: "json",
+            success: function (data) {
+                $('#Invoiceview').html(data);
+                $('#process').modal('hide');
+                $('#InvoiceModal').modal('show');
+                return false;
+            },
+        });
+        return false;
+    });
+
+    $("#btnSubmit").on("click", function () {
+        var PayDate = $("#PayDate").val();
+        if (PayDate == "") {
+            document.getElementById("PayDate").className = document.getElementById("PayDate").className.replace("error ", "");
+            document.getElementById("PayDate").className = "error " + document.getElementById("PayDate").className;
+        } else {
+            document.getElementById("PayDate").className = document.getElementById("PayDate").className.replace("error ", "");
+            document.getElementById("PayDate").className = document.getElementById("PayDate").className.replace(" input-validation-error", "");
+        }
+        $('#PayDate').rules('remove');
+
+        var Security_PaidDate = $("#Security_PaidDate").val();
+        if (Security_PaidDate == "") {
+            document.getElementById("Security_PaidDate").className = document.getElementById("Security_PaidDate").className.replace("error ", "");
+            document.getElementById("Security_PaidDate").className = "error " + document.getElementById("Security_PaidDate").className;
+        } else {
+            document.getElementById("Security_PaidDate").className = document.getElementById("Security_PaidDate").className.replace("error ", "");
+            document.getElementById("Security_PaidDate").className = document.getElementById("Security_PaidDate").className.replace(" input-validation-error", "");
+        }
+        $('#Security_PaidDate').rules('remove');
+
+
+        if ('@Model.ProgramType' == 'R') {
+            var Buyer_PaidDate = $("#Buyer_PaidDate").val();
+            if (Buyer_PaidDate == "") {
+                document.getElementById("Buyer_PaidDate").className = document.getElementById("Buyer_PaidDate").className.replace("error ", "");
+                document.getElementById("Buyer_PaidDate").className = "error " + document.getElementById("Buyer_PaidDate").className;
+            } else {
+                document.getElementById("Buyer_PaidDate").className = document.getElementById("Buyer_PaidDate").className.replace("error ", "");
+                document.getElementById("Buyer_PaidDate").className = document.getElementById("Buyer_PaidDate").className.replace(" input-validation-error", "");
+            }
+            $('#Buyer_PaidDate').rules('remove');
+
+            var Funder_PaidDate = $("#Funder_PaidDate").val();
+            if (Funder_PaidDate == "") {
+                document.getElementById("Funder_PaidDate").className = document.getElementById("Funder_PaidDate").className.replace("error ", "");
+                document.getElementById("Funder_PaidDate").className = "error " + document.getElementById("Funder_PaidDate").className;
+            } else {
+                document.getElementById("Funder_PaidDate").className = document.getElementById("Funder_PaidDate").className.replace("error ", "");
+                document.getElementById("Funder_PaidDate").className = document.getElementById("Funder_PaidDate").className.replace(" input-validation-error", "");
+            }
+            $('#Funder_PaidDate').rules('remove');
+        }
+
+    });
+    $("#PayDate").on("change", function () {
+        {
+            document.getElementById("PayDate").className = document.getElementById("PayDate").className.replace("error ", "");
+            document.getElementById("PayDate").className = document.getElementById("PayDate").className.replace(" input-validation-error", "");
+        }
+    });
+    $("#Buyer_PaidDate").on("change", function () {
+        {
+            document.getElementById("Buyer_PaidDate").className = document.getElementById("Buyer_PaidDate").className.replace("error ", "");
+            document.getElementById("Buyer_PaidDate").className = document.getElementById("Buyer_PaidDate").className.replace(" input-validation-error", "");
+        }
+    });
+    $("#Funder_PaidDate").on("change", function () {
+        {
+            document.getElementById("Funder_PaidDate").className = document.getElementById("Funder_PaidDate").className.replace("error ", "");
+            document.getElementById("Funder_PaidDate").className = document.getElementById("Funder_PaidDate").className.replace(" input-validation-error", "");
+        }
+    });
+    $("#Security_PaidDate").on("change", function () {
+        {
+            document.getElementById("Security_PaidDate").className = document.getElementById("Security_PaidDate").className.replace("error ", "");
+            document.getElementById("Security_PaidDate").className = document.getElementById("Security_PaidDate").className.replace(" input-validation-error", "");
+        }
+    });
+
+    $("#chk_Buyer").on("change", function () {
+        if (document.getElementById("chk_Buyer").checked == true) {
+            $(".Buyer_Disable").removeAttr("disabled", "disabled");
+        }
+        else {
+            $(".Buyer_Disable").attr("disabled", "disabled");
+        }
+    });
+
+    $("#chk_Funder").on("change", function () {
+        if (document.getElementById("chk_Funder").checked == true) {
+            $(".Funder_Disable").removeAttr("disabled", "disabled");
+        }
+        else {
+            $(".Funder_Disable").attr("disabled", "disabled");
+        }
+    });
+
+    $("#chk_Security").on("change", function () {
+        if (document.getElementById("chk_Security").checked == true) {
+            $(".Security_Disable").removeAttr("disabled", "disabled");
+        }
+        else {
+            $(".Security_Disable").attr("disabled", "disabled");
+        }
+    });
+
+    $('.RecAmt').blur(function () {
+        debugger;
+        var RecAmt = $('.RecAmt').val();
+        var RemainingAmt = '@Model.RemainingAmt'
+        if (parseInt(RecAmt) > parseInt(RemainingAmt)) {
+            $("#errorMsg").html("Amount Received can not be more than Remaining Amount.");
+            $('#Error').modal('show');
+            $(this).val("");
+            $(this).focus();
+            return false;
+        }
+        else
+            $(this).tof
+        return true;
+    })
+
+</script>

@@ -1,0 +1,74 @@
+﻿@model  TMP.Models.UserMaster_ListAll_Result
+@{
+    ViewBag.Title = "View User Master";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("InsuranceProviderPartialPageView", "MasterPage", new { CustomerID = Model.CustomerID, CustomerTypeID = Model.CustomerTypeID, _tab = 3 })
+    }
+
+        @if (Enumerable.Count(@ViewBag.UserMasterData) > 0)
+        {
+            if (@ViewBag.UserMasterData != null)
+            {
+                <div class="col-md-12 createusertitle">AUTHORIZED USER INFORMATION</div>
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="col-md-12">
+                        <table id="example" class="display" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="bgspr">
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>E-Mail</th>
+                                    <th>Mobile Number</th>
+                                </tr>
+                            <tbody>
+                                @foreach (var item in ViewBag.UserMasterData)
+                                {
+                                <tr>
+                                    <td>@item.FirstName</td>
+                                    <td>@item.MiddleName</td>
+                                    <td>@item.LastName</td>
+                                    <td>@item.EmailID</td>
+                                    <td>@item.MobileNo</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                
+                <div class="col-md-12" style="height:15px;"></div>
+
+                <div class="form-group">
+                    <div class="col-md-11"></div>
+                    <div class="col-md-1" style="text-align:right;">
+                        <button id="NextSave" name="NextSave" value="NextSave" type="submit" onclick="pageRedirect()" class="btn CommonAttachValidation btn-tgs">Next</button>
+                    </div>
+
+                </div>
+            }
+        }
+    
+</div>
+<script>
+    function pageRedirect() {
+        window.location.href = "/InsuranceProvider/DocumentsDetails?CustomerID=" + '@ViewBag.CustomerID' + "&CustomerTypeID=" + '@ViewBag.CustomerTypeID';
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 5,
+        });
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>

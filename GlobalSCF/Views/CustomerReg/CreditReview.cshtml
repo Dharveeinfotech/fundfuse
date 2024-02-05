@@ -1,0 +1,791 @@
+﻿@model TMP.Models.CustomerReviewModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Credit Review";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 9 })
+    }
+    @using (Html.BeginForm("CreditReview", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "CommonValidations" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="container padoff">
+            <div class="col-md-12 createusertitle">CREDIT REVIEW</div>
+            <div class="col-md-12" style="height:15px;"></div>
+
+            @if ((Model.CustomerTypeID == CONT.BuyerCustomerTypeID && Model.ProgramType == CONT.RType))
+            {
+
+                <table class="col-md-5">
+                    <tbody>
+
+                        <tr>
+                            <td class="td-bg">Currency</td>
+                            <td class="td-line">@Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control validate[required]" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Recommended Limit</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Limit, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Profit Rate</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.ProfitRate, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Transaction Fee Percentage</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.TranFeePer, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Security Deposit Percentage</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.SecDeptPer, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Security Deposit Amount</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.SecDeptAmt, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off", @readonly = "readonly" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Due Diligence Report</td>
+                            <td class="td-line">
+                                @if (Model.UpdDiligRpt != null)
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdDiligRpt" id="UpdDiligRpt" class="file" />
+                                </label>
+                                <label class="l-filename" id="UpdDiligRpt_span"></label>
+                                    if (Model.UpdDiligRpt != "")
+                                    {
+                                @Html.HiddenFor(x => x.UpdDiligRpt)
+                                <span class="p-view">
+                                    @*<a href='~/Files/Upload/@Model.UpdDiligRpt' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdDiligRpt_PopUp" data-id="@Model.UpdDiligRpt">View</a>	
+                                </span>
+                                    }
+                                }
+                                else
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdDiligRpt" id="UpdDiligRpt" class="validate[required] file" />
+                                </label>
+                                <label class="l-filename" id="UpdDiligRpt_span"></label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Reviewed By - Operations</td>
+                            <td class="td-line"><input type="text" class="form-control" value="@Convert.ToString(Session["DisplayName"])" readonly="readonly" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Maximum Tenor (Days)</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Tenor, new { @class = "form-control num validate[required]", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Broker Fee</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.BrokerFee, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Arrangement Fee Percentage</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.ArrangFeePer, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Arrangement Fee Amount</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.ArrangFeeAmt, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off", @readonly = "readonly" })</td>
+
+                        </tr>
+                        @*<tr>
+                            <td class="td-bg">Other Fees</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.OtherFee, new { @class = "form-control num roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>*@
+                        <tr>
+                            <td class="td-bg">Penalty Rate</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.PenaltyRate, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Credit Review Report</td>
+                            <td class="td-line">
+                                @if (Model.UpdCredRpt != null)
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdCredRpt" id="UpdCredRpt" class="file" />
+                                </label>
+                                <label class="l-filename" id="UpdCredRpt_span"></label>
+                                    if (Model.UpdCredRpt != "")
+                                    {
+                                @Html.HiddenFor(x => x.UpdCredRpt)
+                                <sp class="p-view">
+                                    @*<a href='~/Files/Upload/@Model.UpdCredRpt' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdCredRpt_PopUp" data-id="@Model.UpdCredRpt">View</a>	
+                                </sp>
+                                    }
+                                }
+                                else
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdCredRpt" id="UpdCredRpt" class="validate[required] file" />
+                                </label>
+                                <label class="l-filename" id="UpdCredRpt_span"></label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Review Date</td>
+                            <td class="td-line"><input type="text" class="form-control" value="@DateTime.Now.ToString("dd-MMM-yyyy")" readonly="readonly" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                if (@Model.ProcessRemark != null && @Model.ProcessRemark != "")
+                {
+                    <table class="col-md-12" style="width:89%;">
+                        <tbody>
+                            <tr>
+                                @if (Model.Status == CONT.NK)
+                                {
+                                <td class="td-bg" style="width:23.4%;">Comments by Credit Approver</td>
+                                }
+                                else
+                                {
+                                <td class="td-bg" style="width:23.4%;">Comments by Compliance Team</td>
+                                }
+                                <td class="td-line">@Model.ProcessRemark</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+
+                <table class="col-md-12" style="width:89%;">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg" style="width:23.4%;" id="goToLINK"><a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@Model.CustomerID">View All Comments</a> / Comments</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Feedback, new { @class = "form-control validate[required]", autocomplete = "off" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            }
+            else if (Model.CustomerTypeID == CONT.SupplierCustomerTypeID)
+            {
+                <table class="col-md-5">
+                    <tbody>
+
+                        <tr>
+                            <td class="td-bg">Currency</td>
+                            <td class="td-line">@Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control validate[required]" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Recommended Limit</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Limit, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Reference Base Rate</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.BaseRate, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Applicable Discount Rate</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.DiscRate, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off", @readonly = "readonly" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Factor’s Holdback Percentage</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.HoldbackPer, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Broker Fee</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.BrokerFee, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Reviewed By - Operations</td>
+                            <td class="td-line"><input type="text" class="form-control" value="@Convert.ToString(Session["DisplayName"])" readonly="readonly" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Maximum Tenor (Days)</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Tenor, new { @class = "form-control num validate[required]", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Profit Margin Rate</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.ProfitRate, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Transaction Fee Percentage</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.TranFeePer, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Arrangement Fee Percentage</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.ArrangFeeAmt, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                        @*<tr>
+                            <td class="td-bg">Other Fees</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.OtherFee, new { @class = "form-control num roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>*@
+                        <tr>
+                            <td class="td-bg">Due Diligence Report</td>
+                            <td class="td-line">
+                                @if (Model.UpdDiligRpt != null)
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdDiligRpt" id="UpdDiligRpt" class="file" />
+                                </label>
+                                <label class="l-filename" id="UpdDiligRpt_span"></label>
+                                    if (Model.UpdDiligRpt != "")
+                                    {
+                                @Html.HiddenFor(x => x.UpdDiligRpt)
+                                <span class="p-view">
+                                    @*<a href='~/Files/Upload/@Model.UpdDiligRpt' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdDiligRpt_PopUp" data-id="@Model.UpdDiligRpt">View</a>
+                                </span>
+                                    }
+                                }
+                                else
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdDiligRpt" id="UpdDiligRpt" class="validate[required] file" />
+                                </label>
+                                <label class="l-filename" id="UpdDiligRpt_span"></label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Review Date</td>
+                            <td class="td-line"><input type="text" class="form-control" value="@DateTime.Now.ToString("dd-MMM-yyyy")" readonly="readonly" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                if (@Model.ProcessRemark != null && @Model.ProcessRemark != "")
+                {
+                    <table class="col-md-10" style="width:89%;">
+                        <tbody>
+                            <tr>
+                                @if (Model.Status == CONT.NK)
+                                {
+                                <td class="td-bg" style="width:23.4%;">Comments by Credit Approver</td>
+                                }
+                                else
+                                {
+                                <td class="td-bg" style="width:23.4%;">Comments by Compliance Team</td>
+                                }
+                                <td class="td-line">@Model.ProcessRemark</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+
+
+                <table class="col-md-10" style="width:89%;">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg" style="width:23.4%;" id="goToLINK">
+                                <a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@Model.CustomerID">View All Comments</a> / Comments
+                            </td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Feedback, new { @class = "form-control validate[required]", autocomplete = "off" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            }
+            else if (Model.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && Model.ProgramType == CONT.BothProgramType)
+            {
+                <div class="container padoff">
+                    <div class="col-md-12 createusertitle">RECEIVABLES FINANCE CREDIT REVIEW</div>
+                    <div class="col-md-12" style="height:15px;"></div>
+
+                    <table class="col-md-5">
+                        <tbody>
+                            <tr>
+                                <td class="td-bg">Currency</td>
+                                <td class="td-line">@Html.DropDownListFor(model => model.FCurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.FCurrencyID), "--Select--", new { @class = "form-control validate[required]" })</td>
+
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Recommended Limit</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.FLimit, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Maximum Tenor (Days)</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.FTenor, new { @class = "form-control num validate[required]", maxlength = "50", autocomplete = "off" })</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="col-md-10" style="margin-bottom:0"></table>
+                    
+                    
+                </div>
+
+
+                <div class="container padoff">
+                    <div class="col-md-12 createusertitle padoff">Payables Finance CREDIT REVIEW</div>
+                    <div class="col-md-12" style="height:15px;"></div>
+
+                    <table class="col-md-5">
+                        <tbody>
+
+                            <tr>
+                                <td class="td-bg">Currency</td>
+                                <td class="td-line">@Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control validate[required]" })</td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Recommended Limit</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.Limit, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Profit Rate</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.ProfitRate, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Transaction Fee Percentage</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.TranFeePer, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Security Deposit Percentage</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.SecDeptPer, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Security Deposit Amount</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.SecDeptAmt, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off", @readonly = "readonly" })</td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Due Diligence Report</td>
+                                <td class="td-line">
+                                    @if (Model.UpdDiligRpt != null)
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdDiligRpt" id="UpdDiligRpt" class="file" />
+                                </label>
+                                <label class="l-filename" id="UpdDiligRpt_span"></label>
+                                    if (Model.UpdDiligRpt != "")
+                                    {
+                                @Html.HiddenFor(x => x.UpdDiligRpt)
+                                <span class="p-view">
+                                    @*<a href='~/Files/Upload/@Model.UpdDiligRpt' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdDiligRpt_PopUp" data-id="@Model.UpdDiligRpt">View</a>
+                                </span>
+                                    }
+                                }
+                                else
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdDiligRpt" id="UpdDiligRpt" class="validate[required] file" />
+                                </label>
+                                <label class="l-filename" id="UpdDiligRpt_span"></label>
+                                }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Reviewed By - Operations</td>
+                                <td class="td-line"><input type="text" class="form-control" value="@Convert.ToString(Session["DisplayName"])" readonly="readonly" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="col-md-5">
+                        <tbody>
+                            <tr>
+                                <td class="td-bg">Maximum Tenor (Days)</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.Tenor, new { @class = "form-control num validate[required]", maxlength = "50", autocomplete = "off" })</td>
+
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Broker Fee</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.BrokerFee, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Arrangement Fee Percentage</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.ArrangFeePer, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Arrangement Fee Amount</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.ArrangFeeAmt, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off", @readonly = "readonly" })</td>
+
+                            </tr>
+                            @*<tr>
+                                <td class="td-bg">Other Fees</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.OtherFee, new { @class = "form-control num roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                            </tr>*@
+                            <tr>
+                                <td class="td-bg">Penalty Rate</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.PenaltyRate, new { @class = "form-control num perN validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Credit Review Report</td>
+                                <td class="td-line">
+                                    @if (Model.UpdCredRpt != null)
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdCredRpt" id="UpdCredRpt" class="file" />
+                                </label>
+                                <label class="l-filename" id="UpdCredRpt_span"></label>
+                                    if (Model.UpdCredRpt != "")
+                                    {
+                                @Html.HiddenFor(x => x.UpdCredRpt)
+                                <sp class="p-view">
+                                    @*<a href='~/Files/Upload/@Model.UpdCredRpt' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdCredRpt_PopUp" data-id="@Model.UpdCredRpt">View</a>
+                                </sp>
+                                    }
+                                }
+                                else
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdCredRpt" id="UpdCredRpt" class="validate[required] file" />
+                                </label>
+                                <label class="l-filename" id="UpdCredRpt_span"></label>
+                                }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-bg">Review Date</td>
+                                <td class="td-line"><input type="text" class="form-control" value="@DateTime.Now.ToString("dd-MMM-yyyy")" readonly="readonly" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    @if (@Model.ProcessRemark != null && @Model.ProcessRemark != "")
+                    {
+                    <table class="col-md-12" style="width:89%;">
+                        <tbody>
+                            <tr>
+                                @if (Model.Status == CONT.NK)
+                                {
+                                <td class="td-bg" style="width:23.4%;">Comments by Credit Approver</td>
+                                }
+                                else
+                                {
+                                <td class="td-bg" style="width:23.4%;">Comments by Compliance Team</td>
+                                }
+                                <td class="td-line">@Model.ProcessRemark</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    }
+
+                    <table class="col-md-12" style="width:89%;">
+                        <tbody>
+                            <tr>
+                                <td class="td-bg" style="width:23.4%;" id="goToLINK"><a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@Model.CustomerID">View All Comments</a> / Comments</td>
+                                <td class="td-line">@Html.TextBoxFor(model => model.Feedback, new { @class = "form-control validate[required]", autocomplete = "off" })</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Currency</td>
+                            <td class="td-line">@Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control validate[required]" })</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Recommended Limit</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Limit, new { @class = "form-control num validate[required] roundable", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Maximum Tenor (Days)</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Tenor, new { @class = "form-control num validate[required]", maxlength = "50", autocomplete = "off" })</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="col-md-10" style="margin-bottom:0"></table>
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Due Diligence Report</td>
+                            <td class="td-line">
+                                @if (Model.UpdDiligRpt != null)
+            {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdDiligRpt" id="UpdDiligRpt" class="file" />
+                                </label>
+                                <label class="l-filename" id="UpdDiligRpt_span"></label>
+                                    if (Model.UpdDiligRpt != "")
+                                    {
+                                @Html.HiddenFor(x => x.UpdDiligRpt)
+                                <span class="p-view">
+                                    @*<a href='~/Files/Upload/@Model.UpdDiligRpt' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdDiligRpt_PopUp" data-id="@Model.UpdDiligRpt">View</a>
+                                </span>
+                                    }
+                                }
+                                else
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdDiligRpt" id="UpdDiligRpt" class="validate[required] file" />
+                                </label>
+                                <label class="l-filename" id="UpdDiligRpt_span"></label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Reviewed By - Operations</td>
+                            <td class="td-line"><input type="text" class="form-control" value="@Convert.ToString(Session["DisplayName"])" readonly="readonly" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="col-md-5">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg">Credit Review Report</td>
+                            <td class="td-line">
+                                @if (Model.UpdCredRpt != null)
+            {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdCredRpt" id="UpdCredRpt" class="file" />
+                                </label>
+                                <label class="l-filename" id="UpdCredRpt_span"></label>
+                                    if (Model.UpdCredRpt != "")
+                                    {
+                                @Html.HiddenFor(x => x.UpdCredRpt)
+                                <sp class="p-view">
+                                    @*<a href='~/Files/Upload/@Model.UpdCredRpt' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdCredRpt_PopUp" data-id="@Model.UpdCredRpt">View</a>
+                                </sp>
+                                    }
+                                }
+                                else
+                                {
+
+                                <label class="f-btn f-btn-default f-btn-file">
+                                    Upload <input type="file" name="UpdCredRpt" id="UpdCredRpt" class="validate[required] file" />
+                                </label>
+                                <label class="l-filename" id="UpdCredRpt_span"></label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Review Date</td>
+                            <td class="td-line"><input type="text" class="form-control" value="@DateTime.Now.ToString("dd-MMM-yyyy")" readonly="readonly" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                if (@Model.ProcessRemark != null && @Model.ProcessRemark != "")
+                {
+                    <table class="col-md-10" style="width:89%;">
+                        <tbody>
+                            <tr>
+                                @if (Model.Status == CONT.NK)
+            {
+                                <td class="td-bg" style="width:23.4%;">Comments by Credit Approver</td>
+                                }
+                                else
+                                {
+                                <td class="td-bg" style="width:23.4%;">Comments by Compliance Team</td>
+                                }
+                                <td class="td-line">@Model.ProcessRemark</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+
+                <table class="col-md-10" style="width:89%;">
+                    <tbody>
+                        <tr>
+                            <td class="td-bg" style="width:23.4%;" id="goToLINK"><a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@Model.CustomerID">View All Comments</a> / Comments</td>
+                            <td class="td-line">@Html.TextBoxFor(model => model.Feedback, new { @class = "form-control validate[required]", autocomplete = "off" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+        </div>
+        @Html.HiddenFor(x => x.CustomerID)
+        @Html.HiddenFor(x => x.CustomerTypeID)
+        @Html.HiddenFor(x => x.ProgramType)
+        @Html.HiddenFor(x => x.CustomerRevID)
+        @Html.HiddenFor(x => x.FCustomerRevID)
+        @Html.HiddenFor(x => x.Status)
+        if (ViewBag._currentUser.IsCreRevChecker == true || ViewBag._currentUser.IsCreRevApprover == true)
+        {
+            <div class="col-md-12" style="text-align:right;margin-top:20px;">
+                <button id="Submit" name="Submit" value="Submit" type="submit" class="btn btn-tgs">Submit</button>&nbsp;&nbsp;
+            </div>
+        }
+    }
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:500px;">
+                <div id='myModalContent'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    table {
+        margin-bottom: 2%;
+        margin-left: 65px;
+    }
+
+    .form-control {
+        border: 0px;
+    }
+</style>
+<script>
+    $(".UpdDiligRpt_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdDiligRpt' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    $(".UpdCredRpt_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdCredRpt' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $('.perN').keyup(function () {
+        if ($(this).val() > 100) {
+            $("#errorMsg").html("Percentage can not be more than 100%.");
+            $('#Error').modal('show');
+            $(this).val("");
+            $(this).focus();
+        }
+    });
+
+    $(document).ready(function () {
+        $("#Feedback").val("");
+    });
+    CreditReview();
+
+    $('.roundable').each(function () {
+        $(".roundable").val(function () {
+            return (+this.value).toFixed(2);
+        });
+    });
+
+
+    if (('@Model.CustomerTypeID' == '@CONT.BuyerCustomerTypeID' && '@Model.ProgramType' == '@CONT.RType') ||
+                     ('@Model.CustomerTypeID' == '@CONT.BothObligorAndBuyerTypeID' && '@Model.ProgramType' == '@CONT.BothProgramType')) {
+        BuyerCalc();
+    }
+    function BuyerCalc() {
+
+        var SecDeptPer = $("#SecDeptPer").val(); var Limit = $("#Limit").val();
+        if (SecDeptPer != "" & Limit != "") {
+            Calc();
+        }
+
+        var ArrangFeePer = $("#ArrangFeePer").val(); var Limit = $("#Limit").val();
+        if (ArrangFeePer != "" & Limit != "") {
+            Calc();
+        }
+
+        $('#Limit').change(function () {
+            var Limit = $("#Limit").val();
+            if (Limit != "") {
+                Calc();
+            }
+            else {
+                $("#errorMsg").html("Please enter recommended limit.");
+                $('#Error').modal('show');
+                $('#Limit').val("");
+            }
+        });
+
+
+        $('#SecDeptPer').change(function () {
+            var SecDeptPer = $("#SecDeptPer").val(); var Limit = $("#Limit").val();
+            if (SecDeptPer != "" & Limit != "") {
+                Calc();
+            }
+            else {
+                $("#errorMsg").html("Please enter security deposit percentage.");
+                $('#Error').modal('show');
+                $('#SecDeptPer').val("");
+            }
+        });
+
+        $('#ArrangFeePer').change(function () {
+            var ArrangFeePer = $("#ArrangFeePer").val(); var Limit = $("#Limit").val();
+            if (ArrangFeePer != "" & Limit != "") {
+                Calc();
+            }
+            else {
+                $("#errorMsg").html("Please enter arrangement fee percentage.");
+                $('#Error').modal('show');
+                $('#ArrangFeePer').val("");
+            }
+        });
+
+        function Calc() {
+            var Limit = document.getElementById("Limit").value;
+            var SecDeptPer = document.getElementById("SecDeptPer").value;
+            var ArrangFeePer = document.getElementById("ArrangFeePer").value;
+
+            var SecDeptAmt = Limit * SecDeptPer / 100;
+            var ArrangFeeAmt = Limit * ArrangFeePer / 100;
+
+            document.getElementById("SecDeptAmt").value = parseFloat(SecDeptAmt, 10).toFixed(2);
+            document.getElementById("ArrangFeeAmt").value = parseFloat(ArrangFeeAmt, 10).toFixed(2);
+        }
+    }
+
+    $("#goToLINK").on("click", ".OpenList", function () {
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var CustomerID = $('#CustomerID').val();
+        if (CustomerID != null && CustomerID > 0) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: "/CustomerReg/RemarksPopup?CustomerID=" + CustomerID,
+                contentType: "application/json; charset=utf-8",
+                data: "{}",
+                datatype: "json",
+                success: function (data) {
+                    $('#Invoiceview').html(data);
+                    $('#process').modal('hide');
+                    $('#InvoiceModal').modal('show');
+                },
+            });
+        }
+    });
+</script>

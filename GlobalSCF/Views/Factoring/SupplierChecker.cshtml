@@ -1,0 +1,139 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @using (Html.BeginForm("SupplierChecker", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", enctype = "multipart/form-data" }))
+    {
+        if (Model.InvoiceID > 0)
+        {
+            @Html.Action("SupplierHeader", "InvoiceCommon", new { InvoiceID = Model.InvoiceID })
+
+            @Html.Action("TransactionSummary", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+            <div class="container">
+                @Html.Action("InvoiceDetails", "InvoiceCommon", new { InvoiceId = Model.InvoiceID, IsAdd = false })
+
+                <p class="col-md-12" style="margin-left:19px"><input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb validate[required]" /> I CONFIRM</p>
+                <div style="margin-left:16px;">
+                    @if (Model.ProgramType == CONT.FType)
+                    {
+
+                        <div class="col-md-3"><button id="Assignment_Notice" name="Assignment_Notice" value="Assignment_Notice" type="button" class="btn btn-tgs ">ASSIGNMENT NOTICE</button></div>
+                        <div class="col-md-4"><button id="FTran_Request" name="FTran_Request" value="FTran_Request" type="button" class="btn btn-tgs ">RECEIVABLES FINANCE TRANSACTION REQUEST</button></div>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-1"></div>
+                    }
+                    else
+                    {
+
+                        <div class="col-md-3"><button id="Promissory_Note" name="Promissory_Note" value="Promissory_Note" type="button" class="btn btn-tgs ">PROMISSORY NOTE</button></div>
+                        <div class="col-md-4"><button id="RTran_Request" name="RTran_Request" value="RTran_Request" type="button" class="btn btn-tgs ">PAYABLES FINANCE TRANSACTION REQUEST</button></div>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-1"></div>
+                    }
+                </div>
+
+            </div>
+            <div class="container" style="margin-top:20px;">
+                @Html.HiddenFor(x => x.InvoiceID)
+                @Html.HiddenFor(x => x.ProgramType)
+                @Html.HiddenFor(x => x.Status)
+                <div class="col-md-6">
+                    @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+                </div>
+                <div class="col-md-6" style="text-align:right;margin-top:30px;">
+                    <button id="Cancel" name="Cancel" value="Cancel" type="submit" class="btn btn-tgs CommonDetachValidation">Cancel</button>&nbsp;&nbsp;
+                    <button id="Return" name="Return" value="Return" type="submit" class="btn btn-tgs CommonAttachValidation">Return</button>&nbsp;&nbsp;
+                    @if (Model.ProgramType == CONT.RType && Model.Status == "SL1")
+                    {
+                        <button id="Submit" name="Submit" value="Submit" type="submit" class="btn btn-tgs CommonAttachValidation">Approve</button>
+                    }
+                    else
+                    {
+                        <button id="Submit" name="Submit" value="Submit" type="submit" class="btn btn-tgs CommonAttachValidation">Submit</button>
+                    }
+
+                </div>
+            </div>
+        }
+    }
+</div>
+<script>
+
+    $("#Assignment_Notice").on("click", function () {
+        if ('@Model.IsSUPAssignmentNotice' == 'Y') {
+            var url = '/Files/UploadSignDocs/' + '@Model.SUPAssignmentNoticeAttach' + '#toolbar=0';
+            $('#eSigframe').attr('src', url)
+            $('#eSigDocPopup').modal({ show: true });
+            return false;
+        }
+        else {
+            var TempName = "F_Memo_Tran_Supplier_Assignment_Notice";
+            CommonTransPopUp(TempName, '@Model.InvoiceID', '@Model.ProgramType');
+            return false;
+        }
+    });
+
+    $("#FTran_Request").on("click", function () {
+        if ('@Model.IsSUPTransactionRequest' == 'Y') {
+            var url = '/Files/UploadSignDocs/' + '@Model.SUPTransactionRequestAttach' + '#toolbar=0';
+            $('#eSigframe').attr('src', url)
+            $('#eSigDocPopup').modal({ show: true });
+            return false;
+        }
+        else {
+            var TempName = "F_Memo_Tran_Transaction_Request";
+            CommonTransPopUp(TempName, '@Model.InvoiceID', '@Model.ProgramType');
+            return false;
+        }
+    });
+
+
+    $("#Promissory_Note").on("click", function () {
+        if ('@Model.IsSUPAssignmentNotice' == 'Y') {
+            var url = '/Files/UploadSignDocs/' + '@Model.SUPAssignmentNoticeAttach' + '#toolbar=0';
+            $('#eSigframe').attr('src', url)
+            $('#eSigDocPopup').modal({ show: true });
+            return false;
+        }
+        else {
+            var TempName = "";
+            CommonTransPopUp(TempName, '@Model.InvoiceID', '@Model.ProgramType');
+            return false;
+        }
+    });
+
+    $("#RTran_Request").on("click", function () {
+        if ('@Model.IsSUPTransactionRequest' == 'Y') {
+            var url = '/Files/UploadSignDocs/' + '@Model.SUPTransactionRequestAttach' + '#toolbar=0';
+            $('#eSigframe').attr('src', url)
+            $('#eSigDocPopup').modal({ show: true });
+            return false;
+        }
+        else {
+            var TempName = "";
+            CommonTransPopUp(TempName, '@Model.InvoiceID', '@Model.ProgramType');
+            return false;
+        }
+    });
+
+    $("#Return").on("click", function () {
+        if ($("#cb1").hasClass("validate[required]")) {
+            $("#cb1").removeClass("validate[required]");
+        }
+        if ($("#ProcessRemark").hasClass("validate[required]") == false) {
+            $("#ProcessRemark").addClass("validate[required]");
+        }
+    });
+    $("#Submit").on("click", function () {
+        if ($("#ProcessRemark").hasClass("validate[required]")) {
+            $("#ProcessRemark").removeClass("validate[required]");
+        }
+        if ($("#cb1").hasClass("validate[required]") == false) {
+            $("#cb1").addClass("validate[required]");
+        }
+    });
+</script>

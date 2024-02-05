@@ -1,0 +1,9 @@
+Item No.,Obligor CIF,Obligor Name,Invoice No.,Invoice Date (dd/mm/yyyy),Invoice Due Date (dd/mm/yyyy),Invoice Currency,Invoice Amount,Attachment
+1,AE0000004,Max Obligor,1,31/03/2018,10/11/2018,AED,1000,Please provide template1.pdf
+2,AE0000004,Max Obligor,2,31/03/2018,10/11/2018,AED,1001,Please provide template2.pdf
+3,AE0000004,Max Obligor,3,31/03/2018,10/11/2018,AED,1002,Please provide template3.pdf
+4,AE0000004,Max Obligor,4,31/03/2019,10/11/2019,AED,1003,Please provide template4.pdf
+5,AE0000004,Max Obligor,5,31/03/2019,10/11/2019,AED,1004,Please provide template5.pdf
+6,AE0000004,Max Obligor,6,31/03/2018,10/11/2018,AED,1005,Please provide template6.pdf
+7,AE0000004,Max Obligor,7,31/03/2018,10/11/2018,AED,1006,Please provide template7.pdf
+8,AE0000004,Max Obligor,8,31/03/2018,10/11/2018,AED,1007,Please provide template8.pdf

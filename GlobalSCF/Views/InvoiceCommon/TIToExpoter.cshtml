@@ -1,0 +1,122 @@
+﻿@model IEnumerable<TMP.Models.InvoiceTransactionModel>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Admin To Supplier";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("TIToExpoter", "InvoiceCommon", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations" }))
+    {
+        <div class="col-md-12 createusertitle">BANK CONFIRMATION Admin TO SUPPLIER</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <input type="hidden" name="ProgramType" id="ProgramType" value="@ViewBag.ProgramType">
+        <input type="hidden" name="Status" id="Status" value="@ViewBag.Status">
+        <div class="col-md-12">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgum">
+                        <th>Select</th>
+                        <th>Transaction Number</th>
+                        <th>Currency</th>
+                        <th>Total Amount</th>
+                        @if (ViewBag.ProgramType == CONT.FType)
+                        {
+                            <th>Buyer Name</th>
+                        }
+                        else
+                        {
+                            <th>Supplier Name</th>
+                        }
+                        <th>Reference Number</th>
+                        <th>Transaction Date</th>
+                        <th>Charge Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            if (item.IsDispToCH == false) { 
+                            <tr>                                
+                                <td><input type="checkbox" id="chk_@item.InvoiceID" name="chk_@item.InvoiceID" class="DisableItem" /></td>
+                                <td>@item.TranRefNo</td>
+                                <td>@item.CurrencyCode</td>
+                                <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
+                                @if (ViewBag.ProgramType == CONT.FType)
+                                {
+                                    <td>@item.ObligorName</td>
+                                }
+                                else
+                                {
+                                    <td>@item.SupplierName</td>
+                                }
+                                <td><input type="text" id="RefNo_@item.InvoiceID" name="RefNo_@item.InvoiceID" class="validate[required] DisableItem" autocomplete = "off" /></td>
+                                <td><input type="text" id="TranDate_@item.InvoiceID" name="TranDate_@item.InvoiceID" class="formattedCalenderinc validate[required] DisableItem" autocomplete = "off" /></td>
+                                <td><input type="text" id="ChargeAmt_@item.InvoiceID" name="ChargeAmt_@item.InvoiceID" class="num validate[required] DisableItem" autocomplete = "off" /></td>
+                            </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <div class="col-md-12" style="text-align:right;">
+                <button id="Back" name="Back" value="Back" type="submit" class="btn btn-tgs">Cancel</button>&nbsp;&nbsp;&nbsp;
+                @if (Model.Count() > 0)
+                {
+                    <button id="btnSubmit" name="btnSubmit" value="submit" type="submit" class="btn CommonAttachValidation btn-tgs">Submit</button>
+                }
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#example').DataTable({
+            "pageLength": 10,
+            "order": [[1, "desc"]]
+        });
+
+        $(".DisableItem").each(function () {
+            var ID = $(this).attr("id");
+            var value = $(this).val();
+            var InvID = ID.split('_')[1];
+            $("#RefNo_" + InvID).attr("disabled", "disabled");
+            $("#TranDate_" + InvID).attr("disabled", "disabled");
+            $("#ChargeAmt_" + InvID).attr("disabled", "disabled");
+            $("#btnSubmit").attr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", false);
+        });
+    });
+
+    $(".DisableItem").on("change", function () {
+        var ID = $(this).attr("id");
+        var value = $(this).val();
+        var InvID = ID.split('_')[1];
+        if ($("#chk_" + InvID).is(':checked')) {
+            $("#RefNo_" + InvID).removeAttr("disabled", "disabled");
+            $("#TranDate_" + InvID).removeAttr("disabled", "disabled");
+            $("#ChargeAmt_" + InvID).removeAttr("disabled", "disabled");
+            $("#btnSubmit").removeAttr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", true);
+        }
+        else {
+            $("#RefNo_" + InvID).attr("disabled", "disabled");
+            $("#TranDate_" + InvID).attr("disabled", "disabled");
+            $("#ChargeAmt_" + InvID).attr("disabled", "disabled");
+            $("#btnSubmit").attr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", false);
+        }
+    });
+</script>
+

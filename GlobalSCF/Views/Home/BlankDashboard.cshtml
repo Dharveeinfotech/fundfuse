@@ -1,0 +1,87 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  TMP.Models.CustomerMasterModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/MasterPage/_LoginFullwidth.cshtml";
+}
+
+
+<div class="col-md-12 padoff">
+
+    <form method="post">
+        <div class="col-md-12 padoff box-row">
+            <div class="thumbnail noBorder padoff">
+                <img src="~/images/authorized-signature-page.jpg" />
+            </div>
+
+            <div class="box padoff box-container">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 div-thankmsg" style="padding-top:2%">
+                   <p>Hello @Convert.ToString(Session["DisplayName"]),</p>
+                    <p>Welcome to  SCF Platform Platform.</p>
+                    @if (Model.Status == CONT.NR || Model.Status == CONT.NH || Model.Status == CONT.NT || Model.Status == CONT.NP || Model.Status == CONT.NC || Model.Status == CONT.NK || Model.Status == CONT.NE || Model.Status == CONT.NV || Model.Status == CONT.NJ || Model.Status == CONT.NO)
+                    {
+                        <p>The Account for @Model.CompanyName is currently under review.</p>
+                    }
+                    else
+                    {
+                        <p>The Agreements are currently under execution by the Authorized Signatories.</p>
+                    }
+                    <p>Please try again later to start transacting.</p>
+                    <p>
+                        <button id="view" name="view" value="view" class="btn btn-tgs UserViewOnly">VIEW DETAILS</button>
+                    </p>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+    </form>
+    <div class="modal fade" id="UserViewOnlyModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:450px;">
+                    <div id='UserViewOnly'>
+                        @Html.Action("UserViewOnly", "Home", new { CustomerID = Model.CustomerID})
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .headerbottom {
+        border-bottom: #6d6e71 solid 0px;
+    }
+
+    .footertop {
+        border-top: #6d6e71 solid 0px;
+    }
+
+    .box {
+        padding-top: 8%;
+    }
+
+   p{
+       font-size:14px;
+       color:#6d6e71;
+       text-align:center;
+   }
+    .btn-tgs {
+        background-color: transparent;
+    }
+</style>
+
+<script>
+    $("#view").on("click", function () {
+        $('#UserViewOnlyModal').modal('show');
+        return false;
+    });
+</script>

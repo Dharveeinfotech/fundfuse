@@ -1,0 +1,93 @@
+﻿@model TMP.Models.FeeMaster_ListAll_Model
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12">
+    <div class="col-md-10" style="padding:0 0 0 10px;">
+        <div class="tab-content">
+            <fieldset>
+                @using (Html.BeginForm("Edit", "mFeeMasters", FormMethod.Post))
+            {
+                    @Html.AntiForgeryToken()
+
+                    if (ViewBag.ErrorMsg != null)
+                    {
+                        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+                    }
+
+                    <div class="col-md-12"></div>
+                    <div class="col-md-12 adminmenulistsp">
+                        <p class="menulist_floatleft">
+                            Fee Master
+                        </p>
+                    </div>
+                    <div class="col-md-12" style="height:10px;"></div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="textinput">Fee Name</label>
+                        <div class="col-md-10"><input id="FeeName" disabled="disabled" name="FeeName" type="text" placeholder="" value="@Model.lstFeeMaster[0].FeeName" class="create-input" style="width:60%" required></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="textinput">Is Fix</label>
+                        @if (Model.lstFeeMaster[0].IsFix == true)
+                        {
+                            <div class="col-md-10"><input type="checkbox" disabled="disabled" id="chkIsFix" name="chkIsFix" value="@Model.IsFix" checked="checked" style="display:block;" /></div>
+                        }
+                        else
+                        {
+                            <div class="col-md-10"><input type="checkbox" disabled="disabled" id="chkIsFix" name="chkIsFix" value="@Model.IsFix" style="display:block;" /></div>
+                        }
+                    </div>
+                    <div class="col-md-12" style="height:10px;"></div>
+
+
+                    <div class="col-md-12">
+                        <!--menu title-->
+                        <div class="col-md-12 adminmenulistsp">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3"><p class="menulist_floatleft">Company Type</p></div>
+                            <div class="col-md-3"><p>Per</p></div>
+                            <div class="col-md-3"><p>Amt</p></div>
+                        </div>
+                    </div>
+                    foreach (var item in Model.lstCustomerTypeMaster)
+                    {
+                        foreach (var itemFeeDetailSelected in Model.lstFeeDetailMaster)
+                        {
+                            if (item.CustomerTypeID == itemFeeDetailSelected.CustomerTypeId)
+                            {
+                                <div class="col-md-12 menusbg">
+                                    <div class="col-md-3">
+                                        <p class="listp">
+                                            <input type="checkbox" id="chk" name="chk" disabled="disabled" style="display:block;" checked="checked" />
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="listp">
+                                            @item.CustomerTypeName
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <p class="listp">
+                                            @itemFeeDetailSelected.FeePer
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <p class="listp">
+                                            @itemFeeDetailSelected.FeeAmt
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                }
+            </fieldset>
+        </div>
+    </div>
+</div>

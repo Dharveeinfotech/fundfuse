@@ -1,0 +1,121 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Insurance Add";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("InvoiceInsuranceAdd", "InvoiceCommon", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations" }))
+    {
+        @Html.HiddenFor(model => model.InvoiceID)
+        @Html.HiddenFor(model => model.ProgramType)
+        @Html.HiddenFor(model => model.InvoiceInsID)
+        @Html.HiddenFor(model => model.Status)
+        @Html.HiddenFor(model => model.Tenor)
+        @Html.HiddenFor(model => model.IssueDate)
+        @Html.HiddenFor(model => model.ExpDate)
+        @Html.HiddenFor(model => model.InsuranceBrokerID)
+        <div class="col-md-12 createusertitle">INSURANCE INFORMATION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Insurance Broker &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+              @Html.DropDownListFor(model => model.InsuranceBrokerID, new SelectList(ViewBag.DDLInsuranceBrokerID, "CustomerID", "CompanyName", Model.InsuranceBrokerID), new { @class = "form-control validate[required] InsDisable" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Policy Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PolicyNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Insurance Provider&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.InsuranceID, new SelectList(ViewBag.DDLInsuranceID, "CustomerID", "CompanyName", Model.InsuranceID), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Insured Amount&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.InsAmt, new { @class = "form-control num validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Premium %&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PremPer, new { @class = "form-control per validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Premium Amount&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PremAmt, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", @readonly = "readonly" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Comments&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control validate[required]", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12" style="text-align:right;">
+                <button id="Cancel" name="Cancel" value="Cancel" type="submit" class="btn CommonDetachValidation btn-tgs">Cancel</button>
+                <button id="btnSave" name="btnSave" value="submit" type="submit" class="btn CommonAttachValidation btn-tgs">Save & Add</button>
+
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        @Html.Action("InvoiceInsuranceGrid", "InvoiceCommon", new { InvoiceID = Model.InvoiceID })
+        if (Model.InsCnt > 0)
+        {
+            <div class="container">
+                <div class="col-md-6">
+                    @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+                </div>
+                <div class="col-md-6" style="text-align:right;margin-top:30px;">
+                    <button id="btnSubmit" name="btnSubmit" value="submit" type="submit" class="btn CommonDetachValidation btn-tgs">Submit</button>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<script>
+    $("#PremAmt").val(parseFloat($("#PremAmt").val(), 10).toFixed(2));
+    $("#InsAmt").val(parseFloat($("#InsAmt").val(), 10).toFixed(2));
+    $("#PremPer").val(parseFloat($("#PremPer").val(), 10).toFixed(2));
+
+    $('#InsAmt').change(function () {
+        Calc();
+    });
+
+    $('#PremPer').change(function () {
+        Calc();
+    });
+    $(".InsDisable").prop("disabled", true);
+
+    function Calc() {
+        var Tenor = document.getElementById("Tenor").value;
+        var InsAmt = document.getElementById("InsAmt").value;
+        var PremPer = document.getElementById("PremPer").value;
+
+        var step1 = (InsAmt * PremPer) / 100;
+        var step2 = (step1 / 360);
+        var TotalPremAmt = (step2 * Tenor);
+        document.getElementById("PremAmt").value = parseFloat(TotalPremAmt, 10).toFixed(2);
+    }
+ 
+</script>

@@ -1,0 +1,148 @@
+﻿@model TMP.Models.UserMaster_ListAll_Result
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/MasterPage/_TMPWebsite.cshtml";
+}
+
+<div class="container">
+    
+    @using (Html.BeginForm("login", "mUserMasters", FormMethod.Post, new { @class = "form-horizontal CommonValidations", id = "ULoginForm" }))
+    {
+     
+                <div class="col-md-4"></div>
+              
+                    <div class="col-md-4  box-con-login-1">
+                        <p class="box-titel login-div">LOGIN</p>
+                        <div class="login-textbox-padding">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                          
+                            @if (ViewBag.OTPNumber == null)
+                            {
+
+                                <div class="login-div">
+                                    @Html.TextBoxFor(m => m.LoginName, new { @class = "form-control validate[required]", placeholder = "Username", value = "", maxlength = "50", autocomplete = "off" })
+                                    
+
+                                </div>
+                                <div class="login-div">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control validate[required]", placeholder = "Password", value = Model.Password, maxlength = "50", autocomplete = "off" })
+                                   
+                                </div>
+                            }
+                            else
+                            {
+                                if (ViewBag.OTPNumber == true)
+                                {
+                                    <div class="login-div">
+                                        @Html.TextBoxFor(m => m.LoginName, new { @class = "form-control validate[required]", placeholder = "Username", value = "" })
+                                       
+                                    </div>
+                                    <div class="login-div">
+                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control validate[required]", placeholder = "Password", value = Model.Password, @readonly = "readonly" })
+                                        
+                                    </div>
+                                    <div class="login-div">
+                                        @Html.PasswordFor(m => m.OTP, new { @class = "form-control validate[required]", placeholder = "OTP", value = Model.OTP })
+                                       <span>*Please key in the OTP sent to your registered mobile number.</span>
+                                    </div>
+                                    //for manage height both div
+                                    <style>
+                                        .box-con-login-1 {
+                                          height: 425px;
+                                        }
+                                       
+                                    </style>
+                                    if (ViewBag.ErrorV == "error")
+                                    {
+                                        <style>
+                                            .box-con-login-1 {
+                                                 height: 425px;
+                                            }
+                                        </style>
+                                    }
+                                }
+                            }
+                        </div>
+                        <div class="col-md-12 padoff" style="margin-top:4%">
+                            <div class="login-div" style="margin-bottom: 6%;">
+                                <button id="submit" name="submit" type="submit" class="CommonAttachValidation btn btn-tgs">LOGIN</button>
+                               
+                            </div>
+
+                            <div class="login-div">
+                                @Html.ActionLink("Forgot password?", "ForgotPassword", "mUserMasters")
+                            </div>
+                        </div>
+                    </div>
+                    
+                
+                <div class="col-md-4"></div>
+           
+        
+    }
+    <div class="modal fade" id="Error" role="dialog">
+        <div class="modal-dialog" style="width:600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <div class="error">
+                        <img src="~/images/error.png" width="10%" />
+                    </div>
+                    @if (@ViewBag.LoginDevice != null && @ViewBag.LoginDevice != "")
+                    {
+                        <div id="errorMsg">
+                            <p>
+                                Sorry, unable to log you on. Another user with the same username (@ViewBag.UserName) is already logged in to platform.
+                                If it is not you, then please change your password immediately, or please write to us at SCF Platform xxxx@xxxxxx.com or call us on 800XXXXXXX.
+                                If you have logged in to another device, kindly logoff from that device in order to login here.
+                            </p>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .tgs-bg {
+        padding-top: 0px;
+        background-image: none;
+    }
+
+    .headerbottom {
+        border-bottom: #6d6e71 solid 0px;
+    }
+
+    .footertop {
+        border-top: #6d6e71 solid 0px;
+    }
+    .text-danger ul>li {
+        border: 0px solid transparent;
+        border-radius: 0px;
+        width: auto;
+        text-align:left;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        if (document.getElementById('LoginName').value == "") {
+        }
+    });
+
+    $("#ancApply").click(function () {
+        document.location = '@Url.Action("Welcome", "OnlineReg")';
+        return false;
+    });
+    var StrPass = $("#Password").val();
+    var StrOtp = $("#OTP").val();
+
+    if (StrPass != null && StrPass != null)
+    { $("#submit").focus(); }
+    if ('@ViewBag.LoginDevice' != null && '@ViewBag.LoginDevice' != "") {
+        $('#Error').modal('show');
+    }
+</script>

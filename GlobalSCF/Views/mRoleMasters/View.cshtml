@@ -1,0 +1,387 @@
+﻿
+@model TMP.Models.mRoleMaster
+
+@{
+    ViewBag.Title = "User Role Rights View";
+
+}
+@{
+    var selectedmaker1 = ViewData["selectedmaker"];
+    var selectedchecker1 = ViewData["selectedchecker"];
+    var selectedapporver1 = ViewData["selectedapporver"];
+    var selectedisview1 = ViewData["selectedisview"];
+
+
+}
+
+
+@Html.Hidden("selectedmaker", ViewData["selectedmaker"])
+@Html.Hidden("selectedchecker", ViewData["selectedchecker"])
+@Html.Hidden("selectedapporver", ViewData["selectedapporver"])
+@Html.Hidden("selectedisview", ViewData["selectedisview"])
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('.display').dataTable({
+        //});
+
+        var data = $("#selectedmaker").val().split(",");
+        
+        $.each(data, function (i) {
+            
+            data[i]
+            $("#chk_M_" + data[i]).each(function () {
+                $(this).css("display", "inline");
+
+            });
+            $("#" + data[i]).each(function () {
+                $(this).css("display", "inline");
+
+            });
+
+        });
+        var data1 = $("#selectedchecker").val().split(",");
+
+        $.each(data1, function (i) {
+
+            $("#chk_C_" + data1[i]).each(function () { //loop through each checkbox
+                $(this).css("display", "inline");  //select all checkboxes with class "checkbox1"
+            });
+            $("#" + data1[i]).each(function () {
+                $(this).css("display", "inline");
+
+
+            });
+        });
+        var data2 = $("#selectedapporver").val().split(",");
+        $.each(data2, function (i) {
+            document.getElementsByName("chk_A_" + data2[i])
+
+
+
+            $("#chk_A_" + data2[i]).each(function () { //loop through each checkbox
+                $(this).css("display", "inline");   //select all checkboxes with class "checkbox1"
+            });
+            $("#" + data2[i]).each(function () {
+                $(this).css("display", "inline");
+
+
+            });
+        });
+        var data3 = $("#selectedisview").val().split(",");
+        $.each(data3, function (i) {
+
+            $("#chk_V_" + data3[i]).each(function () { //loop through each checkbox
+                $(this).css("display", "inline");   //select all checkboxes with class "checkbox1"
+            });
+            $("#" + data3[i]).each(function () {
+                $(this).css("display", "inline");
+            });
+        });
+    });
+
+    function abc() {
+
+        var data = $("#selectedmaker").val().split(",");
+        $.each(data, function (i) {
+
+            var data11 = 0;
+            $(".mcheckbox_" + data[i] + "").each(function () {
+
+                if (this.checked) {
+                } else { data11 = 1; }
+
+            });
+            if (data11 == 1) {
+                $(".checkboxMaker_" + data[i] + "").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                $(".checkboxMaker_" + data[i] + "").each(function () {
+                    this.checked = true;
+                });
+            }
+        });
+    }
+
+
+    function abcdef() {
+
+        var data = $("#selectedchecker").val().split(",");
+        $.each(data, function (i) {
+
+            var data11 = 0;
+            $(".ccheckbox_" + data[i] + "").each(function () {
+
+                if (this.checked) {
+
+                } else {
+                    data11 = 1;
+                }
+
+            });
+            if (data11 == 1) {
+                $(".checkboxChecker_" + data[i] + "").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                $(".checkboxChecker_" + data[i] + "").each(function () {
+                    this.checked = true;
+                });
+
+            }
+        });
+    }
+
+    function abcdefghi() {
+
+        var data = $("#selectedisview").val().split(",");
+        $.each(data, function (i) {
+
+            var data11 = 0;
+            $(".vcheckbox_" + data[i] + "").each(function () {
+
+                if (this.checked) {
+
+                } else {
+                    data11 = 1;
+                }
+
+            });
+            if (data11 == 1) {
+                $(".checkboxViewer_" + data[i] + "").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                $(".checkboxViewer_" + data[i] + "").each(function () {
+                    this.checked = true;
+                });
+
+            }
+        });
+    }
+
+
+</script>
+
+<div class="col-md-12">
+
+
+    <!-- inner content form -->
+    <div class="col-md-12 createusertitle">View Role</div>
+    <div class="col-md-12" style="height:10px;"></div>
+
+
+    @Html.HiddenFor(model => model.lstRoleMasterlstallbind[0].RoleID)
+    <div class="col-md-12" style="height:10px;"></div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <label class="col-md-2" for="textinput">Role Name</label>
+        <label>@Model.lstRoleMasterlstallbind[0].RoleName</label>
+
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-3" for="textinput">Role Description</label>
+        <label>@Model.lstRoleMasterlstallbind[0].RoleDesc</label>
+
+    </div>
+
+    <div class="col-md-12" style="height:10px;"></div>
+
+    <div class="col-md-12" style="height:350px;scrollbar-base-color:azure;overflow:auto">
+        @if (Model.lstMenuRightslstallbind != null)
+        {
+
+            <br />
+            <input type="hidden" name="intMenuRightsCount" id="intMenuRightsCount" value="@Model.lstMenuRightslstallbind.Count">
+
+
+            foreach (var item in Model.lstMenuRightslstallbind)
+            {
+                if (item.ParentMenuID == -1)
+                {
+                    foreach (var itemParent in Model.lstMenuRightslstallbind)
+                    {
+                        if (item.MenuID == itemParent.ParentMenuID)
+                        {
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgum">
+                                <th>@itemParent.MenuName</th>
+                                <th>Maker</th>
+                                <th>Checker</th>
+                                <th>Approval</th>
+                                <th>Viewer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item1 in Model.lstMenuRightslstallbind)
+                            {
+                                if (itemParent.MenuID == item1.ParentMenuID)
+                                {
+                                    <tr>
+                                        <td>@item1.MenuName</td>
+                                        <td>
+                                            @{ 
+                                                var d = 0;
+                                            }
+                                            @foreach (var item2 in Model.lstMenuRightslstallbind)
+                                            {
+                                                if (item1.MenuID == item2.ParentMenuID)
+                                                {
+                                                    if (item2.MenuName == "Maker")
+                                                    {
+                                                        foreach (var item3 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item2.MenuID == item3.ParentMenuID)
+                                                            {
+
+                                                                <i id="chk_M_@item3.MenuID" style="display:none;" class="fa fa-check"></i>
+                                                                <p id="@item3.MenuID" style="display:none">@item3.MenuName</p>
+                                                                <br />
+                                                                d = 1;
+                                                            }
+                                                        }
+                                                        if (d == 0)
+                                                        {
+                                                            <i id="chk_M_@item2.MenuID" style="display:none;" class="fa fa-check"></i>
+
+                                                            <br />
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @{ var c = 0;}
+                                            @foreach (var item20 in Model.lstMenuRightslstallbind)
+                                            {
+                                                if (item1.MenuID == item20.ParentMenuID)
+                                                {
+                                                    if (item20.MenuName == "Checker")
+                                                    {
+                                                        foreach (var item50 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item20.MenuID == item50.ParentMenuID)
+                                                            {
+
+
+                                                                <i id="chk_C_@item50.MenuID" style="display:none;" class="fa fa-check"></i>
+                                                                <p id="@item50.MenuID" style="display:none">@item50.MenuName</p><br />
+                                                                c = 1;
+                                                            }
+                                                        }
+                                                        if (c == 0)
+                                                        {
+                                                            <i id="chk_C_@item20.MenuID" style="display:none;" class="fa fa-check"></i>
+
+                                                            <br />
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td>                                           
+                                            @{ 
+                                                var b = 0;
+                                            }
+                                            @foreach (var item20 in Model.lstMenuRightslstallbind)
+                                            {
+                                                if (item1.MenuID == item20.ParentMenuID)
+                                                {
+                                                    if (item20.MenuName == "Approver")
+                                                    {
+                                                        foreach (var item50 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item20.MenuID == item50.ParentMenuID)
+                                                            {
+                                                                <i id="chk_A_@item50.MenuID" style="display:none;" class="fa fa-check"></i>
+                                                                <p id="@item50.MenuID" style="display:none">@item50.MenuName</p><br />
+                                                                b = 1;
+                                                            }
+                                                        }
+                                                        if (b == 0)
+                                                        {
+                                                            <i id="chk_A_@item20.MenuID" style="display:none;" class="fa fa-check"></i>
+
+                                                            <br />
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td>                                           
+                                            @{ var a = 0;}
+                                            @foreach (var item22 in Model.lstMenuRightslstallbind)
+                                            {
+                                                if (item1.MenuID == item22.ParentMenuID)
+                                                {
+                                                    if (item22.MenuName == "Viewer")
+                                                    {
+                                                        foreach (var item51 in Model.lstMenuRightslstallbind)
+                                                        {
+                                                            if (item22.MenuID == item51.ParentMenuID)
+                                                            {
+
+                                                                <i id="chk_V_@item51.MenuID" style="display:none;" class="fa fa-check"></i>
+                                                                    <p id="@item51.MenuID" style="display:none">@item51.MenuName</p><br />
+                                                                a = 1;
+                                                            }
+                                                        }
+                                                        if (a == 0)
+                                                        {
+                                                            <i id="chk_V_@item22.MenuID" style="display:none;" class="fa fa-check"></i>
+                                                            <br />
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="col-md-12" style="height:10px;"></div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<style type="text/css">
+     .col-md-1 {
+        padding: 0px !important;
+    }
+    p {
+        margin: 5px 0px 4px 0px !important;
+    }
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        display: none;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    th {
+        width: 20% !important;
+    }
+</style>

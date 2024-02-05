@@ -1,0 +1,54 @@
+﻿@model List<TMP.Models.InvoiceTransactionModel>
+<div class="col-md-12 createusertitle">    TRANSACTION HISTORY</div>
+<div class="col-md-12" style="height:10px;"></div>
+<div class="col-md-12" style="padding:0px;">
+    @if (Model != null)
+            {
+        <table id="example21" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgfact">
+                    <th style="width:60px;">Sr. No.</th>
+                    <th>User Name</th>
+                    <th>Action Level</th>
+                    <th>Comment Date</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int intNo = 1; }
+                @foreach (var items in Model)
+                {
+                    <tr>
+                        <td>@intNo</td>
+                        <td>@items.ContactFullName</td>
+                        <td>@items.ActionLevel</td>
+                        <td>@Convert.ToDateTime(items.ProcessDate).ToString("dd-MMM-yyyy hh:mm:tt")</td>
+                        <td>@items.ProcessRemark</td>
+                    </tr>
+                    intNo++;
+                }
+            </tbody>
+        </table>
+                    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example21').DataTable({
+            //"pageLength": 10,
+            //"order": [[0, "desc"]]
+        });
+    });
+</script>
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        padding-left: 47px;
+    }
+
+    .dataTables_paginate {
+        padding-right: 40px;
+    }
+</style>

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<TMP.Models.InvoiceTransactionModel>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12" style="height:10px;"></div>
+    @if (ViewBag.UserRight != null && ViewBag.UserRight == "Maker")
+    {
+        <form>
+            <div class="col-md-12">
+                <button name="createnew" formaction="~/ServiceProvider/CreateNew" formmethod="post" formnovalidate type="submit" class="btn-tgs">Create New</button>
+            </div>
+        </form>
+    }
+    <div class="col-md-12">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgum">
+                    <th>Transaction Number</th>
+                    <th>Currency</th>
+                    <th>Total Amount</th>
+                    <th>Expoter Name</th>
+                    <th>Submission Date</th>
+                    <th>Payment Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TranRefNo</td>
+                            <td>@item.CurrencyCode</td>
+                            <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
+                            <td>@item.ExporterCustomerName</td>
+                            <td>@Convert.ToDateTime(item.ProcessDate).ToString("dd-MMM-yyyy")</td>
+                            <td>@Convert.ToDateTime(item.PaymentDate).ToString("dd-MMM-yyyy")</td>
+                            <td>@item.Status</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10
+        });
+    });
+</script>

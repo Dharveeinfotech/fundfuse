@@ -1,0 +1,130 @@
+﻿@model TMP.Models.CustomerBankAccDetail
+@{
+    ViewBag.Title = "Bank Account Detail";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("ServiceProviderPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 2 })
+    }
+    @using (Html.BeginForm("BankAccountDetails", "ServiceProvider", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "Bankdetail" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Status)
+        <div class="col-md-12 createusertitle">BANK ACCOUNT DETAILS</div>
+        <div class="col-md-12" style="height:15px;"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Currency&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control" })
+            </div>
+            <div class="col-md-1"></div>
+            <div class="">
+                <label class="col-md-2" for="textinput">Account Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.AccountName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Bank Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.BankID, new SelectList(ViewBag.DDLBankID, "BankID", "BankName", Model.BankID), "--Select--", new { @class = "form-control" })
+            </div>
+            <div class="col-md-1"></div>
+            <div class="">
+                <label class="col-md-2" for="textinput">Address&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Account Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.AccountNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="">
+                        <label class="col-md-2" for="textinput">IBAN&nbsp;<span style="color:red;width:50px;">*</span></label>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.IBAN, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Country&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.BankCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.BankCountryID), "--Select--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="">
+                        <label class="col-md-2" for="textinput">Swift Code&nbsp;<span style="color:red;width:50px;"></span></label>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.Swift, new { @class = "form-control", maxlength = "50", autocomplete = "off" })
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">IFSC Code&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.IFSC, new { @class = "form-control", maxlength = "50", autocomplete = "off" })
+                    </div>
+                    <div class="col-md-1"></div>
+
+                </div>
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12" style="text-align:right;">
+                    @Html.HiddenFor(x => x.CustomerID)
+                    @Html.HiddenFor(x => x.CustomerBankAccID)
+                    <button id="Save" name="Save" value="Save" class="CommonAttachValidation btn btn-tgs">Save</button>
+                    <button id="NextSave" name="NextSave" value="NextSave" class="CommonAttachValidation btn btn-tgs">Save & Next</button>
+                </div>
+                @Html.Action("GridBankDetail", "ServiceProvider", new { CustomerID = Model.CustomerID })
+
+    }
+</div>
+
+<script>
+    $("#NextSave").on("click", function () {
+        var SwiftCode = $("#Swift").val();
+        var IFSCCode = $("#IFSC").val();
+        if (SwiftCode == "" && IFSCCode == "") {
+
+            $("#errorMsg").html("Please enter only Swift Code or IFSC Code");
+            $('#Error').modal('show');
+            return false;
+        }
+
+        else {
+            return true;
+        }
+    });
+
+    $("#Save").on("click", function () {
+        var SwiftCode = $("#Swift").val();
+        var IFSCCode = $("#IFSC").val();
+        if (SwiftCode == "" && IFSCCode == "") {
+
+            $("#errorMsg").html("Please enter only Swift Code or IFSC Code");
+            $('#Error').modal('show');
+            return false;
+        }
+
+        else {
+            return true;
+        }
+    });
+</script>

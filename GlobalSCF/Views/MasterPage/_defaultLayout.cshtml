@@ -1,0 +1,397 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/favicon.ico" type="image/gif" sizes="32x32">
+
+    @Styles.Render("~/Content/onlineCss")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/onlineJS")
+    @Scripts.Render("~/bundles/jqueryval")
+</head>
+
+<body class="btmmargin tgs-bg">
+    <header>
+        <div class="container-fiuld header-container" id="div-menu1">
+            <div class="col-md-12" style="height: 80px;background: #336699;position: absolute;"></div>
+            <div class="container">
+                <div class="row header-cont-row">
+
+                    <div class="col-md-3 header-cont-row-col">
+                        <div class="thumbnail noBorder trans-bg" style="padding:0;background-color:transparent;">
+                            @if (Convert.ToString(Session["onlineCustomerTypeID"]) == "1")
+                            {
+                                <a href="/Home/CMNDashboard">
+                                    <img class="header-logo" src="~/images/TradeHub.jpeg" alt="SCF Platform" title="SCF Platform">
+                                </a>
+                            }
+                            else
+                            {  <a href="/OnlineReg/Index">
+                                <img class="header-logo" src="~/images/TradeHub.jpeg" alt="SCF Platform" title="SCF Platform">
+                            </a>}
+                        </div>
+                    </div>
+                    @if (Session["DisplayName"] != null)
+                    {
+                        <div class="col-sm-9 topbg" style="padding-top:30px;">
+
+
+                            <div class="col-md-8 padoff">
+                                <ul class="mUl">
+                                    <li class="homemenu"><a href="@Url.Action("EditProfile","CustomerReg")">My Account</a></li>
+                                    <li class="homemenu">|</li>
+                                    @if (Convert.ToString(Session["bredCrum"]) != "Change Password")
+                                    {
+                                        <li class="homemenu"><a href="/mUserMasters/ChangePassword">Change Password</a></li>
+                                            <li class="homemenu">|</li>
+                                    }
+                                    <li class="homemenu"><a href="/Home/FAQs">FAQ's</a></li>
+                                    <li class="homemenu">|</li>
+                                    <li class="homemenu">
+                                        <a href="/mUserMasters/LogOutUser">Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4" style="color:#fff;">
+                                <p>Welcome <b>@Convert.ToString(Session["DisplayName"])</b></p>
+                                @if (Session["LastLoginTime"].ToString().Contains("1900") == true)
+                                {
+                                    <p>First login.</p>
+                                }
+                                else
+                                {
+                                    <p>Last Login : @Convert.ToDateTime(Session["LastLoginTime"]).ToString("dd-MMM-yyyy hh:mm")</p>
+                                }
+                            </div>
+
+
+                        </div>
+
+                    }
+                </div>
+                <div class="col-md-12" style="height:10px;"></div>
+
+            </div>
+        </div>
+    </header>
+    @if (Convert.ToBoolean(Session["IsAgree1st"]) == true)
+    {
+        @Html.Action("_dashboardMenu", "MasterPage")
+    }
+
+    <div class="container">
+        <div class="col-md-12">
+            @if (ViewBag.ErrorMesssage != null)
+            {
+                <span class="text-danger"> @ViewBag.ErrorMesssage</span>
+            }
+        </div>
+
+        @RenderBody()
+    </div>
+    <div class="col-md-12">
+        <div class="container footeronline footertop">
+            <span class="menutext"> Copyright © @System.DateTime.Now.Year </span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="menutext">All Rights Reserved</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="menutext"><a href="javascript:void(0);" style="cursor:pointer;color:#6d6e71" class="OpenPP menutext" data-toggle="modal" data-target="#divtermscondi">Privacy Policy</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="menutext"><a href="javascript:void(0);" style="cursor:pointer;color:#6d6e71" class="OpenTC menutext" data-toggle="modal" data-target="#divtermscondi">Terms & Conditions</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">
+                @*|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class=""><a href="/Home/Contact" style="cursor:pointer;color:#6d6e71" class="menutext">Contact us</a></span>*@
+        </div>
+    </div>
+
+    <div class="modal fade" id="divtermscondi" role="dialog">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content" style="height:450px;">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div id="termscondiDetail" class="modal-body">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="Error" role="dialog">
+        <div class="modal-dialog" style="width:600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <div class="error">
+                        <img src="~/images/error.png" width="10%" />
+                    </div>
+                    <div id="errorMsg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="process" role="dialog">
+        <div class="modal-dialog" style="width:600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <div class="error">
+                        <img src="~/images/page-load.gif" width="20%" />
+                    </div>
+                    <div id="processMsg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="factoringModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:450px;">
+                    <div id='factoringview'></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="InvoiceModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:450px;">
+                    <div id='Invoiceview'></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="DocPopup" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align:center; height:500px;">
+                    <iframe name="dociframe" id="dociframe" class="iframe" style="width:830px;height:460px;text-align:center;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="TransPDFModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:450px;">
+                    <div id='TransPDFview'></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tranSig" name="tranSig" value="tranSig" class="btn btn-default btn-tgs">Add Signature</button>
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="SigDocPopup" role="dialog">
+        <div class="modal-dialog" style="width:1200px">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                </div>
+                <div class="modal-body" style="text-align:center; height:600px;">
+                    <iframe name="Sigframe" id="Sigframe" class="iframe" style="width:1150px;height:550px;text-align:center;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="sigClose" name="sigClose" class="btn btn-default btn-tgs">Close</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="eSigDocPopup" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align:center; height:600px;">
+                    <iframe name="eSigframe" id="eSigframe" class="iframe" style="width:850px;height:550px;text-align:center;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AgreementPDFModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:450px;">
+                    <div id='AgreementPDFview'></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="AgreementSign" name="AgreementSign" value="AgreementSign" class="btn btn-default btn-tgs">Add Signature</button>
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AgreementSignDocPopup" role="dialog">
+        <div class="modal-dialog" style="width:1200px">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body" style="text-align:center; height:600px;">
+                    <iframe name="AgreementSignframe" id="AgreementSignframe" class="iframe" style="width:1150px;height:550px;text-align:center;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="AgreementsignClose" name="AgreementsignClose" class="btn btn-default btn-tgs">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="AgreementeSigDocPopup" role="dialog">
+        <div class="modal-dialog" style="width:900px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align:center; height:600px;">
+                    <iframe name="AgreementeSignframe" id="AgreementeSignframe" class="iframe" style="width:850px;height:550px;text-align:center;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="AgreementSign1" name="AgreementSign1" value="AgreementSign1" class="btn btn-default btn-tgs">Add Signature</button>
+                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+    $(document).ready(function () {
+        InitLayout();
+    });
+
+    if ('@ViewBag.ErrorMesssage' != null && '@ViewBag.ErrorMesssage' != "") {
+        $("#errorMsg").html('@ViewBag.ErrorMesssage');
+        $('#Error').modal('show');
+    }
+        $("#AgreementSign,#AgreementSign1,#tranSig").attr("disabled", true);
+    </script>
+    <style>
+        .header-container {
+            background-color: transparent;
+        }
+
+        .intl-tel-input input, .intl-tel-input input[type="text"], .intl-tel-input input[type="tel"] {
+            padding-left: 12px;
+        }
+
+        .intl-tel-input {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+            .intl-tel-input .flag-dropdown:hover .selected-flag {
+                background-color: transparent;
+            }
+
+            .intl-tel-input .selected-flag .arrow {
+                border-left: none;
+                border-right: none;
+            }
+
+            .intl-tel-input .flag-dropdown {
+                width: 100%;
+            }
+
+            .intl-tel-input .selected-flag {
+                width: 100%;
+            }
+
+            .intl-tel-input .country-list {
+                width: 262px;
+            }
+
+        .homemenu {
+            /*border: 1px solid #336699;
+        border-radius: 15px;
+        width: 110px;*/
+            color: #fff;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+            .homemenu:hover {
+                text-align: center;
+                margin-right: 5px;
+                cursor: default;
+                color: #fff !important;
+            }
+
+            .homemenu a {
+                color: #fff !important;
+                text-decoration: none !important;
+                font-size: 11px;
+            }
+
+            .homemenu:hover a {
+                color: #fff !important;
+            }
+
+        .new-ac-dd {
+            width: 200px;
+            font-size: 16px;
+            border-radius: 3px;
+        }
+
+        .nav > li > a:hover, .nav > li > a:focus, .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+            background-color: #336699;
+            color: #fff;
+        }
+
+        .multiselect-container > li > a > label.checkbox {
+            color: #555555;
+        }
+    </style>
+</body>
+</html>

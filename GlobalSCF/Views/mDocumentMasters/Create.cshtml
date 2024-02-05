@@ -1,0 +1,155 @@
+﻿@model TMP.Models.DocumentMaster_ListAll_Result
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+    <div class="col-md-12 createusertitle">
+        Create Document
+    </div>
+
+    <div class="col-md-12" style="height:10px;"></div>
+
+    <div class="container">
+        @using (Html.BeginForm("Create", "mDocumentMasters", FormMethod.Post, new { @class = "col-md-12", @id = "DMForm", enctype = "multipart/form-data" }))
+        {
+            @Html.Hidden("intMenuCount", Model.lstCustomerTypeList.Count)
+            @Html.AntiForgeryToken()
+            <div class="col-md-12" style="height:10px;"></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Document Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.DocumentName, new { htmlAttributes = new { @onkeypress = "return isNumberKey(event)", @class = "form-control validate[required]", maxlength = "100", autocomplete = "off" } })
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Document Description</label>
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.DocumentDesc, new { htmlAttributes = new { @onkeypress = "return isNumberKey(event)", @class = "form-control", rows = "3", cols = "41", maxlength = "100", autocomplete = "off" } })
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+                <br />
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Admin Document</label>
+                    <div class="col-md-7">
+                        @Html.CheckBoxFor(model => model.IsUserDoc, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Company Document</label>
+                    <div class="col-md-7">
+                        @Html.CheckBoxFor(model => model.IsInvestor, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+
+                
+                <div class="form-group">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-7">
+                        <table>
+                            <tr>
+                                <th class="col-md-1 ">
+                                    Select
+                                </th>
+                                <th class="col-md-3 ">
+                                    Document for
+                                </th>
+                                <th class="col-md-3 ">
+                                    Attachment
+                                </th>
+                                @foreach (var item in Model.lstCustomerTypeList)
+                                {
+                                <tr>
+                                    <td class="col-md-1 listtext" style="text-align:center;">
+                                        <input type="checkbox" id="chkBox[]" name="chkBox[]" class="checkbox" value="@item.CustomerTypeID" />
+                                    </td>
+                                    <td class="col-md-3 listtext">
+                                        @item.CustomerTypeName
+                                    </td>
+                                    <td class="col-md-3 listtext">
+                                        <input type="file" name="fileCantrol_@item.CustomerTypeID" id="fileCantrol_@item.CustomerTypeID" />
+                                        <input type="hidden" id="hdAttchFileName_@item.CustomerTypeID" value="@Model.Attachment" />
+                                        @if (Model.Attachment != null && Model.Attachment != "")
+                                        {
+                                            <p class="listp">
+                                                <a href='~/Files/Upload/@Model.Attachment' target="_blank">View</a>
+                                            </p>
+                                        }
+                                    </td>
+                                </tr>
+                                }
+                            </table>
+                        </div>
+                        <div class="col-md-7"></div>
+                    </div>
+                    <div class="col-md-12" style="height:170px;"></div>
+                    <div class="form-group">                        
+                        <div class="col-md-6"></div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2" style="text-align:right;">
+                            <input type="submit" id="Create" name="Create" value="Create" class="btn-tgs" />
+                        </div>
+                        
+                    </div>
+
+        }
+    </div>
+</div>
+<style>
+    .scroll{
+      height:100px;
+    }
+</style>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/jscript">
+
+        $("#Create").click(function () {
+
+            var ChkRadio = 0;
+            $(".checkbox").each(function () {
+                if (this.checked) {
+                    ChkRadio = 1;
+                }
+            });
+            if (ChkRadio == 0) {
+                $("#errorMsg").html("Please select atleast one Document !!");
+                $('#Error').modal('show');
+                return false;
+            }
+
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
+        $("#DMForm").validationEngine(
+     'attach', {
+         promptPosition: "bottomLeft",
+         scroll: false,
+         autoHidePrompt: true,
+         autoHideDelay: 3500,
+         fadeDuration: 0.3,
+         focusFirstField: false,
+         MaxErrorsPerField: 1
+     });
+    </script>
+}

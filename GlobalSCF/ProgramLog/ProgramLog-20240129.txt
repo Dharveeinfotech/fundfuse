@@ -1,0 +1,48 @@
+<Start Issue>29-01-2024 22:02:19	
+
+
+
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+The Exception is:-Exception :: System.FormatException: String was not recognized as a valid DateTime.
+   at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at TMP.Models.Function.GetPasswordExpriyDay(DateTime date) in D:\Project\MIhirbhai_Dharvee_Infotech\GlobalSCF\GlobalSCF\GlobalSCF\Models\Function.cs:line 1577
+   at TMP.Controllers.mUserMastersController.login(UserMaster_ListAll_Result userLog) in D:\Project\MIhirbhai_Dharvee_Infotech\GlobalSCF\GlobalSCF\GlobalSCF\Controllers\mUserMastersController.cs:line 190
+
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+ <End Issue>
+<Start Issue>29-01-2024 22:02:52	
+
+
+
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+The Exception is:-Exception :: System.FormatException: String was not recognized as a valid DateTime.
+   at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at TMP.Models.Function.GetPasswordExpriyDay(DateTime date) in D:\Project\MIhirbhai_Dharvee_Infotech\GlobalSCF\GlobalSCF\GlobalSCF\Models\Function.cs:line 1577
+   at TMP.Controllers.mUserMastersController.login(UserMaster_ListAll_Result userLog) in D:\Project\MIhirbhai_Dharvee_Infotech\GlobalSCF\GlobalSCF\GlobalSCF\Controllers\mUserMastersController.cs:line 190
+
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+ <End Issue>
+<Start Issue>29-01-2024 22:04:08	
+
+
+
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+The Exception is:-Exception :: System.FormatException: String was not recognized as a valid DateTime.
+   at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at TMP.Models.Function.GetPasswordExpriyDay(DateTime date) in D:\Project\MIhirbhai_Dharvee_Infotech\GlobalSCF\GlobalSCF\GlobalSCF\Models\Function.cs:line 1577
+   at TMP.Controllers.mUserMastersController.login(UserMaster_ListAll_Result userLog) in D:\Project\MIhirbhai_Dharvee_Infotech\GlobalSCF\GlobalSCF\GlobalSCF\Controllers\mUserMastersController.cs:line 190
+
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+ <End Issue>

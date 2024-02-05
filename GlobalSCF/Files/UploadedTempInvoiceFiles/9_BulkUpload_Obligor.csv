@@ -1,0 +1,6 @@
+Item No.,Supplier CIF,Supplier Name,Invoice No.,Invoice Date (dd/mm/yyyy),Invoice Due Date (dd/mm/yyyy),Invoice Currency,Invoice Amount,Attachment
+1,IN0000006,Max Supplier,A006,05/03/2018,31/03/2018,AED,1000,sample1.pdf
+2,IN0000006,Max Supplier,A007,05/03/2018,31/03/2018,AED,1000,sample2.pdf
+3,IN0000006,Max Supplier,A008,05/03/2018,31/03/2018,AED,1000,sample3.pdf
+4,IN0000006,Max Supplier,A009,05/03/2018,31/03/2018,AED,1000,sample4.pdf
+5,IN0000006,Max Supplier,A010,05/03/2018,31/03/2018,AED,1000,sample5.pdf

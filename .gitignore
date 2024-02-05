@@ -3,3 +3,8 @@
 ################################################################################
 
 /GlobalSCF/.vs
+/.vs
+/packages
+/GlobalSCF/bin
+/GlobalSCF/obj
+/GlobalSCF/packages

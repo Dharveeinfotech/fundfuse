@@ -1,0 +1,474 @@
+﻿@model TMP.Models.CustomerSupplierModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+
+<div class="col-md-12 createusertitle">SUPPLIER INFORMATION</div>
+
+<div class="col-md-12" style="height:10px;"></div>
+<div class="col-md-12" style="height:10px;"></div>
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-group">
+    <label class="col-md-2" for="textinput">Company Name&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-9">
+        @if (ViewBag.Supplier.CompanyName == Model.CompanyName)
+        {
+            @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.CompanyName })
+        }
+    </div>
+    <div class="col-md-1"></div>
+
+</div>
+<div class="col-md-12" style="height:10px;"></div>
+<div class="form-group">
+    <label class="col-md-2" for="textinput">Trade License Number&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.TradeLicNo == Model.TradeLicNo)
+        {
+            @Html.TextBoxFor(model => model.TradeLicNo, new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.TradeLicNo, new { @class = "form-control changes-input", title = @ViewBag.Supplier.TradeLicNo })
+        }
+    </div>
+    <div class="col-md-1"></div>
+    <label class="col-md-2" for="textinput">Date of Incorporation&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.IncDate == Model.IncDate)
+        {
+            <input id="IncDate" name="IncDate" type="text" placeholder="" class="form-control " autocomplete="off" value="@Model.IncDate.ToString("dd-MMM-yyyy")" />
+        }
+        else
+        {
+            <input id="IncDate" name="IncDate" type="text" placeholder="" class="form-control  changes-input " autocomplete="off" value="@Model.IncDate.ToString("dd-MMM-yyyy")" title="@ViewBag.Supplier.IncDate.ToString("dd-MMM-yyyy")" />
+
+        }
+
+    </div>
+    <div class="col-md-1"></div>
+
+</div>
+<div class="col-md-12" style="height:10px;"></div>
+<div class="form-group">
+    <label class="col-md-2" for="textinput">License Expiry Date&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.LicExpDate == Model.LicExpDate)
+        {
+            if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.LicExpDate))
+            {
+                <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control formattedCalender DateExpire" autocomplete="off" value="@Model.LicExpDate.ToString("dd-MMM-yyyy")" />
+            }
+            else
+            {
+                <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control formattedCalender " autocomplete="off" value="@Model.LicExpDate.ToString("dd-MMM-yyyy")" />
+            }
+        }
+        else
+        {
+            if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.LicExpDate))
+            {
+                <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control changes-input  DateExpire" autocomplete="off" value="@Model.LicExpDate.ToString("dd-MMM-yyyy")" title="@ViewBag.Supplier.LicExpDate.ToString("dd-MMM-yyyy")" />
+            }
+            else
+            {
+                <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control changes-input  " autocomplete="off" value="@Model.LicExpDate.ToString("dd-MMM-yyyy")" title="@ViewBag.Supplier.LicExpDate.ToString("dd-MMM-yyyy")" />
+            }
+        }
+
+    </div>
+    <div class="col-md-1"></div>
+
+    <label class="col-md-2" for="textinput">Country of Incorporation&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.IncCountryName == Model.IncCountryName)
+        {
+            @Html.TextBoxFor(model => model.IncCountryName, new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.IncCountryName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.IncCountryName })
+        }
+
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="form-group">
+    @if (Model.IndustryName != "Other")
+    {
+        <label class="col-md-2" for="textinput">Industry</label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.IndustryName == Model.IndustryName)
+            {
+                @Html.TextBoxFor(model => model.IndustryName, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.IndustryName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.IndustryName })
+            }
+        </div>
+    }
+    else
+    {
+        <label class="col-md-2" for="textinput">Other Industry</label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.OtherIndustry == Model.OtherIndustry)
+            {
+                @Html.TextBoxFor(model => model.OtherIndustry, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.OtherIndustry, new { @class = "form-control changes-input", title = @ViewBag.Supplier.OtherIndustry })
+            }
+        </div>
+    }
+    <div class="col-md-1"></div>
+
+    @if (Model.SubIndustryName != "Other")
+    {
+        <label class="col-md-2" for="textinput">Sub Industry</label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.SubIndustryName == Model.SubIndustryName)
+            {
+                @Html.TextBoxFor(model => model.SubIndustryName, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.SubIndustryName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.SubIndustryName })
+            }
+        </div>
+    }
+    else
+    {
+        <label class="col-md-2" for="textinput">Other Sub Industry</label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.OtherSubIndustry == Model.OtherSubIndustry)
+            {
+                @Html.TextBoxFor(model => model.OtherSubIndustry, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.OtherSubIndustry, new { @class = "form-control changes-input", title = @ViewBag.Supplier.OtherSubIndustry })
+            }
+        </div>
+    }
+    <div class="col-md-1"></div>
+
+</div>
+<div class="form-group">
+    <label class="col-md-2" for="textinput">Currency</label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.CurrencyCode == Model.CurrencyCode)
+            {
+            @Html.TextBoxFor(model => model.CurrencyCode, new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.CurrencyCode, new { @class = "form-control changes-input", title = @ViewBag.Supplier.CurrencyCode })
+        }
+    </div>
+    <div class="col-md-1"></div>
+
+    <label class="col-md-2" for="textinput">Average Invoice Amount</label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.InvAmt == Model.InvAmt)
+            {
+            @Html.TextBoxFor(model => model.InvAmt, new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.InvAmt, new { @class = "form-control changes-input", title = @ViewBag.Supplier.InvAmt })
+        }
+    </div>
+</div>
+
+
+
+<div class="form-group">
+    @if (Model.InvTerm != "Other")
+    {
+
+        <label class="col-md-2" for="textinput">Invoice Terms with Buyer</label>
+
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.InvTerm == Model.InvTerm)
+                {
+                @Html.TextBoxFor(model => model.InvTerm, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.InvTerm, new { @class = "form-control changes-input", title = @ViewBag.Supplier.InvTerm })
+            }
+        </div>
+    }
+    else
+    {
+
+        <label class="col-md-2" for="textinput">Other Invoice Terms with Buyer</label>
+
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.OtherInvTerm == Model.OtherInvTerm)
+                {
+                @Html.TextBoxFor(model => model.OtherInvTerm, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.OtherInvTerm, new { @class = "form-control changes-input", title = @ViewBag.Supplier.OtherInvTerm })
+            }
+        </div>
+    }
+
+    <div class="col-md-1"></div>
+    <div class="col-md-6"></div>
+</div>
+
+
+<div class="col-md-12" style="height:10px;"></div>
+
+<div class="col-md-12 createusertitle">SUPPLIER – Company Contact Information</div>
+
+<div class="col-md-12" style="height:10px;"></div>
+
+
+<div class="col-md-12" style="height:10px;"></div>
+<div class="form-group">
+    <label class="col-md-2" for="textinput">Address&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.Address == Model.Address)
+        {
+            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.Address, new { @class = "form-control changes-input", title = @ViewBag.Supplier.Address })
+        }
+    </div>
+    <div class="col-md-1"></div>
+
+    <label class="col-md-2" for="textinput">P.O. Box&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-3">
+        @Html.TextBoxFor(model => model.POBox, new { @class = "form-control ", maxlength = "50", autocomplete = "off" })
+    </div>
+    <div class="col-md-1"></div>
+
+</div>
+<div class="col-md-12" style="height:10px;"></div>
+<div class="form-group">
+    <label class="col-md-2" for="textinput">Official website&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.Website == Model.Website)
+        {
+            @Html.TextBoxFor(model => model.Website, new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.Website, new { @class = "form-control changes-input", title = @ViewBag.Supplier.Website })
+        }
+    </div>
+    <div class="col-md-1"></div>
+
+    <label class="col-md-2" for="textinput">Telephone Number&nbsp;<span style="color:red;width:50px;"></span></label>
+    <div class="col-md-3">
+        @if (ViewBag.Supplier.TelNo == Model.TelNo)
+        {
+            @Html.TextBoxFor(model => model.TelNo, new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.TelNo, new { @class = "form-control changes-input", title = @ViewBag.Supplier.TelNo })
+        }
+        <div class="col-md-1"></div>
+
+    </div>
+</div>
+    <div class="form-group">
+        <label class="col-md-2" for="textinput">Country&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.CountryName == Model.CountryName)
+            {
+                @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.CountryName })
+            }
+        </div>
+        <div class="col-md-1"></div>
+
+        @if (Model.CityName != "Other")
+        {
+            <label class="col-md-2" for="textinput">City</label>
+            <div class="col-md-3">
+                @if (ViewBag.Supplier.CityName == Model.CityName)
+                {
+                    @Html.TextBoxFor(model => model.CityName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.CityName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.CityName })
+                }
+            </div>
+        }
+        else
+        {
+            <label class="col-md-2" for="textinput">Other City</label>
+            <div class="col-md-3">
+                @if (ViewBag.Supplier.OtherCity == Model.OtherCity)
+                {
+                    @Html.TextBoxFor(model => model.OtherCity, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.OtherCity, new { @class = "form-control changes-input", title = @ViewBag.Supplier.OtherCity })
+                }
+            </div>
+        }
+        <div class="col-md-1"></div>
+
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+
+    <div class="col-md-12" style="height:10px;"></div>
+
+    <div class="col-md-12 createusertitle">SUPPLIER – Primary Contact Information</div>
+
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="form-group">
+        <label class="col-md-2" for="textinput">Full Name&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.ContactFName == Model.ContactFName)
+            {
+                @Html.TextBoxFor(model => model.ContactFName, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.ContactFName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.ContactFName })
+            }
+        </div>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.ContactMName == Model.ContactMName)
+            {
+                @Html.TextBoxFor(model => model.ContactMName, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.ContactMName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.ContactMName })
+            }
+        </div>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.ContactLName == Model.ContactLName)
+            {
+                @Html.TextBoxFor(model => model.ContactLName, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.ContactLName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.ContactLName })
+            }
+        </div>
+        <div class="col-md-1"></div>
+        @*<div class="col-md-12">
+            <label class="col-md-2"></label>
+            <p class="col-md-10 padoff name-msg" style="margin:0;">Make sure the names you enter match the ones in your passport, and please use English characters only.</p>
+        </div>*@
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="form-group">
+        <label class="col-md-2" for="textinput">Designation in the Company&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.DesignationName == Model.DesignationName)
+            {
+                @Html.TextBoxFor(model => model.DesignationName, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.DesignationName, new { @class = "form-control changes-input", title = @ViewBag.Supplier.DesignationName })
+            }
+        </div>
+        <div class="col-md-1"></div>
+
+        <label class="col-md-2" for="textinput">Mobile Number&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.MobileNo == Model.MobileNo)
+            {
+                @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control changes-input", title = @ViewBag.Supplier.MobileNo })
+            }
+        </div>
+
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="form-group">
+        <label class="col-md-2" for="textinput">E-Mail&nbsp;<span style="color:red;width:50px;"></span></label>
+        <div class="col-md-3">
+            @if (ViewBag.Supplier.EmailID == Model.EmailID)
+            {
+                @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control changes-input", title = @ViewBag.Supplier.EmailID })
+            }
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @if (ViewBag.ExpoBank != null && Enumerable.Count(@ViewBag.ExpoBank) > 0)
+    {
+        <div class="col-md-12 createusertitle">SUPPLIER’S BANK ACCOUNT DETAILS</div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12">
+                <table id="exampleSE" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+
+                            <th>Supplier</th>
+                            <th>Account Name</th>
+                            <th>Currency</th>
+                            <th>Bank Name</th>
+                            <th>Account Number</th>
+                            <th>Branch Name</th>
+                            <th>IBAN</th>
+                            <th>Country</th>
+                            <th>Swift Code</th>
+                            <th>IFSC Code</th>
+                        </tr>
+                    <tbody>
+                        @foreach (var item in ViewBag.ExpoBank)
+                {
+                            <tr>
+                                <td>@item.SupplierName</td>
+                                <td>@item.AccountName</td>
+                                <td>@item.CurrencyCode</td>
+                                <td>@item.BankName</td>
+                                <td>@item.AccountNo</td>
+                                <td>@item.Address</td>
+                                <td>@item.IBAN</td>
+                                <td>@item.CountryName</td>
+                                <td>@item.Swift</td>
+                                <td>@item.IFSC</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    }
+
+
+    <script>
+        $('.form-control').attr('readonly', 'true');
+        $("#InvAmt").val(parseFloat($("#InvAmt").val(), 10).toFixed(2));
+        $(document).ready(function () {
+            $('#exampleSE').DataTable({
+                "pageLength": 5,
+            });
+        });
+    </script>

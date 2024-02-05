@@ -1,0 +1,32 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @using (Html.BeginForm("FunderConfirmation", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", enctype = "multipart/form-data" }))
+    {
+        <div class="container">
+            <p style="height:250px;background-color:#adadae;margin-top:20px;">
+                AGREEMENT
+            </p>
+            <p>
+                <input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb  validate[required]" /> I HAVE READ AND I AGREE TO THE TERMS AND CONDITIONS
+            </p>
+            @*<div style="margin-bottom:20px;">
+                @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+            </div>*@
+            <div class="col-md-12">
+                <button id="Agree" name="Agree" value="Agree" type="submit" class="btn btn-tgs">AGREE</button>&nbsp;&nbsp;
+                <button id="notAgree" name="notAgree" value="notAgree" type="submit" class="btn btn-tgs CommonDetachValidation">I DO NOT AGREE</button>
+            </div>
+
+
+            @Html.HiddenFor(x => x.InvoiceID)
+            @Html.HiddenFor(x => x.ProgramType)
+            @Html.HiddenFor(x => x.IsInvOffer)
+        </div>
+    }
+</div>

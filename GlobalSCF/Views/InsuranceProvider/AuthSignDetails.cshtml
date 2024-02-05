@@ -1,0 +1,443 @@
+﻿@model TMP.Models.CustomerShareHolderModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Authorized Signatories Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("InsuranceProviderPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 2 })
+    }
+    @using (Html.BeginForm("AuthSignDetails", "InsuranceProvider", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "AuthSign" }))
+    {
+        @Html.HiddenFor(model => model.CustomerID)
+        @Html.HiddenFor(model => model.CustomerTypeID)
+        @Html.AntiForgeryToken()
+        <div class="col-md-12 createusertitle">
+            DIRECTORS / SIGNATORIES DETAILS&nbsp;&nbsp;&nbsp;
+        </div>      
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Authorized Signatory &nbsp;<span style="color:red;width:50px;">*</span></label>&nbsp;            
+                <div class="col-md-3">
+                    <input type="checkbox" id="ChkYes" name="ChkYes" value="ChkYes" class="chb" /> Yes &nbsp;
+                    <input type="checkbox" id="ChkNo" name="ChkNo" value="ChkNo" class="chb" /> No
+                </div>
+            <div class="col-md-7"></div>            
+        </div>
+
+        <div class="director" id="director">
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Full Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", placeholder = "First Name" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control", maxlength = "50", autocomplete = "off", placeholder = "Middle Name" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", placeholder = "Last Name" })
+                </div>
+                <div class="col-md-1"></div>
+                @*<div class="col-md-12">
+                    <label class="col-md-2"></label>
+                    <p class="col-md-10 padoff name-msg" style="margin:0;">**Please ensure that the names you enter match the ones in your passport, and please use English characters only.</p>
+                </div>*@
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Gender &nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.Gender, new SelectList(ViewBag.DDLGenderID, "value", "text", Model.Gender), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Country of Residence &nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.LocCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.LocCountryID), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+
+                <div class="cls-optnR-new" style="display:none;">
+                    <label class="col-md-2" for="textinput">E-Mail&nbsp;<span style="color:red;width:50px;">*</span></label>
+                </div>
+                <div class="cls-optnN-new">
+                    <label class="col-md-2" for="textinput">E-Mail</label>
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control isEmailGood validate[required,[custom[email]] ", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+
+                <div class="cls-optnR-new" style="display:none;">
+                    <label class="col-md-2" for="textinput">Mobile Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                </div>
+                <div class="cls-optnN-new">
+                    <label class="col-md-2" for="textinput">Mobile Number</label>
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control tel validate[required] ", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Passport Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.PassNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Place of Issuance&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+
+                    @Html.DropDownListFor(model => model.PassCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.PassCountryID), "--Select--", new { @class = "form-control validate[required]" })
+
+                </div>
+                <div class="col-md-1"></div>
+
+            </div>
+                       
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Issuance Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.CustomerShareHoldID > 0)
+                    {
+                        <input id="PassIssueDate" name="PassIssueDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" value="@Model.PassIssueDate.ToString("dd-MMM-yyyy")" />
+                    }
+                    else
+                    {
+                        <input id="PassIssueDate" name="PassIssueDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" />
+                    }
+                </div>
+
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Expiry Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.CustomerShareHoldID > 0)
+                    {
+                        if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.PassExpDate))
+                        {
+                            <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required] DateExpire" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")" />
+                        }
+                        else
+                        {
+                            <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")" />
+                        }
+                    }
+                    else
+                    {
+                        <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" />
+                    }
+                </div>
+                <div class="col-md-1"></div>
+
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Nationality&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.NatCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.NatCountryID), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Designation&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">                    
+                    @Html.DropDownListFor(model => model.DesignationID, new SelectList(ViewBag.DDLDesignationID, "DesignationID", "DesignationName", Model.DesignationID), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            @* Other Designation *@
+            <div class="form-group" id="DV_OtherDesignation" style="display:none;">
+                <div class="col-md-6"></div>
+                <label class="col-md-2" for="textinput">Other Designation&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Passport Copy&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.UpdPassport != null)
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="UpdPassport" id="UpdPassport" class="file" />
+                        </label>
+                        <label class="l-filename" id="UpdPassport_span"></label>
+                        if (Model.UpdPassport != "")
+                        {
+                            @Html.HiddenFor(x => x.UpdPassport)
+                            <span class="p-view">
+                                @*<a href='~/Files/Upload/@Model.UpdPassport' target="_blank">View</a>*@
+                                <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@Model.UpdPassport">View</a>
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="UpdPassport" id="UpdPassport" class="validate[required] file" />
+                        </label>
+                        <label class="l-filename" id="UpdPassport_span"></label>
+                    }
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">National ID Copy&nbsp;<span style="color:red;width:50px;"></span></label>
+                <div class="col-md-3">
+                    <label class="f-btn f-btn-default f-btn-file">
+                        Upload <input type="file" name="UpdNatIden" id="UpdNatIden" class="file" />
+                    </label>
+                    <label class="l-filename" id="UpdNatIden_span"></label>
+                    @if (Model.UpdNatIden != null)
+                    {
+                        if (Model.UpdNatIden != "")
+                        {
+                            @Html.HiddenFor(x => x.UpdNatIden)
+                            <span class="p-view">
+                                @*<a href='~/Files/Upload/@Model.UpdNatIden' target="_blank">View</a>*@
+                                <a href="javascript:void(0);" class="UpdNatIden_PopUp" data-id="@Model.UpdNatIden">View</a>
+                            </span>
+                        }
+                    }
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <div class="cls-optnR-new" style="display:none;">
+                    <label class="col-md-2" for="textinput">POA / Board Resolution&nbsp;<span style="color:red;width:50px;">*</span></label>
+                </div>
+                <div class="cls-optnN-new">
+                    <label class="col-md-2" for="textinput">POA / Board Resolution</label>
+                </div>
+                <div class="col-md-3">                    
+                    @if (Model.UpdPOA != null)
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="UpdPOA" id="UpdPOA" class="file" />
+                        </label>
+                        <label class="l-filename" id="UpdPOA_span"></label>
+                        if (Model.UpdPOA != "")
+                        {
+                            @Html.HiddenFor(x => x.UpdPOA)
+                            <input type="hidden" id="HD_UpdPOA" name="HD_UpdPOA" value="@Model.UpdPOA" />
+                            <span class="p-view">
+                                @*<a href='~/Files/Upload/@Model.UpdPOA' target="_blank">View</a>*@
+                                <a href="javascript:void(0);" class="UpdPOA_PopUp" data-id="@Model.UpdPOA">View</a>
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="UpdPOA" id="UpdPOA" class="validate[required] file" />
+                        </label>
+                        <label class="l-filename" id="UpdPOA_span"></label>
+                    }
+                </div>
+                <div class="cls-optnN-new"><div class="col-md-7"></div></div>
+                <div class="cls-optnR-new">
+                    <div class="col-md-1"></div>
+                    <label class="col-md-2" for="textinput">Role&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.RoleIDs, new SelectList(ViewBag.DDLRoleID, "RoleID", "RoleName", Model.RoleIDs), new { @multiple = "multiple", @class = "form-control validate[required]", @id = "RoleIDs" })
+                        @Html.HiddenFor(model => model.GetRoleIDs)
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+            <div class="col-md-12" style="text-align:right">
+                @Html.HiddenFor(x => x.CustomerID)
+                @Html.HiddenFor(x => x.CustomerShareHoldID)
+                @Html.HiddenFor(x => x.Status)
+                <button id="Save" name="Save" value="Save" class="CommonAttachValidation btn btn-tgs">&nbsp;Save & Add New</button>
+                <button id="AuthNextSave" name="AuthNextSave" value="AuthNextSave" class="CommonAttachValidation btn btn-tgs">&nbsp;Save & Next</button>
+            </div>
+        </div>
+            @Html.Action("GridDirectorDetails", "InsuranceProvider", new { CustomerID = Model.CustomerID })
+    }
+</div>
+<style>
+    .error {
+        border-color: #a94442 !important;
+    }
+
+        .error:focus {
+            box-shadow: 0 0 2px #a94442 !important;
+        }
+         .cls-optional-field {
+        color:red;width:50px;
+    }
+</style>
+<script>
+    $(".UpdPassport_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdPassport' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(".UpdNatIden_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdNatIden' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(".UpdPOA_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdPOA' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    $(".UpdPassport_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdPassport' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    if ('@ViewBag.CustType' == 'A') {
+        $('#ChkYes').attr('checked', true);
+        $('#ChkNo').attr('checked', false);
+        AddValidation();
+    } else {
+        $('#ChkYes').attr('checked', false);
+        $('#ChkNo').attr('checked', true);
+        RemoveValidation();
+    }
+
+    $("#ChkYes").on("change", function () {
+        $('#ChkYes').attr('checked', true);
+        $('#ChkNo').attr('checked', false);
+        AddValidation();
+    });
+    $("#ChkNo").on("change", function () {
+        $('#ChkNo').attr('checked', true);
+        $('#ChkYes').attr('checked', false);
+        RemoveValidation();
+    });
+
+    var selected_tags_arr = new Array();
+    var selected_tags = $('#GetRoleIDs').val();
+    if (selected_tags != "") {
+        if (typeof (selected_tags) != 'undefined') {
+            selected_tags_arr = selected_tags.split(",");
+            $('#RoleIDs option').each(function () {
+                var option_val = this.value;
+                for (var i in selected_tags_arr) {
+                    if (selected_tags_arr[i] == option_val) {
+                        $("#RoleIDs option[value='" + this.value + "']").attr("selected", 1);
+                    }
+                }
+            });
+        }
+    }
+    $('#RoleIDs').multiselect({
+        includeSelectAllOption: true,
+        maxHeight: '300',
+        buttonWidth: '254.5',
+
+    });
+
+    $("#Save,#AuthNextSave").on("click", function () {
+        $('#EmailID').rules('remove');
+        $('#MobileNo').rules('remove');
+        $('#UpdPOA').rules('remove');
+
+        if ($("#ChkYes").prop("checked") == false && $("#ChkNo").prop("checked") == false) {           
+            $("#errorMsg").html("Please select authorized signatory");
+            $('#Error').modal('show');
+            return false;
+        }
+        else if ($("#ChkYes").prop("checked") == true) {
+            AddValidation();
+        }
+        else if ($("#ChkNo").prop("checked") == true) {            
+            RemoveValidation();
+        }
+    });
+
+    function AddValidation() {
+        $(".cls-optnR-new").css("display", "block");
+        $(".cls-optnN-new").css("display", "none");
+        var EmailID = $("#EmailID").val();
+        if (EmailID == "") {
+            document.getElementById("EmailID").className = document.getElementById("EmailID").className.replace("error ", "");
+            document.getElementById("EmailID").className = "error " + document.getElementById("EmailID").className;
+        }
+
+        var EmailID = $("#MobileNo").val();
+        if (EmailID == "") {
+            document.getElementById("MobileNo").className = document.getElementById("MobileNo").className.replace("error ", "");
+            document.getElementById("MobileNo").className = "error " + document.getElementById("MobileNo").className;
+        }
+
+        document.getElementById("EmailID").className = document.getElementById("EmailID").className.replace(" validate[required,[custom[email]] ", "");
+        document.getElementById("EmailID").className = " form-control isEmailGood validate[required,[custom[email]] " + document.getElementById("EmailID").className;
+
+        document.getElementById("MobileNo").className = document.getElementById("MobileNo").className.replace(" validate[required] ", "");
+        document.getElementById("MobileNo").className = " form-control tel validate[required] " + document.getElementById("MobileNo").className;
+
+        
+        var UpdPOA = $("#HD_UpdPOA").val();       
+        if (UpdPOA == "") {
+            document.getElementById("UpdPOA").className = document.getElementById("UpdPOA").className.replace("validate[required] ", "");
+            document.getElementById("UpdPOA").className = "validate[required] " + document.getElementById("UpdPOA").className;
+        }
+        if (typeof (UpdPOA) == 'undefined') {
+            document.getElementById("UpdPOA").className = document.getElementById("UpdPOA").className.replace("validate[required] ", "");
+            document.getElementById("UpdPOA").className = "validate[required] " + document.getElementById("UpdPOA").className;
+        }
+    }
+
+    function RemoveValidation() {
+        $(".cls-optnR-new").css("display", "none");
+        $(".cls-optnN-new").css("display", "block");
+        document.getElementById("EmailID").className = document.getElementById("EmailID").className.replace("error ", "");
+        document.getElementById("EmailID").className = document.getElementById("EmailID").className.replace(" input-validation-error", "");
+        document.getElementById("EmailID").className = document.getElementById("EmailID").className.replace(" validate[required,[custom[email]] ", "");
+
+        document.getElementById("MobileNo").className = document.getElementById("MobileNo").className.replace("error ", "");
+        document.getElementById("MobileNo").className = document.getElementById("MobileNo").className.replace(" input-validation-error", "");
+        document.getElementById("MobileNo").className = document.getElementById("MobileNo").className.replace(" validate[required] ", "");
+
+        document.getElementById("UpdPOA").className = document.getElementById("UpdPOA").className.replace("error ", "");
+        document.getElementById("UpdPOA").className = document.getElementById("UpdPOA").className.replace("validate[required]", "");
+    }
+
+
+    var DesignationID = $("#DesignationID").val();
+    if (DesignationID != "") {
+        AddOtherDesignation();
+    }
+
+    function AddOtherDesignation() {
+        var IndustryID = $("#DesignationID").val();
+        if (IndustryID != "") {
+            var skillsSelect = document.getElementById("DesignationID");
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Other") {
+                $('#DV_OtherDesignation').show();
+                $("#OtherDesignation").focus();
+            }
+            else {
+                $('#DV_OtherDesignation').hide();
+                $("#OtherDesignation").val("");
+            }
+        }
+    }
+
+    $("#DesignationID").on("change", function () {
+        AddOtherDesignation();
+    });
+</script>

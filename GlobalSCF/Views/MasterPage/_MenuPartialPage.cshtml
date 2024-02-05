@@ -1,0 +1,75 @@
+﻿<div class="row" style="margin-left:0px !important;margin-right:0px !important;">
+    <nav class="navbar navbar-default">
+        <div class="container padoff">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav nav-justified">
+                    @{
+                        List<TMP.Models.MenuRoleRights> MenuRole = new List<TMP.Models.MenuRoleRights>().ToList();
+                        TMP.DAL.ClsMenuRoleRights db = new TMP.DAL.ClsMenuRoleRights();
+                        string RoleId = Convert.ToString(Session["RoleId"]);
+                        TMP.Models.Function FN = new TMP.Models.Function();
+                        if (!string.IsNullOrEmpty(RoleId))
+                        {
+                            MenuRole = db.MenuRoleRights_ListAll(RoleId, 0, 0, FN.UserRoletatus
+
+            ()).Where(x => x.ParentMenuID == -1).ToList();
+                        }
+
+
+                        if (MenuRole != null)
+                        {
+                            foreach (var item in MenuRole)
+                            {
+                                if (item.MenuName == "Dashboard")
+                                {
+                                    <li value="0">
+                                        <a style="border-left:none !important;"
+                                           href="/Home/CMNDashboard">Dashboard</a>
+                                    </li>
+                                }
+                                if (item.MenuName == "Administration")
+                                {
+                                    <li value="2">
+                                        <a href="/mUserMasters/Administration">Administration</a>
+                                    </li>
+                                }
+                                if (item.MenuName == "Task")
+                                {
+                                    <li value="5"><a href="~/Home/Notifications">Task</a></li>
+                                }
+
+                              
+
+                            }
+
+                        }
+                    }
+                </ul>
+            </div><!-- /.navbar-collapse -->
+            </div>
+    </nav>
+</div>
+<div class="col-md-12" style="height:10px;"></div>
+<style>
+    .navbar-default {
+     background-color: transparent; 
+     border-color: transparent; 
+}
+    .navbar {
+        position: relative;
+        min-height: 0px;
+        margin-bottom: 0px;
+    }
+</style>

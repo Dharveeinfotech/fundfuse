@@ -1,0 +1,510 @@
+﻿@model  IEnumerable<TMP.Models.ScreeningConfig>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Risk Categorization";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border-multitab padoff">
+    @if (ViewBag.CustomerID > 0)
+    {
+        if (ViewBag.Admin == "Y")
+        {
+            @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = ViewBag.CustomerID, _tab = 8 })
+        }
+        else
+        {
+            @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = ViewBag.CustomerID, _tab = 8 })  }
+    }
+    <div class="col-md-12 createusertitle">Risk Categorization</div>
+
+    @if (ViewBag.Cust_Result != null && Enumerable.Count(@ViewBag.Cust_Result) > 0)
+    {
+        <div class="col-md-12 createusertitle">Result</div>
+        <div class="tab-pane" id="4a">
+            <div class="col-md-12">
+                <table id="exampleRes" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th width="20%">Category Name</th>
+                            <th width="20%">Category</th>
+                            <th width="60%">Remark</th>
+                        </tr>
+                    <tbody>
+                        @foreach (var itemResul in ViewBag.Cust_Result)
+                        {
+                            <tr>
+                                <td>@itemResul.CategoryName</td>
+                                <td>@itemResul.Category</td>
+                                <td>@Html.Raw(itemResul.Remark)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    }
+    @if (ViewBag.Cust_Result1 != null && Enumerable.Count(@ViewBag.Cust_Result1) > 0)
+    {
+
+        <div class="tab-pane" id="4a">
+            <div class="col-md-12">
+                <table id="exampleRes" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th width="20%">Due Diligence</th>
+                            <th width="10%">Category</th>
+                            <th width="10%">Rating</th>
+                            <th width="60%">Remark</th>
+                        </tr>
+                    <tbody>
+                        @foreach (var itemResul1 in ViewBag.Cust_Result1)
+                        {
+                            <tr>
+                                <td>@itemResul1.DueDiligence</td>
+                                <td>@itemResul1.Category</td>
+                                <td>@itemResul1.Rating</td>
+                                <td>
+                                    <p style="color:red;">@Html.Raw(itemResul1.Remark)</p>
+                                    <input type="hidden" name="HdnRemarks" id="HdnRemarks" value="@itemResul1.Remark" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    }
+    @if (Model != null && Model.Count() > 0)
+    {
+        using (Html.BeginForm("CustomerRisk", "CustomerReg", FormMethod.Post, new { @class = "", id = "UMForm" }))
+        {
+            int i = 0;
+            <div class="col-md-12">
+                <div class="panel-group" id="accordion">
+                    @foreach (var item in @ViewBag.Category)
+                    {
+                        <div class="col-md-12" style="height:10px;"></div>
+
+                        <div class="panel panel-default" id="panel_@i">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-target="#collapseOne_@i" style="cursor:pointer;">
+                                        <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                                        @item.CategoryName
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne_@i" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    @if (item.CategoryID == 1)
+                                    {
+                                        if (ViewBag.Country != null)
+                                        {
+                                            <div class="tab-pane" id="4a">
+                                                <div class="col-md-12">
+                                                    <table id="exampleCou" class="display" cellspacing="0" width="100%">
+                                                        <thead>
+                                                            <tr class="bgspr">
+                                                                <th>Country Risk</th>
+                                                                <th>Category</th>
+
+                                                            </tr>
+                                                        <tbody>
+                                                            @foreach (var itemCou in ViewBag.Country)
+                                                            {
+                                                                <tr>
+                                                                    <td>@itemCou.LocCountryName</td>
+                                                                    <td>@itemCou.Category</td>
+
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <input type="hidden" id="CustomerRiskID" name="CustomerRiskID" value="@ViewBag.Country[0].CustomerRiskID" />
+                                            <input type="hidden" id="CategoryDetID" name="CategoryDetID" value="@ViewBag.Country[0].CategoryDetID" />
+                                            <input type="hidden" id="LocCountryID" name="LocCountryID" value="@ViewBag.Country[0].LocCountryID" />
+                                            <input type="hidden" id="DueDiligence" name="DueDiligence" value="@ViewBag.Country[0].DueDiligence" />
+                                            <input type="hidden" id="Category" name="Category" value="@ViewBag.Country[0].Category" />
+                                            <input type="hidden" id="Remark" name="Remark" value="@ViewBag.Country[0].Remark" />
+                                            <input type="hidden" id="Sanction" name="Sanction" value="@ViewBag.Country[0].Sanction" />
+                                        }
+
+                                    }
+                                    @foreach (var item1 in Model)
+                                    {
+                                        if (item.CategoryID == item1.CategoryID && item1.ParentCategoryDetID == 0)
+                                        {
+                                            <p style="padding-left:15px;">@item1.Value</p>
+                                            <input type="hidden" id="RiskID_@item1.CategoryDetID" name="RiskID_@item1.CategoryDetID" value="@item1.CustomerRiskID" />
+
+                                            if (item1.SelType != null && item1.SelType == item1.YesRiskLevel)
+                                            {
+                                                <p style="padding-left:15px;margin:0">
+                                                    <input type="radio" id="selTy_@item1.CategoryDetID" name="selTy_@item1.CategoryDetID" class="Cls_Y_@item1.CategoryDetID" value="@item1.YesRiskLevel"
+                                                           onclick="document.getElementById('Y_SelectType_@item1.CategoryDetID').value = 'Y'" checked="checked"> Yes
+                                                    <input type="radio" id="selTy_@item1.CategoryDetID" name="selTy_@item1.CategoryDetID" class="Cls_N_@item1.CategoryDetID"
+                                                           onclick="document.getElementById('Y_SelectType_@item1.CategoryDetID').value = ''" value="@item1.NoRiskLevel"> No
+
+                                                    <input type="hidden" id="Y_SelectType_@item1.CategoryDetID" name="Y_SelectType_@item1.CategoryDetID" value="@item1.SelTypeYN" />
+                                                </p>
+                                            }
+                                            else
+                                            {
+                                                <p style="padding-left:15px;margin:0">
+                                                    <input type="radio" id="selTy_@item1.CategoryDetID" name="selTy_@item1.CategoryDetID" class="Cls_Y_@item1.CategoryDetID"
+                                                           onclick="document.getElementById('Y_SelectType_@item1.CategoryDetID').value = 'Y'"
+                                                           value="@item1.YesRiskLevel"> Yes
+                                                    <input type="radio" id="selTy_@item1.CategoryDetID" name="selTy_@item1.CategoryDetID" class="Cls_N_@item1.CategoryDetID"
+                                                           onclick="document.getElementById('Y_SelectType_@item1.CategoryDetID').value = ''" value="@item1.NoRiskLevel" checked="checked"> No
+
+                                                    <input type="hidden" id="Y_SelectType_@item1.CategoryDetID" name="Y_SelectType_@item1.CategoryDetID" value="@item1.SelTypeYN" />
+                                                </p>
+                                            }
+
+
+                                            foreach (var item2 in Model)
+                                            {
+                                                if (item1.CategoryDetID == item2.ParentCategoryDetID)
+                                                {
+                                                    <div class="DV_Child">
+                                                        <br />
+                                                        <p style="padding-left:30px;">@item2.Value</p>
+                                                        <input type="hidden" id="RiskID_@item2.CategoryDetID" name="RiskID_@item2.CategoryDetID" value="@item2.CustomerRiskID" />
+
+                                                        @if (item2.SelType != null && item2.SelType == item2.YesRiskLevel)
+                                                        {
+                                                            <p style="padding-left:30px;margin:0">
+                                                                <input type="radio" id="selTy_@item2.CategoryDetID" name="selTy_@item2.CategoryDetID" class="Cls_Y_@item2.CategoryDetID" value="@item2.YesRiskLevel"
+                                                                       onclick="document.getElementById('Y_SelectType_@item2.CategoryDetID').value = 'Y'" checked="checked"> Yes
+                                                                <input type="radio" id="selTy_@item2.CategoryDetID" name="selTy_@item2.CategoryDetID" class="Cls_N_@item2.CategoryDetID"
+                                                                       onclick="document.getElementById('Y_SelectType_@item2.CategoryDetID').value = ''" value="@item2.NoRiskLevel"> No
+
+                                                                <input type="hidden" id="Y_SelectType_@item2.CategoryDetID" name="Y_SelectType_@item2.CategoryDetID" value="@item2.SelTypeYN" />
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p style="padding-left:30px;margin:0">
+                                                                <input type="radio" id="selTy_@item2.CategoryDetID" name="selTy_@item2.CategoryDetID" class="Cls_Y_@item2.CategoryDetID"
+                                                                       onclick="document.getElementById('Y_SelectType_@item2.CategoryDetID').value = 'Y'" value="@item2.YesRiskLevel"> Yes
+                                                                <input type="radio" id="selTy_@item2.CategoryDetID" name="selTy_@item2.CategoryDetID" class="Cls_N_@item2.CategoryDetID" value="@item2.NoRiskLevel"
+                                                                       onclick="document.getElementById('Y_SelectType_@item2.CategoryDetID').value = ''" checked="checked"> No
+
+                                                                <input type="hidden" id="Y_SelectType_@item2.CategoryDetID" name="Y_SelectType_@item2.CategoryDetID" value="@item2.SelTypeYN" />
+                                                            </p>
+                                                        }
+                                                    </div>
+                                                }
+                                            }
+                                            <hr />
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        i++;
+
+
+                        @*<div class="col-md-12 createusertitle">@item.CategoryName</div>*@
+
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-12" style="height:15px"></div>
+
+            if ((ViewBag.CustomerMaster.Status == CONT.NR || ViewBag.CustomerMaster.Status == CONT.NH || ViewBag.CustomerMaster.Status == CONT.UR ||
+                ViewBag.CustomerMaster.Status == CONT.UH || ViewBag.CustomerMaster.Status == CONT.NS || ViewBag.CustomerMaster.Status == CONT.US) && ViewBag.Admin != "Y")
+            {
+                <div class="container padoff clsMenuOrder2">
+                    <table class="col-md-10" style="width:89%;margin-left:65px;margin-top:20px;">
+                        <tbody>
+                            <tr>
+                                <td class="td-bg" style="width:23.4%;" id="goToLINK"><a href="javascript:void(0);" class="OpenList" style="color:#555555;" data-id="@ViewBag.CustomerID">View All Comments</a> / Comments</td>
+                                <td class="td-line">
+                                    <input type="text" value="" id="ProcessRemark" name="ProcessRemark" class="form-control" autocomplete="off" />
+                                    @*@Html.TextBoxFor(model => model.ProcessRemark, new { @class = "form-control", autocomplete = "off" })*@
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-12" style="height:15px"></div>
+                if (ViewBag.CustomerMaster.Status != CONT.NS && ViewBag.CustomerMaster.Status != CONT.US)
+                {
+                    <div class="col-md-12" style="text-align:right;">
+                        @if (ViewBag.CustomerMaster.Status == CONT.NR)
+                        {
+                            <button id="Return" name="Return" value="Return" type="submit" class="btn btn-tgs CommonAttachValidation">Return To Originator</button>
+                        }
+                        &nbsp;
+                        @if (ViewBag.Country[0].CustomerRiskID > 0)
+                        {
+                            <button id="Reject" name="Reject" value="Reject" type="submit" class="btn btn-tgs">Reject</button>
+                        }
+                        &nbsp;
+                        @*<button id="onhold" name="onhold" value="onhold" type="submit" class="btn btn-tgs">Save</button> &nbsp;*@
+                        <button id="Submit" name="Submit" value="Submit" type="submit" class="btn btn-tgs">Submit</button>
+                        &nbsp;
+                        @if (ViewBag.Country[0].CustomerRiskID > 0)
+                        {
+                            <button id="btnEdit" name="btnEdit" value="btnEdit" type="submit" class="btn btn-tgs">Edit</button>
+                        }
+                        &nbsp;
+                        @if (ViewBag.Country[0].CustomerRiskID > 0)
+                        {
+                            <button id="btn_Result_Print" name="btn_Result_Print" value="btn_Result_Print" type="submit" class="btn btn-tgs">Print</button>
+                        }
+                        &nbsp;
+                        @if (ViewBag.IsScreenCompleted == true && ViewBag.CustomerClassId != null && ViewBag.CustomerClassId > 0 && ViewBag.Country[0].CustomerRiskID > 0 && ViewBag.Cust_Result1[0].Remark == "Approve/Reject")
+                        {
+                            <button id="Approve" name="Approve" value="Approve" type="submit" class="btn btn-tgs">Approve</button>
+                        }
+                        &nbsp;
+                        @if (ViewBag.IsScreenCompleted == true && ViewBag.CustomerClassId != null && ViewBag.CustomerClassId > 0 && ViewBag.Country[0].CustomerRiskID > 0 && ViewBag.Cust_Result1[0].Remark != "Approve/Reject")
+                        {
+                            <button id="btnSrMgmtChkoff" name="btnSrMgmtChkoff" value="btnSrMgmtChkoff" type="submit" class="btn btn-tgs">Submitted To Sr.Management </button>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12" style="text-align:right;">
+                        <button id="btnSrMgmtReject" name="btnSrMgmtReject" value="btnSrMgmtReject" type="submit" class="btn btn-tgs CommonAttachValidation">Reject</button>
+                        &nbsp;
+                        <button id="btnSrMgmtApprove" name="btnSrMgmtApprove" value="btnSrMgmtApprove" type="submit" class="btn btn-tgs">Approve</button>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-md-12" style="text-align:right;">
+                    <button id="Next" name="Next" value="Next" type="submit" class="btn btn-tgs">Next</button>
+                </div>
+                <input type="hidden" id="SendToCredit" name="SendToCredit" value="@ViewBag.SendToCredit" />
+                <script>
+                    $("input[type=radio]").attr('disabled', true);
+                </script>
+            }
+
+            <input type="hidden" id="CustomerID" name="CustomerID" value="@ViewBag.CustomerID" />
+            <input type="hidden" id="Admin" name="Admin" value="@ViewBag.Admin" />
+            <input type="hidden" id="CustomerTypeID" name="CustomerTypeID" value="@ViewBag.CustomerMaster.CustomerTypeID" />
+            <input type="hidden" id="Status" name="Status" value="@ViewBag.CustomerMaster.Status" />
+            <input type="hidden" id="ProgramType" name="ProgramType" value="@ViewBag.CustomerMaster.ProgramType" />
+        }
+    }
+</div>
+<script>
+    function toggleIcon(e) {
+        $(e.target)
+            .prev('.panel-heading')
+            .find(".more-less")
+            .toggleClass('glyphicon-plus glyphicon-minus');
+    }
+    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    $('.panel-group').on('shown.bs.collapse', toggleIcon);
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#exampleCou,#exampleRes').DataTable({
+            "pageLength": 5,
+        });
+
+        @*if ('@ViewBag.btnApproveVisible' == 'False') {
+            alert("Please complete screening.");
+            var URL = "/CustomerReg/ComplianceScreening?CustomerID=" +@ViewBag.CustomerID +"&CustomerTypeID=" +@ViewBag.CustomerMaster.CustomerTypeID +"&MenuOrderNo=1&currentStatus=" + '@ViewBag.CustomerMaster.Status' + "";
+            window.location.href = URL;
+            return;
+        }*@
+
+        if ('@ViewBag.CustomerClassId' == '') {
+            alert("Please complete classification details.");
+            var URL = "/CustomerReg/ComplianceScreening?CustomerID=" +@ViewBag.CustomerID +"&CustomerTypeID=" +@ViewBag.CustomerMaster.CustomerTypeID +"&MenuOrderNo=2&currentStatus=" + '@ViewBag.CustomerMaster.Status' + "";
+            window.location.href = URL;
+            return;
+        }
+
+        if ('@ViewBag.Country[0].CustomerRiskID' == '0') {
+            $('#collapseOne_0').collapse({ 'toggle': true });
+            $('#collapseOne_1').collapse({ 'toggle': true });
+            $('#collapseOne_2').collapse({ 'toggle': true });
+            $('#collapseOne_3').collapse({ 'toggle': true });
+            $('#collapseOne_4').collapse({ 'toggle': true });
+        }
+
+        $('.DV_Child').hide();
+
+        RdoValidation();
+
+        if ($('.Cls_Y_1').is(':checked')) {
+            $('.DV_Child').show();
+        }
+
+        if ('@ViewBag.Country[0].CustomerRiskID' > 0) {
+            $("input[type=radio]").attr('disabled', true);
+            $("#Submit").hide();
+        }
+
+        debugger;
+        if('@ViewBag.Country[0].CustomerRiskID' != '0'  && '@ViewBag.Cust_Result1' != null)
+        {
+            if($("#HdnRemarks").val() == 'Senior Management Check-Off Required.')
+            {
+                if ('@ViewBag.CustomerMaster.Status' == '@CONT.NR' || '@ViewBag.CustomerMaster.Status' =='@CONT.UR')
+                {
+                    document.getElementById("btnSrMgmtChkoff").innerHTML = "Approve";
+                }
+                $("#btnSrMgmtReject").hide();
+                document.getElementById("btnSrMgmtApprove").innerHTML = "NOTED";
+            }
+        }
+
+
+    });
+
+    $("#btnEdit").click(function () {
+        $("input[type=radio]").attr('disabled', false);
+        $("#Submit").show();
+        $("#Approve").hide();
+        $("#btn_Result_Print").hide();
+        $("#btnSrMgmtChkoff").hide();
+        $("#btnEdit").hide();
+
+        return false;
+    });
+
+    $('#btn_Result_Print').on('click', function () {
+        var URL = "/CustomerReg/PrintRiskCategorization?CustomerID="+@ViewBag.CustomerID;
+        window.open(URL, '_blank');
+        return false;
+    });
+
+    $('#btnSrMgmtChkoff').on('click', function () {
+        //return false;
+    });
+
+
+    $(".Cls_Y_1").change(function () {
+        RdoValidation();
+
+        if ($('.Cls_Y_2').is(':checked')) {
+            $(".Cls_N_3").prop("checked", true);
+        }
+
+        if ($('.Cls_N_2').is(':checked')) {
+            $(".Cls_Y_3").prop("checked", true);
+        }
+
+        $('.DV_Child').show();
+    });
+
+    $(".Cls_N_1").change(function () {
+        RdoValidation();
+
+        if ($('.Cls_N_1').is(':checked')) {
+            $(".Cls_N_2").prop("checked", true);
+        }
+
+        if ($('.Cls_N_1').is(':checked')) {
+            $(".Cls_N_3").prop("checked", true);
+        }
+
+        $("#Y_SelectType_2").val("N");
+        $("#Y_SelectType_3").val("N");
+
+        $('.DV_Child').hide();
+    });
+
+    $(".Cls_Y_2").change(function () {
+        if ($('.Cls_Y_2').is(':checked')) {
+            $(".Cls_N_3").prop("checked", true);
+
+            $("#Y_SelectType_2").val("Y");
+            $("#Y_SelectType_3").val("N");
+        }
+    });
+
+    $(".Cls_N_2").change(function () {
+        if ($('.Cls_N_2').is(':checked')) {
+            $(".Cls_Y_3").prop("checked", true);
+            $("#Y_SelectType_2").val("N");
+            $("#Y_SelectType_3").val("Y");
+        }
+    });
+
+    $(".Cls_Y_3").change(function () {
+        if ($('.Cls_Y_3').is(':checked')) {
+            $(".Cls_N_2").prop("checked", true);
+            $("#Y_SelectType_3").val("Y");
+            $("#Y_SelectType_2").val("N");
+        }
+    });
+
+    $(".Cls_N_3").change(function () {
+        if ($('.Cls_N_3').is(':checked')) {
+            $(".Cls_Y_2").prop("checked", true);
+            $("#Y_SelectType_3").val("N");
+            $("#Y_SelectType_2").val("Y");
+        }
+    });
+
+    function RdoValidation() {
+        $(".Cls_Y_2").removeAttr('disabled', 'disabled');
+        $(".Cls_N_2").removeAttr('disabled', 'disabled');
+
+        $(".Cls_Y_3").removeAttr('disabled', 'disabled');
+        $(".Cls_N_3").removeAttr('disabled', 'disabled');
+
+        if (document.getElementById("selTy_1").checked == false) {
+            $(".Cls_Y_2").attr('disabled', 'disabled');
+            $(".Cls_N_2").attr('disabled', 'disabled');
+
+            $(".Cls_Y_3").attr('disabled', 'disabled');
+            $(".Cls_N_3").attr('disabled', 'disabled');
+        }
+    }
+
+    $("#Return, #Reject, #btnSrMgmtReject").click(function () {
+        if ($("#ProcessRemark").val() == "") {
+            alert("Please enter comments.");
+            $("#ProcessRemark").focus();
+            return false;
+        }
+    });
+
+    $("#goToLINK").on("click", ".OpenList", function () {
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var CustomerID = $('#CustomerID').val();
+        if (CustomerID != null && CustomerID > 0) {
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: "/CustomerReg/RemarksPopup?CustomerID=" + CustomerID,
+                contentType: "application/json; charset=utf-8",
+                data: "{}",
+                datatype: "json",
+                success: function (data) {
+                    $('#Invoiceview').html(data);
+                    $('#process').modal('hide');
+                    $('#InvoiceModal').modal('show');
+                },
+            });
+        }
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>

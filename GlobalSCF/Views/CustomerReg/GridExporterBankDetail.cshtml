@@ -1,0 +1,65 @@
+﻿@model  IEnumerable<TMP.Models.CustomerBankAccDetail>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@if (Model.Count() > 0)
+{
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <table id="example1" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                            <th>Supplier</th>
+                        <th>Account Name</th>
+                        <th>Currency</th>
+                        <th>Bank Name</th>
+                        <th>Account Number</th>
+                        <th>Branch Name</th>
+                        <th>IBAN</th>
+                        <th>Country</th>
+                        <th>Swift Code</th>
+                        <th>IFSC Code</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@item.SupplierName</td>
+                            <td>@item.AccountName</td>
+                            <td>@item.CurrencyCode</td>
+                            <td>@item.BankName</td>
+                            <td>@item.AccountNo</td>
+                            <td>@item.Address</td>
+                            <td>@item.IBAN</td>
+                            <td>@item.CountryName</td>
+                            <td>@item.Swift</td>
+                            <td>@item.IFSC</td>
+                            <td>@Html.ActionLink("Edit", "SupplierDetail", new { CustomerID = item.CustomerID, CSid =item.CustomerSuppID, Ebid = item.CustomerBankAccID, Edid = 0, status = item.Status })</td>
+                            <td>@Html.ActionLink("Delete", "SupplierDetail", new { CustomerID = item.CustomerID, CSid = item.CustomerSuppID, Edid = item.CustomerBankAccID, Ebid = 0, status = item.Status })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            "pageLength": 5,
+        });
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+
+
+

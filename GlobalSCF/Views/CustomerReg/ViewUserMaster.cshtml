@@ -1,0 +1,146 @@
+﻿@model  TMP.Models.UserMaster_ListAll_Result
+@{
+    ViewBag.Title = "View User Master";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, CustomerTypeID = Model.CustomerTypeID, _tab = 6 })
+    }
+
+    @if (Enumerable.Count(@ViewBag.UserMasterData) > 0)
+    {
+        if (@ViewBag.UserMasterData != null)
+        {
+
+            <div class="col-md-12 createusertitle">AUTHORIZED USER INFORMATION</div>
+            <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th>First Name</th>
+                                <th>Middle Name</th>
+                                <th>Last Name</th>
+                                <th>E-Mail</th>
+                                <th>Mobile Number</th>
+                                <th>View</th>
+                            </tr>
+                        <tbody>
+                            @foreach (var item in ViewBag.UserMasterData)
+                            {
+                                foreach (var item1 in ViewBag.UserData)
+                                {
+                                    if (item.UserID == item1.UserID)
+                                    {
+                                        <tr>
+                                            @if (item.FirstName == item1.FirstName)
+                                            {
+                                                <td>@item.FirstName</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.FirstName">@item.FirstName</td>}
+
+                                            @if (item.MiddleName == item1.MiddleName)
+                                            {
+                                                <td>@item.MiddleName</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MiddleName">@item.MiddleName</td>}
+
+                                            @if (item.LastName == item1.LastName)
+                                            {
+                                                <td>@item.LastName</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LastName">@item.LastName</td>}
+
+                                            @if (item.EmailID == item1.EmailID)
+                                            {
+                                                <td>@item.EmailID</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.EmailID">@item.EmailID</td>}
+
+                                            @if (item.MobileNo == item1.MobileNo)
+                                            {
+                                                <td>@item.MobileNo</td>}
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MobileNo">@item.MobileNo</td>}
+
+                                            <td>
+                                                <a href="#" onclick="ViewDetail('@item.UserID')">View</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+                    <div class="col-md-12" style="height:15px;"></div>
+
+
+        }
+    }
+    <div class="form-group">
+        <div class="col-md-11"></div>
+        <div class="col-md-1" style="text-align:right; padding-top:40px;">
+            <button id="NextSave" name="NextSave" value="NextSave" type="submit" onclick="pageRedirect()" class="btn CommonAttachValidation btn-tgs">Next</button>
+        </div>
+
+    </div>
+</div>
+<script>
+    function pageRedirect() {
+        window.location.href = "/CustomerReg/DocumentsDetails?CustomerID=" + '@ViewBag.CustomerID' + "&CustomerTypeID=" + '@ViewBag.CustomerTypeID';
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 5,
+        });
+    });
+    function ViewDetail(id) {
+        var roleid = id;
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        $.ajax({
+            url: "/mUserMasters/UserView",
+            type: "POST",
+            data: "{id:'" + roleid + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result == 'Roles not exist.') {
+                    $("#factoringview").html(result);
+                    $('#process').modal('hide');
+                    $('#factoringModal').modal('show');
+                }
+                else {
+                    $('#factoringview').html(result);
+                    $('#process').modal('hide');
+                    $('#factoringModal').modal('show');
+                }
+                return false;
+            },
+            error: function () {
+                $('#process').modal('hide');
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+
+    }
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>

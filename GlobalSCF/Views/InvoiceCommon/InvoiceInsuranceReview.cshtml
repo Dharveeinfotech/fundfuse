@@ -1,0 +1,37 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Insurance Review";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @using (Html.BeginForm("InvoiceInsuranceReview", "InvoiceCommon", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations" }))
+    {
+        @Html.HiddenFor(model => model.InvoiceID)
+        @Html.HiddenFor(model => model.IndexStatus)
+        @Html.HiddenFor(model => model.ProgramType)
+        @Html.HiddenFor(model => model.IsInsurance)
+        @Html.HiddenFor(model => model.ObligorID)
+        @Html.HiddenFor(model => model.BuyerID)
+        @Html.HiddenFor(model => model.SupplierID)
+
+        @Html.Action("TransactionSummary", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+        <div class="col-md-12" style="height:10px;"></div>
+        @Html.Action("InvoiceDetails", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, IsAdd = false })
+        
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <div class="col-md-6">
+              
+            </div>
+            <div class="col-md-6" style="text-align:right;margin-top:30px;">
+                <div class="col-md-12" style="text-align:right;">
+                    <button id="Cancel" name="Cancel" value="Cancel" type="submit" class="btn CommonDetachValidation btn-tgs">CANCEL</button>&nbsp; &nbsp;
+                    <button id="Summary" name="Summary" value="Summary" type="submit" class="btn btn-tgs CommonDetachValidation">BUYER DETAILS</button>&nbsp; &nbsp;
+                    <button id="AddInsurance" name="AddInsurance" value="AddInsurance" type="submit" class="btn CommonDetachValidation btn-tgs">ADD INSURANCE</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

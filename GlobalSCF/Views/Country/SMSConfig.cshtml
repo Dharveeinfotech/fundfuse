@@ -1,0 +1,76 @@
+﻿@model TMP.Models.CountryMaster
+@{
+    ViewBag.Title = "SMS Config";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+    <form method="post" id="formid" enctype="multipart/form-data">
+        <div class="col-md-12 createusertitle">SMS Configuration</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12" style="height:10px;"></div>
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(model => model.SMSConfigID)
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">URL&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-9">
+                    <input type="text" id="url" name="url" value="@Model.URL" class="form-control validate[required]" maxlength="100" tabindex="1" autocomplete="off" />
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">User Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    <input type="text" id="username" name="username" value="@Model.UserName" class="form-control validate[required]" maxlength="100" tabindex="1" autocomplete="off" />
+                </div>
+                <div class="col-md-1"></div>
+              
+                    <label class="col-md-2" for="textinput">Password&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        <input type="text" id="psd" name="psd" value="@Model.Pwd" class="form-control validate[required]" maxlength="100" tabindex="1" autocomplete="off" />
+                    </div>
+                    <div class="col-md-1"></div>
+               
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <div class="col-md-11" style="text-align:right;">
+                    <button id="submit1" name="submit1" value="submit" class="btn-tgs" formmethod="post" formaction="../Country/SMSConfig">Submit</button>
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                @Html.Action("SMSDetail", "Country")
+            </div>
+        }
+    </form>
+</div>
+<style>
+    .footeronline {
+        position: fixed;
+    }
+</style>
+
+
+<script type="text/javascript">
+
+    $("#submit1").on("click", function () {
+
+        $("#formid").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+</script>

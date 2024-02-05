@@ -1,0 +1,115 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    int CustomerType = Convert.ToInt32(Convert.ToString(Session["onlineCustomerTypeID"]));
+}
+<div class="col-md-12 createusertitle">TRANSACTION SUMMARY</div>
+<div class="col-md-12" style="height:10px;"></div>
+
+<div class="container padoff">
+    <table class="col-md-5">
+        <tbody>
+
+            <tr>
+                <td class="td-bg">Transaction Number</td>
+                 <td class="td-line">
+                    @Model.TranRefNo
+                </td>
+            </tr>
+            <tr>
+                <td class="td-bg">Transaction Date</td>
+                 <td class="td-line">
+                    @Convert.ToDateTime(Model.TranDate).ToString("dd-MMM-yyyy")
+                </td>
+            </tr>
+            <tr>
+                @if (Model.ProgramType == CONT.FType)
+                {
+                    if (CustomerType==CONT.ObligorCustomerTypeID)
+                    {
+                        <td class="td-bg">Supplier Name</td>
+                        <td class="td-line">
+                            @Model.SupplierName
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="td-bg">Buyer Name</td>
+                        <td class="td-line">
+                            @Model.ObligorName
+                        </td>
+                    }
+
+                }
+                else
+                {
+                    if (Model.Status == CONT.BR || Model.Status == CONT.BP)
+                    {
+                        <td class="td-bg">Supplier Name</td>
+                        <td class="td-line">
+                            @Model.SupplierName
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="td-bg">Buyer Name</td>
+                        <td class="td-line">
+                            @Model.BuyerName
+                        </td>
+                    }
+
+                }
+
+            </tr>
+            <tr>
+                <td class="td-bg">Number of Invoices</td>
+                 <td class="td-line">
+                    @Model.InvCnt
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <table class="col-md-5">
+        <tbody>
+
+            <tr>
+                <td class="td-bg">Currency</td>
+                 <td class="td-line">
+                    @Model.CurrencyCode
+                </td>
+            </tr>
+            <tr>
+                <td class="td-bg">Total Amount</td>
+                 <td class="td-line">
+                   @Model.CurrencyCode  @string.Format("{0:0,0.00}", Model.TotAmt)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-bg">Invoice Due Date</td>
+                 <td class="td-line">
+                    @Convert.ToDateTime(Model.DueDate).ToString("dd-MMM-yyyy")
+                </td>
+
+            </tr>
+          
+            @if (CustomerType==CONT.FunderCustomerTypeID)
+            {
+                <tr>
+                    <td class="td-bg">Supplier Name</td>
+                    <td class="td-line">
+                        @Model.SupplierName
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    table {
+        margin-bottom: 2%;
+         margin-left: 65px;
+        margin-top: 3%;
+    }
+</style>

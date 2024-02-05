@@ -1,0 +1,348 @@
+﻿@model TMP.Models.CustomerMasterModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "User Account";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 1 })
+    }
+    @using (Html.BeginForm("CompanyInfoDetails", "CustomerReg", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "UMForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+
+        <div class="col-md-12 createusertitle">COMPANY INFORMATION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12" style="height:10px;"></div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Name as on Trade License&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.CompanyName == Model.CompanyName)
+                {
+                    @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control changes-input",  title = @ViewBag.CustCheck.CompanyName })
+                }
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Trading Name&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+             
+                @if (ViewBag.CustCheck.TradingName == Model.TradingName)
+                {
+                    @Html.TextBoxFor(model => model.TradingName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.TradingName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.TradingName })
+                }
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Website&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.Website == Model.Website)
+                {
+                    @Html.TextBoxFor(model => model.Website, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.Website, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.Website })
+                }
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Telephone Number&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.TelNo == Model.TelNo)
+                {
+                    @Html.TextBoxFor(model => model.TelNo, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.TelNo, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.TelNo })
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        if (Model.CustomerTypeID != CONT.FunderCustomerTypeID)
+        {
+            <div class="form-group">
+
+                @if (Model.IndustryName != "Other")
+                {
+                    <label class="col-md-2" for="textinput">Industry&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        @if (ViewBag.CustCheck.IndustryName == Model.IndustryName)
+                        {
+                            @Html.TextBoxFor(model => model.IndustryName, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.IndustryName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.IndustryName })
+                        }
+                    </div>
+                }
+                else
+                {
+                    <label class="col-md-2" for="textinput">Other Industry&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        @if (ViewBag.CustCheck.OtherIndustry == Model.OtherIndustry)
+                        {
+                            @Html.TextBoxFor(model => model.OtherIndustry, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.OtherIndustry, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.OtherIndustry })
+                        }
+                    </div>
+                }
+                <div class="col-md-1"></div>
+
+                @if (Model.IndustryName != "Other")
+                {
+                    <label class="col-md-2" for="textinput">Sub Industry&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        @if (ViewBag.CustCheck.SubIndustryName == Model.SubIndustryName)
+                        {
+                            @Html.TextBoxFor(model => model.SubIndustryName, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.SubIndustryName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.SubIndustryName })
+                        }
+                    </div>
+                }
+                else
+                {
+                    <label class="col-md-2" for="textinput">Other Sub Industry&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        @if (ViewBag.CustCheck.OtherSubIndustry == Model.OtherSubIndustry)
+                        {
+                            @Html.TextBoxFor(model => model.OtherSubIndustry, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.OtherSubIndustry, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.OtherSubIndustry })
+                        }
+                    </div>
+                }
+                <div class="col-md-1"></div>
+            </div>
+        }
+        
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Address</label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.Address == Model.Address)
+                {
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.Address })
+                }
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">P.O. Box</label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.POBox == Model.POBox)
+                {
+                    @Html.TextBoxFor(model => model.POBox, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.POBox, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.POBox })
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="form-group">
+
+            <label class="col-md-2" for="textinput">Country&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.NationalityName == Model.NationalityName)
+                {
+                    @Html.TextBoxFor(model => model.NationalityName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.NationalityName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.NationalityName })
+                }
+            </div>
+            <div class="col-md-1"></div>
+
+            @if (Model.OtherCity == "")
+            {
+                <label class="col-md-2" for="textinput">City</label>
+                <div class="col-md-3">
+                    @if (ViewBag.CustCheck.CityName == Model.CityName)
+                    {
+                        @Html.TextBoxFor(model => model.CityName, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.CityName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.CityName })
+                    }
+                </div>
+            }
+            else
+            {
+                <label class="col-md-2" for="textinput">Other City</label>
+                <div class="col-md-3">
+                    @if (ViewBag.CustCheck.OtherCity == Model.OtherCity)
+                    {
+                        @Html.TextBoxFor(model => model.OtherCity, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.OtherCity, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.OtherCity })
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+
+
+        <div class="col-md-12 createusertitle">USER DETAILS</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Full Name&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.ContactFName == Model.ContactFName)
+                {
+                    @Html.TextBoxFor(model => model.ContactFName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.ContactFName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.ContactFName })
+                }
+            </div>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.ContactMName == Model.ContactMName)
+                {
+                    @Html.TextBoxFor(model => model.ContactMName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.ContactMName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.ContactMName })
+                }
+            </div>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.ContactLName == Model.ContactLName)
+                {
+                    @Html.TextBoxFor(model => model.ContactLName, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.ContactLName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.ContactLName })
+                }
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Gender</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Gender, new { @class = "form-control" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Country of Residence</label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.LocCountryName, new { @class = "form-control" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+
+            @if (Model.DesignationName != "Other")
+            {
+                <label class="col-md-2" for="textinput">Designation in the Company&nbsp;<span style="color:red;width:50px;"></span></label>
+                <div class="col-md-3">
+                    @if (ViewBag.CustCheck.DesignationName == Model.DesignationName)
+                    {
+                        @Html.TextBoxFor(model => model.DesignationName, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.DesignationName, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.DesignationName })
+                    }
+                </div>
+            }
+            else
+            {
+                <label class="col-md-2" for="textinput">Other Designation in the Company&nbsp;<span style="color:red;width:50px;"></span></label>
+                <div class="col-md-3">
+                    @if (ViewBag.CustCheck.OtherDesignation == Model.OtherDesignation)
+                    {
+                        @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.OtherDesignation })
+                    }
+                </div>
+            }
+
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Mobile Number&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.MobileNo == Model.MobileNo)
+                {
+                    @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.MobileNo })
+                }
+            </div>
+
+        </div>
+       
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">E-Mail&nbsp;<span style="color:red;width:50px;"></span></label>
+            <div class="col-md-3">
+                @if (ViewBag.CustCheck.EmailID == Model.EmailID)
+                {
+                    @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control changes-input", title = @ViewBag.CustCheck.EmailID })
+                }
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+
+        <div class="col-md-12" style="text-align:right">
+            @Html.HiddenFor(x => x.CustomerID)
+            @Html.HiddenFor(x => x.CustomerTypeID)
+            @Html.HiddenFor(x => x.Status)
+            <button id="Next" name="Next" value="Next" type="submit" class="btn CommonAttachValidation btn-tgs">Next</button>
+        </div>
+    }
+</div>
+<script>
+    $('.form-control').attr('readonly', 'true');
+
+</script>

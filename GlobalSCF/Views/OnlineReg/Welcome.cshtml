@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "Welcome";
+    Layout = "~/Views/MasterPage/_TMPWebsite.cshtml";
+}
+<script type="text/javascript">
+
+
+</script>
+
+
+    
+
+    <div class="container padoff">
+
+        <form method="post">
+
+
+            <div class="col-md-4"></div>
+            <div class="col-md-4 new-box">
+                <div class="container" style="margin:10%;margin-top:15%;">
+                    <div class="col-md-12" style="font-size:20px;">
+                        REGISTER AS:
+                    </div>
+                    <div class="col-md-12" style="height:30px;"></div>
+                    <div class="col-md-12">
+                        <button id="supplier" name="supplier" value="supplier" type="submit" class="btn-tgs-ext" style="width: 100%;">SUPPLIER</button>
+                    </div>
+                    <div class="col-md-12" style="height:40px;"></div>
+
+                    <div class="col-md-12">
+                        <button id="obligor_buyer" name="obligor_buyer" value="obligor_buyer" type="submit" class="btn-tgs-ext" style="width: 100%;">BUYER</button>
+                    </div>
+
+                    <div class="col-md-12" style="height:40px;"></div>
+                    <div class="col-md-12">
+                        <button id="funder" name="funder" value="funder" type="submit" class="btn-tgs-ext" style="width: 100%;">FUNDER</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </form>
+
+    </div>
+    
+<style>
+    .new-box {
+            text-align: center;
+            height: 400px;
+            border: 1px solid #336699;
+            border-radius: 10px;
+        }
+    .tgs-bg {
+        padding-top: 0px;
+        background-image: none;
+    }
+
+    .headerbottom {
+        border-bottom: #6d6e71 solid 0px;
+    }
+
+    .footertop {
+        border-top: #6d6e71 solid 0px;
+    }
+
+    .p-obligor {
+        display: none;
+    }
+
+    .btn-tgs-ext {
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-size: 15px;
+    }
+     .btn-tgs-ext:hover,
+    .btn-tgs-ext:focus {
+         padding: 9px 14px;
+    }
+    .obligor-div{
+       
+    }
+    p{
+    margin: 0 0 15px;
+    }
+</style>
+<script>
+    $("#obligor").click(function () {
+
+        $(".p-obligor").css("display", "block");
+        $(".btn-obligor").css("background-color", "#ffffff");
+        $(".btn-obligor").css("color", "#336699");
+        $(".obligor-div").css("background", "#ffffff");
+        $(".obligor-div").css("border-radius", "24px");
+        $(".obligor-div").css("padding-bottom", "20px");
+        return false;
+    });
+</script>

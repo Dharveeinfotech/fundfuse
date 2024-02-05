@@ -1,0 +1,529 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model TMP.Models.HTMLTemplate_ListAll_Result
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Template</title>
+
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="~/Content/jquery-ui.theme.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+
+
+
+    <!-- TinyMCE Script Reference -->
+    @Scripts.Render("http://tinymce.cachefly.net/4.0/tinymce.min.js")
+    <!-- Script to wire up your TinyMCE editor -->
+    <script type="text/javascript">
+        // Initialize your tinyMCE Editor with your preferred options
+        tinyMCE.init({
+            // General options
+            mode: "textareas",
+            theme: "modern",
+            //editor_selector: "mceEditor",
+            toolbar: 'sizeselect | bold italic | fontselect |  fontsizeselect',
+
+            plugins: "code",
+            // Theme options
+            theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+            theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+            theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+            theme_advanced_buttons4: "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+
+            theme_advanced_toolbar_location: "top",
+            theme_advanced_toolbar_align: "left",
+            //theme_advanced_statusbar_location: "bottom",
+            theme_advanced_resizing: false,
+
+            // Example content CSS (should be your site CSS)
+            //   content_css: "css/example.css",
+            charLimit: 500000,
+
+            theme_advanced_disable: "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+            theme_advanced_disable: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+            theme_advanced_disable: "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+            theme_advanced_disable: "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+
+        });
+
+    </script>
+</head>
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">
+        Create Template
+    </div>
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+    <div class="col-md-12">
+        <fieldset>
+            <div>
+                @using (Html.BeginForm("Index", "HTMLTemplate", FormMethod.Post, new { @class = "col-md-12 CommonValidations", id = "HTForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.HtmlTemplateID)
+                    <input type='hidden' value="@Model.HtmlTemplateID" name="hdnHtmlTemplateID" id="hdnHtmlTemplateID" />
+                    <div class="col-md-12" style="height:10px;"></div>
+                    <div class="form-group">
+                        <label class="col-md-2">Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.HtmlName, new { @class = "form-control validate[required]", maxlength = "100", autocomplete = "off" })
+
+                        </div>
+                        <div class="col-md-7"></div>
+                    </div>
+                        <div class="col-md-12" style="height:10px;"></div>
+                        <div class="form-group" id="SubjectId">
+                            <label class="col-md-2">Subject</label>
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", maxlength = "500", autocomplete = "off" })
+                                @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-7"></div>
+                        </div>
+                        <div class="col-md-12" style="height:10px;"></div>
+                        <div class="form-group">
+                            <label class="col-md-2">Template For&nbsp;<span style="color:red;width:50px;">*</span></label>
+                            <div class="col-md-3">
+                                @Html.DropDownListFor(model => model.TemplateID, new SelectList(ViewBag.DDLTemplateID, "TemplateID", "Name", Model.TemplateID), "--Select--", new { @class = "form-control validate[required]", style = "background-color:#d8e1e7" })
+                            </div>
+                            <div class="col-md-7"></div>
+                        </div>
+                        <div class="col-md-12" style="height:10px;"></div>
+                        <div id="divISSMS" class="form-group">
+                            <label class="col-md-2">Type&nbsp;<span style="color:red;width:50px;">*</span></label>
+                            <label class="col-md-1">
+                                @for (int i = 0; i < 1; i++)
+                                {
+                                    {
+                                        if (Model != null && Model.IsSMS == true && Model.IsMemo == false)
+                                        {
+                                            <input type="radio" name="chk" id="chk" value="SMS" class="Redio" checked="checked" /><span> SMS  </span>
+                                        }
+                                        else if (Model == null)
+                                        {
+                                            <input type="radio" name="chk" id="chk" value="SMS" class="Redio" checked="checked" /><span> SMS  </span>
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" name="chk" id="chk" value="SMS" class="Redio" /><span> SMS  </span>
+                                        }
+                                    }
+                                }
+                            </label>
+                            <label class="col-md-1">
+                                @if (Model != null && Model.IsSMS == false && Model.IsMemo == false)
+                                {
+                                    <input type="radio" name="chk" id="chk" value="Email" class="Redio" checked="checked" /><span> Email </span>
+                                }
+                                else
+                                {
+                                    <input type="radio" name="chk" id="chk" value="Email" class="Redio" /><span> Email  </span>
+                                }
+                            </label>
+                            <label class="col-md-8">
+                                @if (Model != null && Model.IsSMS == false && Model.IsMemo == true)
+                                {
+                                    <input type="radio" name="chk" id="chk" value="Memo" class="Redio" checked="checked" /><span> Memo  </span>
+                                }
+                                else
+                                {
+                                    <input type="radio" name="chk" id="chk" value="Memo" class="Redio" /><span> Memo  </span>
+                                }
+                            </label>
+                        </div>
+                        <div class="col-md-12" style="height:10px;"></div>
+                        <div class="form-group">
+                            <label class="col-md-2">Dynamic Text</label>
+                            <div class="col-md-3">
+                                @Html.DropDownList("DynamicTextID", null, "--Select--", new { @class = "form-control", style = "background-color:#d8e1e7" })
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" value="Add in Template" id="Add" onclick="return false" class="btn-tgs" />
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" value="Add in Subject" id="AddSubject" onclick="return false" class="btn-tgs" formnovalidate maxlength="500" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="height:10px;"></div>
+                        <div class="form-group">
+                            <label class="col-md-2">Template&nbsp;<span style="color:red;width:50px;">*</span></label>
+                            <div class="col-md-12">
+                                <input type="hidden" id="issmsvalue" name="issmsvalue" />
+                                <input type="hidden" id="isEmailvalue" name="isEmailvalue" />
+                                <input type="hidden" id="isMemovalue" name="isMemovalue" />
+                                <input type="hidden" id="isHtmlName" name="isHtmlName" />
+                                <input type="hidden" id="isTemplateID" name="isTemplateID" />
+                                @if (Model != null)
+                                {
+                                    <input type="hidden" id="isHtmlTemplateID" name="isHtmlTemplateID" value="@Model.HtmlTemplateID" />
+                                    <input type="hidden" id="Status" name="Status" value="@Model.Status" />
+                                }
+                                @if (Model != null && Model.HtmlText != "")
+                                {
+                                    if (Model.Status == CONT.Document_Details)
+                                    {
+                                        @*@Html.TextAreaFor(model => model.SMSText, new { @onkeypress = "return isNumberKey(event)", Value = Model.HtmlText, @onkeyup = "countChar(this)", rows = "8", cols = "50", style = "background-color:#d8e1e7" })*@
+                                        
+                                        <input type="text" name="SMSText" id="SMSText" onkeypress="return isNumberKey(event)" onkeyup="countChar(this)" Value = @Model.HtmlText style="background-color:#d8e1e7; width:240px; height:175px; margin-left:15px;" rows="8" cols="50"/>
+                                        
+                                    }
+                                    else
+                                    {
+                                        @*@Html.TextAreaFor(model => model.SMSText, new { @onkeypress = "return isNumberKey(event)", Value = Model.HtmlText, @onkeyup = "countChar(this)", rows = "8", cols = "50", style = "background-color:#d8e1e7" })*@
+                                        
+                                        @Html.TextBoxFor(model => model.SMSText, new { Value = Model.HtmlText, style = "background-color:#d8e1e7; width:240px; height:175px; margin-left:15px;", rows = "8", cols = "50" })
+                                    }
+                                }
+                                else
+                                {
+                                    @*@Html.TextAreaFor(model => model.SMSText, new { @onkeypress = "return isNumberKey(event)", Value = "", @onkeyup = "countChar(this)", rows = "8", cols = "50", style = "background-color:#d8e1e7" })*@
+                                    <input type="text" name="SMSText" id="SMSText" onkeypress="return isNumberKey(event)" onkeyup="countChar(this)" style="background-color:#d8e1e7; width:200px; height:50px;" rows="8" cols="50" />
+                                }
+                                @if (Model != null && Model.Status == CONT.Document_Details)
+                                {
+                                    @Html.TextAreaFor(model => model.HtmlContent, new { @onkeypress = "return isNumberKey(event)", @class = "mceEditor", @id = "tinyText", Value = ViewData["check"], rows = "8", cols = "50", style = "background -color:#d8e1e7;height:300px;" })
+                                    @Html.TextAreaFor(model => model.RichText1FullHtml, new { Value = ViewData["viewSample"], @class = "mceEditor1", rows = "8", cols = "50", style = "background-color:#d8e1e7;height:300px;" })
+                                }
+                                    else
+                                    {
+                                        @Html.TextAreaFor(model => model.HtmlContent, new { @onkeypress = "return isNumberKey(event)", @class = "mceEditor", @id = "tinyText", Value = ViewData["check"], rows = "8", cols = "50", style = "background-color:#d8e1e7;height:300px;" })
+                                        @Html.TextAreaFor(model => model.RichText1FullHtml, new { Value = ViewData["viewSample"], @class = "mceEditor1", rows = "8", cols = "50", style = "background-color:#d8e1e7;height:300px;" })
+                                    }
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-10">
+                                    <div id="divmessage"></div>
+                                </div>
+                            </div>
+                        </div>
+                    if (Model.Status != null)
+                    {
+
+                        <div class="col-md-12" style="height:10px;"></div>
+                        <div class="col-md-12" style="height:10px;"></div>
+
+                        <div class="col-md-7">
+                            @Html.TextArea("ProcessRemark", "", 1, 1, new { @class = "col-md-12 footerbox validate[required]", placeholder = "ProcessRemark" })
+                        </div>
+                    }
+                    <div class="col-md-12" style="height:10px;"></div>
+
+                    <div class="col-md-12 padoff" style="text-align:right;">
+                        <input type="submit" value="Save" formaction="/HTMLTemplate/ViewSample" formmethod="post" id="Save" class="btn-tgs" />&nbsp;&nbsp;
+                        <input type="submit" value="View Sample" formaction="/HTMLTemplate/ViewEmailSample" formmethod="post" id="Save" class="btn-tgs CommonDetachValidation" />
+                    </div>
+                }
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:500px;">
+                    <div id='myModalContent'></div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#popup').click(function () {
+
+            var HtmlTemplateID = $("#hdnHtmlTemplateID").val();
+            
+            $.ajax({
+                url: "/HTMLTemplate/CommentResult?HtmlTemplateID=" + HtmlTemplateID,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                   // $("#NEW2").html(data);
+                    $("table.display").DataTable();
+                    event.preventDefault();
+                    return false;
+                },
+
+            });
+
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#mceu_53").hide();
+        $("#mceu_46").hide();
+        $("#mceu_14").hide();
+        $("#mceu_28").hide();
+        $('#SMSText').hide();
+
+        var a = $('#divISSMS input:radio:checked').val();
+
+
+        if (a == "SMS") {
+            //$('#IsMemo').checked = false;
+            $("#mceu_46").hide();
+            $('#SMSText').show();
+            $("#tinyText").val("");
+            $("#tinyText").hide();
+            $('#RichText1FullHtml').hide();
+            $(".mceEditor").hide();
+            $("#mceu_16").hide();
+            $("#mceu_13").hide();
+            $("#mceu_14").hide();
+            $("#mceu_28").hide();
+            $('#issmsvalue').val("SMS");
+            $('#isEmailvalue').val("");
+            $('#isMemovalue').val("");
+            var b = $('#SMSText')[0].attributes[0].nodeValue;
+            $('#SMSText').html(b);
+            $("#divmessage").html("Character Count :" + $('#SMSText').val().length);
+            $("#AddSubject").hide();
+            $("#SubjectId").hide();            
+            $("#mceu_4").hide();
+            
+        }
+        else if (a == "Email") {
+            //$('#IsMemo').checked = false;
+            $("#mceu_46").hide();
+            $("#tinyText").show();
+            $('#RichText1FullHtml').hide();
+            $('#SMSText').val("");
+            $('#SMSText').hide();
+            $(".mceEditor").show();
+            $("#mceu_13").show();
+            $("#mceu_16").show();
+            $("#mceu_14").hide();
+            $("#mceu_28").hide();
+            $('#issmsvalue').val("");
+            $('#isEmailvalue').val("Email");
+            $('#isMemovalue').val("");
+            var b = $('#tinyText')[0].attributes[0].nodeValue;
+            $('#tinyText').html(b);
+            $("#divmessage").hide();
+            $('#theme_advanced_buttons1').hide();
+            $("#AddSubject").show();
+            $("#SubjectId").show();
+            $("#mceu_4").show();
+
+        }
+        else if (a == "Memo") {
+            $("#mceu_46").hide();
+            //$('#IsSMS').checked = false;
+            $("#tinyText").show();
+            $('#RichText1FullHtml').hide();
+            $('#SMSText').val("");
+            $('#SMSText').hide();
+            $(".mceEditor").show();
+            $("#mceu_13").show();
+            $("#mceu_16").show();
+            $("#mceu_14").hide();
+            $("#mceu_28").hide();
+            $('#issmsvalue').val("");
+            $('#isEmailvalue').val("");
+            $('#isMemovalue').val("Memo");
+            var b = $('#tinyText')[0].attributes[0].nodeValue;
+            $('#tinyText').html(b);
+            $("#divmessage").hide();
+            $('#theme_advanced_buttons1').hide();
+            $("#AddSubject").show();
+            $("#SubjectId").show();
+            $("#mceu_4").show();
+
+        }
+        $("#mceu_14").hide();
+        $("#mceu_28").hide();
+        $("#mceu_46").hide();
+    });
+    $('#View').click(function () {
+        $('#RichText1FullHtml').show();
+        var b = $('#RichText1FullHtml')[0].attributes[0].nodeValue;
+        var cd = $(b).text().replace(/\[this\]/g, '<b>')
+        $('#RichText1FullHtml').html(cd);
+    });
+
+    $('#Add').click(function () {
+
+        var p = $('#divISSMS input:radio:checked').val();
+        if (p == "Email") {
+            if (tinyMCE.editors != null && tinyMCE.editors.length > 0) {
+                var a = "{" + $('#DynamicTextID').val() + "}";
+                if (a != null) {
+                    tinyMCE.activeEditor.setContent(tinyMCE.activeEditor.getContent().trim() + a, { format: 'text' });
+                }
+            }
+        }
+        else if (p == "SMS") {
+            var a = "{" + $('#DynamicTextID').val() + "}";
+            if (a != null) {
+                var message = $('#SMSText').val();
+                var r = $("<div/>").html(message).text();
+                var sdf = r.replace("<p>", "").replace("</p>", "");
+                $('#SMSText').val(sdf + a);
+            }
+        }
+        else if (p == "Memo") {
+            if (tinyMCE.editors != null && tinyMCE.editors.length > 0) {
+                var a = "{" + $('#DynamicTextID').val() + "}";
+                if (a != null) {
+                    tinyMCE.activeEditor.setContent(tinyMCE.activeEditor.getContent().trim() + a, { format: 'text' });
+                }
+            }
+        }
+    });
+
+
+    $('#AddSubject').click(function () {
+        var a = "{" + $('#DynamicTextID').val() + "}";
+        if (a != null) {
+            var Subject = $("#Subject").val();
+            $("#Subject").val(Subject + a);
+        }
+    });
+    $('#Save').click(function () {
+        var x = $("#HtmlName").val();
+        var y = $("#TemplateID").val();
+        $("#isHtmlName").val(x);
+        $("#isTemplateID").val(y);
+    });
+    $('.Redio').click(function () {
+
+        var a = $('#divISSMS input:radio:checked').val();
+
+        if (a == "SMS") {
+            //$('#IsMemo').checked = false;
+            $('#SMSText').show();
+            $("#tinyText").val("");
+            $("#tinymce").val("");
+            $("#tinyText").hide();
+            $('#RichText1FullHtml').hide();
+            $(".mceEditor").hide();
+            $("#mceu_16").hide();
+            $("#mceu_13").hide();
+            $("#mceu_14").hide();
+            $("#mceu_28").hide();
+            $('#issmsvalue').val("SMS");
+            $('#isEmailvalue').val("");
+            $("#divmessage").show();
+            $("#AddSubject").hide();
+            $("#SubjectId").hide();
+            $("#mceu_4").hide();
+
+        }
+        else if (a == "Email") {
+            //$('#IsMemo').checked = false;
+            $("#tinyText").show();
+            $('#RichText1FullHtml').hide();
+            $('#SMSText').hide();
+            $("#tinymce").val("");
+            $('#SMSText').val("");
+            $(".mceEditor").hide();
+            $("#mceu_16").show();
+            $("#mceu_13").show();
+            $("#mceu_14").hide();
+            $("#mceu_28").hide();
+            $('#issmsvalue').val("");
+            $('#isEmailvalue').val("Email");
+            $('#isMemovalue').val("");
+            $("#divmessage").hide();
+            $("#AddSubject").show();
+            $("#SubjectId").show();
+
+            $("#mceu_4").show();
+        }
+        else if (a == "Memo") {
+            //$('#IsSMS').checked = false;
+            $("#tinyText").show();
+            $('#RichText1FullHtml').hide();
+            $('#SMSText').hide();
+            $("#tinymce").val("");
+            $('#SMSText').val("");
+            $(".mceEditor").hide();
+            $("#mceu_16").show();
+            $("#mceu_13").show();
+            $("#mceu_14").hide();
+            $("#mceu_28").hide();
+            $('#issmsvalue').val("");
+            $('#isEmailvalue').val("");
+            $('#isMemovalue').val("Memo");
+            $("#divmessage").hide();
+            $("#AddSubject").show();
+            $("#SubjectId").show();
+            $("#mceu_4").show();
+
+        }
+    });
+    function countChar(cout) {
+
+        var id = "#" + cout.id;
+        $("#divmessage").html("Character Count :" + $(id).val().length);
+    };
+    $("#mceu_14").hide();
+    $("#mceu_28").hide();
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#").hide();
+        $("#HTForm").validationEngine(
+              'attach', {
+                  promptPosition: "bottomLeft",
+                  scroll: false,
+                  autoHidePrompt: true,
+                  autoHideDelay: 3500,
+                  fadeDuration: 0.3,
+                  focusFirstField: false,
+                  MaxErrorsPerField: 1
+              });
+    });
+</script>
+<style>
+    #mceu_14-body {
+        display: none;
+    }
+
+    #mceu_28-body {
+        display: none;
+    }
+
+    #mceu_28-body {
+        display: none;
+    }
+
+    #mceu_46 {
+        display: none;
+    }
+
+    #mceu_53 {
+        display: none;
+    }
+
+    #mceu_67 {
+        display: none;
+    }
+</style>

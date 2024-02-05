@@ -1,0 +1,180 @@
+﻿@model TMP.Models.ScreeningConfig
+@{
+    ViewBag.Title = "Screening Config";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">Screening Config</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @using (Html.BeginForm("ScreeningConfig", "Country", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "UMForm" }))
+            {
+        @Html.HiddenFor(model => model.CategoryID)
+        @Html.HiddenFor(model => model.CategoryDetID)
+        @Html.HiddenFor(model => model.ParentCategoryDetID)
+        <div class="form-group">
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Category&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control validate[required] ", maxlength = "100", autocomplete = "off" })
+            </div>
+            <div class="col-md-4"></div>
+
+        </div>
+            <div class="form-group">
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Remark&nbsp;<span style="color:red;width:50px;"></span></label>
+                <div class="col-md-5">
+                    @Html.TextBoxFor(model => model.Remark, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+
+            @*<div class="form-group">
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput"> Low</label>
+                <label class="col-md-1">From</label>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.LowFromRate, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+                <label class="col-md-1">To</label>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.LowToRate, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput"> Moderate</label>
+                <label class="col-md-1">From</label>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.ModFromRate, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+                <label class="col-md-1">To</label>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.ModToRate, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput"> High</label>
+                <label class="col-md-1">From</label>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.HighFromRate, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+                <label class="col-md-1">To</label>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.HighToRate, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput"> Very High</label>
+                <label class="col-md-1">From</label>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.VHighFromRate, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+                <label class="col-md-1">To</label>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.VHighToRate, new { @class = "form-control", maxlength = "100", autocomplete = "off" })
+                </div>
+            </div>*@
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <div class="col-md-3"></div>
+                <div class="col-md-5" style="text-align:right">
+                    <button id="catAdd" name="catAdd" value="catAdd" type="submit" class="btn CommonAttachValidation btn-tgs">Add</button>
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            @Html.Action("GridScreeningConfig", "Country")
+            <div class="col-md-12" style="height:10px;"></div>
+            @Html.Action("GridCategoryDetail", "Country")
+    }
+</div>
+<div class="modal fade" id="CategoryModal" role="dialog">
+    <div class="modal-dialog " style="width:1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:450px;">
+                <div id='Categoryview'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".btn-Cat").click(function () {
+        debugger;
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var CategoryID = this.id;
+        var CategoryDetID = $(this).val();
+        $.ajax({
+            url: "/Country/addCategoryChild?CategoryID=" + CategoryID + "&CategoryDetID=" + CategoryDetID,
+            contentType: "application/json; charset=utf-8",
+            data: "{}",
+            datatype: "json",
+            success: function (data) {
+                $('#Categoryview').html(data);
+                $('#process').modal('hide');
+                $('#CategoryModal').modal('show');
+                return false;
+            },
+        });
+        return false;
+    });
+    $(".btn-Edit").click(function () {
+        debugger;
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var CategoryID = this.id;
+        var CategoryDetID = $(this).val();
+        $.ajax({
+            url: "/Country/addCategoryChild?CategoryID=" + CategoryID + "&CategoryDetID=" + CategoryDetID + "&Edit=Edit",
+            contentType: "application/json; charset=utf-8",
+            data: "{}",
+            datatype: "json",
+            success: function (data) {
+                $('#Categoryview').html(data);
+                $('#process').modal('hide');
+                $('#CategoryModal').modal('show');
+                return false;
+            },
+        });
+        return false;
+    });
+    $(".btn-Delet").click(function () {
+        debugger;
+        $("#processMsg").html("Please wait...");
+        $('#process').modal('show');
+        var CategoryID = this.id;
+        var CategoryDetID = $(this).val();
+        $.ajax({
+            url: "/Country/addCategoryChild?CategoryID=" + CategoryID + "&CategoryDetID=" + CategoryDetID + "&Delete=Delete",
+            contentType: "application/json; charset=utf-8",
+            data: "{}",
+            datatype: "json",
+            success: function (data) {
+                $('#process').modal('hide');
+                setTimeout(function () {
+                    location.reload();
+                }, 500);
+                return false;
+            },
+        });
+        return false;
+    });
+</script>
+<script>
+
+
+</script>
+

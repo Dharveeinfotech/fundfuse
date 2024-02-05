@@ -1,0 +1,548 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Bulk Invoice View";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+    bool btnVisible = true;
+    string _class = "";
+}
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">BULK INVOICE VIEW</div>
+    <div class="col-md-12" style="height:10px;"></div>
+
+    @if (ViewBag.GetViewData != null && ViewBag.GetViewData.Count > 0)
+    {
+        using (Html.BeginForm("BulkInvoiceViewEdit", "InvoiceCommon", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations" }))
+        {
+            <div class="col-md-12 horizontal-scroll">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th>Invoice Number</th>
+                            <th>Currency</th>
+                            <th>Invoice Date</th>
+                            <th>Invoice Due Date</th>
+
+                            @if (ViewBag.CustomerTypeID == CONT.SupplierCustomerTypeID)
+                            {
+                                <th>Buyer Name</th> }
+                            else if (ViewBag.CustomerTypeID == CONT.ObligorCustomerTypeID)
+                            {
+                                <th>Supplier Name</th> }
+                            else if (ViewBag.CustomerTypeID == CONT.BuyerCustomerTypeID)
+                            {
+                                <th>Supplier Name</th> }
+                            else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.FType)
+                            {
+                                <th>Supplier Name</th> }
+                            else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.RType)
+                            {
+                                <th>Supplier Name</th> }
+                            else
+                            {
+                                <th></th>
+                            }
+
+
+
+                            <th>Amount</th>
+                            <th>Attachment</th>
+                            <th>Comment</th>
+
+
+                            @if (ViewBag.CustomerTypeID == CONT.SupplierCustomerTypeID)
+                            {
+                                <th>Buyer Name</th>
+                                <th>Due Date</th>
+                                <th>Attachment</th>
+                                if (ViewBag.ProgramType == CONT.RType)
+                                {
+                                    <th>Tenor</th>
+                                }
+                            }
+                            else if (ViewBag.CustomerTypeID == CONT.ObligorCustomerTypeID)
+                            {
+                                <th>Supplier Name</th>
+                                <th>Due Date</th>
+                                <th>Attachment</th>
+                                if (ViewBag.ProgramType == CONT.RType)
+                                {
+                                    <th>Tenor</th>
+                                }
+                            }
+                            else if (ViewBag.CustomerTypeID == CONT.BuyerCustomerTypeID)
+                            {
+                                <th>Supplier Name</th>
+                                <th>Due Date</th>
+                                <th>Attachment</th>
+                                if (ViewBag.ProgramType == CONT.RType)
+                                {
+                                    <th>Tenor</th>
+                                }
+                            }
+                            else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.FType)
+                            {
+                                <th>Supplier Name</th>
+                                <th>Due Date</th>
+                                <th>Attachment</th>
+                                if (ViewBag.ProgramType == CONT.RType)
+                                {
+                                    <th>Tenor</th>
+                                }
+                            }
+                            else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.RType)
+                            {
+                                <th>Supplier Name</th>
+                                <th>Due Date</th>
+                                <th>Attachment</th>
+                                if (ViewBag.ProgramType == CONT.RType)
+                                {
+                                    <th>Tenor</th>
+                                }
+                            }
+                            else
+                            {
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                if (ViewBag.ProgramType == CONT.RType)
+                                {
+                                    <th></th>
+                                }
+                            }
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+
+                    <tbody>
+                        @foreach (var item1 in ViewBag.GetViewData)
+                        {
+                            <tr>
+                                <td>@item1.InvoiceNo</td>
+                                <td>@item1.CurrencyCode</td>
+                                <td>@Convert.ToDateTime(item1.InvoiceDate).ToString("dd-MMM-yyyy")</td>
+                                <td>@Convert.ToDateTime(item1.DueDate).ToString("dd-MMM-yyyy")</td>
+
+                                @if (ViewBag.CustomerTypeID == CONT.SupplierCustomerTypeID)
+                                {
+                                    <td>@item1.ObligorName</td> }
+                                else if (ViewBag.CustomerTypeID == CONT.ObligorCustomerTypeID)
+                                {
+                                    <td>@item1.SupplierName</td> }
+                                else if (ViewBag.CustomerTypeID == CONT.BuyerCustomerTypeID)
+                                {
+                                    <td>@item1.SupplierName</td> }
+
+                                else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.FType)
+                                {
+                                    <td>@item1.SupplierName</td> }
+                                else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.RType)
+                                {
+                                    <td>@item1.ExporterName</td> }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                <td>@item1.CurrencyCode @string.Format("{0:0,0.00}", item1.Amt)</td>
+                                <td><a href='~/Files/UploadedTempInvoiceFiles/@item1.Attach' target="_blank">Invoice</a></td>
+                                <td>
+                                    @item1.Comment
+                                    <input type="hidden" name="IsCompanyErr_@item1.InvTempDetID" id="IsCompanyErr_@item1.InvTempDetID" value="@Convert.ToInt16(item1.IsCompanyErr)" />
+                                    <input type="hidden" name="IsAttachErr_@item1.InvTempDetID" id="IsAttachErr_@item1.InvTempDetID" value="@Convert.ToInt16(item1.IsAttachErr)" />
+                                    <input type="hidden" name="IsDueDateErr_@item1.InvTempDetID" id="IsDueDateErr_@item1.InvTempDetID" value="@Convert.ToInt16(item1.IsDueDateErr)" />
+                                    <input type="hidden" name="IsTenorErr_@item1.InvTempDetID" id="IsTenorErr_@item1.InvTempDetID" value="@Convert.ToInt16(item1.IsTenorErr)" />
+
+                                    <input type="hidden" name="AttachFile_@item1.InvTempDetID" id="AttachFile_@item1.InvTempDetID" value="@Convert.ToString(item1.Attach)" />
+                                    <input type="hidden" name="GetDueDate_@item1.InvTempDetID" id="GetDueDate_@item1.InvTempDetID" value="@Convert.ToString(item1.DueDate)" />
+                                    <input type="hidden" name="GetTenor_@item1.InvTempDetID" id="GetTenor_@item1.InvTempDetID" value="@Convert.ToInt16(item1.Tenor)" />
+                                    <input type="hidden" name="GetObligorName_@item1.InvTempDetID" id="GetObligorName_@item1.InvTempDetID" value="@Convert.ToString(item1.ObligorName)" />
+                                    <input type="hidden" name="GetSupplierName_@item1.InvTempDetID" id="GetSupplierName_@item1.InvTempDetID" value="@Convert.ToString(item1.SupplierName)" />
+                                    <input type="hidden" name="GetExporterName_@item1.InvTempDetID" id="GetExporterName_@item1.InvTempDetID" value="@Convert.ToString(item1.ExporterName)" />
+                                </td>
+
+
+                                @if (ViewBag.CustomerTypeID == CONT.SupplierCustomerTypeID)
+                                {
+                                    <td>
+                                        @Html.DropDownListFor(model => model.ObligorName, new SelectList(ViewBag.DDLCustomerID, "CompanyName", "CompanyName", item1.ObligorName),
+                                        "--Select--", new { @class = "form-control validate[required] " + "cmbEnable_" + item1.InvTempDetID + "" })
+                                    </td>
+                                    <td>
+                                        <input id="DueDate_@item1.InvTempDetID" name="DueDate_@item1.InvTempDetID" type="text" placeholder="" class="form-control formattedCalender validate[required] DisableItem" autocomplete="off" value="@Convert.ToDateTime(item1.DueDate).ToString("dd-MMM-yyyy")">
+                                    </td>
+                                    <td>
+                                        <input type="file" name="Attach_@item1.InvTempDetID" id="Attach_@item1.InvTempDetID" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.pdf)$" class="validate[required] onlyPDFfile" />
+                                    </td>
+                                    if (ViewBag.ProgramType == CONT.RType)
+                                    {
+                                        <td>
+                                            <input id="Tenor_@item1.InvTempDetID" name="Tenor_@item1.InvTempDetID" type="text" placeholder="" class="form-control num validate[required] DisableItem" autocomplete="off" value="@Convert.ToInt16(item1.Tenor)">
+                                        </td>
+                                    }
+                                }
+                                else if (ViewBag.CustomerTypeID == CONT.ObligorCustomerTypeID)
+                                {
+                                    <td>
+                                        @Html.DropDownListFor(model => model.SupplierName, new SelectList(ViewBag.DDLCustomerID, "CompanyName", "CompanyName", item1.SupplierName),
+                                       "--Select--", new { @class = "form-control validate[required] " + "cmbEnable_" + item1.InvTempDetID + "" })
+                                    </td>
+                                    <td>
+                                        <input id="DueDate_@item1.InvTempDetID" name="DueDate_@item1.InvTempDetID" type="text" placeholder="" class="form-control formattedCalender validate[required] DisableItem" autocomplete="off" value="@Convert.ToDateTime(item1.DueDate).ToString("dd-MMM-yyyy")">
+                                    </td>
+                                    <td>
+                                        <input type="file" name="Attach_@item1.InvTempDetID" id="Attach_@item1.InvTempDetID" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.pdf)$" class="validate[required] onlyPDFfile DisableItem" />
+                                    </td>
+                                    if (ViewBag.ProgramType == CONT.RType)
+                                    {
+                                        <td>
+                                            <input id="Tenor_@item1.InvTempDetID" name="Tenor_@item1.InvTempDetID" type="text" placeholder="" class="form-control num validate[required] DisableItem" autocomplete="off" value="@Convert.ToInt16(item1.Tenor)">
+                                        </td>
+                                    }
+                                }
+                                else if (ViewBag.CustomerTypeID == CONT.BuyerCustomerTypeID)
+                                {
+                                    <td>
+                                        @Html.DropDownListFor(model => model.ExporterName, new SelectList(ViewBag.DDLCustomerID, "CompanyName", "CompanyName", item1.ExporterName),
+                                       "--Select--", new { @class = "form-control validate[required] " + "cmbEnable_" + item1.InvTempDetID + "" })
+                                    </td>
+                                    <td>
+                                        <input id="DueDate_@item1.InvTempDetID" name="DueDate_@item1.InvTempDetID" type="text" placeholder="" class="form-control formattedCalender validate[required] DisableItem" autocomplete="off" value="@Convert.ToDateTime(item1.DueDate).ToString("dd-MMM-yyyy")">
+                                    </td>
+                                    <td>
+                                        <input type="file" name="Attach_@item1.InvTempDetID" id="Attach_@item1.InvTempDetID" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.pdf)$" class="validate[required] onlyPDFfile DisableItem" />
+                                    </td>
+                                    if (ViewBag.ProgramType == CONT.RType)
+                                    {
+                                        <td>
+                                            <input id="Tenor_@item1.InvTempDetID" name="Tenor_@item1.InvTempDetID" type="text" placeholder="" class="form-control num validate[required] DisableItem" autocomplete="off" value="@Convert.ToInt16(item1.Tenor)">
+                                        </td>
+                                    }
+                                }
+
+
+
+                                else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.FType)
+                                {
+                                    <td>
+                                        @Html.DropDownListFor(model => model.SupplierName, new SelectList(ViewBag.DDLCustomerID, "CompanyName", "CompanyName", item1.SupplierName),
+                                       "--Select--", new { @class = "form-control validate[required] " + "cmbEnable_" + item1.InvTempDetID + "" })
+                                    </td>
+                                    <td>
+                                        <input id="DueDate_@item1.InvTempDetID" name="DueDate_@item1.InvTempDetID" type="text" placeholder="" class="form-control formattedCalender validate[required] DisableItem" autocomplete="off" value="@Convert.ToDateTime(item1.DueDate).ToString("dd-MMM-yyyy")">
+                                    </td>
+                                    <td>
+                                        <input type="file" name="Attach_@item1.InvTempDetID" id="Attach_@item1.InvTempDetID" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.pdf)$" class="validate[required] onlyPDFfile DisableItem" />
+                                    </td>
+                                    if (ViewBag.ProgramType == CONT.RType)
+                                    {
+                                        <td>
+                                            <input id="Tenor_@item1.InvTempDetID" name="Tenor_@item1.InvTempDetID" type="text" placeholder="" class="form-control num validate[required] DisableItem" autocomplete="off" value="@Convert.ToInt16(item1.Tenor)">
+                                        </td>
+                                    }
+                                }
+                                else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.RType)
+                                {
+                                    <td>
+                                        @Html.DropDownListFor(model => model.ExporterName, new SelectList(ViewBag.DDLCustomerID, "CompanyName", "CompanyName", item1.ExporterName),
+                                       "--Select--", new { @class = "form-control validate[required] " + "cmbEnable_" + item1.InvTempDetID + "" })
+                                    </td>
+                                    <td>
+                                        <input id="DueDate_@item1.InvTempDetID" name="DueDate_@item1.InvTempDetID" type="text" placeholder="" class="form-control formattedCalender validate[required] DisableItem" autocomplete="off" value="@Convert.ToDateTime(item1.DueDate).ToString("dd-MMM-yyyy")">
+                                    </td>
+                                    <td>
+                                        <input type="file" name="Attach_@item1.InvTempDetID" id="Attach_@item1.InvTempDetID" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.pdf)$" class="validate[required] onlyPDFfile DisableItem" />
+                                    </td>
+                                    if (ViewBag.ProgramType == CONT.RType)
+                                    {
+                                        <td>
+                                            <input id="Tenor_@item1.InvTempDetID" name="Tenor_@item1.InvTempDetID" type="text" placeholder="" class="form-control num validate[required] DisableItem" autocomplete="off" value="@Convert.ToInt16(item1.Tenor)">
+                                        </td>
+                                    }
+                                }
+
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    if (ViewBag.ProgramType == CONT.RType)
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                                <td>
+                                    <input type="checkbox" id="chk_@item1.InvTempDetID" name="chk_@item1.InvTempDetID" class="DisableItem" />
+                                </td>
+                                @if (item1.IsGenerated == false && item1.MstIsDeleted == false)
+                                {
+                                    <td>@Html.ActionLink("Delete", "BulkInvoiceView", new { InvTempDetID = item1.InvTempDetID, ProgramType = item1.ProgramType, InvTempID = item1.InvTempID })</td>
+                                }
+                                else
+                                {
+                                    <td>Delete</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12" style="text-align:right;">
+                    <input type="hidden" value="@ViewBag.InvTempID" id="InvTempID" name="InvTempID" />
+                    <input type="hidden" value="@ViewBag.ProgramType" id="ProgramType" name="ProgramType" />
+                    <input type="submit" name="btnSave" id="btnSave" value="Save" class="CommonValidations btn btn-tgs" /> &nbsp; &nbsp;
+                    <input type="submit" name="btnBack1" id="btnBack1" value="Back" class="btn btn-tgs" />
+                </div>
+            </div>
+
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("BulkInvoiceView", "InvoiceCommon", FormMethod.Post, new { @class = "col-md-12 padoff" }))
+        {
+            int i = 0;
+            <div class="panel-group" id="accordion">
+                @if (ViewBag.ParentData != null && ViewBag.ParentData.Count > 0)
+                {
+                    foreach (var item in ViewBag.ParentData)
+                    {
+                        <input type="hidden" value="@item.InvTempID" id="InvTempID" name="InvTempID" />
+                        <input type="hidden" value="@item.ProgramType" id="ProgramType" name="ProgramType" />
+                        <div class="panel panel-default" id="panel_@i">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-target="#collapseOne_@i" style="cursor:pointer;">
+                                        <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                                        @item.ParentName
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne_@i" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+                                        <table id="example_@i" class="display" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr class="bgspr">
+                                                    <th>Invoice Number</th>
+                                                    <th>Currency</th>
+                                                    <th>Invoice Date</th>
+                                                    <th>Invoice Due Date</th>
+
+                                                    @if (ViewBag.CustomerTypeID == CONT.SupplierCustomerTypeID)
+                                                    {
+                                                        <th>Buyer Name</th> }
+                                                    else if (ViewBag.CustomerTypeID == CONT.ObligorCustomerTypeID)
+                                                    {
+                                                        <th>Supplier Name</th> }
+                                                    else if (ViewBag.CustomerTypeID == CONT.BuyerCustomerTypeID)
+                                                    {
+                                                        <th>Supplier Name</th> }
+                                                    else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.FType)
+                                                    {
+                                                        <th>Supplier Name</th> }
+                                                    else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.RType)
+                                                    {
+                                                        <th>Supplier Name</th> }
+                                                    else
+                                                    {
+                                                        <th></th>
+                                                    }
+
+                                                    <th>Amount</th>
+                                                    <th>Attachment</th>
+                                                    <th>Comment</th>
+                                                    <th>Delete</th>
+                                                </tr>
+
+                                            <tbody>
+                                                @foreach (var item1 in ViewBag.ChildData)
+                                                {
+                                                    if (item.InvTempID == item1.InvTempID && item.SeqNo == item1.SeqNo)
+                                                    {
+                                                        if (@item1.IsGenerated == false && @item1.MstIsDeleted == true)
+                                                        {
+                                                            btnVisible = false;
+                                                        }
+                                                        else if (@item1.IsGenerated == true && @item1.MstIsDeleted == true)
+                                                        {
+                                                            btnVisible = false;
+                                                        }
+                                                        else if (@item1.IsGenerated == true && @item1.MstIsDeleted == false)
+                                                        {
+                                                            btnVisible = false;
+                                                        }
+                                                        else if (@item1.IsGenerated != null && @item1.Comment != "")
+                                                        {
+                                                            btnVisible = false;
+                                                        }
+
+                                                        <tr>
+                                                            <td>@item1.InvoiceNo</td>
+                                                            <td>@item1.CurrencyCode</td>
+                                                            <td>@Convert.ToDateTime(item1.InvoiceDate).ToString("dd-MMM-yyyy")</td>
+                                                            <td>@Convert.ToDateTime(item1.DueDate).ToString("dd-MMM-yyyy")</td>
+
+                                                            @if (ViewBag.CustomerTypeID == CONT.SupplierCustomerTypeID)
+                                                            {
+                                                                <td>@item1.ObligorName</td> }
+                                                            else if (ViewBag.CustomerTypeID == CONT.ObligorCustomerTypeID)
+                                                            {
+                                                                <td>@item1.SupplierName</td> }
+
+                                                            else if (ViewBag.CustomerTypeID == CONT.BuyerCustomerTypeID)
+                                                            {
+                                                                <td>@item1.SupplierName</td> }
+                                                            else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.FType)
+                                                            {
+                                                                <td>@item1.SupplierName</td> }
+
+                                                            else if (ViewBag.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && ViewBag.ProgramType == CONT.RType)
+                                                            {
+                                                                <td>@item1.ExporterName</td> }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
+
+                                                            <td>@item1.CurrencyCode @string.Format("{0:0,0.00}", item1.Amt)</td>
+                                                            <td><a href='~/Files/UploadedTempInvoiceFiles/@item1.Attach' target="_blank">Invoice</a></td>
+                                                            <td>@item1.Comment</td>
+                                                            @if (item1.IsGenerated == false && item1.MstIsDeleted == false)
+                                                            {
+                                                                <td>@Html.ActionLink("Delete", "BulkInvoiceView", new { InvTempDetID = item1.InvTempDetID, ProgramType = item1.ProgramType, InvTempID = item1.InvTempID })</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>Delete</td>
+                                                            }
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        i++;
+                    }
+                }
+            </div>
+            <div class="col-md-12" style="height:15px;"></div>
+            <div class="form-group">
+                <div class="col-md-8"></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3" style="text-align:right;">
+                    @if (ViewBag.ParentData != null && ViewBag.ParentData.Count > 0)
+                    {
+                        <button id="submit" name="submit" value="submit" type="submit" class="btn btn-tgs">Submit</button>
+                    }
+                    <button id="btnBack" name="btnBack" value="btnBack" type="submit" class="btn btn-tgs">Back</button>
+                </div>
+            </div>
+        }
+    }
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+        });
+    });
+
+    $("#btnBack, #btnBack1").click(function () {
+        var strProgramType = $("#ProgramType").val();
+        if (strProgramType == "F")
+        { document.location = '@Url.Action("BulkInvoiceUpload", "InvoiceCommon", new { ProgramType = "F" })'; }
+        else
+        {
+            document.location = '@Url.Action("BulkInvoiceUpload", "InvoiceCommon", new { ProgramType = "R" })';
+        }
+
+        return false;
+    });
+    if ('@btnVisible' == "False") {
+        $("#submit").attr("disabled", "disabled");
+    }
+    else {
+        $("#submit").removeAttr("disabled", "disabled");
+    }
+    function toggleIcon(e) {
+        $(e.target)
+            .prev('.panel-heading')
+            .find(".more-less")
+            .toggleClass('glyphicon-plus glyphicon-minus');
+    }
+    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    $('.panel-group').on('shown.bs.collapse', toggleIcon);
+
+
+    $(".DisableItem").each(function () {
+        var ID = $(this).attr("id");
+        var value = $(this).val();
+        var InvID = ID.split('_')[1];
+
+        $(".cmbEnable_" + InvID).attr("disabled", "disabled");
+        $("#DueDate_" + InvID).attr("disabled", "disabled");
+        $("#Attach_" + InvID).attr("disabled", "disabled");
+
+        $("#Tenor_" + InvID).attr("disabled", "disabled");
+
+        $("#chk_" + InvID).prop("checked", false);
+        $("#btnSave").attr("disabled", "disabled");
+    });
+
+    $(".DisableItem").on("change", function () {
+        var ID = $(this).attr("id");
+        var value = $(this).val();
+        var InvID = ID.split('_')[1];
+        if ($("#chk_" + InvID).is(':checked')) {
+            var IsCompanyErr = $("#IsCompanyErr_" + InvID).val();
+            var IsAttachErr = $("#IsAttachErr_" + InvID).val();
+            var IsDueDateErr = $("#IsDueDateErr_" + InvID).val();
+            var IsFundReqDateErr = $("#IsFundReqDateErr_" + InvID).val();
+            var IsTenorErr = $("#IsTenorErr_" + InvID).val();
+
+            if (IsAttachErr == "1") {
+                $("#Attach_" + InvID).removeAttr("disabled", "disabled");
+                $("#btnSave").removeAttr("disabled", "disabled");
+            }
+            if (IsDueDateErr == "1") {
+                $("#DueDate_" + InvID).removeAttr("disabled", "disabled");
+                $("#btnSave").removeAttr("disabled", "disabled");
+            }
+            if (IsCompanyErr == "1") {
+                $(".cmbEnable_" + InvID).removeAttr("disabled", "disabled");
+                $("#btnSave").removeAttr("disabled", "disabled");
+            }
+            if (IsCompanyErr == "1") {
+                $("#Tenor_" + InvID).removeAttr("disabled", "disabled");
+                $("#btnSave").removeAttr("disabled", "disabled");
+            }
+
+            $("#chk_" + InvID).prop("checked", true);
+        }
+        else {
+            $(".cmbEnable_" + InvID).attr("disabled", "disabled");
+            $("#DueDate_" + InvID).attr("disabled", "disabled");
+            $("#Attach_" + InvID).attr("disabled", "disabled");
+            $("#Tenor_" + InvID).attr("disabled", "disabled");
+
+            $("#btnSave").attr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", false);
+        }
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .form-control {
+        width: auto;
+    }
+</style>

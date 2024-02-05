@@ -1,0 +1,57 @@
+﻿
+@using (Html.BeginForm("ChangeProfilePicture", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div style="height: 143px !important;width: 469px;background-color: white;position: absolute;top: 150px;left: 220px;">
+        <div class="col-md-12" style="background-color:white;">
+            <div class="col-md-12"></div>
+            <div class="col-md-12 createusertitle" style="margin-top:15px">Change Profile Picture</div>
+            <div><span id="flErrorMessage"></span> </div>
+           
+        </div>
+        <div class="col-md-12">
+            <input id="file" name="file" type="file" placeholder="Please select .jpg or .png file" class="form-control" >
+        </div>
+
+        <div class="col-md-12" style="top: 20px;">
+            <button id="btnChange" type="submit" name="btnChange" onclick="return checkFile();" class="btn-tgs">Change</button> &nbsp;
+            <button id="btnClose" name="btnClose" onclick="return HideDialog1();" class="btn-tgs">Close</button>
+        </div>
+    </div>
+
+}
+
+<script type="text/javascript">
+
+    $("#file").change(function () {
+        $('#flErrorMessage').text('');
+    });
+
+    function checkFile() {
+        var FileName = document.getElementById("file").value;
+        var fileextension = FileName.substr(FileName.lastIndexOf('.') + 1);
+        
+        var extension = FileName.split('.')[1];
+        
+        if (FileName == '' || (extension.toLowerCase() != 'jpg' && extension.toLowerCase() != 'jpeg' && extension.toLowerCase() != 'png')) {
+            $('#flErrorMessage').css("color", "red");
+            $('#flErrorMessage').text('Please select a .JPG or .PNG file');
+            return false;
+        }
+        else
+        {
+            //return false;
+            return true;
+        }
+    }
+
+    function HideDialog1() {
+        $("#overlay1").hide();
+        $("#dialog1").fadeOut(300);
+        return false;
+    }
+
+</script>
+

@@ -1,0 +1,199 @@
+﻿@model TMP.Models.DocumentMaster_ListAll_Result
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<!-- main container -->
+<div class="col-md-12 div-border padoff">
+
+    <div class="col-md-12 createusertitle">
+        Document Details
+    </div>
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+    <div class="col-md-12" style="height:5px;"> </div>
+
+    <div class="container">
+        @using (Html.BeginForm("Detailsapprove", "mDocumentMasters", FormMethod.Post, new { @class = "col-md-12", @id = "DMCForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.DocumentID)
+            @Html.HiddenFor(model => model.DocumentProcessHistoryID)
+            @Html.HiddenFor(model => model.Status)
+            <input type='hidden' value="@Model.DocumentID" name="hdnDocumentID" id="hdnDocumentID" />
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Document Name</label>
+                <div class="col-md-7">
+                    @Html.DisplayFor(model => model.DocumentName)
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Document Description</label>
+                <div class="col-md-7">
+                    @Html.DisplayFor(model => model.DocumentDesc)
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Admin Document</label>
+                <div class="col-md-7">
+                    @Html.DisplayFor(model => model.IsUserDoc)
+                </div>
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Company Document</label>
+                <div class="col-md-7">
+                    @Html.DisplayFor(model => model.IsInvestor)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-7">
+                    <table>
+                        <tr>
+                            <th class="col-md-1 ">
+                                Select
+                            </th>
+                            <th class="col-md-3 ">
+                                Document for
+                            </th>
+                            <th class="col-md-3 ">
+                                Attachment
+                            </th>
+                            @foreach (var item in ViewBag.lstCustomerTypeIDList)
+                            {
+                            <tr>
+                                <td class="col-md-1 listtext">
+                                    @{
+                                        bool Found = false;
+                                        foreach (var item1 in ViewBag.lstCustomerTypeIDList)
+                                        {
+                                            if (item.CustomerTypeID == item1.CustomerTypeID)
+                                            {
+                                                Found = true;
+                                                if (item1.IsActive == true)
+                                                {
+                                                    <input type="checkbox" id="chkBox[]" name="chkBox[]" class="checkbox" value="@item.CustomerTypeID" checked="checked" disabled="disabled" />
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" id="chkBox[]" name="chkBox[]" class="checkbox" value="@item.CustomerTypeID" readonly="readonly" disabled="disabled" />
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        if (Found == false)
+                                        {
+                                            <input type="checkbox" id="chkBox[]" name="chkBox[]" class="checkbox" value="@item.CustomerTypeID" readonly="readonly" disabled="disabled" />
+                                        }
+                                    }
+                                </td>
+                                <td class="col-md-3 listtext">
+                                    @item.CustomerTypeName
+                                </td>
+                                <td>
+                                    <p class="">
+                                        <a href='~/Files/Upload/@item.Attachment' target="_blank">View</a>
+                                    </p>
+                                </td>
+                            </tr>
+                                        }
+                        </table>
+
+                    </div>
+                    
+                </div>
+                <br />
+                <br />
+                <br />
+                <br /><br />
+                <br />
+                        <div class="col-md-12" style="height:20px;"></div>
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                @Html.TextArea("ProcessRemark", "", 1, 1, new { @class = "col-md-12 footerbox validate[required]", placeholder = "ProcessRemark" })
+                            </div>
+                            <div class="col-md-7">
+                                <button type="submit" formaction="/mDocumentMasters/DetailsAmend" id="amend" name="amend" class="btn-tgs">Return to Maker</button>
+                                &nbsp;&nbsp;
+                                <button id="approve" formaction="/mDocumentMasters/Detailsapprove" type="submit" name="approve" class="btn-tgs" formnovalidate>Recommend for Approval</button>
+                            </div>
+                        </div>
+                                        }
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog " style="width:1100px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body scroll" style="height:500px;">
+                        <div id='myModalContent'></div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+    </div>
+</div>
+<style>
+    .scroll {
+        height: 100px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#popup').click(function () {
+
+            var DocumentID = $("#hdnDocumentID").val();
+
+            $.ajax({
+                url: "/mDocumentMasters/CommentResult?DocumentID=" + DocumentID,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                    //$("#NEW2").html(data);
+                    $("table.display").DataTable();
+                    event.preventDefault();
+                    return false;
+                },
+
+            });
+
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    $("#amend").on("click", function () {
+        $("#DMCForm").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+
+    });
+
+    $("#approve").on("click", function () {
+        $("#DMCForm").validationEngine('detach');
+    });
+</script>

@@ -1,0 +1,47 @@
+﻿
+<div id="NEW" class="modal-body" style="height: 140px;">
+    @{
+        var a = ViewData["ActionName"];
+    }
+    @*<div class="popupbox col-md-10">
+    *@
+    @*<div>
+            <p class="col-md-11 popuptitle">Are you sure you want to @a</p>	<button class="closebtn col-md-1" onclick="HideDialog();" aria-label="close">&times;</button>
+        </div>*@
+
+    <div class="col-md-12 form-group">
+        <div class="col-md-3">Document Name</div>
+        <div class="col-md-9"><input class="form-control" value="@ViewData["DocumentName"]" name="" type="text" disabled /></div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-3">Remarks</div>
+        <div class="col-md-9">
+            <input type="text" id="txtProcessRemarks" class="form-control" style="height:60px;" name="txtProcessRemarks" required="" />
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-3">&nbsp;</div>
+        <div class="col-md-9">
+            @if (a.Equals("Delete"))
+            {
+                <button id="btnDelete" name="btnDelete" class="Act_InA_Del btns" onclick="Act_InA_Del()">Delete</button>
+            }
+            else if (a.Equals("InActive"))
+            {
+                <button id="btnInActive" name="btnInActive" class="Act_InA_Del btns" onclick="Act_InA_Del()">InActive</button>
+            }
+            else if (a.Equals("Active"))
+            {
+                <button id="btnActive" name="btnActive" class="Act_InA_Del btns" onclick="Act_InA_Del()">Active</button>
+            }
+            <button id="btnClose" name="btnClose" class="btns" data-dismiss="modal">Close</button>
+
+            @*<input class="btns" name="" type="button" value="Save" />
+                <input class="btns" name="" type="button" value="Cancel" />*@
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+    </div>
+
+</div>
+
+</div>
+
+

@@ -1,0 +1,119 @@
+﻿@model TMP.Models.FeeMaster_ListAll_Model
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">Fee Master</div>
+
+    <fieldset>
+        @using (Html.BeginForm("Create", "mFeeMasters", FormMethod.Post, new { id = "FMCForm" }))
+        {
+            @Html.AntiForgeryToken()
+            if (ViewBag.ErrorMsg != null)
+            {
+                <span class="text-danger"> @ViewBag.ErrorMsg</span>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            }
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Fee Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    <input id="FeeName" name="FeeName" type="text" value="@Model.FeeName" class="form-control validate[required,custom[onlyLetterSp]]" maxlength="100" autocomplete="off">
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2"></label>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Fixed</label>
+                <div class="col-md-3">
+                    <input type="checkbox" id="chkIsFix" name="chkIsFix" value="@Model.IsFix" class="chb" style="display:block;" />
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2"></label>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+
+            <div class="col-md-12" style="height:20px;"></div>
+            <div class="col-md-12">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgsp">                            
+                            <th>Company Type</th>
+                            <th>Percentage</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.lstCustomerTypeMaster.Count > 0)
+                        {
+                            <input type="hidden" name="intCustomerTypeMaster" id="intCustomerTypeMaster" value="@Model.lstCustomerTypeMaster.Count">
+                            foreach (var item in Model.lstCustomerTypeMaster)
+                            {
+                                <tr>
+                                    <input type="checkbox" id="chk_@item.CustomerTypeID" name="chk_@item.CustomerTypeID" class="chkViibleText" 
+                                           value="Checkbox_@item.CustomerTypeID" checked="checked" style="display:none;" />                                    
+                                    <td>@item.CustomerTypeName</td>
+                                    <td>
+                                        <input type="text" value="0" name="txtper_@item.CustomerTypeID" id="txtper_@item.CustomerTypeID" class="txtText_@item.CustomerTypeID create-input CheckPer validate[custom[number]]" step="0.01" title="0.00" />
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="txtper_@item.CustomerTypeID" data-valmsg-replace="true"></span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="0" name="txtAmt_@item.CustomerTypeID" id="txtAmt_@item.CustomerTypeID" class="txtText_@item.CustomerTypeID create-input validate[custom[number]]" step="0.01" title="0.00" />
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="txtper_@item.CustomerTypeID" data-valmsg-replace="true"></span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="col-md-12" style="height:20px;"></div>
+            <div class="col-md-12" style="text-align:right;">
+                <button id="Create" type="submit" name="Create" class="btn-tgs">Save</button>
+            </div>
+        }
+    </fieldset>
+
+
+</div>
+@section Scripts {
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#FMCForm").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 2500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+    $('.CheckPer').change(function () {
+        var intPremPer = $(this).val();
+        if (intPremPer > 100) {
+            $("#errorMsg").html("Percentage can not be more then 100%.");
+            $('#Error').modal('show');
+            $(this).val("");
+            $(this).focus();
+            return false;
+        }
+        else
+            return true;
+    })
+</script>

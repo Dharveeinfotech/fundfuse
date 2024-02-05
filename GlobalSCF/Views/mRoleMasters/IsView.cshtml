@@ -1,0 +1,657 @@
+﻿@model TMP.Models.mRoleMaster
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/MasterPage/_SCFLayoutMaster.cshtml";
+}
+
+@Html.Hidden("selectedmaker", ViewData["selectedmaker"])
+@Html.Hidden("selectedchecker", ViewData["selectedchecker"])
+@Html.Hidden("selectedapporver", ViewData["selectedapporver"])
+@Html.Hidden("selectedisview", ViewData["selectedisview"])
+<script>
+    $(document).ready(function () {
+
+        var data = $("#selectedmaker").val().split(",");
+        
+        $.each(data, function (i) {
+         
+
+            //var a = document.getElementsByName("chk_M_" + data[i]);
+            $(document.getElementsByName("chk_M_" + data[i])).each(function () {
+
+                this.checked = true;
+            });
+
+        });
+        var data1 = $("#selectedchecker").val().split(",");
+
+        $.each(data1, function (i) {
+
+            $(document.getElementsByName("chk_C_" + data1[i])).each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"
+            });
+        });
+        var data2 = $("#selectedapporver").val().split(",");
+        $.each(data2, function (i) {
+            document.getElementsByName("chk_A_" + data2[i])
+
+
+
+            $(document.getElementsByName("chk_A_" + data2[i])).each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"
+            });
+        });
+        var data3 = $("#selectedisview").val().split(",");
+        $.each(data3, function (i) {
+
+            $(document.getElementsByName("chk_V_" + data3[i])).each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"
+            });
+        });
+
+        abc();
+
+
+
+
+
+
+
+    });
+</script>
+
+<div class="col-md-12">
+    @Html.Partial("../MasterPage/_MenuPartialPage")
+
+    <!-- inner content form -->
+    <div class="col-md-10 createusertitle">Update Role</div>
+    <div class="col-md-10" style="height:5px;"></div>
+
+
+    @using (Html.BeginForm("Edit", "mRoleMasters", FormMethod.Post, new { @class = "col-md-10" }))
+    {
+
+
+        if (ViewBag.ErrorMsg != null)
+        {
+            <span class="text-danger"> @ViewBag.ErrorMsg</span>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        }
+
+        @Html.AntiForgeryToken()
+
+        <fieldset>
+
+            @Html.HiddenFor(model => model.lstRoleMaster[0].RoleID)
+            <div class="col-md-12" style="height:10px;"></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Role Name</label>
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.lstRoleMaster[0].RoleName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.lstRoleMaster[0].RoleName, "", new { @class = "text-danger", @disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Role Name</label>
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.lstRoleMaster[0].RoleDesc, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.lstRoleMaster[0].RoleDesc, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.lstRoleMaster[0].Status, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12" style="height:400px;scrollbar-base-color:azure;overflow:auto">
+                @if (Model.lstMenuRights != null)
+                {
+
+                    <br />
+                    <input type="hidden" name="intMenuRightsCount" id="intMenuRightsCount" value="@Model.lstMenuRights.Count">
+
+
+                    foreach (var item in Model.lstMenuRights)
+                    {
+
+
+                        if (item.ParentMenuID == 0)
+
+                        {
+                            <div class="col-md-12">
+
+                                <div class="col-md-12 adminmenulist" style="margin-top:5px;margin-bottom:5px;">
+                                    <div class="col-md-4"><p class="menulist_floatleft">@item.MenuName</p></div>
+                                    <div class="col-md-2">
+                                        <p class="menulist_floatleft">Maker</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p class="menulist_floatleft">Checker</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p class="menulist_floatleft">Approval</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p class="menulist_floatleft">Viewer</p>
+                                    </div>
+                                </div>
+                            </div>
+                            foreach (var item1 in Model.lstMenuRights)
+                            {
+                                if (item.MenuID == item1.ParentMenuID)
+                                {
+
+
+                                    if (item1.MenuName == "Checker" || item1.MenuName == "Approver" || item1.MenuName == "Maker" || item1.MenuName == "Viewer")
+                                    {
+
+
+
+
+                                    }
+
+                                    else
+                                    {
+
+                                        <div class="col-md-12 menusbg">
+
+                                            <div class="col-md-12">
+                                                <div class="col-md-4">
+                                                    <p class="listp menulist_floatleft"></p><b> @item1.MenuName</b>
+
+                                                </div>
+
+                                                <div class="col-md-2" style="margin-left: -20px;">
+                                                    <p>
+                                                        <input type="checkbox" onclick="checkboxMaker(@item1.MenuID);" disabled="disabled" class="checkboxMaker_@item1.MenuID" />
+                                                        
+
+                                                    </p>
+
+
+
+                                                    @foreach (var item2 in Model.lstMenuRights)
+                                                    {
+                                                        if (item1.MenuID == item2.ParentMenuID)
+                                                        {
+                                                            if (item1.MenuID == item2.ParentMenuID)
+                                                            {
+                                                                var a = 0;
+                                                                if (item2.MenuName == "Add")
+                                                                {
+
+                                                                    a = 1;
+                                                        
+                                                                    <p style="position:relative;left:-170px;top:0px">  @item2.MenuName</p>
+
+
+                                                                    <input type="checkbox" style="position:relative;top:-20px;" disabled="disabled"
+                                                                           name="chk_M_@item2.MenuID" onclick="getselect(@item1.MenuID);" value="Mekar_@item2.MenuID"
+                                                                           id="mcheckbox_@item2.MenuID" class="mcheckbox_@item.MenuID mcheckbox_@item1.MenuID" />
+
+                                                                }
+                                                                if (item2.MenuName == "Update")
+                                                                {
+
+                                                                    if (a == 0)
+                                                                    {
+
+
+                                                                        <p style="position:relative;left:-170px;top:0px">  @item2.MenuName</p>
+                                                                        <input type="checkbox" style="position:relative;top:-20px;" disabled="disabled"
+                                                                               name="chk_M_@item2.MenuID" onclick="getselect(@item1.MenuID);" value="Mekar_@item2.MenuID"
+                                                                               id="chk_M_@item2.MenuID" class="mcheckbox_@item.MenuID mcheckbox_@item1.MenuID" />
+
+
+                                                                    }
+                                                                    else
+                                                                    {
+
+
+                                                                        <p style="position:relative;left:-170px;top:0px">  @item2.MenuName</p>
+                                                                        <p>
+                                                                            <input type="checkbox" style="position:relative;top:-40px;" disabled="disabled"
+                                                                                   name="chk_M_@item2.MenuID" onclick="getselect(@item1.MenuID);" value="Mekar_@item2.MenuID"
+                                                                                   id="chk_M_@item2.MenuID" class="mcheckbox_@item.MenuID mcheckbox_@item1.MenuID" />
+                                                                        </p>
+                                                                    }
+                                                                }
+
+                                                                if (item2.MenuName == "Maker")
+                                                                {
+                                                                    <div style="position:absolute;top:-100000px;">
+                                                                        <input type="checkbox"
+                                                                               id="chkMekar" name="chk_M_@item.MenuID" class="mcheckbox1_@item1.MenuID" disabled="disabled"
+                                                                               value="Mekar_@item.MenuID"
+                                                                               style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                        <input type="checkbox" onclick="checkboxtick(@item1.MenuID);"
+                                                                               name="chk_M_@item1.MenuID" value="Mekar_@item1.MenuID" id="mcheckbox1_@item1.MenuID" disabled="disabled"
+                                                                               class="mcheckbox1_@item1.MenuID" />
+
+                                                                        <input type="checkbox" name="chk_M_@item2.MenuID" disabled="disabled"
+                                                                               value="Mekar_@item2.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                               class="mcheckbox1_@item1.MenuID" />
+                                                                    </div>
+                                                                }
+
+                                                                if (item2.MenuName == "Checker")
+                                                                {
+                                                                    <div style="position:absolute;top:-100000px; left:40px;">
+
+                                                                        <input type="checkbox" disabled="disabled"
+                                                                               id="chkMekar" name="chk_C_@item.MenuID" class="mcheckbox2_@item1.MenuID"
+                                                                               value="Checker_@item.MenuID"
+                                                                               style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                        <input type="checkbox" onclick="checkboxtick(@item1.MenuID);" disabled="disabled"
+                                                                               name="chk_C_@item1.MenuID" value="Checker_@item1.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                               class="mcheckbox2_@item1.MenuID" />
+
+                                                                        <input type="checkbox" name="chk_C_@item2.MenuID" disabled="disabled"
+                                                                               value="Checker_@item2.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                               class="mcheckbox2_@item1.MenuID" />
+                                                                    </div>
+                                                                }
+                                                                if (item2.MenuName == "Approver")
+                                                                {
+                                                                    <div style="position:absolute;top:-100000px;left:80px">
+
+                                                                        <input type="checkbox" disabled="disabled"
+                                                                               id="chkMekar" name="chk_A_@item.MenuID" class="mcheckbox3_@item1.MenuID"
+                                                                               value="Approval_@item.MenuID"
+                                                                               style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                        <input type="checkbox" onclick="checkboxtick(@item1.MenuID);" disabled="disabled"
+                                                                               name="chk_A_@item1.MenuID" value="Approval_@item1.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                               class="mcheckbox3_@item1.MenuID" />
+
+                                                                        <input type="checkbox" name="chk_A_@item2.MenuID" disabled="disabled"
+                                                                               value="Approval_@item2.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                               class="mcheckbox3_@item1.MenuID" />
+                                                                    </div>
+                                                                }
+                                                                if (item2.MenuName == "Viewer")
+                                                                {
+                                                                    <div style="position:absolute; top:-100000px;  left:100px;">
+                                                                        <input type="checkbox" disabled="disabled"
+                                                                               id="chkMekar" name="chk_V_@item.MenuID" class="mcheckbox4_@item1.MenuID"
+                                                                               value="IsView_@item.MenuID"
+                                                                               style="display:block; margin-left:-20px; margin-top:6px;" />
+
+                                                                        <input type="checkbox" onclick="checkboxtick(@item1.MenuID);" disabled="disabled"
+                                                                               name="chk_V_@item1.MenuID" value="IsView_@item1.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                               class="mcheckbox4_@item1.MenuID" />
+
+                                                                        <input type="checkbox" name="chk_V_@item2.MenuID" disabled="disabled"
+                                                                               value="IsView_@item2.MenuID" id="mcheckbox1_@item1.MenuID"
+                                                                               class="mcheckbox4_@item1.MenuID" />
+                                                                    </div>
+                                                                }
+
+                                                            }
+
+
+
+                                                            foreach (var item3 in Model.lstMenuRights)
+                                                            {
+                                                                if (item2.MenuID == item3.ParentMenuID)
+                                                                {
+                                                                    if (item3.MenuName == "Add")
+                                                                    {
+
+
+                                                                        <p style="position:relative;left:-170px;top:0px">  @item3.MenuName</p>
+
+
+                                                                        <input type="checkbox" style="position:relative;top:-20px;" disabled="disabled"
+                                                                               name="chk_M_@item3.MenuID" onclick="getselect(@item1.MenuID);" value="Mekar_@item3.MenuID"
+                                                                               id="mcheckbox_@item3.MenuID" class="mcheckbox_@item.MenuID mcheckbox_@item1.MenuID" />
+
+                                                                    }
+
+
+                                                                    if (item3.MenuName == "Update")
+                                                                    {
+                                                                        <p style="position:relative;left:-170px;top:-20PX">@item3.MenuName </p>
+                                                                        <p>
+                                                                            <input type="checkbox" style="position:relative;top:-40px;" disabled="disabled"
+                                                                                   name="chk_M_@item3.MenuID" onclick="getselect(@item1.MenuID);" value="Mekar_@item3.MenuID"
+                                                                                   id="chk_M_@item3.MenuID" class="mcheckbox_@item.MenuID mcheckbox_@item1.MenuID" />
+                                                                        </p>
+                                                                    }
+
+
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                                                </div>
+
+                                                @*second Row checker maker approver*@
+                                                @foreach (var item2 in Model.lstMenuRights)
+                                                {
+                                                    if (item1.MenuID == item2.ParentMenuID)
+                                                    {
+                                                        if (item1.MenuID == item2.ParentMenuID)
+                                                        {
+                                                            if (item2.MenuName == "Checker")
+                                                            {
+                                                                @*second Row checker maker approver*@
+                                                                <div class="col-md-2">
+
+                                                                    <p>
+                                                                        <input type="checkbox"
+                                                                               name="chk_C_@item1.MenuID" onclick="getselectchk(@item1.MenuID);" disabled="disabled" class="mainCheckerclass_@item1.MenuID" value="Checker_@item1.MenuID" id="chk_M_@item1.MenuID" />
+                                                                    </p>
+                                                                </div>
+                                                            }
+                                                            if (item2.MenuName == "Approver")
+                                                            {
+                                                                <div class="col-md-2">
+                                                                    <p>
+                                                                        <input type="checkbox"
+                                                                               name="chk_A_@item1.MenuID" onclick="getselectapp(@item1.MenuID);" disabled="disabled" class="mainAppclass_@item1.MenuID" value="Approval_@item1.MenuID" id="chk_M_@item1.MenuID" />
+                                                                    </p>
+                                                                </div>
+                                                            }
+                                                            if (item2.MenuName == "Viewer")
+                                                            {
+                                                                <div class="col-md-2">
+                                                                    <p>
+                                                                        <input type="checkbox"
+                                                                               name="chk_V_@item1.MenuID" onclick="getselectview(@item1.MenuID);" disabled="disabled" class="mainViewclass_@item1.MenuID" value="IsView_@item1.MenuID" id="chk_V_@item1.MenuID" />
+                                                                    </p>
+                                                                </div>
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </div>
+
+
+                                        </div>
+
+                                    }
+                                }
+                            }
+
+
+
+                        }
+                    }
+                }
+
+            </div>
+        </fieldset><br />
+        if (Model.lstRoleMaster[0].Status != "NM")
+        {
+            if (Model.lstRoleMaster[0].IsActive == true)
+            {
+                <input type="checkbox" name="chkActiveInactive" id="chkActiveInactive" checked="checked" disabled="disabled" /><label>Active/InActive</label>
+            }
+            else
+            {
+                <input type="checkbox" name="chkActiveInactive" id="chkActiveInactive" disabled="disabled" /><label>Active/InActive</label>
+            }
+        }
+        <input type="checkbox" name="chkDeleteRole" id="chkDeleteRole"  disabled="disabled"/><label>Delete</label>
+        <br />
+        <br />
+       
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+       
+
+
+
+    }
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+
+
+
+
+
+</script>
+<script type="text/javascript">
+
+
+    function abc() {
+        
+        var data = $("#selectedmaker").val().split(",");
+        $.each(data, function (i) {
+
+            var data11 = 0;
+            $(".mcheckbox_" + data[i] + "").each(function () {
+
+                if (this.checked) {
+
+                } else {
+                    data11 = 1;
+                }
+
+            });
+            if (data11 == 1) {
+                $(".checkboxMaker_" + data[i] + "").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                $(".checkboxMaker_" + data[i] + "").each(function () {
+                    this.checked = true;
+                });
+
+            }
+        });
+    }
+
+    function getselectchk(id) {
+        $(".mainCheckerclass_" + id + "").each(function () {
+
+            if (this.checked) {
+
+                $(".mcheckbox2_" + id + "").each(function () {
+                    if (this.checked) {
+                        data = 1;
+                    }
+                });
+                if (data == 1) {
+
+                    $(".mcheckbox2_" + id + "").each(function () {
+                        this.checked = true;
+                    });
+                }
+            }
+            else {
+
+                $(".mcheckbox2_" + id + "").each(function () {
+
+                    this.checked = false;
+                });
+            }
+
+        });
+
+
+    }
+    function getselectapp(id) {
+
+        $(".mainAppclass_" + id + "").each(function () {
+
+            if (this.checked) {
+
+                $(".mcheckbox3_" + id + "").each(function () {
+                    if (this.checked) {
+                        data = 1;
+                    }
+                });
+                if (data == 1) {
+
+                    $(".mcheckbox3_" + id + "").each(function () {
+                        this.checked = true;
+                    });
+                }
+            }
+            else {
+
+                $(".mcheckbox3_" + id + "").each(function () {
+
+                    this.checked = false;
+                });
+            }
+
+        });
+
+
+
+    }
+
+    function getselectview(id) {
+
+        $(".mainViewclass_" + id + "").each(function () {
+
+            if (this.checked) {
+
+                $(".mcheckbox4_" + id + "").each(function () {
+                    if (this.checked) {
+                        data = 1;
+                    }
+                });
+                if (data == 1) {
+
+                    $(".mcheckbox4_" + id + "").each(function () {
+                        this.checked = true;
+                    });
+                }
+            }
+            else {
+
+                $(".mcheckbox4_" + id + "").each(function () {
+
+                    this.checked = false;
+                });
+            }
+
+        });
+
+    }
+
+    function getselect(id) {
+        
+        var data = 0;
+        $(".mcheckbox_" + id + "").each(function () {
+            if (this.checked) {
+
+                data = 1;
+            }
+
+        });
+        if (data == 1) {
+            $(".mcheckbox1_" + id + "").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+
+            $(".mcheckbox1_" + id + "").each(function () {
+
+
+                this.checked = false;
+            });
+
+        }
+
+
+        var data11 = 0;
+        $(".mcheckbox_" + id + "").each(function () {
+
+            if (this.checked) {
+
+            } else {
+                data11 = 1;
+            }
+
+        });
+        if (data11 == 1) {
+            $(".checkboxMaker_" + id + "").each(function () {
+                this.checked = false;
+            });
+        } else {
+            $(".checkboxMaker_" + id + "").each(function () {
+                this.checked = true;
+            });
+
+        }
+
+    }
+    function checkboxMaker(id) {
+        
+        var data10 = 0;
+        $(".checkboxMaker_" + id + "").each(function () {
+
+            if (this.checked) {
+
+                $(".mcheckbox_" + id + "").each(function () {
+                    this.checked = true;
+
+                });
+
+            }
+            else {
+
+                $(".mcheckbox_" + id + "").each(function () {
+                    this.checked = false;
+                });
+            }
+
+        });
+
+
+        var data = 0;
+        $(".mcheckbox_" + id + "").each(function () {
+            if (this.checked) {
+
+                data = 1;
+            }
+
+        });
+        if (data == 1) {
+            $(".mcheckbox1_" + id + "").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+
+            $(".mcheckbox1_" + id + "").each(function () {
+                this.checked = false;
+            });
+
+        }
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+</script>

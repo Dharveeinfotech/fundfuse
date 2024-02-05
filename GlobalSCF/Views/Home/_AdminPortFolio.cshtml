@@ -1,0 +1,111 @@
+﻿@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@model  IEnumerable<TMP.Models.CustomerMasterModel>
+<div class="col-md-12" style="height:15px;"></div>
+
+@if (Enumerable.Count(@ViewBag.Pending) > 0)
+{
+    <div class="col-md-12 dashboard-titel">PORTFOLIO</div>
+    <div class="tab-pane" id="4a">
+        <div class="col-md-12">
+            <table id="exampleDB2" cellspacing="0" width="100%">
+                <thead>
+
+                    <tr class="bgspr">
+                        <th>Transaction Number</th>
+                        <th>Product</th>
+                        <th>Transaction Date</th>
+                        <th>Currency</th>
+                        <th>Total Amount</th>
+                        <th>Buyer Name</th>
+                        <th>No. of Invoices</th>
+                        <th>Due Date</th>
+                        <th>Upload Type</th>
+                        <th>Status</th>
+                        <th>Transaction History</th>
+                        <th style="display:none;">
+                        </th>
+                        <th style="display:none;">
+                        </th>
+                    </tr>
+
+
+                </thead>
+                @if (Enumerable.Count(@ViewBag.Pending) > 0)
+                {
+                    <tbody>
+                        @foreach (var item in ViewBag.Pending)
+                        {
+                            <tr>
+                                @if (item.IsAction)
+                                {
+                                    <td><a href='@Url.Action("Settlement", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, IndexStatus = item.Status, SettlementType = "Pending" })'>@item.TranRefNo</a></td>
+                                }
+                                else if (ViewBag._currentUser.IsMaker && (item.Status == CONT.SA || item.Status == CONT.BA || item.Status == CONT.IV || item.Status == CONT.IW))
+                                {
+                                    <td><a href='@Url.Action("iSCFMaker", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>@item.TranRefNo</a></td>
+                                }
+                                else if (ViewBag._currentUser.IsChecker && (item.Status == CONT.IA || item.Status == CONT.RA || item.Status == CONT.IP || item.Status == CONT.IF || item.Status == CONT.II || item.Status == CONT.RC || item.Status == CONT.BB))
+                                {
+                                    <td><a href='@Url.Action("iSCFChecker", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>@item.TranRefNo</a></td>
+                                }
+                                else if (ViewBag._currentUser.IsChecker && item.IsFoundID == false && (item.Status == CONT.BB || item.Status == CONT.FD || item.Status == CONT.CF))
+                                {
+                                    <td><a href='@Url.Action("ProfitAndFees", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>@item.TranRefNo</a></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a href="javascript:void(0);" class="factoringView" data-id="@item.InvoiceID">@item.TranRefNo</a>
+                                    </td>
+                                }
+
+                                @if (item.ProgramType == CONT.FType)
+                                {
+                                    <td>Receivables Finance</td>
+                                }
+                                else
+                                {
+                                    <td>Payables Finance</td>
+                                }
+                                <td>@Convert.ToDateTime(item.TranDate).ToString("dd-MMM-yyyy")</td>
+                                <td>@item.CurrencyCode</td>
+                                <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
+                                @if (item.ProgramType == CONT.FType)
+                                {
+                                    <td>@item.ObligorName</td>
+                                }
+                                else
+                                {
+                                    <td>@item.BuyerName</td>
+                                }
+                                <td>@item.InvCnt</td>
+                                <td>@Convert.ToDateTime(item.DueDate).ToString("dd-MMM-yyyy")</td>
+                                <td>@item.UploadType</td>
+                                @if (item.IsAction)
+                                {
+                                    <td style="color:red !important">@item.StatusUserDesc</td>
+                                }
+                                else
+                                {
+                                    <td>@item.StatusUserDesc</td>
+                                }
+                               
+                                <td>
+                                    <a href="javascript:void(0);" class="InvoiceCommentHistoryView" data-id="@item.InvoiceID">View</a>
+                                </td>
+                                <td class="InvoiceID" style="display:none;">
+                                    <span>@item.InvoiceID</span>
+                                </td>
+                                <td class="ProgramType" style="display:none;">
+                                    <span>@item.ProgramType</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+            </table>
+        </div>
+
+    </div>
+    <hr />
+}

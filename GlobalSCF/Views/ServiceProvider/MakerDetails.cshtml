@@ -1,0 +1,342 @@
+﻿@model TMP.Models.ServiceProviderModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    @*@Html.Action("_MenuPartialPage", "MasterPage")*@
+    @if (ViewBag.ErrorMsg != null || ViewBag.ErrorMsg != "")
+    {
+        <span class="text-danger">@ViewBag.ErrorMsg</span>
+    }
+
+    <div class="col-md-12 padoff">
+        @Html.HiddenFor(model => model.Status)
+        <div class="col-md-12 padoff">
+            <div id="a" class="col-md-12 createusertitle" style="cursor:pointer;">PRIMARY CONTACT INFORMATION</div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12">
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Full Name of Contact Person</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.ContactFName, new { @class = "form-control", value = Model.ContactFName, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.ContactMName, new { @class = "form-control", value = Model.ContactMName, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.ContactLName, new { @class = "form-control", value = Model.ContactLName, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Mobile Number</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control", value = Model.MobileNo, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <label class="col-md-2" for="textinput">Telephone Number</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.TelNo, new { @class = "form-control", value = Model.TelNo, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">E-Mail</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control isEmailGood validate[required,[custom[email]]", value = Model.EmailID, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    @if (Model.DesignationName != "Other")
+                    {
+                        <label class="col-md-2" for="textinput">Designation</label>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.DesignationName, new { @class = "form-control", value = Model.DesignationName, @readonly = "readonly" })
+                        </div>
+                    }
+                    else
+                    {
+                        <label class="col-md-2" for="textinput">Other Designation</label>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control", value = Model.DesignationName, @readonly = "readonly" })
+                        </div>
+                    }
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 padoff">
+            <div id="aa" class="col-md-12 createusertitle" style="cursor:pointer;">COMPANY INFORMATION</div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Name as on Trade License</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control", value = Model.CompanyName, @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @if (Model.CompanyTypeName != "Other")
+                    {
+                        <label class="col-md-2" for="textinput">Type of Company &nbsp;<span style="color:red;width:50px;">*</span></label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.CompanyTypeName, new { @class = "form-control", value = Model.CompanyName, @readonly = "readonly" })                            
+                        </div>
+                    }
+                    else
+                    {
+                        <label class="col-md-2" for="textinput">Other Type of Company &nbsp;<span style="color:red;width:50px;">*</span></label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.OtherCompanyType, new { @class = "form-control", value = Model.CompanyName, @readonly = "readonly" })                            
+                        </div>
+                    }
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Trade License Number</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.TradeLicNo, new { @class = "form-control", value = Model.TradeLicNo, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <label class="col-md-2" for="textinput">License Expiry Date</label>
+                    <div class="col-md-3">
+                        @if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.LicExpDate1))
+                        {
+                        <input id="LicExpDate" name="LicExpDate" value="@Model.LicExpDate1.ToString("dd-MMM-yyyy")" type="text" class="form-control DateExpire" onpaste="return false" readonly="readonly">
+                        }
+                        else
+                        {
+                        <input id="LicExpDate" name="LicExpDate" value="@Model.LicExpDate1.ToString("dd-MMM-yyyy")" type="text" class="form-control" onpaste="return false" readonly="readonly">
+                        }
+                        
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Place of Incorporation</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.IncCountryName, new { @class = "form-control", value = Model.IncCountryName, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <label class="col-md-2" for="textinput">Date of Incorporation</label>
+                    <div class="col-md-3">
+                        <input id="IncDate" name="IncDate" value="@Model.IncDate1.ToString("dd-MMM-yyyy")" type="text" class="form-control" onpaste="return false" readonly="readonly">
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Company Address </label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", value = Model.Address, @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Country</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control", value = Model.CountryName, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    @if (Model.OtherCity == "")
+                    {
+                        <label class="col-md-2" for="textinput">City</label>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.CityName, new { @class = "form-control", value = Model.CityName, @readonly = "readonly" })
+                        </div>
+                    }
+                    else
+                    {
+                        <label class="col-md-2" for="textinput">Other City</label>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(model => model.OtherCity, new { @class = "form-control", value = Model.OtherCity, @readonly = "readonly" })
+                        </div>
+                    }
+
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Telephone Number</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.TelNoInfo, new { @class = "form-control", value = Model.TelNoInfo, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <label class="col-md-2" for="textinput">Official Website (if available)</label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.Website, new { @class = "form-control validate[custom[url]]", value = Model.Website, @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="d" class="col-md-12 createusertitle" style="cursor:pointer;">BANK ACCOUNT INFORMATION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div id="ddrop">
+            <table id="" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>Currency</th>
+                        <th>Account Name</th>
+                        <th>Bank Name</th>
+                        <th>Address</th>
+                        <th>Account Number</th>
+                        <th>IBAN</th>
+                        <th>Country</th>
+                        <th>Swift Code</th>
+                        <th>IFSC Code</th>
+
+                    </tr>
+                <tbody>
+                    @foreach (var item in ViewBag.bankdata)
+                    {
+                        <tr>
+                            <td>@item.CurrencyCode</td>
+                            <td>@item.AccountName</td>
+                            <td>@item.BankName</td>
+                            <td>@item.Address</td>
+                            <td>@item.AccountNo</td>
+                            <td>@item.IBAN</td>
+                            <td>@item.CountryName</td>
+                            <td>@item.Swift</td>
+                            <td>@item.IFSC</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div id="d" class="col-md-12 createusertitle" style="cursor:pointer;">DOCUMENT INFORMATION</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div id="ddrop">
+            <table id="" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>Document Name</th>
+                        <th>Is Upload</th>
+                        <th>Comments</th>
+                        <th>Attachment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.sCustomerDocDetail)
+                    {
+                        <tr>
+                            <td>@item.DocumentName</td>
+                            @if (@item.IsUpload == true)
+                            {
+                                <td>Yes</td>}
+                            else
+                            {
+                                <td>No</td> }
+                            <td>@item.Comment</td>
+                            <td>
+                                <input type="hidden" id="hdAttchFileName_@item.DocumentID" value="@item.Attachment" />
+                                <span>
+                                    @if (item.Attachment != null && item.Attachment != "")
+                                    {
+                                        <a href='~/Files/Upload/@item.Attachment' target="_blank">View File</a>
+                                    }
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog " style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body scroll" style="height:500px;">
+                    <div id='myModalContent'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="height:10px;"></div>
+    <form method="post" id="SPCHKPAge">
+        <div class="col-md-12">
+            <div class="col-md-7">
+                @Html.Hidden("CustomerID", ViewData["CustomerID"])
+                @if (ViewBag.IsCheckerOrApprover != "Viewer")
+                {
+                    <textarea class="col-md-12 footerbox validate[required]" placeholder="Remarks" id="Remarks" name="Remarks" cols="1" rows="1"></textarea>
+                }
+                <input type="hidden" id="hdnCustomerID" name="CustomerID" value="@Model.CustomerID" />
+                <input type="hidden" id="Status" name="Status" value="@Model.Status" />
+            </div>
+            <div class="col-md-5" style="text-align:right;">
+                @if (Model.Status == CONT.NM || Model.Status == CONT.RQ || Model.Status == CONT.NA || Model.Status == CONT.UA
+|| Model.Status == CONT.UJ || Model.Status == CONT.UM)
+                {
+                    if (ViewBag.IsCheckerOrApprover == "Maker")
+                    {
+                        <button id="btnNext" name="command" value="Maker" class="btn-tgs" formnovalidate>Submit</button>
+                    }
+                }
+                else if (Model.Status == CONT.NR || Model.Status == CONT.UR)
+                {
+                    if (ViewBag.IsCheckerOrApprover == "Checker")
+                    {
+                        <button id="btnCheckerReturn" name="btnCheckerReturn" value="btnCheckerReturn" class="btn-tgs" formnovalidate>Return to Maker</button>
+                        <button id="btnCheckerSubmit" name="btnCheckerSubmit" value="btnCheckerSubmit" class="btn-tgs" formnovalidate>Submit</button>
+                    }
+                }
+                else if (Model.Status == CONT.NC || Model.Status == CONT.UC)
+                {
+                    if (ViewBag.IsCheckerOrApprover == "Approver")
+                    {
+                        <button id="btnApproverReject" name="btnApproverReject" value="btnApproverReject" class="btn-tgs" formnovalidate>Reject</button>
+                        <button id="btnApprove" name="btnApprove" value="btnApprove" class="btn-tgs" formnovalidate>Approve</button>
+                    }
+                }
+            </div>
+        </div>
+    </form>
+</div>
+<style>
+    .dataTables_filter, .dataTables_info, .dataTables_paginate {
+        display: none;
+    }
+
+    table.dataTable th.dt-center, table.dataTable td.dt-center, table.dataTable td.dataTables_empty {
+        height: 130px;
+    }
+
+    .div-border {
+        border: 1px solid #336699;
+        padding-bottom: 6%;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#popup').click(function () {
+            var CustomerID = $("#hdnCustomerID").val();
+            $.ajax({
+                url: "/mCompanyInformation/CommentResult?iCustomerID=" + CustomerID,
+                type: "POST",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal('show');
+                    //$("#NEW1").html(data);
+                    $("table.display").DataTable();
+                    event.preventDefault();
+                    return false;
+                },
+
+            });
+
+        });
+        $("table.display").DataTable();
+    });
+</script>

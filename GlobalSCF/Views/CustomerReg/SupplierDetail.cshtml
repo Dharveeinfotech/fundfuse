@@ -1,0 +1,427 @@
+﻿@model TMP.Models.CustomerSupplierModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Supplier";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 6 })
+    }
+    @using (Html.BeginForm("SupplierDetail", "CustomerReg", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "SupplierForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+       
+        <div class="col-md-12 createusertitle">SUPPLIER INFORMATION</div>
+      
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12" style="height:10px;"></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Company Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Trade License Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.TradeLicNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Date of Incorporation&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.CustomerSuppID > 0 && Model.IncDate.ToString("dd-MMM-yyyy") != "01-Jan-0001")
+                {
+                        <input id="IncDate" name="IncDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" value="@Model.IncDate.ToString("dd-MMM-yyyy")" />
+                    }
+                    else
+                    {
+                        <input id="IncDate" name="IncDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" />
+                    }
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">License Expiry Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.CustomerSuppID > 0 && Model.LicExpDate.ToString("dd-MMM-yyyy") != "01-Jan-0001")
+                    {
+                        if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.LicExpDate))
+                        {
+                            <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required] DateExpire" autocomplete="off" value="@Model.LicExpDate.ToString("dd-MMM-yyyy")" />
+                        }
+                        else
+                        {
+                            <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" value="@Model.LicExpDate.ToString("dd-MMM-yyyy")" />
+                        }                        
+                    }
+                    else
+                    {
+                        <input id="LicExpDate" name="LicExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" />
+                    }
+                </div>
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">Country of Incorporation&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.IncCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.IncCountryID), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Industry&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.IndustryID, new SelectList(ViewBag.DDLIndustryID, "IndustryID", "IndustryName", Model.IndustryID), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+                <div id="DV_SubIndustry">
+                    <label class="col-md-2" for="textinput">Sub Industry&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        <select id="SubIndustryID" name="SubIndustryID" class="form-control validate[required]"></select>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+
+
+        //Other Industries
+        <div class="form-group" style="display:none;" id="DV_OtherIndustry">
+            <label class="col-md-2" for="textinput">Other Industry&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.OtherIndustry, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+            <label class="col-md-2" for="textinput">Other Sub Industry&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.OtherSubIndustry, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Currency&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <label class="col-md-2" for="textinput">Average Invoice Amount&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.InvAmt, new { @class = "form-control num validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+        </div>
+
+        <div class="form-group">
+          
+            <label class="col-md-2" for="textinput" style="padding-right:0px;">Invoice Terms with Buyer &nbsp;<span style="color:red;width:50px;">*</span></label>
+           
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.InvTerm, new SelectList(ViewBag.DDLSalesInvoiceTerms, "value", "text", Model.InvTerm), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            <div class="col-md-1"></div>
+
+            <div style="display:none;" id="DV_OtherInvTerm">
+              
+                <label class="col-md-2" for="textinput">Other Invoice Terms with Buyer &nbsp;<span style="color:red;width:50px;">*</span></label>
+               
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.OtherInvTerm, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+       
+        <div class="col-md-12 createusertitle">SUPPLIER – COMPANY CONTACT INFORMATION</div>
+      
+        <div class="col-md-12" style="height:10px;"></div>
+
+
+
+        <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Address&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">P.O. Box&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.POBox, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Official website&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.Website, new { @class = "form-control validate[required,custom[url]]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Telephone Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.TelNo, new { @class = "form-control tel validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Country&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.CountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.CountryID), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">City&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    <select id="CityID" class="form-control validate[required]" name="CityID"></select>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+        // Other City Code
+        <div class="form-group" style="display:none;" id="DV_OtherCity">
+            <div class="col-md-6"></div>
+            <label class="col-md-2" for="textinput">Other City &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.OtherCity, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+       
+        <div class="col-md-12 createusertitle">SUPPLIER – PRIMARY CONTACT INFORMATION</div>
+     
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Full Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.ContactFName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", placeholder = "First Name" })
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.ContactMName, new { @class = "form-control", maxlength = "50", autocomplete = "off", placeholder = "Middle Name" })
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.ContactLName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", placeholder = "Last Name" })
+            </div>
+            <div class="col-md-1"></div>
+            @*<div class="col-md-12">
+                <label class="col-md-2"></label>
+                <p class="col-md-10 padoff name-msg" style="margin:0;">**Please ensure that the names you enter match the ones in your passport, and please use English characters only.</p>
+            </div>*@
+        </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Designation in the Company&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.DesignationID, new SelectList(ViewBag.DDLDesignationID, "DesignationID", "DesignationName", Model.DesignationID), "--Select--", new { @class = "form-control validate[required]" })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Mobile Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.MobileNo, new { @class = "form-control tel validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+            </div>
+
+        // Add Other Designation Code
+        <div class="form-group" id="DV_OtherDesignation" style="display:none;">
+            <label class="col-md-2" for="textinput">Other Designation&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.OtherDesignation, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-6"></div>
+        </div>
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">E-Mail&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control isEmailGood validate[required,custom[email]]", id = "EmailID", name = "EmailID", maxlength = "50", autocomplete = "off" })
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12 createusertitle">SUPPLIER’S BANK ACCOUNT DETAILS</div>
+        <div class="col-md-12" style="height:15px;"></div>
+
+        <div class="form-group">
+            <label class="col-md-2" for="textinput">Currency&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.BankCurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.BankCurrencyID), "--Select--", new { @class = "form-control validate[required] ValRemo1" })
+
+            </div>
+            <div class="col-md-1"></div>
+            <div class="">
+                <label class="col-md-2" for="textinput">Account Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.AccountName, new { @class = "form-control validate[required] ValRemo2", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Bank Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.BankID, new SelectList(ViewBag.DDLBankID, "BankID", "BankName", Model.BankID), "--Select--", new { @class = "form-control  validate[required] ValRemo3" })
+
+                </div>
+                <div class="col-md-1"></div>
+                <div class="">
+                    <label class="col-md-2" for="textinput">Bank Address&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.BankAddress, new { @class = "form-control validate[required] ValRemo4", maxlength = "50", autocomplete = "off" })
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Account Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.AccountNo, new { @class = "form-control validate[required] ValRemo5", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+                <div class="">
+                    <label class="col-md-2" for="textinput">IBAN&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.IBAN, new { @class = "form-control validate[required] ValRemo6", maxlength = "50", autocomplete = "off" })
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Country&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.BankCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.BankCountryID), "--Select--", new { @class = "form-control validate[required] ValRemo7" })
+                </div>
+                <div class="col-md-1"></div>
+                <div class="">
+                    <label class="col-md-2" for="textinput">Swift Code&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.Swift, new { @class = "form-control", maxlength = "50", autocomplete = "off" })
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">IFSC Code&nbsp;<span style="color:red;width:50px;"></span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.IFSC, new { @class = "form-control", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+        if (Model.CustomerSuppID > 0)
+        {
+            @Html.Action("GridExporterBankDetail", "CustomerReg", new { CustomerID = Model.CustomerID, CustomerSuppID = Model.CustomerSuppID })
+        }
+        <div class="col-md-12" style="text-align:right;">
+            @Html.HiddenFor(x => x.CustomerBankAccID)
+            @if (Model.CustomerSuppID > 0)
+                {
+                <button id="bankSave" name="bankSave" value="bankSave" type="submit" class="btn CommonAttachValidation btn-tgs">Save & Add New Bank</button>
+            }
+        </div>
+            @Html.Action("GridSupplierDetail", "CustomerReg", new { CustomerID = Model.CustomerID })
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12" style="text-align:right">
+                @Html.HiddenFor(x => x.CustomerID)
+                @Html.HiddenFor(x => x.CustomerSuppID)
+                @Html.HiddenFor(x => x.Status)
+                <input type="hidden" id="hdnSubIndustryID" name="hdnSubIndustryID" value="@Model.SubIndustryID" />
+                <input type="hidden" id="GetCityID" name="GetCityID" value="@Model.CityID" />
+                @if (Model.CustomerSuppID > 0)
+                {
+                    <button id="NewSupplierSave" name="NewSupplierSave" value="NewSupplierSave" type="submit" class="btn CommonDetachValidation btn-tgs">Add New Supplier</button>
+                    <button id="NewNextSave" name="NewNextSave" value="NewNextSave" type="submit" class="btn CommonDetachValidation btn-tgs">Save & Proceed</button>
+                }
+                else
+                {
+                    <button id="SupplierSave" name="SupplierSave" value="SupplierSave" type="submit" class="btn CommonAttachValidation btn-tgs">Save & Add New</button>
+                    <button id="NextSave" name="NextSave" value="NextSave" type="submit" class="btn CommonAttachValidation btn-tgs">Save & Proceed</button>
+                }
+
+
+            </div>
+            <div class="col-md-12" style="height:15px;"></div>
+    }
+
+</div>
+<style>
+    .error {
+        border-color: #a94442 !important;
+    }
+
+        .error:focus {
+            box-shadow: 0 0 2px #a94442 !important;
+        }
+</style>
+<script>
+    Supplier();
+    ExporterBankAccount();
+   
+    var InvTerm = $("#InvTerm").val();
+    if (InvTerm != "") {
+        AddOtherInvTerm();
+    }
+
+    function AddOtherInvTerm() {
+        var SaleInvTerms = $("#InvTerm").val();
+        if (SaleInvTerms != "") {
+
+            var skillsSelect = document.getElementById("InvTerm");
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Other") {
+                $('#DV_OtherInvTerm').show();
+                $("#OtherInvTerm").focus();
+            }
+            else {
+                $('#DV_OtherInvTerm').hide();
+                $("#OtherInvTerm").val("");
+            }
+        }
+    }
+
+    $("#InvTerm").on("change", function () {
+        AddOtherInvTerm();
+    });
+
+    $("#NewSupplierSave,#NewNextSave").on("click", function () {
+        $('.ValRemo1').removeClass(" input-validation-error");
+        $('.ValRemo1').rules('remove');
+        $('.ValRemo2').removeClass(" input-validation-error");
+        $('.ValRemo2').rules('remove');
+        $('.ValRemo3').removeClass(" input-validation-error");
+        $('.ValRemo3').rules('remove');
+        $('.ValRemo4').removeClass(" input-validation-error");
+        $('.ValRemo4').rules('remove');
+        $('.ValRemo5').removeClass(" input-validation-error");
+        $('.ValRemo5').rules('remove');
+        $('.ValRemo6').removeClass(" input-validation-error");
+        $('.ValRemo6').rules('remove');
+        $('.ValRemo7').removeClass(" input-validation-error");
+        $('.ValRemo7').rules('remove');
+    });
+
+</script>

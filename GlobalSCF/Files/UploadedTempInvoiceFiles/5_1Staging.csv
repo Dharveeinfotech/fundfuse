@@ -1,0 +1,4 @@
+Item No.,Obligor CIF,Obligor Name,Invoice No.,Invoice Date (dd/mm/yyyy),Invoice Due Date (dd/mm/yyyy),Invoice Currency,Invoice Amount,Attachment
+1,DZ0000048,Kans Obligor,INV 001,30/01/2018,27/02/2018,AED,20000,Please provide template.pdf
+2,DZ0000048,Kans Obligor,INV 002,30/01/2018,27/02/2018,AED,10000,Please provide template1.pdf
+3,DZ0000048,Kans Obligor,INV 003,30/01/2018,27/02/2018,AED,5000,Please provide template2.pdf

@@ -1,0 +1,467 @@
+﻿@model  TMP.Models.ThomsonReutersModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Screening Resolution";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+    bool IsDisplay = true;
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @using (Html.BeginForm("ScreeningResolution", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "DocumentsDetails" }))
+    {
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="form-group">
+            <div class="col-md-2"></div>
+            <label class="col-md-3" for="textinput" style="text-align:right;">Entities/Shareholder/Authorized Signatory&nbsp;<span style="color:red;width:50px;">*</span></label>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.caseSystemId, new SelectList(ViewBag.DDLAuthoUserID, "caseSystemId", "BindFullName", Model.caseSystemId), "--Select--", new { @class = "form-control validate[required]" })
+            </div>
+            @*<div class="col-md-2">
+                    <input id="IsOGS" name="IsOGS" type="checkbox" checked="checked" disabled />
+                    <span>Ongoing Screening </span>
+                </div>*@
+            <div class="col-md-2">
+                <button id="btnTR_Display" name="btnTR_Display" value="btnTR_Display" type="submit" class="btn btn-tgs">Display</button>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+        if (ViewBag.Result != null)
+        {
+            <div class="container">
+                <div class="tabbable-panel">
+                    <div class="tabbable-line">
+                        <ul class="nav nav-tabs ">
+                            <li class="active">
+                                <a href="#tab_default_1" data-toggle="tab">
+                                    To Be Resolved
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#tab_default_2" data-toggle="tab">
+                                    Resolved
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_default_1">
+                                <table id="example" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgspr">
+                                            <th>Select</th>
+                                            <th>Name</th>
+                                            <th>Matched Alias</th>
+                                            <th>Nationality</th>
+                                            <th>Country of Residence</th>
+                                            <th>Category</th>
+                                            <th>Match Strength</th>
+                                            <th>Status</th>
+                                            <th>Risk Level</th>
+                                            <th>Reason</th>
+                                            <th>Resolution Remark</th>
+                                        </tr>
+                                    <tbody>
+
+                                        @if (ViewBag.ScreeningData != null && ViewBag.ScreeningData.Count == 0)
+                                        {
+                                            foreach (var item in ViewBag.Result)
+                                            {
+                                                if (item.matchStrength == "STRONG" || item.matchStrength == "EXACT")
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" id="chk_@item.resultId" name="chk_@item.resultId" class="DisableItem" />
+                                                        </td>
+                                                        <td>@item.submittedTerm</td>
+                                                        <td>@item.matchedTerm</td>
+                                                        @if (item.secondaryFieldResults.Count > 1)
+                                                        {
+                                                            <td>@item.secondaryFieldResults[3].matchedValue</td>
+                                                            <td>@item.secondaryFieldResults[1].matchedValue</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                            <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                        }
+                                                        <td>@item.categories[0]</td>
+                                                        <td>@item.matchStrength</td>
+                                                        <td>
+                                                            <select class="form-control DdlWidth validate[required] ddlstatus" id="statusId_@item.resultId" name="statusId_@item.resultId">
+                                                                <option selected="selected" value="">--Select--</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009f4">Positive</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009f9">Possible</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009ff">False</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f98200000a02">Unspecified</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="form-control DdlWidth validate[required] ddlRisk" id="riskId_@item.resultId" name="riskId_@item.resultId">
+                                                                <option selected="selected" value="">--Select--</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009f3" disabled>Unknown</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009f0" disabled>High</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009f1" disabled>Medium</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009f2" disabled>Low</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="form-control DdlWidth validate[required] ddlreason" id="reasonId_@item.resultId" name="reasonId_@item.resultId">
+                                                                <option selected="selected" value="">--Select--</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009ee" disabled>No Match</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009ef" disabled>Unknown</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009ec" disabled>Full Match</option>
+                                                                <option value="0a3687cf-5fe4-105f-9813-f982000009ed" disabled>Partial Match</option>
+                                                            </select>
+                                                        </td>
+                                                        <td><input type="text" id="resolutionRemark_@item.resultId" name="resolutionRemark_@item.resultId" class="validate[required] DdlWidth DisableItem" autocomplete="off" /></td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in ViewBag.Result)
+                                            {
+                                                if (item.matchStrength == "STRONG" || item.matchStrength == "EXACT")
+                                                {
+                                                    if (ViewBag.ScreeningData != null && ViewBag.ScreeningData.Count > 0)
+                                                    {
+                                                        foreach (var item1 in ViewBag.ScreeningData)
+                                                        {
+                                                            IsDisplay = true;
+                                                            if (item.resultId == item1.resultId)
+                                                            {
+                                                                IsDisplay = false;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (IsDisplay)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <input type="checkbox" id="chk_@item.resultId" name="chk_@item.resultId" class="DisableItem" />
+                                                            </td>
+                                                            <td>@item.submittedTerm</td>
+                                                            <td>@item.matchedTerm</td>
+                                                            @if (item.secondaryFieldResults.Count > 1)
+                                    {
+                                                                <td>@item.secondaryFieldResults[3].matchedValue</td>
+                                                                <td>@item.secondaryFieldResults[1].matchedValue</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                                <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                            }
+                                                            <td>@item.categories[0]</td>
+                                                            <td>@item.matchStrength</td>
+                                                            <td>
+                                                                <select class="form-control DdlWidth validate[required] ddlstatus" id="statusId_@item.resultId" name="statusId_@item.resultId">
+                                                                    <option selected="selected" value="">--Select--</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009f4">Positive</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009f9">Possible</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009ff">False</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f98200000a02">Unspecified</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control DdlWidth validate[required] ddlRisk" id="riskId_@item.resultId" name="riskId_@item.resultId">
+                                                                    <option selected="selected" value="">--Select--</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009f3" disabled>Unknown</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009f0" disabled>High</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009f1" disabled>Medium</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009f2" disabled>Low</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control DdlWidth validate[required] ddlreason" id="reasonId_@item.resultId" name="reasonId_@item.resultId">
+                                                                    <option selected="selected" value="">--Select--</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009ee" disabled>No Match</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009ef" disabled>Unknown</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009ec" disabled>Full Match</option>
+                                                                    <option value="0a3687cf-5fe4-105f-9813-f982000009ed" disabled>Partial Match</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="text" id="resolutionRemark_@item.resultId" name="resolutionRemark_@item.resultId" class="validate[required] DdlWidth DisableItem" autocomplete="off" /></td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                                <div class="form-group">
+                                    <div class="col-md-12" style="text-align:right;">
+                                        <button id="btnTR_Submit" name="btnTR_Submit" value="submit" type="submit" class="btn CommonAttachValidation btn-tgs">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab_default_2">
+                                <table id="example11" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="bgspr">
+                                            <th>Name</th>
+                                            <th>Matched Alias</th>
+                                            <th>Nationality</th>
+                                            <th>Country of Residence</th>
+                                            <th>Category</th>
+                                            <th>Match Strength</th>
+                                            <th>Status</th>
+                                            <th>Risk Level</th>
+                                            <th>Reason</th>
+                                            <th>Resolution Remark</th>
+                                            <th>User Name</th>
+                                        </tr>
+                                    <tbody>
+                                        @if (ViewBag.ScreeningData != null && ViewBag.ScreeningData.Count == 0)
+                                        {
+                                            foreach (var item in ViewBag.Result)
+                                            {
+                                                if (item.matchStrength != "STRONG" && item.matchStrength != "EXACT")
+                                                {
+                                                    <tr>
+                                                        <td>@item.submittedTerm</td>
+                                                        <td>@item.matchedTerm</td>
+                                                        @if (item.secondaryFieldResults.Count > 1)
+                                                        {
+                                                            <td>@item.secondaryFieldResults[3].matchedValue</td>
+                                                            <td>@item.secondaryFieldResults[1].matchedValue</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                            <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                        }
+                                                        <td>@item.categories[0]</td>
+                                                        <td>@item.matchStrength</td>
+                                                        <td>@Html.DropDownListFor(model => model.statusId, new SelectList(ViewBag.DDLStatusID, "value", "text", item.resolution.statusId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                        <td>@Html.DropDownListFor(model => model.riskId, new SelectList(ViewBag.DDLRiskLevelID, "value", "text", item.resolution.riskId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                        <td>@Html.DropDownListFor(model => model.reasonId, new SelectList(ViewBag.DDLReasonID, "value", "text", item.resolution.reasonId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                        <td>@item.resolution.resolutionRemark</td>
+                                                        <td></td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (ViewBag.ScreeningData != null && ViewBag.ScreeningData.Count > 0)
+                                            {
+                                                foreach (var item1 in ViewBag.ScreeningData)
+                                                {
+                                                    foreach (var item in ViewBag.Result)
+                                                    {
+                                                        if (item.resultId == item1.resultId)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.submittedTerm</td>
+                                                                <td>@item.matchedTerm</td>
+                                                                @if (item.secondaryFieldResults.Count > 1)
+                                                                {
+                                                                    <td>@item.secondaryFieldResults[3].matchedValue</td>
+                                                                    <td>@item.secondaryFieldResults[1].matchedValue</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                                    <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                                }
+                                                                <td>@item.categories[0]</td>
+                                                                <td>@item.matchStrength</td>
+                                                                @if (item.resolution != null)
+                                                                {
+                                                                    <td>@Html.DropDownListFor(model => model.statusId, new SelectList(ViewBag.DDLStatusID, "value", "text", item.resolution.statusId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                                    <td>@Html.DropDownListFor(model => model.riskId, new SelectList(ViewBag.DDLRiskLevelID, "value", "text", item.resolution.riskId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                                    <td>@Html.DropDownListFor(model => model.reasonId, new SelectList(ViewBag.DDLReasonID, "value", "text", item.resolution.reasonId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                                    <td>@item.resolution.resolutionRemark</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                }
+                                                                <td>@item1.ContactFullName </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            foreach (var item in ViewBag.Result)
+                                            {
+                                                if (item.matchStrength != "STRONG" && item.matchStrength != "EXACT")
+                                                {
+                                                    <tr>
+                                                        <td>@item.submittedTerm</td>
+                                                        <td>@item.matchedTerm</td>
+                                                        @if (item.secondaryFieldResults.Count > 1)
+                                                        {
+                                                            <td>@item.secondaryFieldResults[3].matchedValue</td>
+                                                            <td>@item.secondaryFieldResults[1].matchedValue</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                            <td>@item.secondaryFieldResults[0].matchedValue</td>
+                                                        }
+                                                        <td>@item.categories[0]</td>
+                                                        <td>@item.matchStrength</td>
+                                                        @if (item.resolution != null)
+                                                        {
+                                                            <td>@Html.DropDownListFor(model => model.statusId, new SelectList(ViewBag.DDLStatusID, "value", "text", item.resolution.statusId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                            <td>@Html.DropDownListFor(model => model.riskId, new SelectList(ViewBag.DDLRiskLevelID, "value", "text", item.resolution.riskId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                            <td>@Html.DropDownListFor(model => model.reasonId, new SelectList(ViewBag.DDLReasonID, "value", "text", item.resolution.reasonId), "--Select--", new { @class = "form-control DdlWidth validate[required]", @disabled = "disabled" })</td>
+                                                            <td>@item.resolution.resolutionRemark</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        }
+
+                                                        <td></td>
+                                                    </tr>
+                                                }
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10,
+            "language": {
+                "emptyTable": "No matches found."
+            }
+        });
+        $('#example11').DataTable({
+            "pageLength": 10,
+            "language": {
+                "emptyTable": "No matches found."
+            }
+        });
+        $("#btnTR_Submit").attr("disabled", "disabled");
+        $(".DisableItem").each(function () {
+            var ID = $(this).attr("id");
+            var value = $(this).val();
+            var InvID = ID.split('_')[1];
+            $("#resolutionRemark_" + InvID).attr("disabled", "disabled");
+            $("#statusId_" + InvID).attr("disabled", "disabled");
+            $("#riskId_" + InvID).attr("disabled", "disabled");
+            $("#reasonId_" + InvID).attr("disabled", "disabled");
+            $("#btnTR_Submit").attr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", false);
+        });
+    });
+
+    $(".DisableItem").on("change", function () {
+        var ID = $(this).attr("id");
+        var value = $(this).val();
+        var InvID = ID.split('_')[1];
+        if ($("#chk_" + InvID).is(':checked')) {
+            $("#resolutionRemark_" + InvID).removeAttr("disabled", "disabled");
+            $("#statusId_" + InvID).removeAttr("disabled", "disabled");
+            $("#riskId_" + InvID).removeAttr("disabled", "disabled");
+            $("#reasonId_" + InvID).removeAttr("disabled", "disabled");
+            $("#btnTR_Submit").removeAttr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", true);
+        }
+        else {
+            $("#resolutionRemark_" + InvID).attr("disabled", "disabled");
+            $("#statusId_" + InvID).attr("disabled", "disabled");
+            $("#riskId_" + InvID).attr("disabled", "disabled");
+            $("#reasonId_" + InvID).attr("disabled", "disabled");
+            $("#btnTR_Submit").attr("disabled", "disabled");
+            $("#chk_" + InvID).prop("checked", false);
+        }
+    });
+
+
+    /* Resolution Rules */
+
+    $(".ddlstatus").on("change", function () {
+
+        var ID = $(this).attr("id");
+        var ddlID = ID.split('_')[1];
+        var riskId = "#riskId_" + ddlID;
+        var reasonId = "#reasonId_" + ddlID;
+
+        ClearComboData(ID);
+
+        var selectedText = $("#" + ID).val();
+        if (selectedText != "" && typeof (selectedText) != 'undefined') {
+
+            var skillsSelect = document.getElementById(ID);
+            var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            if (selectedText == "Positive") {
+                //9f4
+                $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ec]").attr("disabled", false);
+
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f0]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f2]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f1]").attr("disabled", false);
+            }
+            else if (selectedText == "Possible") {
+                //9f9
+                $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ed]").attr("disabled", false);
+
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f3]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f0]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f2]").attr("disabled", false);
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f1]").attr("disabled", false);
+            }
+            else if (selectedText == "False") {
+                //9ff
+                $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ee]").attr("disabled", false);
+
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f3]").attr("disabled", false);
+            }
+            else if (selectedText == "Unspecified") {
+                //a02
+                $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ef]").attr("disabled", false);
+
+                $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f3]").attr("disabled", false);
+            }
+        }
+    });
+
+    function ClearComboData(ID) {
+        var ddlID = ID.split('_')[1];
+        var riskId = "#riskId_" + ddlID;
+        var reasonId = "#reasonId_" + ddlID;
+
+        $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f3]").attr("disabled", true);
+        $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f0]").attr("disabled", true);
+        $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f1]").attr("disabled", true);
+        $(riskId + " option[value=0a3687cf-5fe4-105f-9813-f982000009f2]").attr("disabled", true);
+
+        $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ee]").attr("disabled", true);
+        $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ef]").attr("disabled", true);
+        $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ec]").attr("disabled", true);
+        $(reasonId + " option[value=0a3687cf-5fe4-105f-9813-f982000009ed]").attr("disabled", true);
+    }
+</script>
+<style>
+    .DdlWidth {
+        width: 90px;
+    }
+
+    .active {
+        background-color: #0000 !important;
+    }
+</style>

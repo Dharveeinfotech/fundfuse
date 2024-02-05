@@ -1,0 +1,93 @@
+﻿@model  IEnumerable<TMP.Models.CustomerShareHolderModel>
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@if (Model.Count() > 0)
+{
+    <div class="tab-pane" id="4a">
+        <!--tab 4a-->
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="bgspr">
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>Country of Residence</th>
+                        <th>E-Mail</th>
+                        <th>Mobile Number</th>                       
+                        <th>Type</th>
+                        <th>Passport Expiry Date</th>
+                        <th>View</th>
+                        <th>Edit</th>
+                        <th>Delete</th>                        
+                    </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.FirstName</td>
+                            <td>@item.MiddleName</td>
+                            <td>@item.LastName</td>
+                            <td>@item.Gender</td>
+                            <td>@item.LocCountryName</td>
+                            <td>@item.EmailID</td>
+                            <td>@item.MobileNo</td>
+                            <td>@item.CustTypeDesc</td>
+                            @if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(item.PassExpDate))
+                            {
+                                <td class="DateExpireLabel">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                            }
+                            else
+                            {
+                                <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                            }
+                            <td><a href="#" onclick="ViewDetail('@item.CustomerShareHoldID')">View</a></td> 
+                            <td>@Html.ActionLink("Edit", "AuthSignDetails", new { CustomerID = item.CustomerID, CDid = item.CustomerShareHoldID, CAid = 0, did = 0, CustType = item.CustType })</td>
+                            <td>@Html.ActionLink("Delete", "AuthSignDetails", new { CustomerID = item.CustomerID, did = item.CustomerShareHoldID, CDid = 0, CAid = 0, CustType = item.CustType })</td>                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 5,
+
+        });
+    });
+    function ViewDetail(id) {
+        var CustomerShareHoldID = id;
+        $.ajax({
+            url: "/CustomerReg/AuthSignDetailsPopUp",
+            type: "POST",
+            data: "{CustomerShareHoldID:'" + CustomerShareHoldID + "'}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                $('#factoringview').html(result);
+                $('#factoringModal').modal('show');
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html("error");
+                $('#Error').modal('show');
+            }
+        });
+    }
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+
+
+
+
+
+

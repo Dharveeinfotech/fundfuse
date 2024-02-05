@@ -1,0 +1,65 @@
+﻿@model  IEnumerable<TMP.Models.FAQ>
+@{
+    ViewBag.Title = "FAQ";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+    <div class="viewmargin boxbg col-sm-12">
+        <div class="col-sm-12">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4" style="text-align:center;">
+                <div class="faqtitle"><h4>FAQs – for the SCF Platform</h4></div>
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div class="col-sm-12">
+            <p>
+                We aim to make your experience on our online platform as simple and easy as possible. In order to do this, we have collated the online platform FAQs we receive from our clients and partners. In listing the most frequent questions and answers, we hope to make your journey even smoother.
+            </p>
+            <p>
+                If you can’t find the answers you are looking for here, please get in touch. You can reach us by calling us on 800XXXXXXX or e-mail us at xxxxx@xxx,com.
+            </p>
+        </div>
+        <br />
+
+        @ViewBag.ErrorMsg
+
+        @{int i = 0;}
+        <div class="panel-group" id="accordion">
+            @foreach (var item in ViewBag.objfaq)
+            {
+                <div class="panel panel-default" id="panel_@i">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-target="#collapseOne_@i" style="cursor:pointer;">
+                                <i class="more-less glyphicon glyphicon-plus" style="float:right;"></i>
+                                @item.Questions
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_@i" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            @item.Answer
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+        </div>
+    </div>
+</div>
+<script>
+    function toggleIcon(e) {
+        $(e.target)
+            .prev('.panel-heading')
+            .find(".more-less")
+            .toggleClass('glyphicon-plus glyphicon-minus');
+    }
+    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    $('.panel-group').on('shown.bs.collapse', toggleIcon);
+</script>

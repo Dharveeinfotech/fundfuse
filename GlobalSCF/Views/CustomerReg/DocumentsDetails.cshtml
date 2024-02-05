@@ -1,0 +1,165 @@
+﻿@model  TMP.Models.CustomerDocModel
+@{
+    ViewBag.Title = "Documents Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    @if (Model.CustomerID > 0)
+    { @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 7 })  }
+    @using (Html.BeginForm("DocumentsDetails", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "DocumentsDetails" }))
+    {
+        if (@ViewBag.attachList != null)
+        {
+            <div class="col-md-12 createusertitle">DOCUMENT DETAILS</div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="tab-pane" id="4a">
+                <!--tab 4a-->
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th style="width:10%">Sr. No.</th>
+                                <th style="width:50%">Document Name</th>
+                                <th style="width:40%">Attachments</th>
+                                <th style="display:none;">
+                                </th>
+                            </tr>
+                        <tbody>
+                            @foreach (var item in ViewBag.attachList)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@item.DocumentName</td>
+                                        
+                                            <td>
+                                                @*<a href='~/Files/Upload/@item.Attachment' target="_blank">View</a>*@
+                                                <a href="javascript:void(0);" class="Attachment_PopUp" data-id="@item.Attachment">View</a>
+                                            </td>
+                                    <td class="Attachment" style="display:none;">
+                                        <span>@item.Attachment</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="col-md-12" style="height:15px;"></div>
+        }
+        if (@ViewBag.userAttach != null)
+        {
+            <div class="col-md-12 createusertitle">OTHER DOCUMENT DETAILS</div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="tab-pane" id="4a">
+                <!--tab 4a-->
+                <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12">
+                    <table id="example1" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th style="width:10%">Sr. No.</th>
+                                <th style="width:50%">Document Name</th>
+                                <th style="width:40%">Attachments</th>
+                                <th style="display:none;">
+                                </th>
+                            </tr>
+                        <tbody>
+                            @foreach (var item in ViewBag.userAttach)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@item.DocumentName</td>
+                                    @if (item.DocumentUpload != "")
+                                    {
+                                        <td>
+                                    @*<a href='~/Files/Upload/@item.DocumentUpload' target="_blank">View</a>*@
+                                            <a href="javascript:void(0);" class="DocumentUpload_PopUp" data-id="@item.DocumentUpload">View</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>&nbsp;</td>
+                                    }
+                                    <td class="DocumentUpload" style="display:none;">
+                                        <span>@item.DocumentUpload</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="col-md-12" style="height:15px;"></div>
+        }
+        if (ViewBag._currentUser.IsCompScr == true || ViewBag._currentUser.IsCreRevChecker == true || ViewBag._currentUser.IsCreRevApprover == true || ViewBag._currentUser.IsOpTeam == true)
+        {
+            <div class="col-md-12" style="text-align:right">
+                @Html.HiddenFor(x => x.CustomerID)
+                @Html.HiddenFor(x => x.Status)
+                @Html.HiddenFor(x => x.CustomerTypeID)
+                @Html.HiddenFor(x => x.ProgramType)
+                @if (Convert.ToBoolean(Session["IsEditProfile"]) == false)
+                {
+                    <button id="Next" name="Next" value="Next" class="btn btn-tgs">&nbsp;Next</button>
+                }
+            </div>
+        }
+    }
+</div>
+<script>
+    $("#example").on("click", ".Attachment_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".Attachment").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    $("#example1").on("click", ".DocumentUpload_PopUp", function () {
+        var row = $(this).closest("tr");
+        var fileName = row.find(".DocumentUpload").find("span").html();
+        var url = '/Files/Upload/' + fileName + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+    
+    $(document).ready(function () {
+        var t = $('#example').DataTable({
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'desc']]
+        });
+
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+        var t1 = $('#example1').DataTable({
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'desc']]
+        });
+
+        t1.on('order.dt search.dt', function () {
+            t1.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    });
+</script>
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>

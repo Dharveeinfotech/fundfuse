@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "_MenuPartialPage";
+    Layout = "~/Views/MasterPage/_SCFLayoutMaster.cshtml";
+}
+
+
+
+<form action="/CommonSystemPerameter/Index" method="post">
+    <div class="col-md-12">
+        @Html.Partial("../MasterPage/_MenuPartialPage")
+        <div class="col-lg-10" style="padding-bottom:10px">
+            <div class="col-sm-2 text-right">
+                <label>Contry/State</label>
+            </div>
+            <div class="col-sm-2">
+                @Html.DropDownList("CountryID", null, "--Select Contry--", new { @class = "" })
+
+            </div>
+            <div class="col-sm-1 text-right">
+                <label>City</label>
+            </div>
+            <div class="col-sm-3 ">
+                @Html.DropDownList("CityID", null, "--Select City--", new { @class = "city" })
+
+
+            </div>
+            <div class="col-lg-1 text-right">
+                <a class="btns" name="Add" id="Add">Add</a>
+            </div>
+            <div class="col-lg-1">
+                <a class="btns" name="update" id="Update">Update</a>
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+<script src="~/Scripts/jquery.eComboBox.min.js"></script>
+<body>
+    <select id="CityID"></select>
+</body>
+<script type="text/javascript">
+
+    $("#CountryID").on("change", function () {
+        $("#CityID").eComboBox();
+
+
+        var CountryID = $(this).val();
+        $("#CityID").empty();
+        $.ajax({
+            url: "/CommonSystemPerameter/GetCityData?iCountryID=" + CountryID,
+            type: "POST",
+            data: "{}",
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",           
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i] != '') {
+                        $("#CityID").append("<option value=" + data[i].CityID + ">" + data[i].CityName + "</option>");
+                    }
+                }
+                return false;
+            },
+            error: function () {
+                $("#errorMsg").html(Error);
+                $('#Error').modal('show');
+            }
+        });
+
+    });
+
+    $("#Add").click(function () {       
+        return false;
+    });
+
+
+    $("#Update").click(function () {      
+        return false;
+    });   
+</script>
+<style>
+    .city {
+        width: 150px !important;
+    }
+</style>

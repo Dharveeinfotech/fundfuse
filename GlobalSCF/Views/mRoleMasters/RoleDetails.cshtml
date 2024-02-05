@@ -1,0 +1,273 @@
+﻿@model TMP.Models.mRoleMaster
+@{
+    string _class = "";
+}
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Role Details";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 div-border padoff">
+    <div class="col-md-12 createusertitle">Role</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    }
+    @Html.HiddenFor(model => model.RoleID)
+    <input type='hidden' value="@Model.RoleID" name="hdnRoleID" id="hdnRoleID" />
+    <div class="col-md-12" style="height:10px;"></div>
+
+    <div class="form-group">
+        <label class="col-md-2" for="textinput">Role Name</label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2" for="textinput">Role Description </label>
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.RoleDesc, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.RoleDesc, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2" for="textinput">Company Type</label>
+        <div class="col-md-4">
+            @Html.DropDownListFor(model => model.CustomerTypeIDs, new SelectList(ViewBag.DDLCustTypID, "CustomerTypeID", "CustomerTypeName", Model.CustomerTypeIDs), new { @multiple = "multiple", @class = "form-control validate[required]", @disabled = "disabled", @id = "CustomerTypeIDs" })
+            @Html.HiddenFor(model => model.GetCustomerTypeIDs)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"></div>
+        <div class="col-md-2">
+            @Html.CheckBoxFor(m => m.IsMakerRole)
+            <span style="margin-left:7px;">Maker</span>
+        </div>
+        <div class="col-md-2">
+            @Html.CheckBoxFor(m => m.IsCheckerRole)
+            <span style="margin-left:7px;">Checker</span>
+        </div>
+        <div class="col-md-2">
+            @Html.CheckBoxFor(m => m.IsApproverRole)
+            <span style="margin-left:7px;">Approver</span>
+        </div>
+        <div class="col-md-2">
+            @Html.CheckBoxFor(m => m.IsViewerRole)
+            <span style="margin-left:7px;">Viewer</span>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="col-md-12" style="height:10px;"></div>
+    <div class="createusertitle col-md-12 ">selected rights</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    
+    @if (ViewBag.MenuRights != null)
+    {
+
+    foreach (var item in ViewBag.MenuRights)
+    {
+        <div class="container">
+            @if (item.ParentMenuID == -1)
+            {
+
+                <div class="col-md-12" style="height:22px; background-color:#e6e7e8;">
+                    <div class="col-md-3">
+                        <span style="font-size:larger; color:#58595b; font-weight:bold; text-transform: uppercase;">@item.MenuName</span>
+                        &nbsp; &nbsp; &nbsp;
+                        @if (item.IsChild == false && item.MenuType == "M")
+                        {
+                            if (item.IsMaker == true)
+                            {
+                                <input type="checkbox" class="CheckMaker" title="Maker - @item.MenuName" name="chk_M_@item.MenuID" id="chk_M_@item.MenuID"
+                                       checked="checked" disabled />
+                            }
+                            else
+                            {
+                                <input type="checkbox" class="CheckMaker" title="Maker - @item.MenuName" name="chk_M_@item.MenuID" id="chk_M_@item.MenuID" disabled />
+                            }
+                        }
+                    </div>
+                </div>
+                <br />
+                foreach (var itemParent in ViewBag.MenuRights)
+                {
+                    if (item.MenuID == itemParent.ParentMenuID)
+                    {
+                        if (itemParent.MenuName == "Transaction")
+                        { _class = "dynmic-higt"; }
+                        else { _class = "fx-higt"; }
+                        <div class="col-md-2 @_class" style="border:solid 1px; margin:15px;">
+                            <br />
+                            <div class="col-md-12" style="text-align:center;background-color:#e6e7e8; height:22px;">
+                                <span style="font-size:larger; color:#58595b; font-weight: bold;">
+                                    @itemParent.MenuName
+                                </span>
+                            </div>
+
+
+                            @foreach (var itemParent2 in ViewBag.MenuRights)
+                            {
+                                if (itemParent.MenuID == itemParent2.ParentMenuID)
+                                {
+                                    <br /><span>@itemParent2.MenuName</span>
+
+                                    if (itemParent2.MenuType == "M")
+                                    {
+                                        if (itemParent2.IsMaker == true)
+                                        {
+                                            <input type="checkbox" class="checkBoxClass CheckMaker" title="Maker - @itemParent.MenuName" name="chk_M_@itemParent2.MenuID" id="chk_M_@itemParent2.MenuID"
+                                                   checked="checked" disabled />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="checkBoxClass CheckMaker" title="Maker - @itemParent.MenuName" name="chk_M_@itemParent2.MenuID" id="chk_M_@itemParent2.MenuID" disabled />
+                                        }
+                                    }
+                                    else if (itemParent2.MenuType == "C")
+                                    {
+                                        if (itemParent2.IsChecker == true)
+                                        {
+                                            <input type="checkbox" class="checkBoxClass CheckChecker" title="Checker - @itemParent.MenuName" name="chk_C_@itemParent2.MenuID" id="chk_C_@itemParent2.MenuID"
+                                                   checked="checked" disabled />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="checkBoxClass CheckChecker" title="Checker - @itemParent.MenuName" name="chk_C_@itemParent2.MenuID" id="chk_C_@itemParent2.MenuID" disabled />
+                                        }
+                                    }
+                                    else if (itemParent2.MenuType == "A")
+                                    {
+                                        if (itemParent2.IsApprover == true)
+                                        {
+                                            <input type="checkbox" class="checkBoxClass CheckApprover" title="Approver - @itemParent.MenuName" name="chk_A_@itemParent2.MenuID" id="chk_A_@itemParent2.MenuID"
+                                                   checked="checked" disabled />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="checkBoxClass CheckApprover" title="Approver - @itemParent.MenuName" name="chk_A_@itemParent2.MenuID" id="chk_A_@itemParent2.MenuID" disabled />
+                                        }
+                                    }
+                                    else if (itemParent2.MenuType == "V")
+                                    {
+                                        if (itemParent2.IsView == true)
+                                        {
+                                            <input type="checkbox" class="checkBoxClass CheckViewer" title="Viewer - @itemParent.MenuName" name="chk_V_@itemParent2.MenuID" id="chk_V_@itemParent2.MenuID"
+                                                   checked="checked" disabled />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="checkBoxClass CheckViewer" title="Viewer - @itemParent.MenuName" name="chk_V_@itemParent2.MenuID" id="chk_V_@itemParent2.MenuID" disabled />
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    }
+                }
+            }
+        </div>
+    }
+    }
+    <br />
+
+
+    <div class="col-md-12" style="height:10px;"></div>
+    <form method="post" id="SPCHKPAge" class="container">
+
+        <div class="col-md-7">
+            @if (ViewBag.IsCheckerOrApprover == "Checker" || ViewBag.IsCheckerOrApprover == "Approver")
+            {
+                <textarea class="col-md-12 footerbox validate[required]" placeholder="Remarks" id="Remarks" name="Remarks" cols="1" rows="1"></textarea>
+            }
+            <input type="hidden" id="hdnRoleID" name="RoleID" value="@Model.RoleID" />
+            <input type="hidden" id="Status" name="Status" value="@Model.Status" />
+        </div>
+        <div class="col-md-5" style="text-align:right;">
+            @if (Model.Status == CONT.NR || Model.Status == CONT.UR)
+            {
+                if (ViewBag.IsCheckerOrApprover == "Checker")
+                {
+                    <button id="btnCheckerReturn" name="btnCheckerReturn" value="btnCheckerReturn" class="btn-tgs" formnovalidate>Return to Maker</button>
+                    <button id="btnCheckerSubmit" name="btnCheckerSubmit" value="btnCheckerSubmit" class="btn-tgs" formnovalidate>Submit</button>
+                }
+            }
+            else if (Model.Status == CONT.NC || Model.Status == CONT.UC)
+            {
+                if (ViewBag.IsCheckerOrApprover == "Approver")
+                {
+                    <button id="btnApproverReject" name="btnApproverReject" value="btnApproverReject" class="btn-tgs" formnovalidate>Reject</button>
+                    <button id="btnApprove" name="btnApprove" value="btnApprove" class="btn-tgs" formnovalidate>Approve</button>
+                }
+            }
+        </div>
+
+    </form>
+</div>
+<style>
+    .checkBoxClass {
+        float: right;
+    }
+
+    .dynmic-higt {
+        height: 355px;
+    }
+
+    .fx-higt {
+        height: 165px;
+    }
+      .dropdown-menu {
+        border-radius: 0px;
+        margin: 0px;
+    }
+
+        .dropdown-menu > li > a:hover {
+            background-color: #428bca;
+            color: #000000;
+        }
+
+    .multiselect-container > li > a.multiselect-all label {
+        font-weight: 400;
+        padding: 0px 0px 0px 35px;
+    }
+
+    .dropdown-menu > li > a {
+        background-color: transparent;
+        padding-left: 0px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+</style>
+<script>
+    var selected_tags_arr = new Array();
+    var selected_tags = $('#GetCustomerTypeIDs').val();
+    if (selected_tags != "") {
+        if (typeof (selected_tags) != 'undefined') {
+            selected_tags_arr = selected_tags.split(",");
+            $('#CustomerTypeIDs option').each(function () {
+                var option_val = this.value;
+                for (var i in selected_tags_arr) {
+                    if (selected_tags_arr[i] == option_val) {
+                        $("#CustomerTypeIDs option[value='" + this.value + "']").attr("selected", 1);
+                    }
+                }
+            });
+        }
+    }
+    $('#CustomerTypeIDs').multiselect({
+        includeSelectAllOption: true,
+        maxHeight: '300',
+        buttonWidth: '254.5',
+    });
+
+    $(document).ready(function () {
+        $("#IsMakerRole").attr("disabled", "disabled");
+        $("#IsCheckerRole").attr("disabled", "disabled");
+        $("#IsApproverRole").attr("disabled", "disabled");
+        $("#IsViewerRole").attr("disabled", "disabled");
+    });
+</script>

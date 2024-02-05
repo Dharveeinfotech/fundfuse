@@ -1,0 +1,311 @@
+﻿@model TMP.Models.CustomerShareHolderModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Shareholders";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @if (Model.CustomerID > 0)
+    {
+        @Html.Action("InsuranceProviderPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 3 })
+    }
+    @using (Html.BeginForm("Shareholders", "InsuranceProvider", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "Shareholders" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12 createusertitle">SHAREHOLDERS DETAILS</div>
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="col-md-12">
+            <p>Please select type of shareholder</p>
+            @if (Model.CustomerShareHoldID > 0)
+            {
+                <p><input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb" checked="checked" /> Individual &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="cb2" name="cb2" value="cb2" class="chb" /> Company</p>
+            }
+            else if (Model.CompCustomerShareHoldID > 0)
+            {
+                <p><input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb" /> Individual &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="cb2" name="cb2" value="cb2" class="chb" checked="checked" /> Company</p>
+            }
+            else
+            {
+                <p><input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb" /> Individual &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="cb2" name="cb2" value="cb2" class="chb" /> Company</p>
+            }
+        </div>
+        <div class="col-md-12 createusertitle Share-individual-header">INDIVIDUAL SHAREHOLDERS</div>
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="Share-individual">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Please select, if same as Director or Authorized Signatory.</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("GetAuthSignCombo", null, "--Select--", new { @class = "form-control" })
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <div class="col-md-1"></div>
+                
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Full Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", placeholder = "First Name" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control", maxlength = "50", autocomplete = "off", placeholder = "Middle Name" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off", placeholder = "Last Name" })
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-12">
+                    <label class="col-md-2"></label>
+                    <p class="col-md-10 padoff name-msg" style="margin:0;">**Please ensure that the names you enter match the ones in your passport, and please use English characters only.</p>
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Shareholding Percentage&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.SharePer, new { @class = "form-control per validate[required]", maxlength = "50", autocomplete = "off", id = "Per" })
+                </div>
+                <div class="col-md-1"></div>
+
+                <label class="col-md-2" for="textinput">Nationality&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.NatCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.NatCountryID), "--Select--", new { @class = "form-control validate[required]" })
+
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Passport Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.PassNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2" for="textinput">Place of Issuance&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.PassCountryID, new SelectList(ViewBag.DDLCountryID, "CountryID", "CountryName", Model.PassCountryID), "--Select--", new { @class = "form-control validate[required]" })
+
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Issuance Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.CustomerShareHoldID > 0)
+                    {
+                        <input id="PassIssueDate" name="PassIssueDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" value="@Model.PassIssueDate.ToString("dd-MMM-yyyy")" />
+                    }
+                    else
+                    {
+                        <input id="PassIssueDate" name="PassIssueDate" type="text" placeholder="" class="form-control formattedCalenderinc validate[required]" autocomplete="off" />
+                    }
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2" for="textinput">Expiry Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+
+                        @if (Model.CustomerShareHoldID > 0)
+                        {
+                            if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(Model.PassExpDate))
+                            {
+                                <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required] DateExpire" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")" />
+                            }
+                            else
+                            {
+                                <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" value="@Model.PassExpDate.ToString("dd-MMM-yyyy")" />
+                            }
+                        }
+                        else
+                        {
+                            <input id="PassExpDate" name="PassExpDate" type="text" placeholder="" class="form-control formattedCalender validate[required]" autocomplete="off" />
+                        }
+
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Passport Copy&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @if (Model.UpdPassport != null)
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="UpdPassport" id="1UpdPassport" class="file" />
+                        </label>
+                        <label class="l-filename" id="1UpdPassport_span"></label>
+                        if (Model.UpdPassport != "")
+                        {
+                            @Html.HiddenFor(x => x.UpdPassport)
+                            <span class="">
+                                @*<a href='~/Files/Upload/@Model.UpdPassport' target="_blank">View</a>*@
+                                <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@Model.UpdPassport">View</a>	
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="UpdPassport" id="1UpdPassport" class="validate[required] file" />
+                        </label>
+                        <label class="l-filename" id="1UpdPassport_span"></label>
+                        <a href='~/Files/Upload/@Model.UpdPassport' target="_blank" style="display:none;">View</a>
+
+                        <a id="ViewPassport" href="#" target="_blank" style="display:none;">View</a>
+                        <input type="hidden" id="UpdPassport" name="UpdPassport" />
+                    }
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2" for="textinput">National ID Copy&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="UpdNatIden" id="UpdNatIden" class="file" />
+                        </label>
+                        <label class="l-filename" id="UpdNatIden_span"></label>
+                        @if (Model.UpdNatIden != null)
+                        {
+                            if (Model.UpdNatIden != "")
+                            {
+                                @Html.HiddenFor(x => x.UpdNatIden)
+                                <span class="">
+                                    @*<a href='~/Files/Upload/@Model.UpdNatIden' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdNatIden_PopUp" data-id="@Model.UpdNatIden">View</a>	
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <a id="ViewNationalID" href="#" target="_blank" style="display:none;">View</a>
+                            <input type="hidden" id="UpdNatIden1" name="UpdNatIden" />
+                        }
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12" style="text-align:right">
+                @Html.HiddenFor(x => x.CustomerID)
+                @Html.HiddenFor(x => x.CustomerShareHoldID)
+                @Html.HiddenFor(x => x.Status)
+                <button id="Save" name="Save" value="Save" class="CommonAttachValidation btn btn-tgs">&nbsp;Save & Add New</button>
+            </div>
+        </div>
+            @Html.Action("GridShareholders", "InsuranceProvider", new { CustomerID = Model.CustomerID })
+    }
+    
+    @using (Html.BeginForm("Shareholders", "InsuranceProvider", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations1", id = "ShareholdersComp" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="col-md-12" style="height:10px;"></div>
+        <div class="col-md-12 createusertitle Share-company-header">COMPANY SHAREHOLDERS</div>
+        <div class="col-md-12" style="height:15px;"></div>
+        <div class="Share-company">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Name of Company&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2" for="textinput">Shareholding Percentage&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.CompSharePer, new { @class = "form-control per1 num validate[required]", maxlength = "50", autocomplete = "off" })
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Trade License Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.TradeLicNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <div class="col-md-1"></div>
+                
+                    <label class="col-md-2" for="textinput">Trade License&nbsp;<span style="color:red;width:50px;"></span></label>
+                    <div class="col-md-3">
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="UpdTradeLic" id="UpdTradeLic" class="file" />
+                        </label>
+                        <label class="l-filename" id="UpdTradeLic_span"></label>
+                        @if (Model.UpdTradeLic != null)
+                        {
+
+                            if (Model.UpdTradeLic != "")
+                            {
+                                @Html.HiddenFor(x => x.UpdTradeLic)
+                                <span class="">
+                                    @*<a href='~/Files/Upload/@Model.UpdTradeLic' target="_blank">View</a>*@
+                                    <a href="javascript:void(0);" class="UpdTradeLic_PopUp" data-id="@Model.UpdTradeLic">View</a>
+                                </span>
+                            }
+                        }
+                    </div>
+                    <div class="col-md-1"></div>
+                
+            </div>
+            @if (ViewBag.childID != null)
+                {
+                @Html.Action("ShareholdersBeneficial", "InsuranceProvider", new { CustomerID = Model.CustomerID, ParentID = Model.ParentID, CBid = Convert.ToInt32(ViewBag.childID) })
+            }
+            else
+            {
+                @Html.Action("ShareholdersBeneficial", "InsuranceProvider", new { CustomerID = Model.CustomerID })
+            }
+
+            @if (Model.ParentID > 0)
+                {
+                @Html.Action("GridShareholdersBeneficial", "InsuranceProvider", new { CustomerID = Model.CustomerID, ParentID = Model.ParentID })
+                @Html.HiddenFor(x => x.ParentID)
+
+            }
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12" style="text-align:right">
+                @Html.HiddenFor(x => x.CustomerID)
+                @Html.HiddenFor(x => x.CompCustomerShareHoldID)
+                @Html.HiddenFor(x => x.Status)
+                @if (Model.ParentID > 0)
+                {
+                    <button id="ComSaveAdd" name="ComSaveAdd" value="ComSaveAdd" class="CommonAttachValidation1 btn btn-tgs">&nbsp;Save & Add New</button>
+                        <button id="ComNextSave" name="ComNextSave" value="ComNextSave" class="CommonAttachValidation1 btn btn-tgs">&nbsp;Save & Next</button>
+                }
+
+            </div>
+        </div>
+    }
+    @Html.Action("GridShareholdersCompany", "InsuranceProvider", new { CustomerID = Model.CustomerID })
+</div>
+
+
+<script>
+    $(".UpdNatIden_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdNatIden' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(".UpdPassport_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdPassport' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    $(".UpdTradeLic_PopUp").on("click", function () {
+        var url = '/Files/Upload/' + '@Model.UpdTradeLic' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    var Urlval = '@(ViewBag.compIndi)';
+    shareholder(Urlval);
+</script>

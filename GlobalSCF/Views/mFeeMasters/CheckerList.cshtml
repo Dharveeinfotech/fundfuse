@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TMP.Models.FeeMaster_ListAll_Model>
+@{
+    ViewBag.Title = "Checker List";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border padoff">
+    @Html.AntiForgeryToken()
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+    <input type="hidden" id="hdnFeeID" name="hdnFeeID" />
+    <input type="hidden" id="hdnActionName" name="hdnActionName" />
+
+    <div class="col-md-12">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr class="bgsp">
+                    <th>Fee Name</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(item.FeeName, "Details", new { iFeeID = item.FeeId, icheck = ViewData["CheckerView"].ToString() })</td>
+                            <td>
+                                @item.StatusUserDesc
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "pageLength": 10
+        });
+    });
+</script>

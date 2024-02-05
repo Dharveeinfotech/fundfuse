@@ -1,0 +1,178 @@
+﻿@model TMP.Models.CountryMaster
+@{
+    ViewBag.Title = "Holiday Master";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+
+
+<div class="col-md-12 div-border padoff">
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <span class="text-danger"> @ViewBag.ErrorMsg</span>
+    }
+
+    <form method="post" id="formid" enctype="multipart/form-data">
+        <div class="col-md-12 createusertitle">Holiday Master</div>
+        <div class="col-md-12" style="height:10px;"></div>
+        @using (Html.BeginForm())
+            {
+            @Html.HiddenFor(model => model.HolidayID)
+
+            <div class="form-group">
+                <div class="col-md-1"></div>
+                    <label class="col-md-2" for="textinput">Holiday Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-8">
+                        <input type="text" id="HolidayName" name="HolidayName" placeholder="Holiday Name" value="@Model.HolidayName" class="form-control validate[required]" maxlength="100" tabindex="1" autocomplete="off" />
+                    </div>
+                </div>
+            <div class="form-group">
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput">From Holiday Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    <input id="FromHolidayDate" name="FromHolidayDate" value="@Convert.ToDateTime(Model.FromHolidayDate).ToString("dd-MMM-yyyy")" type="text"
+                    autocomplete="off" placeholder="From Holiday Date" onpaste="return false" onkeypress="return isNullFromHolidayDate(event)" class="form-control formattedCalender validate[required]">
+                </div>
+                <label class="col-md-2" for="textinput">To Holiday Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-3">
+                    <input id="ToHolidayDate" name="ToHolidayDate" value="@Convert.ToDateTime(Model.ToHolidayDate).ToString("dd-MMM-yyyy")" t type="text"
+                           autocomplete="off" placeholder="To Holiday Date" onpaste="return false" onkeypress="return isNullFromHolidayDate(event)" class="form-control formattedCalender validate[required]">
+                </div>
+            </div>
+            <div class="col-md-12" style="height:10px;"></div>
+
+            <div class="form-group">
+                <div class="col-md-1"></div>
+                <label class="col-md-2" for="textinput"></label>
+                <div class="col-md-8" style="text-align:right;">
+                    <button id="submit1" name="submit1" value="submit" class="btn-tgs" formmethod="post" formaction="../Country/CreateHolidayMaster">Submit</button>
+                </div>                
+            </div>
+
+            <div class="form-group">
+                @Html.Action("HolidayDetail", "Country")
+            </div>
+        }
+    </form>
+</div>
+
+
+<style>
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .ui-datepicker-header {
+        /*background-color: #6D8EA5 !important;*/
+        color: black;
+    }
+
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        color: black;
+    }
+
+    #loading {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        position: fixed;
+        display: block;
+        opacity: 0.7;
+        background-color: #fff;
+        z-index: 99;
+        text-align: center;
+    }
+
+    #loading-image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 100;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_info {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        display: none;
+    }
+</style>
+<script type="text/javascript">
+
+    function isNullFromHolidayDate(evt) {
+        document.getElementById("FromHolidayDate").value = "";
+        document.getElementById("FromHolidayDate").focus();
+
+        document.getElementById("ToHolidayDate").value = "";
+        document.getElementById("ToHolidayDate").focus();
+
+        return false;
+    }
+
+    $("#submit1").on("click", function () {
+
+        $("#formid").validationEngine('attach', {
+            promptPosition: "bottomLeft",
+            scroll: false,
+            autoHidePrompt: true,
+            autoHideDelay: 3500,
+            fadeDuration: 0.3,
+            focusFirstField: false,
+            MaxErrorsPerField: 1
+        });
+    });
+
+
+    $("#ToHolidayDate").on("change", function () {
+
+        if (document.getElementById("FromHolidayDate").value != "" && document.getElementById("ToHolidayDate").value != "") {            
+            if (Date.parse(document.getElementById("FromHolidayDate").value) > Date.parse(document.getElementById("ToHolidayDate").value)) {               
+                $("#errorMsg").html("Invalid Date Range!\nStart Date cannot be after End Date!");
+                $('#Error').modal('show');
+                document.getElementById("ToHolidayDate").value = "";
+                document.getElementById("ToHolidayDate").focus();
+                return false;
+            }
+        }
+    });
+    
+    $(document).ready(function () {
+
+        if (document.getElementById("HolidayName").value == "") {
+        
+            document.getElementById("FromHolidayDate").value = "";
+            document.getElementById("ToHolidayDate").value = "";
+        }
+        $("#FromHolidayDate").datepicker({
+            dateFormat: 'dd-M-yy',
+            //maxDate: '0',
+            changeMonth: true,
+            changeYear: true
+        });
+
+        $("#ToHolidayDate").datepicker({
+            dateFormat: 'dd-M-yy',
+            //maxDate: '0',
+            required: true,
+            changeMonth: true,
+            changeYear: true
+        });
+
+        $(".formattedCalenderInvoiceDueDate").datepicker({
+            dateFormat: 'dd-M-yy',
+            minDate: '0',
+            required: true,
+            changeMonth: true,
+            changeYear: true,
+            setDate: '+3'
+
+        });
+
+    });
+</script>

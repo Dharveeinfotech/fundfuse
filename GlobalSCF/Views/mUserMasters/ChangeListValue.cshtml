@@ -1,0 +1,14 @@
+﻿@model  IEnumerable<TMP.Models.UserMaster_ListAll_Result>
+@{
+    ViewBag.Title = "Change List Value";
+    Layout = "~/Views/MasterPage/_SCFLayoutMaster.cshtml";
+}
+
+@Html.Partial("../MasterPage/_MenuPartialPage")
+
+@using (Html.BeginForm())
+{
+    <div class="col-md-10" style="height:5px;">
+        @Html.ListBox("CountryID", new SelectList((System.Collections.IEnumerable)ViewData["JIGAR"], "CustomerID", "FirstName"))
+    </div>
+}
