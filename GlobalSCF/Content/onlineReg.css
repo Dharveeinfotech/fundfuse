@@ -28,13 +28,13 @@ input, select, textarea {
 }
 
 .btn-tgs {
-    /*background: #ffffff;*/
-    background-color:transparent;
+    background: #000;
+    /*background-color:transparent;*/
     padding: 4px 20px;
-    border: 1px solid #336699;
+    border: 1px solid #000;
     border-radius: 16px;
-    border-color: #336699;
-    color: #336699;
+    border-color: #000;
+    color: #fff;
     margin-bottom: 0;
     font-size: 16px;
     font-weight: normal;
@@ -55,16 +55,17 @@ input, select, textarea {
 
     .btn-tgs:hover,
     .btn-tgs:focus {
-        color: #ffffff;
+        color: #000;
         text-decoration: none;
-        background: #336699;
+        background: #ffd509;
+        border-color: #ffd509;
     }
      .mkGreen{
         color:green;
     }
 .form-control {
-    border: 0.5px solid #ccc;
-    border-radius: !important 5px;
+    border: 0.5px solid #f6f9fc;
+    border-radius: 5px;
     font-size: 14px;
     /*-webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -75,7 +76,6 @@ input, select, textarea {
     /*-webkit-border-radius: 0;*/ /* Safari 3-4, iOS 1-3.2, Android 1.6- */
     /*-moz-border-radius: 0;*/
     height: 40px;
-    
 }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
@@ -136,6 +136,7 @@ input, select, textarea {
     padding-top: 0px;
     /*background-image: url("../images/tgs-bg.png");*/
     background-repeat: no-repeat;
+    background-color: #f6f9fc;
     /*background-position:right 120px;*/
 }
 
@@ -175,14 +176,14 @@ input, select, textarea {
 }
 
 .box-con-login-1 {
-    color: #58595b;
+    color: #000;
     background-color: #ffffff;
     padding-top: 5%;
     padding-bottom: 0%;
     opacity: 0.9;
     text-align: center;
-    height: 360px;
-    border:1px solid #336699;
+    height: auto;
+    border:1px solid #fff;
     border-radius:5px;
 }
 
@@ -211,7 +212,7 @@ input, select, textarea {
     padding-left: 10%;
     padding-right: 10%;
     text-align: left;
-    color: #336699;
+    color: #000;
 }
 
 .thumbnail {
@@ -223,12 +224,13 @@ input, select, textarea {
 .createusertitle {
     background-color: #fff;
     font-weight: bold;
-    color: #555555;
-    padding: 1%;
+    color: #000;
+    padding: 1% 10%;
     margin-bottom: 1%;
-    font-size: 16px;
+    font-size: 24px;
     text-align: left;
-    border:1px solid #336699;
+    /* border: 1px solid #336699;*/
+       
 }
 
 .div-border {
@@ -257,7 +259,7 @@ input, select, textarea {
 .footeronline {
     position: relative;
     background-color: transparent;
-    color: #6d6e71;
+    color: #000000;
     bottom: 0px;
     left: 0px;
     right: 0px;
@@ -268,11 +270,11 @@ input, select, textarea {
 
 .btn-tgs-ext {
     /*background-color:rgba(24, 134, 180,0.5);*/
-    background: #336699;
+    background: #000;
     padding: 6px 15px;
     border: 0px solid transparent;
     border-radius: 16px;
-    border-color: #ccc;
+    border-color: #000;
     color: #ffffff;
     margin-bottom: 0;
     font-size: 14px;
@@ -294,11 +296,11 @@ input, select, textarea {
 
     .btn-tgs-ext:hover,
     .btn-tgs-ext:focus {
-        background-color: #ffffff;
-        color: #336699;
+        background-color: #ffd400;
+        color: #000;
         text-decoration: none;
         padding: 5px 14px;
-        border: 1px solid #336699;
+        border: 0px solid transparent;
         /*background: rgba(255, 255, 255,0.8);*/
     }
 
@@ -511,11 +513,11 @@ table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column
 }
 
 .input-validation-error {
-    border-color: #a94442 !important;
+    border-color: #ff0500 !important;
 }
 
     .input-validation-error:focus {
-        box-shadow: 0 0 2px #a94442;
+        box-shadow: 0 0 2px #ff0500;
     }
 
 
@@ -539,7 +541,7 @@ table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column
 }
 
 .form-control:focus {
-    border-color: #336699;
+    border-color: #f6f9fc;
 }
 
 .newpop {

@@ -20,7 +20,7 @@
 <body class="btmmargin tgs-bg">
     <header>
         <div class="container-fiuld header-container" id="div-menu1">
-            <div class="col-md-12" style="height: 80px;background: #336699;position: absolute;"></div>
+            <div class="col-md-12" style="height: 80px; background: #fff; position: absolute;"></div>
             <div class="container">
                 <div class="row header-cont-row">
 
@@ -29,12 +29,12 @@
                             @if (Convert.ToString(Session["onlineCustomerTypeID"]) == "1")
                             {
                                 <a href="/Home/CMNDashboard">
-                                    <img class="header-logo" src="~/images/TradeHub.jpeg" alt="SCF Platform" title="SCF Platform">
+                                    <img class="header-logo"  style="padding: 20px 0px !important; " src="~/images/logo1.png" alt="SCF Platform" title="SCF Platform">
                                 </a>
                             }
                             else
                             {  <a href="/OnlineReg/Index">
-                                <img class="header-logo" src="~/images/TradeHub.jpeg" alt="SCF Platform" title="SCF Platform">
+                                <img class="header-logo " style="padding: 20px 0px !important; " src="~/images/logo1.png" alt="SCF Platform" title="SCF Platform">
                             </a>}
                         </div>
                     </div>
@@ -101,8 +101,8 @@
             <span class="menutext"> Copyright © @System.DateTime.Now.Year </span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span class="menutext">All Rights Reserved</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="menutext"><a href="javascript:void(0);" style="cursor:pointer;color:#6d6e71" class="OpenPP menutext" data-toggle="modal" data-target="#divtermscondi">Privacy Policy</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="menutext"><a href="javascript:void(0);" style="cursor:pointer;color:#6d6e71" class="OpenTC menutext" data-toggle="modal" data-target="#divtermscondi">Terms & Conditions</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">
+            <span class="menutext"><a href="javascript:void(0);" style="cursor:pointer;color:#000" class="OpenPP menutext" data-toggle="modal" data-target="#divtermscondi">Privacy Policy</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="menutext"><a href="javascript:void(0);" style="cursor: pointer; color: #000" class="OpenTC menutext" data-toggle="modal" data-target="#divtermscondi">Terms & Conditions</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="mFotter1">
                 @*|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class=""><a href="/Home/Contact" style="cursor:pointer;color:#6d6e71" class="menutext">Contact us</a></span>*@
         </div>
@@ -385,7 +385,7 @@
         }
 
         .nav > li > a:hover, .nav > li > a:focus, .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-            background-color: #336699;
+            background-color: #fff;
             color: #fff;
         }
 
