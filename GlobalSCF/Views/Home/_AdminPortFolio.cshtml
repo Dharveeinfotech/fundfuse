@@ -89,7 +89,7 @@
                                 {
                                     <td>@item.StatusUserDesc</td>
                                 }
-                               
+
                                 <td>
                                     <a href="javascript:void(0);" class="InvoiceCommentHistoryView" data-id="@item.InvoiceID">View</a>
                                 </td>
@@ -108,4 +108,15 @@
 
     </div>
     <hr />
+    <script>
+    $(document).ready(function () {
+        $('#exampleDB1, #exampleDB2, #exampleDB3').DataTable({
+            "pageLength": 20, "ordering": false
+        });
+        $('#exampleDB4, #exampleDB5').DataTable({
+            "pageLength": 10, "ordering": false
+        });
+    });
+    </script>
+
 }

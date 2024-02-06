@@ -66,11 +66,11 @@
             <div class="col-sm-12 createtitles">Invoice Details</div>
             <div class="col-sm-12" style="height:15px;"></div>
             <div class="form-group">
-                <label class="col-sm-2" for="textinput">Invoice Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <label class="col-sm-2" for="textinput">Payable Number&nbsp;<span style="color:red;width:50px;">*</span></label>
                 <div class="col-sm-4">
                     @Html.TextBoxFor(model => model.InvoiceNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
                 </div>
-                <label class="col-sm-2 " for="textinput">Invoice Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <label class="col-sm-2 " for="textinput">Payable Date&nbsp;<span style="color:red;width:50px;">*</span></label>
                 <div class="col-sm-4">
                     @if (Model.InvoiceDate != Convert.ToDateTime("01-01-1900") && Model.InvoiceDate != Convert.ToDateTime("01-01-0001"))
                 {
@@ -85,7 +85,7 @@
             </div>
             <div class="col-sm-12" style="height:5px;"></div>
             <div class="form-group">
-                <label class="col-sm-2 " for="textinput">Invoice Amount&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <label class="col-sm-2 " for="textinput">Payable Amount&nbsp;<span style="color:red;width:50px;">*</span></label>
                 <div class="col-sm-4">
                     @Html.TextBoxFor(model => model.Amt, new { @class = "form-control validate[required] num", maxlength = "50", autocomplete = "off" })
                 </div>
