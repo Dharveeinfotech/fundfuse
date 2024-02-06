@@ -40,10 +40,10 @@
                     </div>
                     @if (Session["DisplayName"] != null)
                     {
-                        <div class="col-sm-9 topbg" style="padding-top:30px;">
+                        <div class="col-sm-9 topbg" style="padding-top:25px;">
 
 
-                            <div class="col-md-8 padoff">
+                            <div class="col-md-8">
                                 <ul class="mUl">
                                     <li class="homemenu"><a href="@Url.Action("EditProfile","CustomerReg")">My Account</a></li>
                                     <li class="homemenu">|</li>
@@ -59,7 +59,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-4" style="color:#fff;">
+                            <div class="col-md-4">
                                 <p>Welcome <b>@Convert.ToString(Session["DisplayName"])</b></p>
                                 @if (Session["LastLoginTime"].ToString().Contains("1900") == true)
                                 {
@@ -356,7 +356,7 @@
             /*border: 1px solid #336699;
         border-radius: 15px;
         width: 110px;*/
-            color: #fff;
+            color: #000;
             text-align: center;
             margin-right: 5px;
         }
@@ -365,17 +365,17 @@
                 text-align: center;
                 margin-right: 5px;
                 cursor: default;
-                color: #fff !important;
+                color: #ffd400 !important;
             }
 
             .homemenu a {
-                color: #fff !important;
+                color: #000 !important;
                 text-decoration: none !important;
                 font-size: 11px;
             }
 
             .homemenu:hover a {
-                color: #fff !important;
+                color: #ffd400 !important;
             }
 
         .new-ac-dd {
