@@ -190,10 +190,13 @@
 
 
 * {
-    font-family: myriad_pro;
-    font-size: 12px;
+    /*font-family: myriad_pro;*/
+    font-size: inherit;
 }
-
+/*body {
+    font-size: calc(100vw / 120);
+    line-height: calc(100vw / 75);
+}*/
 .viewmargin {
     width: 90%;
     margin: 0px auto;
