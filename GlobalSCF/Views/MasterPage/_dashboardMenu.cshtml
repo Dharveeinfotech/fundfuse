@@ -67,7 +67,7 @@
                                                         _class = "";
                                                         if (item.MenuID == subitem.ParentMenuID)
                                                         {
-                                                            <li><a href="#" style="font-weight:normal;text-transform: uppercase; background: #fff; color:#58595b">@subitem.MenuName</a></li>
+                                                            <li><a href="#" style="font-weight: normal; text-transform: uppercase; background: #ffec8c; color: #000000 ">@subitem.MenuName</a></li>
                                                             foreach (var Menuitem in Model)
                                                             {
                                                                 if (subitem.MenuID == Menuitem.ParentMenuID)
@@ -180,7 +180,7 @@
         padding: 8px 20px;
         display: block;
         color: #fff;
-        font-size: 12px;
+        font-size: inherit;
     }
 
     .navbar-default .navbar-nav > li > a:hover {
@@ -190,21 +190,21 @@
 
 
     .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-        color: #ffffff;
-        background-color: #336699;
+        color: #000000;
+        background-color: #ffec8c;
     }
 
     .dropdown-menu > li > a {
-        background-color: #336699;
-        color: #fff;
+        background-color: #fff;
+        color: #000000;
         padding-top: 10px;
         padding-bottom: 10px;
         padding-left: 5px;
     }
 
         .dropdown-menu > li > a:hover {
-            background-color: #336699;
-            color: #ffffff;
+            background-color: #fcdd40;
+            color: #000000;
         }
 
     .dropdown-menu .divider {
@@ -217,7 +217,7 @@
         margin-top: 0;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
-        background-color: #336699;
+        background-color: #fff;
         /*opacity: 0.8;*/
         text-align: left;
     }

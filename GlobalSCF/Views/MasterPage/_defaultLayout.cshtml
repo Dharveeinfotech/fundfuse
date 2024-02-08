@@ -60,7 +60,7 @@
                                 </ul>
                             </div>
                             <div class="col-md-4">
-                                <p>Welcome <b>@Convert.ToString(Session["DisplayName"])</b></p>
+                                <p style="font-size:inherit">Welcome <b>@Convert.ToString(Session["DisplayName"])</b></p>
                                 @if (Session["LastLoginTime"].ToString().Contains("1900") == true)
                                 {
                                     <p>First login.</p>
@@ -390,7 +390,7 @@
         }
 
         .nav > li > a:hover, .nav > li > a:focus, .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-            background-color: #fff;
+            background-color: #000;
             color: #fff;
         }
 
