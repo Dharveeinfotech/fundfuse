@@ -251,7 +251,7 @@ input, select, textarea {
 }
 
 .div-border-multitab {
-    border: 1px solid #000;
+   /* border: 1px solid #000;*/
     padding-bottom: 2%;
     margin-top: 2%;
     margin-bottom: 2%;
@@ -382,6 +382,16 @@ input, select, textarea {
         text-decoration: none !important;
     }
 
+::ng-deep.insidebutton {
+    color: #000000;
+    text-decoration: none !important;
+}
+
+    ::ng-deep.insidebutton:hover {
+        text-decoration: none !important;
+        color: #fff;
+    }
+
 .p-view {
     padding-top: 10px;
 }
@@ -396,8 +406,8 @@ label {
     max-width: 100%;
     margin-bottom: 5px;
     margin-top: 10px;
-    font-weight: normal;
-    font-size: 12px;
+    /*font-weight: normal;*/
+    font-size: inherit;
 }
 /*tab*/
 .DateExpire {

@@ -53,7 +53,7 @@
                                 <td>@item.StatusDisplay</td>
                                 @if (item.Status == CONT.RQ || item.Status == CONT.ND || item.Status == CONT.NA || item.Status == CONT.UA)
                                 {
-                                    <td class="editbutton">@Html.ActionLink("Edit", "CompanyInfo", new { CustomerID = item.CustomerID, currentStatus = item.Status })</td>
+                                    <td class="editbutton insidebutton">@Html.ActionLink("Edit", "CompanyInfo", new { CustomerID = item.CustomerID, currentStatus = item.Status })</td>
                                 }
                                 else
                                 {
