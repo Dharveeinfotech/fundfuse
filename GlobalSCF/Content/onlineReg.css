@@ -92,6 +92,9 @@ input, select, textarea {
 .form-group {
     padding-bottom: 6%;
     /*border: 2px solid black;*/
+    /*box-shadow: 0px 4px 7px #999999;*/
+}
+.box-shadow {
     box-shadow: 0px 4px 7px #999999;
 }
 
@@ -421,7 +424,7 @@ label {
     color: red !important;
 }
 .bgsp {
-    background-color: #5a646e;
+    background-color: #444c55;
 }
 
 .active {
@@ -647,7 +650,7 @@ textarea {
     color: #fff;
     font-size: 20px;
 }
-
+ 
 .reminder-div-btn {
     background: #336699;
     color: #fff;
@@ -673,6 +676,8 @@ textarea {
         font-size: 14px;
           margin:0;
     }
+
+
 @media only screen and (max-width: 480px) {
     .visible-desktop {
         display: none;

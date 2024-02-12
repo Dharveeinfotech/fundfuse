@@ -195,8 +195,8 @@
         }
 
             <div class="container padoff">
-                <div class="form-group">
-                    <div class="col-md-4 form-group">
+                <div>
+                    <div class="col-md-4">
                         <label class="col-md-6" for="textinput">Is the company part of a group?&nbsp;<span style="color:red;width:50px;"></span></label>
                         @if (Model.IsCompGrpPart)
                         {
@@ -214,14 +214,14 @@
                         }
 
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         <label class="col-md-4" for="textinput">Name of the group&nbsp;<span style="color:red;width:50px;"></span></label>
                         <div class="col-md-8 group">
                             @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
                         </div>
 
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         <label class="col-md-4" for="textinput">Group website&nbsp;<span style="color:red;width:50px;"></span></label>
                         <div class="col-md-8 group">
                             @Html.TextBoxFor(model => model.GroupWebsite, new { @class = "form-control validate[required,custom[url]]", maxlength = "50", autocomplete = "off" })
@@ -232,8 +232,8 @@
             </div>
 
             <div class="container padoff">
-                <div class="form-group">
-                    <div class="col-md-4 form-group">
+                <div>
+                    <div class="col-md-4">
                         <label class="col-md-6" for="textinput">Is the company supervised by a financial services regulator?&nbsp;<span style="color:red;width:50px;"></span></label>
                         @if (Model.IsCompFinServ)
                         {
@@ -250,7 +250,7 @@
                             </div>
                         }
                     </div>
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-6">
                         <label class="col-md-4" for="textinput">Regulator Name&nbsp;<span style="color:red;width:50px;"></span></label>
                         <div class="col-md-8 financial">
                             @Html.TextBoxFor(model => model.RegulatorName, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
@@ -259,8 +259,8 @@
                 </div>
             </div>
             <div class="container padoff">
-                <div class="form-group">
-                    <div class="col-md-4 form-group">
+                <div>
+                    <div class="col-md-4">
                         <label class="col-md-6" for="textinput">Is the company publicly listed?&nbsp;<span style="color:red;width:50px;"></span></label>
                         @if (Model.IsCompPubList)
                         {
@@ -279,14 +279,14 @@
                         }
 
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         <label class="col-md-4" for="textinput">Exchange Name&nbsp;<span style="color:red;width:50px;"></span></label>
                         <div class="col-md-8 publicly">
                             @Html.TextBoxFor(model => model.ExchangeName, new { @class = "form-control validate[required] disbl-cntrl-cls", maxlength = "50", autocomplete = "off" })
                         </div>
 
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         <label class="col-md-4" for="textinput">Ticker Code&nbsp;<span style="color:red;width:50px;"></span></label>
                         <div class="col-md-8 publicly">
                             @Html.TextBoxFor(model => model.TickerCode, new { @class = "form-control validate[required] disbl-cntrl-cls", maxlength = "50", autocomplete = "off" })
@@ -301,7 +301,7 @@
             @*<div class="col-md-12">
                 <p class="col-md-10 padoff name-msg" style="margin:0;">**As part of the due diligence and on-boarding process, we need to review the documents indicated below. Please upload the required documents in PDF format for our review and analysis.</p>
             </div>*@
-            <div class="form-group">
+            <div>
                 <div class="col-md-3">
                     @if (Model.UpdTradeLic != null)
                     {
@@ -403,7 +403,7 @@
                         }
                     }
                 </div>
-                <div class="col-md-3 padoff">
+                <div class="col-md-3">
                     @if (Model.CustomerTypeID != CONT.FunderCustomerTypeID)
                     {
                         if (Model.UpdInHouseFin != null)

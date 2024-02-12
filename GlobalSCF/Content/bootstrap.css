@@ -3879,15 +3879,15 @@ textarea.input-group-sm > .input-group-btn > .btn {
   border-color: #eeeeee #eeeeee #dddddd;
 }
 
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-  color: #fff;
-  cursor: default;
-  background-color: #000;
-  border: 1px solid #dddddd;
-  border-bottom-color: transparent;
-}
+    .nav-tabs > li.active > a,
+    .nav-tabs > li.active > a:hover,
+    .nav-tabs > li.active > a:focus {
+        color: #000;
+        cursor: default;
+        background-color: #fde155;
+        /*border: 1px solid #dddddd;*/
+        border-bottom-color: transparent;
+    }
 
 .nav-tabs.nav-justified {
   width: 100%;
