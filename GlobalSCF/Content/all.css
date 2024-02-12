@@ -693,7 +693,7 @@
 
     #exTab1 .nav-pills > li > a:hover {
         background-color: #455E6F;
-        color: white;
+        color: black;
     }
 
 #exTab1 .nav-pills > li.active > a {

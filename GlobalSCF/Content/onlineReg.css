@@ -433,9 +433,9 @@ label {
 }
 
 #exTab1 .nav-pills > li > a {
-    background-color: #336699;
-    color: #000000;
-    font-size: 11px;
+    background-color: #fde155;
+    color: #000;
+    font-size: inherit;
 }
 
 #exTab1 .nav > li > a {
@@ -447,16 +447,16 @@ label {
 }
 
 #exTab1 .nav-pills > li.active > a {
-    background-color: #336699;
+    background-color: #fde155;
     color: #ffffff;
 }
 
 #exTab1 .nav-pills > li > a:hover {
-    background-color: #336699;
+    background-color: #ffee98;
 }
 
 #exTab1 .nav-pills > li.active > a:hover {
-    background-color: #336699;
+    background-color: #ffee98;
 }
 
 .mFotter1 {
