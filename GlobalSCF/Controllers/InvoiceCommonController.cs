@@ -151,7 +151,7 @@ namespace TMP.Controllers
                                 //_objModel.InvoiceDate = Convert.ToDateTime(FN.ChangeDate(dt.Rows[i]["Invoice Date (dd/mm/yyyy)"].ToString()));
                                 //_objModel.DueDate = Convert.ToDateTime(FN.ChangeDate(dt.Rows[i]["Invoice Due Date (dd/mm/yyyy)"].ToString()));
 
-                                _objModel.Amt = Convert.ToDecimal(dt.Rows[i]["Invoice Amount"].ToString());
+                                _objModel.Amt = Convert.ToDecimal(dt.Rows[i]["Payable Amount"].ToString());
                                 _objModel.Attach = dt.Rows[i]["Attachment"].ToString();
 
 
