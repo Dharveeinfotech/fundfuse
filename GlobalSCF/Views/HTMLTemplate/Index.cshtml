@@ -34,7 +34,7 @@
                             <td>@Html.DisplayFor(modelItem => item.HtmlName)</td>
                             <td>@Html.DisplayFor(modelItem => item.TemplateType)</td>
                             <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
-                            <td>
+                            <td class="editbutton">
                                 @if (ViewBag.UserRight.IsMaker == true)
                                 {
                                     if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA|| item.Status == CONT.UM)

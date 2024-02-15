@@ -172,7 +172,7 @@
         if (Model.CustomerTypeID != CONT.FunderCustomerTypeID)
         {
             <div class="col-md-12" style="height:10px;"></div>
-            <div class="form-group" style="padding-bottom:4%;">
+            <div class="form-group" style="padding-bottom:6%;">
                 <label class="col-md-2" for="textinput">Brief About Business&nbsp;<span style="color:red;width:50px;"></span></label>
                 <div class="col-md-9">
                   
@@ -188,7 +188,7 @@
                 <div class="col-md-1"></div>
             </div>
             <div class="col-md-12" style="height:10px;"></div>
-            <div class="form-group" style="padding-bottom:4%;">
+            <div class="form-group" style="padding-bottom:6%;">
                 <label class="col-md-2" for="textinput">Business Activity&nbsp;<span style="color:red;width:50px;"></span></label>
                 <div class="col-md-9">
                     @if (ViewBag.MoreCheck.BusActivity == Model.BusActivity)
@@ -310,7 +310,7 @@
         }
         <div class="container padoff">
             <div class="form-group">
-                <div class="col-md-4 form-group">
+                <div class="col-md-4">
                     <label class="col-md-6" for="textinput">Is the company part of a group?&nbsp;<span style="color:red;width:50px;"></span></label>
                     @if (Model.IsCompGrpPart)
                     {
@@ -328,7 +328,7 @@
                     }
 
                 </div>
-                <div class="col-md-4 form-group">
+                <div class="col-md-4">
                     <label class="col-md-4" for="textinput">Name of the group&nbsp;<span style="color:red;width:50px;"></span></label>
                     <div class="col-md-8 group">
                         @if (ViewBag.MoreCheck.GroupName == Model.GroupName)
@@ -342,7 +342,7 @@
                     </div>
 
                 </div>
-                <div class="col-md-4 form-group">
+                <div class="col-md-4">
                     <label class="col-md-4" for="textinput">Group website&nbsp;<span style="color:red;width:50px;"></span></label>
                     <div class="col-md-8 group">
                         @if (ViewBag.MoreCheck.GroupWebsite == Model.GroupWebsite)
@@ -361,7 +361,7 @@
 
             <div class="container padoff">
                 <div class="form-group">
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         <label class="col-md-6" for="textinput">Is the company supervised by a financial services regulator?&nbsp;<span style="color:red;width:50px;"></span></label>
                         @if (Model.IsCompFinServ)
                         {
@@ -378,7 +378,7 @@
                             </div>
                         }
                     </div>
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-6">
                         <label class="col-md-4" for="textinput">Regulator Name&nbsp;<span style="color:red;width:50px;"></span></label>
                         <div class="col-md-8 financial">
                             @if (ViewBag.MoreCheck.RegulatorName == Model.RegulatorName)
@@ -395,7 +395,7 @@
             </div>
             <div class="container padoff">
                 <div class="form-group">
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         <label class="col-md-6" for="textinput">Is the company publicly listed?&nbsp;<span style="color:red;width:50px;"></span></label>
                         @if (Model.IsCompPubList)
                         {
@@ -414,7 +414,7 @@
                         }
 
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         <label class="col-md-4" for="textinput">Exchange Name&nbsp;<span style="color:red;width:50px;"></span></label>
                         <div class="col-md-8 publicly">
                            @if (ViewBag.MoreCheck.ExchangeName == Model.ExchangeName)
@@ -428,7 +428,7 @@
                         </div>
 
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         <label class="col-md-4" for="textinput">Ticker Code&nbsp;<span style="color:red;width:50px;"></span></label>
                         <div class="col-md-8 publicly">
                             @if (ViewBag.MoreCheck.TickerCode == Model.TickerCode)

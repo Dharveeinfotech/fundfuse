@@ -42,7 +42,7 @@
                                 {
                                     <td>Online Panel</td>}
                                 <td>@item.StatusDisplay</td>
-                                <td>@Html.ActionLink("View", "CompanyInfoDetails", new { CustomerID = item.CustomerID, currentStatus = item.Status })</td>
+                                <td class="editbutton">@Html.ActionLink("View", "CompanyInfoDetails", new { CustomerID = item.CustomerID, currentStatus = item.Status })</td>
                             </tr>
                         }
                     </tbody>
