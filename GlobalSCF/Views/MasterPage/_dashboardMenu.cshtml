@@ -52,7 +52,7 @@
                                         {
                                             <li class="dropdown Septr">
                                                 <a data-toggle="dropdown" class="dropdown-toggle"
-                                                   style="font-size:16px; font-weight:normal;  text-transform: uppercase;padding: 15px;"
+                                                   style="font-size:inherit;  text-transform: uppercase;padding: 15px;"
                                                    href="Javascript:void(0)" onclick="RedirectToPageName1(@item.MenuID,'@item.MenuName')">@item.MenuName<b class="caret"></b></a>
 
                                                 @if (item.MenuName == "Administration" || item.MenuName == "On Boarding" || item.MenuName == "System Settings" || item.MenuName == "Receivables Finance" || item.MenuName == "Payables Finance")
@@ -67,7 +67,7 @@
                                                         _class = "";
                                                         if (item.MenuID == subitem.ParentMenuID)
                                                         {
-                                                            <li><a href="#" style="font-weight:normal;text-transform: uppercase; background: #fff; color:#58595b">@subitem.MenuName</a></li>
+                                                            <li><a href="#" style="font-weight: normal; text-transform: uppercase; background: #ffec8c; color: #000000 ">@subitem.MenuName</a></li>
                                                             foreach (var Menuitem in Model)
                                                             {
                                                                 if (subitem.MenuID == Menuitem.ParentMenuID)
@@ -159,7 +159,7 @@
     }
 
     .navbar-default {
-        background-color: #336699;
+        background-color: #444c55;
         border-color: transparent;
         color: #ffffff;
     }
@@ -180,31 +180,31 @@
         padding: 8px 20px;
         display: block;
         color: #fff;
-        font-size: 12px;
+        font-size: inherit;
     }
 
     .navbar-default .navbar-nav > li > a:hover {
-        background-color: #336699;
-        color: #ffffff;
+        background-color: #ffd400;
+        color: #000000;
     }
 
 
     .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-        color: #ffffff;
-        background-color: #336699;
+        color: #000000;
+        background-color: #ffec8c;
     }
 
     .dropdown-menu > li > a {
-        background-color: #336699;
-        color: #fff;
+        background-color: #fff;
+        color: #000000;
         padding-top: 10px;
         padding-bottom: 10px;
         padding-left: 5px;
     }
 
         .dropdown-menu > li > a:hover {
-            background-color: #336699;
-            color: #ffffff;
+            background-color: #fcdd40;
+            color: #000000;
         }
 
     .dropdown-menu .divider {
@@ -217,7 +217,7 @@
         margin-top: 0;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
-        background-color: #336699;
+        background-color: #fff;
         /*opacity: 0.8;*/
         text-align: left;
     }

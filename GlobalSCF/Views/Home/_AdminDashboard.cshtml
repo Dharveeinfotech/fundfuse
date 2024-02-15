@@ -17,7 +17,7 @@
     <div class="tab-pane" id="4a">
         <!--tab 4a-->
         <div class="col-md-12">
-            <table id="exampleDB1" class="display" cellspacing="0" width="100%">
+            <table id="exampleDB1" class="display adminbox-shadow" cellspacing="0" width="100%">
                 <thead>
                     <tr class="bgspr">
                         <th>Company Name</th>
@@ -51,11 +51,11 @@
                                 <td>@item.StatusDisplay</td>
                                 @if (item.Status == CONT.RQ || item.Status == CONT.ND || item.Status == CONT.NA || item.Status == CONT.UA)
                                 {
-                                    <td><a href='@Url.Action("CompanyInfo", "CustomerReg", new { CustomerID = item.CustomerID, currentStatus = item.Status })'>Edit</a></td>
+                                    <td><a class="editbutton" href='@Url.Action("CompanyInfo", "CustomerReg", new { CustomerID = item.CustomerID, currentStatus = item.Status })'>Edit</a></td>
                                 }
                                 else
                                 {
-                                    <td><a href='@Url.Action("CompanyInfoDetails", "CustomerReg", new { CustomerID = item.CustomerID, currentStatus = item.Status })'>View</a></td>
+                                    <td><a class="editbutton" href='@Url.Action("CompanyInfoDetails", "CustomerReg", new { CustomerID = item.CustomerID, currentStatus = item.Status })'>View</a></td>
                                 }
 
                             </tr>
@@ -132,11 +132,11 @@
                                     <td>@item.StatusUserDesc</td>
 
                                     <td>
-                                        <a href="javascript:void(0);" class="InvoiceCommentHistoryView" data-id="@item.InvoiceID">View</a>
+                                        <a href="javascript:void(0);" class="InvoiceCommentHistoryView editbutton" data-id="@item.InvoiceID">View</a>
                                     </td>
                                     @if (ViewBag._currentUser.IsMaker && (item.Status == CONT.SA || item.Status == CONT.BA || item.Status == CONT.IV || item.Status == CONT.IW))
                                     {
-                                        <td><a href='@Url.Action("iSCFMaker", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Review</a></td>
+                                        <td><a class="editbutton" href='@Url.Action("iSCFMaker", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Review</a></td>
                                     }
                                     else if (ViewBag._currentUser.IsChecker && (item.Status == CONT.IA || item.Status == CONT.IP || item.Status == CONT.IF || item.Status == CONT.II || item.Status == CONT.RA || item.Status == CONT.RC))
                                     {
@@ -146,7 +146,7 @@
                                         }
                                         else
                                         {
-                                            <td><a href='@Url.Action("iSCFChecker", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Approve</a></td>
+                                            <td><a class="editbutton" href='@Url.Action("iSCFChecker", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType })'>Approve</a></td>
                                         }
 
                                     }
@@ -157,7 +157,7 @@
 
                                     else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.RB || item.Status == CONT.OE))
                                     {
-                                        <td><a href='@Url.Action("FunderToiSCF", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.RB + "," + CONT.OE })'>Bank Transfer</a></td>
+                                        <td><a class="editbutton" href='@Url.Action("FunderToiSCF", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.RB + "," + CONT.OE })'>Bank Transfer</a></td>
                                     }
                                     else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.CA))
                                     {
@@ -173,11 +173,11 @@
                                     }*@
                                     else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.SB || item.Status == CONT.FB) && (item.IsDispToCD == false))
                                     {
-                                        <td><a href='@Url.Action("iSCFToSupplier", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.SB + "," + CONT.FB })'>Bank Transfer</a></td>
+                                        <td><a class="editbutton" href='@Url.Action("iSCFToSupplier", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.SB + "," + CONT.FB })'>Bank Transfer</a></td>
                                     }
                                     else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.RD || item.Status == CONT.IE))
                                     {
-                                        <td><a href='@Url.Action("iSCFToFunder", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.RD + "," + CONT.IE })'>Bank Transfer</a></td>
+                                        <td><a class="editbutton" href='@Url.Action("iSCFToFunder", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.RD + "," + CONT.IE })'>Bank Transfer</a></td>
                                     }
                                     else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.CG))
                                     {
@@ -193,12 +193,12 @@
                                     }*@
                                     else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.BB || item.Status == CONT.ID || item.Status == CONT.FD) && (item.IsDispToCH == false))
                                     {
-                                        <td><a href='@Url.Action("TIToExpoter", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.BB + "," + CONT.ID + "," + CONT.FD })'>Bank Transfer</a></td>
+                                        <td><a class="editbutton" href='@Url.Action("TIToExpoter", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.BB + "," + CONT.ID + "," + CONT.FD })'>Bank Transfer</a></td>
                                     }
                                     else
                                     {
                                         <td>
-                                            <a href="javascript:void(0);" class="factoringView" data-id="@item.InvoiceID">View</a>
+                                            <a href="javascript:void(0);" class="factoringView editbutton" data-id="@item.InvoiceID">View</a>
                                         </td>
                                     }
                                     <td class="InvoiceID" style="display:none;">
@@ -353,7 +353,7 @@ else if (ViewBag.divCust)
                                 }
 
                                 <td>
-                                    <a href="javascript:void(0);" class="InvoiceCommentHistoryView" data-id="@item.InvoiceID">View</a>
+                                    <a href="javascript:void(0);" class="InvoiceCommentHistoryView editbutton" data-id="@item.InvoiceID">View</a>
                                 </td>
                                 <td class="InvoiceID" style="display:none;">
                                     <span>@item.InvoiceID</span>
@@ -521,7 +521,7 @@ else if (ViewBag.divCust)
         height: 135px;
         border: 10px solid;
         border-color: white;
-        background-color: #e6e7e9;
+        background-color: #ffd400;
     }
 
     .HdrFntApply {
@@ -543,5 +543,24 @@ else if (ViewBag.divCust)
 
     p {
         margin: 0px 0 0px;
+    }
+    .editbutton {
+        background-image: linear-gradient(132.93deg, #ffd400 9.89%, #f5f1dd 89.62%);
+        color: #000 !important;
+        padding: 5px 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        text-decoration: none !important;
+        display: block;
+    }
+        .editbutton:hover {
+            background-image: linear-gradient(132.93deg, #3f444a 9.89%, #979797 89.62%);
+            color: #fff !important;
+            text-decoration: none !important;
+        }
+    .adminbox-shadow {
+        box-shadow: 0px 1px 5px -2x #3f444a;
     }
 </style>

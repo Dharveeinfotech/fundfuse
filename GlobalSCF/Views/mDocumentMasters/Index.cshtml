@@ -32,7 +32,7 @@
                         <td>@Html.DisplayFor(modelItem => item.DocumentName)</td>
                         <td>@Html.DisplayFor(modelItem => item.DocumentDesc)</td>
                         <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
-                        <td>
+                        <td class="editbutton">
                             @Html.HiddenFor(modelItem => item.DocumentID)
                             @if (item.Status == CONT.RQ || item.Status == CONT.NM || item.Status == CONT.NA || item.Status == CONT.UA)
                             {
@@ -40,7 +40,7 @@
                             }
                             else
                             {
-                                <a id="View_@item.DocumentID" style="cursor:pointer" class="OpenDivForNotUpdateRight" data-toggle="modal" data-target="#myModalView">
+                                <a id="View_@item.DocumentID" style="cursor:pointer" class="OpenDivForNotUpdateRight editbutton" data-toggle="modal" data-target="#myModalView">
                                     View
                                 </a>
                             }

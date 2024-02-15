@@ -190,10 +190,13 @@
 
 
 * {
-    font-family: myriad_pro;
-    font-size: 12px;
+    /*font-family: myriad_pro;*/
+    font-size: inherit;
 }
-
+/*body {
+    font-size: calc(100vw / 120);
+    line-height: calc(100vw / 75);
+}*/
 .viewmargin {
     width: 90%;
     margin: 0px auto;
@@ -690,7 +693,7 @@
 
     #exTab1 .nav-pills > li > a:hover {
         background-color: #455E6F;
-        color: white;
+        color: black;
     }
 
 #exTab1 .nav-pills > li.active > a {
@@ -1953,7 +1956,7 @@ th {
 td {
     color: #13426b !important;
     text-align: center !important;
-    border: #e6e7e8 1px solid !important;
+   /* border: #e6e7e8 1px solid !important;*/
 }
 
     td.sorting_1 {
@@ -2087,6 +2090,7 @@ table {
 .padoff {
     padding-left: 0px !important;
     padding-right: 0px !important;
+    padding-top:50px;
 }
 
 .contact {
@@ -2374,3 +2378,5 @@ table {
     .input-validation-error:focus {
         border-color: #a94442;
     }
+
+
