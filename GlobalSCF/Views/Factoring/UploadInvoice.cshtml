@@ -90,7 +90,7 @@
                     @Html.TextBoxFor(model => model.Amt, new { @class = "form-control validate[required] num", maxlength = "50", autocomplete = "off" })
                 </div>
 
-                <label class="col-sm-2 " for="textinput">Attachment&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <label class="col-sm-2 " for="textinput">Attachment&nbsp;</label>
                 <div class="col-sm-4">
                     @if (Model.Attach != null)
                     {
@@ -111,7 +111,7 @@
                     else
                     {
                         <label class="f-btn f-btn-default f-btn-file">
-                            Upload<input type="file" name="Attach" id="Attach" class="validate[required] onlyPDFfile" />
+                            Upload<input type="file" name="Attach" id="Attach" class="onlyPDFfile" />
                         </label>
                         <br />
                             <label class="l-filename" id="Attach_span"></label>
