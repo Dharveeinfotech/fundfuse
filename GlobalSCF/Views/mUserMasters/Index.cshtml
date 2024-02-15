@@ -46,21 +46,28 @@
                             <td>@Html.DisplayFor(modelItem => item.MobileNo)</td>
                             <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
                             <td>
-                                @if (ViewBag.UserRight.IsMaker == true)
-                                {
-                                    if (item.Status == CONT.NA || item.Status == CONT.UA || item.Status == CONT.AA || item.Status == CONT.IA || item.Status == CONT.UJ ||
-                                        item.Status == CONT.DJ || item.Status == CONT.AJ || item.Status == CONT.IJ || item.Status == CONT.NM || item.Status == CONT.UM || item.Status == CONT.DM)
+                                <div  class="editbutton">
+
+                                    @if (ViewBag.UserRight.IsMaker == true)
                                     {
-                                        @Html.ActionLink("Edit", "CreateUser", new { UserID = item.UserID })
+                                        if (item.Status == CONT.NA || item.Status == CONT.UA || item.Status == CONT.AA || item.Status == CONT.IA || item.Status == CONT.UJ ||
+                                            item.Status == CONT.DJ || item.Status == CONT.AJ || item.Status == CONT.IJ || item.Status == CONT.NM || item.Status == CONT.UM || item.Status == CONT.DM)
+                                        {
+                                            @Html.ActionLink("Edit", "CreateUser", new { UserID = item.UserID })
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="ViewDetail('@item.UserID')">View</a>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <a href="#" onclick="ViewDetail('@item.UserID')">View</a>
-                                    }
-                                }
+                                </div>
                             </td>
                             <td>
+                                <div class="editbutton">
+
                                 @Html.ActionLink("Reset", "ResetPassword", new { LoginSearch = item.LoginName })
+                                </div>
+
                             </td>
                         </tr>
                     }

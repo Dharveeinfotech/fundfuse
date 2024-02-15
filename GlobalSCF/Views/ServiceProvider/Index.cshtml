@@ -38,7 +38,7 @@
                             <td>@item.MobileNo</td>
                             <td>@item.EmailID</td>
                             <td>@item.StatusDisplay</td>
-                            <td>
+                            <td class="editbutton">
                                 @if (ViewBag.UserRight != null && ViewBag.UserRight == "Viewer")
                                 {
                                     @Html.ActionLink("View", "MakerDetails", new { CustomerID = item.CustomerID })

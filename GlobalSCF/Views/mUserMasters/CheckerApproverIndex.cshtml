@@ -36,7 +36,7 @@
                             <td>@Html.DisplayFor(modelItem => item.EmailID)</td>
                             <td>@Html.DisplayFor(modelItem => item.MobileNo)</td>
                             <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
-                            <td>
+                            <td class="editbutton">
                                 @if (ViewBag.UserRight != null && ViewBag.UserRight == "Viewer")
                                 {
                                     <a href="#" onclick="ViewDetail('@item.UserID')">View</a>

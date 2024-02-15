@@ -257,10 +257,13 @@ table.dataTable td {
   float: right;
   text-align: right;
 }
-.dataTables_wrapper .dataTables_filter input {
-  margin-left: 0.5em;
-  height:21px;
-}
+    .dataTables_wrapper .dataTables_filter input {
+        margin-left: 0.5em;
+        height: 25px;
+        padding: 4px 6px 2px;
+        box-shadow: 4px 5px 8px #918888;
+        border: 1px solid #bfb8b8;
+    }
 .dataTables_wrapper .dataTables_info {
   clear: both;
   float: left;
