@@ -375,8 +375,8 @@ namespace TMP.Models
                 messageBody += htmlTableStart;
                 messageBody += htmlHeaderRowStart;
                 messageBody += htmlTdStart + spnTdStart + "Item No." + spnTdEnd + htmlTdEnd;
-                messageBody += htmlTdStart + spnTdStart + "Invoice No." + spnTdEnd + htmlTdEnd;
-                messageBody += htmlTdStart + spnTdStart + "Invoice Date" + spnTdEnd + htmlTdEnd;
+                messageBody += htmlTdStart + spnTdStart + "Payable No." + spnTdEnd + htmlTdEnd;
+                messageBody += htmlTdStart + spnTdStart + "Payable Date" + spnTdEnd + htmlTdEnd;
                 messageBody += htmlTdStart + spnTdStart + "Currency" + spnTdEnd + htmlTdEnd;
                 messageBody += htmlTdStart + spnTdStart + "Amount" + spnTdEnd + htmlTdEnd;
                 messageBody += htmlHeaderRowEnd;
@@ -430,8 +430,8 @@ namespace TMP.Models
                 messageBody += htmlHeaderRowStart;
                 messageBody += htmlTdStart + "Sr No." + htmlTdEnd;
                 messageBody += htmlTdStart + "Counterparty" + htmlTdEnd;
-                messageBody += htmlTdStart + "Invoice Number" + htmlTdEnd;
-                messageBody += htmlTdStart + "Invoice Date" + htmlTdEnd;
+                messageBody += htmlTdStart + "Payable Number" + htmlTdEnd;
+                messageBody += htmlTdStart + "Payable Date" + htmlTdEnd;
                 messageBody += htmlTdStart + "Currency" + htmlTdEnd;
                 messageBody += htmlTdStart + "Billed Amount" + htmlTdEnd;
                 messageBody += htmlTdStart + "Due Date" + htmlTdEnd;

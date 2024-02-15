@@ -135,10 +135,10 @@ namespace TMP.Controllers
                                 String strCustTypeCIF = dt.Columns[1].ColumnName;
                                 String strCustTypeName = dt.Columns[2].ColumnName;
 
-                                _objModel.InvoiceNo = dt.Rows[i]["Invoice No."].ToString();
+                                _objModel.InvoiceNo = dt.Rows[i]["Payable No."].ToString();
                                 _objModel.CurrencyCode = dt.Rows[i]["Invoice Currency"].ToString();
 
-                                DateTime dtInvoiceDate = DateTime.ParseExact(dt.Rows[i]["Invoice Date (dd/mm/yyyy)"].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                DateTime dtInvoiceDate = DateTime.ParseExact(dt.Rows[i]["Payable Date (dd/mm/yyyy)"].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                                 string strInvoiceDate = dtInvoiceDate.ToString("dd/MM/yyyy");
                                 _objModel.InvoiceDate = Convert.ToDateTime(FN.ChangeDate(strInvoiceDate));
 
