@@ -1575,7 +1575,7 @@ namespace TMP.Models
         {
             int rday = 0;
             DateTime dCurrenDate = Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"));
-            DateTime dEndDate = Convert.ToDateTime(date);
+            DateTime dEndDate = Convert.ToDateTime(date.ToString("MM/dd/yyyy hh:mm:ss tt"));
             System.TimeSpan dayCount = (dCurrenDate - dEndDate);
             string day = Convert.ToString(dayCount.Days);
             //if (day.Length == 0) { day = "00"; }
