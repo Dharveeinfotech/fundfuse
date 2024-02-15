@@ -363,9 +363,13 @@ input, select, textarea {
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
-    /*background: #336699;*/
-    color: #ffffff;
+    background: #f1ca0440;
+    color: #000;
     text-transform: uppercase;
+}
+.f-btn:hover
+{
+
 }
 .editbutton {
     background-image: linear-gradient(132.93deg, #ffd400 9.89%, #f5f1dd 89.62%);
