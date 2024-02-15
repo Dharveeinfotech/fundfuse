@@ -1832,15 +1832,15 @@
 .smallestbtns {
     padding: 2px 10px;
     text-align: center;
-    color: #ffffff;
-    background-color: #7fa1b2;
-    font-size: 8px;
+    color: #000;
+    background-color: #f1ca0440;
+    font-size: inherit;
     border: none;
 }
 
     .smallestbtns:hover {
-        background-color: #13426b;
-        color: #ffffff;
+        background-color: #ffe460;
+        color: #000;
     }
 
 .linkbtns:hover {
