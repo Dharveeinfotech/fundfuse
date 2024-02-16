@@ -30,9 +30,7 @@ input, select, textarea {
     background: #000;
     /*background-color:transparent;*/
     padding: 4px 20px;
-    border: 1px solid #000;
     border-radius: 16px;
-    border-color: #000;
     color: #fff;
     margin-bottom: 0;
     font-size: 16px;
@@ -115,7 +113,7 @@ input, select, textarea {
     position: relative;
     display: block;
     padding: 4px 15px;
-    color: #6d6e71;
+    color: #fff;
 }
 
 .header-container {
@@ -347,7 +345,7 @@ input, select, textarea {
 
 .f-btn {
     display: inline-block;
-    padding: 8px 20px;
+    padding: 4px 15px;
     margin-bottom: 0;
     font-size: inherit;
     font-weight: normal;
