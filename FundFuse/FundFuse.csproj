@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GlobalSCF</RootNamespace>
-    <AssemblyName>GlobalSCF</AssemblyName>
+    <RootNamespace>FundFuse</RootNamespace>
+    <AssemblyName>FundFuse</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -474,7 +474,7 @@
     <Content Include="Files\BulkUploadSample\BulkUpload_Obligor.csv" />
     <Content Include="Files\BulkUploadSample\BulkUpload_Buyer.csv" />
     <Content Include="App_Browsers\qt.browser" />
-    <None Include="Properties\PublishProfiles\GlobalSCF.pubxml" />
+    <None Include="Properties\PublishProfiles\FundFuse.pubxml" />
     <None Include="Properties\PublishProfiles\GlobalSukuk.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\canvasjs.min.js" />

@@ -32,10 +32,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/EntityFramework.SqlServer.dll">
       <publishTime>03/11/2023 23:57:03</publishTime>
     </File>
-    <File Include="bin/GlobalSCF.dll">
+    <File Include="bin/FundFuse.dll">
       <publishTime>01/29/2024 21:23:22</publishTime>
     </File>
-    <File Include="bin/GlobalSCF.pdb">
+    <File Include="bin/FundFuse.pdb">
       <publishTime>01/29/2024 21:23:22</publishTime>
     </File>
     <File Include="bin/itextsharp.dll">

@@ -16,7 +16,7 @@ namespace TMP.Infrastructure.Web
 
     public enum SubscriptionTabs
     {
-        GLOBALSCF,
+        FUNDFUSE,
         MYPORTFOLIO,
         MYACCOUNT
     }
