@@ -39,6 +39,10 @@
     --breakpoint-xl: 1200px;
     --font-family-sans-serif: 'BricolageGrotesque-Regular', sans-serif;
     --font-family-monospace: 'BricolageGrotesque-Regular', sans-serif;
+    --font-family-default: 'BricolageGrotesque-Regular', sans-serif;
+    --font-family-light: 'BricolageGrotesque-Light', sans-serif;
+    --font-family-medium: 'BricolageGrotesque-Medium', sans-serif;
+    --font-family-semibold: 'BricolageGrotesque-SemiBold', sans-serif;
 }
 
 *,

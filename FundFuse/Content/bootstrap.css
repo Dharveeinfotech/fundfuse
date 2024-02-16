@@ -52,13 +52,14 @@ audio:not([controls]) {
 }
 
 html {
-  font-family: sans-serif;
-  -webkit-text-size-adjust: 100%;
-      -ms-text-size-adjust: 100%;
+    font-family: var(--font-family-light);
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
+    margin: 0;
+   font-family: 'BricolageGrotesque-Regular', sans-serif ;
 }
 
 a:focus {
@@ -72,8 +73,8 @@ a:hover {
 }
 
 h1 {
-  margin: 0.67em 0;
-  font-size: 2em;
+    margin: 0.67em 0;
+    font-size: 2em;
 }
 
 abbr[title] {
@@ -104,8 +105,8 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, serif;
-  font-size: 1em;
+    font-family: var(--font-family-light);
+    font-size: 1em;
 }
 
 pre {
@@ -307,16 +308,25 @@ table {
 }
 
 html {
-  font-size: 62.5%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-size: 62.5%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    --font-family-default: 'BricolageGrotesque-Regular', sans-serif;
+    --font-family-light: 'BricolageGrotesque-Light', sans-serif;
+    --font-family-medium: 'BricolageGrotesque-Medium', sans-serif;
+    --font-family-semibold: 'BricolageGrotesque-SemiBold', sans-serif;
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.428571429;
-  color: #333333;
-  background-color: #fff;
+    /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+
+    --font-family-default: 'BricolageGrotesque-Regular', sans-serif ;
+    --font-family-light: 'BricolageGrotesque-Light', sans-serif;
+    --font-family-medium: 'BricolageGrotesque-Medium', sans-serif ;
+    --font-family-semibold: 'BricolageGrotesque-SemiBold', sans-serif;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #333333;
+    background-color: #fff;
 }
 
 input,
@@ -474,7 +484,10 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: --font-family-default: 'BricolageGrotesque-Regular', sans-serif;
+    --font-family-light: 'BricolageGrotesque-Light', sans-serif;
+    --font-family-medium: 'BricolageGrotesque-Medium', sans-serif;
+    --font-family-semibold: 'BricolageGrotesque-SemiBold', sans-serif;;
   font-weight: 500;
   line-height: 1.1;
 }

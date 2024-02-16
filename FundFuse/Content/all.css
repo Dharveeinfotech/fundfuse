@@ -345,7 +345,7 @@
     margin: 0px;
     padding: 0px;
     color: #13436B;
-    font-family: myriad_pro_cond;
+    font-family: var(--font-family-light);
 }
 
 .dashboardtitles {
@@ -358,7 +358,7 @@
     margin: 0px;
     padding: 0px;
     color: #13436B;
-    font-family: myriad_pro_cond;
+    font-family: var(--font-family-light);
 }
 
 .dashboardtitlesp {
@@ -1677,7 +1677,7 @@
 }
 
 .dashtitlenum {
-    font-family: myriad_pro_cond;
+    font-family: var(--font-family-light);
     color: #004465;
     font-size: 60px;
     font-weight: bold;
@@ -1705,7 +1705,7 @@
 }
 
 .titletext2 {
-    font-family: myriad_pro;
+    font-family: var(--font-family-light);
     font-weight: bold;
     /*color: #859ab2;*/
     font-size: 13px;
@@ -2035,14 +2035,14 @@ table {
 }
 
 .ok:before {
-    font-family: 'FontAwesome';
+    font-family: var(--font-family-light);
     content: '\f0da';
     margin: 0 10px 0 0px;
     color: #58595b;
 }
 
 .ok1:before {
-    font-family: 'FontAwesome';
+    font-family: var(--font-family-light);
     content: '\f0d7';
     margin: 0 7px 0 0px;
     color: #58595b;
@@ -2214,13 +2214,13 @@ table {
 .login-header-title {
     margin-top: 40px;
     font-size: 20px;
-    font-family: MyriadPro-light;
+    font-family: var(--font-family-light);
     margin-bottom: 20px;
 }
 
     .login-header-title span {
         font-size: 19px;
-        font-family: myriad_pro;
+        font-family: var(--font-family-light);
         font-weight: bold;
     }
 
