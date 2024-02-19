@@ -1,13 +1,13 @@
 ﻿@model TMP.Models.InvoiceTransactionModel
 @using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
 @{
-    ViewBag.Title = "Bulk Invoice View";
+    ViewBag.Title = "Bulk Payable View";
     Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
     bool btnVisible = true;
     string _class = "";
 }
 <div class="col-md-12 div-border padoff">
-    <div class="col-md-12 createusertitle">BULK INVOICE VIEW</div>
+    <div class="col-md-12 createusertitle">BULK PAYABLE VIEW</div>
     <div class="col-md-12" style="height:10px;"></div>
 
     @if (ViewBag.GetViewData != null && ViewBag.GetViewData.Count > 0)
@@ -21,7 +21,7 @@
                             <th>Payable Number</th>
                             <th>Currency</th>
                             <th>Payable Date</th>
-                            <th>Invoice Due Date</th>
+                            <th>Payable Due Date</th>
 
                             @if (ViewBag.CustomerTypeID == CONT.SupplierCustomerTypeID)
                             {
@@ -145,7 +145,7 @@
                                 }
 
                                 <td>@item1.CurrencyCode @string.Format("{0:0,0.00}", item1.Amt)</td>
-                                <td><a href='~/Files/UploadedTempInvoiceFiles/@item1.Attach' target="_blank">Invoice</a></td>
+                                <td><a href='~/Files/UploadedTempInvoiceFiles/@item1.Attach' target="_blank">Payable</a></td>
                                 <td>
                                     @item1.Comment
                                     <input type="hidden" name="IsCompanyErr_@item1.InvTempDetID" id="IsCompanyErr_@item1.InvTempDetID" value="@Convert.ToInt16(item1.IsCompanyErr)" />
@@ -329,7 +329,7 @@
                                                     <th>Payable Number</th>
                                                     <th>Currency</th>
                                                     <th>Payable Date</th>
-                                                    <th>Invoice Due Date</th>
+                                                    <th>Payable Due Date</th>
 
                                                     @if (ViewBag.CustomerTypeID == CONT.SupplierCustomerTypeID)
                                                     {
@@ -408,7 +408,7 @@
                                                             }
 
                                                             <td>@item1.CurrencyCode @string.Format("{0:0,0.00}", item1.Amt)</td>
-                                                            <td><a href='~/Files/UploadedTempInvoiceFiles/@item1.Attach' target="_blank">Invoice</a></td>
+                                                            <td><a href='~/Files/UploadedTempInvoiceFiles/@item1.Attach' target="_blank">Payable</a></td>
                                                             <td>@item1.Comment</td>
                                                             @if (item1.IsGenerated == false && item1.MstIsDeleted == false)
                                                             {

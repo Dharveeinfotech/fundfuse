@@ -1,7 +1,7 @@
 ﻿@model TMP.Models.InvoiceTransactionModel
 @using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
 @{
-    ViewBag.Title = "Bulk Invoice Upload";
+    ViewBag.Title = "Bulk Payable Upload";
     Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
     int _fileUploadSize = 100;
     if (Model.InvoiceID > 0)
@@ -14,7 +14,7 @@
     <script src="~/Scripts/dropzone.js"></script>
     @*<script src="~/Scripts/dropzone.min.js"></script>*@
 
-    <div class="col-md-12 createusertitle">BULK INVOICE UPLOAD</div>
+    <div class="col-md-12 createusertitle">BULK PAYABLE UPLOAD</div>
 
     <div class="container" style="border:1px solid;padding:20px;margin:20px; border-color:#58595b;">
         <label class="createusertitle" id="instruction">Please follow steps :</label>&nbsp;&nbsp;
@@ -37,33 +37,33 @@
                 <li>Step 1 - Upload CSV file and submit it. <a href='~/Files/BulkUploadSample/BulkUpload_Buyer.csv' target="_blank">(Download Sample File)</a>.</li>
             }
             @*<li class="F_View" style="display:none;">
-                Step 1 - Upload CSV file and submit it. <a href='~/Files/BulkUploadSample/BulkUpload_Obligor.csv' target="_blank">(Download Sample File)</a>.
-            </li>
-            <li class="R_View" style="display:none;">
-                Step 1 - Upload CSV file and submit it. <a href='~/Files/BulkUploadSample/BulkUpload_Buyer.csv' target="_blank">(Download Sample File)</a>.
-            </li>*@
+            Step 1 - Upload CSV file and submit it. <a href='~/Files/BulkUploadSample/BulkUpload_Obligor.csv' target="_blank">(Download Sample File)</a>.
+        </li>
+        <li class="R_View" style="display:none;">
+            Step 1 - Upload CSV file and submit it. <a href='~/Files/BulkUploadSample/BulkUpload_Buyer.csv' target="_blank">(Download Sample File)</a>.
+        </li>*@
             <li>Step 2 - Click Browse files and upload PDF files (Please note, only allow PDF file and name should be same as defined in CSV file).</li>
             <li>Step 3 - Uploaded CSV file listing in table.</li>
-            <li>Step 4 - Click "View" action for review invoice details or also available option to delete upload file.</li>
+            <li>Step 4 - Click "View" action for review payable details or also available option to delete upload file.</li>
             <li>Step 5 - In review page, Submit button will enable after resolve all comment queries.</li>
             @if (ViewBag.CustTypeID == CONT.SupplierCustomerTypeID || ViewBag.CustTypeID == CONT.ObligorCustomerTypeID)
-            {                
-                <li>Step 6 - It will display in supplier maker level after successfully generate transactions and it will finally invoice submitted.</li>
+            {
+                <li>Step 6 - It will display in supplier maker level after successfully generate transactions and it will finally payable submitted.</li>
             }
             else if (ViewBag.CustTypeID == CONT.BuyerCustomerTypeID)
             {
-                <li>Step 6 - It will display in buyer maker level after successfully generate transactions and it will finally invoice submitted.</li>
+                <li>Step 6 - It will display in buyer maker level after successfully generate transactions and it will finally payable submitted.</li>
             }
             else if (ViewBag.CustTypeID == CONT.BothObligorAndBuyerTypeID)
             {
-                <li>Step 6 - It will display in buyer maker level after successfully generate transactions and it will finally invoice submitted.</li>
+                <li>Step 6 - It will display in buyer maker level after successfully generate transactions and it will finally payable submitted.</li>
             }
             @*<li class="F_View" style="display:none;">
-                Step 6 - It will display in supplier maker level after successfully generate transactions and it will finally invoice submitted.
-            </li>
-            <li class="R_View" style="display:none;">
-                Step 6 - It will display in buyer maker level after successfully generate transactions and it will finally invoice submitted.
-            </li>*@
+            Step 6 - It will display in supplier maker level after successfully generate transactions and it will finally payable submitted.
+        </li>
+        <li class="R_View" style="display:none;">
+            Step 6 - It will display in buyer maker level after successfully generate transactions and it will finally payable submitted.
+        </li>*@
             <li>Step 7 - Please select funds required by date and process it.</li>
         </ul>
     </div>
@@ -82,7 +82,7 @@
         @Html.HiddenFor(model => model.ProgramType)
         <input type="hidden" name="strProgramType" id="strProgramType" />
         <div class="col-sm-12 padoff" style="text-align:center;">
-            Invoice Upload CSV File&nbsp;<span style="color:red;width:50px;">*</span>
+            Payable Upload CSV File&nbsp;<span style="color:red;width:50px;">*</span>
             <label class="f-btn f-btn-default f-btn-file">
                 Select File<input type="file" name="UpdInvoices" id="UpdInvoices" class="validate[required] onlyCSVfile" />
             </label>
@@ -121,7 +121,7 @@
                     <th>Company Code</th>
                     <th>Upload Date</th>
                     <th>File Deleted</th>
-                    <th>Invoice Generated</th>
+                    <th>Payable Generated</th>
                     <th>Attachment</th>
                     @*<th>Comment</th>*@
                     <th>Delete</th>

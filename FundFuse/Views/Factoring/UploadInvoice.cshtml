@@ -1,11 +1,11 @@
 ﻿@model TMP.Models.InvoiceTransactionModel
 @using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
 @{
-    ViewBag.Title = "Upload Invoice";
+    ViewBag.Title = "Upload Payable";
     Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
 }
 <div class="col-md-12 div-border-multitab padoff">
-    <div class="col-md-12 createusertitle">INVOICE UPLOAD</div>
+    <div class="col-md-12 createusertitle">PAYABLE UPLOAD</div>
     <div class="col-md-12" style="height:10px;"></div>
     @using (Html.BeginForm("UploadInvoice", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "SMCForm", enctype = "multipart/form-data" }))
     {
@@ -63,7 +63,7 @@
                 </div>
             }
             <div class="col-sm-12" style="height:15px;"></div>
-            <div class="col-sm-12 createtitles">Invoice Details</div>
+            <div class="col-sm-12 createtitles">Payable Details</div>
             <div class="col-sm-12" style="height:15px;"></div>
             <div class="form-group">
                 <label class="col-sm-2" for="textinput">Payable Number&nbsp;<span style="color:red;width:50px;">*</span></label>

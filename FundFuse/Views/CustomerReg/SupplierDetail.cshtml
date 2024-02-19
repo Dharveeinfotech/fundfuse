@@ -124,7 +124,7 @@
 
         <div class="form-group">
           
-            <label class="col-md-2" for="textinput" style="padding-right:0px;">Invoice Terms with Buyer &nbsp;<span style="color:red;width:50px;">*</span></label>
+            <label class="col-md-2" for="textinput" style="padding-right:0px;">Payable Terms with Buyer &nbsp;<span style="color:red;width:50px;">*</span></label>
            
             <div class="col-md-3">
                 @Html.DropDownListFor(model => model.InvTerm, new SelectList(ViewBag.DDLSalesInvoiceTerms, "value", "text", Model.InvTerm), "--Select--", new { @class = "form-control validate[required]" })
@@ -133,7 +133,7 @@
 
             <div style="display:none;" id="DV_OtherInvTerm">
               
-                <label class="col-md-2" for="textinput">Other Invoice Terms with Buyer &nbsp;<span style="color:red;width:50px;">*</span></label>
+                <label class="col-md-2" for="textinput">Other Payable Terms with Buyer &nbsp;<span style="color:red;width:50px;">*</span></label>
                
                 <div class="col-md-3">
                     @Html.TextBoxFor(model => model.OtherInvTerm, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })

@@ -6,8 +6,8 @@
     <button id="AccSumm" name="AccSumm" value="AccSumm" type="submit" class="btn btn-tgs" style="margin-right:25px;">ACCOUNT SUMMARY</button>
     @if (Model._currentUser == CONT.mSupplier_Maker || Model._currentUser == CONT.mBuyer_Maker)
     {
-        <button id="UplInvoi" name="UplInvoi" value="UplInvoi" type="submit" class="btn btn-tgs" style="margin-right:25px;">INVOICE UPLOAD</button>
-        <button id="BulkUplInvoi" name="BulkUplInvoi" value="BulkUplInvoi" type="submit" class="btn btn-tgs" style="margin-right:25px;">BULK INVOICE UPLOAD</button>
+        <button id="UplInvoi" name="UplInvoi" value="UplInvoi" type="submit" class="btn btn-tgs" style="margin-right:25px;">PAYABLE UPLOAD</button>
+        <button id="BulkUplInvoi" name="BulkUplInvoi" value="BulkUplInvoi" type="submit" class="btn btn-tgs" style="margin-right:25px;">BULK PAYABLE UPLOAD</button>
     }
     else if (Model._currentUser == CONT.mFunder_Checker)
     {
@@ -43,7 +43,7 @@
     }
     @if (Model._currentUser == CONT.mObligor_Maker)
     {
-        <button id="btnOblBulkUpld" name="btnOblBulkUpld" value="btnOblBulkUpld" type="submit" class="btn btn-tgs" style="margin-right:33px; margin-left:22px;">BULK INVOICE UPLOAD</button>
+        <button id="btnOblBulkUpld" name="btnOblBulkUpld" value="btnOblBulkUpld" type="submit" class="btn btn-tgs" style="margin-right:33px; margin-left:22px;">BULK PAYABLE UPLOAD</button>
     }    
 </div>
 <script>

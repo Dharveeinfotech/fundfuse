@@ -190,7 +190,7 @@
     @if (Model.InvTerm != "Other")
     {
 
-        <label class="col-md-2" for="textinput">Invoice Terms with Buyer</label>
+        <label class="col-md-2" for="textinput">Payable Terms with Buyer</label>
 
         <div class="col-md-3">
             @if (ViewBag.Supplier.InvTerm == Model.InvTerm)
@@ -206,7 +206,7 @@
     else
     {
 
-        <label class="col-md-2" for="textinput">Other Invoice Terms with Buyer</label>
+<label class="col-md-2" for="textinput">Other Payable Terms with Buyer</label>
 
         <div class="col-md-3">
             @if (ViewBag.Supplier.OtherInvTerm == Model.OtherInvTerm)

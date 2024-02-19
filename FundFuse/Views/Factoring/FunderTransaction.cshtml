@@ -32,7 +32,7 @@
 
                     </tr>
                     <tr>
-                        <td class="td-bg">Number of Invoices</td>
+                        <td class="td-bg">Number of Payables</td>
                         <td class="td-line">
                             @Model.InvCnt
                         </td>
@@ -75,7 +75,7 @@
 
 
                     <tr>
-                        <td class="td-bg">Invoice Due Date</td>
+                        <td class="td-bg">Payable Due Date</td>
                         <td class="td-line">
                             @Convert.ToDateTime(Model.DueDate).ToString("dd-MMM-yyyy")
                         </td>
@@ -138,7 +138,7 @@
                     </tr>
                     <tr>
 
-                        <td class="td-bg">Invoice Details</td>
+                        <td class="td-bg">Payable Details</td>
                         <td class="td-line">
                             <a href="javascript:void(0);" class="InvoiceView" data-id="@Model.InvoiceID">View</a>
                         </td>

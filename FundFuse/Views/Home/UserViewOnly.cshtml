@@ -286,14 +286,14 @@
         <div class="form-group">
             @if (Model.Item2.SaleInvTerms != "Other")
             {
-                <label class="col-md-2" for="textinput">Sales Invoice Terms</label>
+                <label class="col-md-2" for="textinput">Sales Payable Terms</label>
                 <div class="col-md-3">
                     @Html.TextBoxFor(model => model.Item2.SaleInvTerms, new { @class = "form-control disbl-cntrl-cls ", maxlength = "50", autocomplete = "off" })
                 </div>
             }
             else
             {
-                <label class="col-md-2" for="textinput">Other Sales Invoice Terms</label>
+        <label class="col-md-2" for="textinput">Other Sales Payable Terms</label>
                 <div class="col-md-3">
                     @Html.TextBoxFor(model => model.Item2.OtherSaleInvTerms, new { @class = "form-control disbl-cntrl-cls ", maxlength = "50", autocomplete = "off" })
                 </div>
