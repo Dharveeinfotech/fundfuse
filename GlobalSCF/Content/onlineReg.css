@@ -33,7 +33,7 @@ input, select, textarea {
     border-radius: 16px;
     color: #fff;
     margin-bottom: 0;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: normal;
     line-height: 1.42857143;
     text-align: center;
@@ -659,9 +659,9 @@ textarea {
     padding-top: 15px;
     text-transform: uppercase;
 }
-.changes-input{
-    background-color:#336699 !important;
-    color:#000;
+.changes-input {
+    background-color: #f1ca0440 !important;
+    color: #000;
 }
  .notras-p {
         font-weight: 800;

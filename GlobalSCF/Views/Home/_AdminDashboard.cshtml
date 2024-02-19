@@ -76,18 +76,18 @@
 
     <div class="tab-pane" id="4a">
         <!--tab 4a-->
-        <div class="col-md-12">
+        <div class="col-md-12" style="display:grid; width:100% !important; overflow:auto;">
             <table id="exampleDB2" class="display" cellspacing="0" width="100%">
                 <thead>
                     <tr class="bgspr">
-                        <th>Transaction Number</th>
-                        <th>Product</th>
-                        <th>Transaction Date</th>
-                        <th>Currency</th>
-                        <th>Total Amount</th>
-                        <th>Buyer Name</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
+                        <th>Transaction Number<input type="search" class="dataTables_filter" data-column="0" style="direction:ltr !important"></th>
+                        <th>Product<input type="search" class="dataTables_filter" data-column="1"></th>
+                        <th>Transaction Date<input type="search" class="datepicker dataTables_filter" data-column="2"></th>
+                        <th>Currency<input type="search" class="dataTables_filter" data-column="3"></th>
+                        <th>Total Amount<input type="search" class="dataTables_filter" data-column="4"></th>
+                        <th>Buyer Name<input type="search" class="dataTables_filter" data-column="5"></th>
+                        <th>Due Date<input type="search" class="datepicker dataTables_filter " data-column="6"></th>
+                        <th>Status<input type="search" class="dataTables_filter" data-column="7"></th>
                         <th>Transaction History</th>
                         <th>Action</th>
                         <th style="display:none;">
@@ -509,6 +509,40 @@ else if (ViewBag.divCust)
         }
         e.chart.render();
     }
+    $(document).ready(function () {
+       
+        $('.datepicker').datepicker({
+            dateFormat: 'dd',
+            yearRange: '1900:c',
+            changeYear: true,
+            changeMonth: true,
+            onSelect: function (dateText, inst) {
+                var columnIndex = $(this).data('column');
+                dateFilter(columnIndex, dateText);
+            }
+        });
+
+        
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val().trim();
+
+            
+            if (columnIndex === 2 || columnIndex === 6) {
+                dateFilter(columnIndex, searchValue);
+                return;
+            }
+
+            
+            $('#exampleDB2').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        
+        function dateFilter(columnIndex, searchValue) {
+            $('#exampleDB2').DataTable().column(columnIndex).search(searchValue).draw();
+        }
+
+    });
 </script>
 
 <style>
@@ -562,5 +596,8 @@ else if (ViewBag.divCust)
         }
     .adminbox-shadow {
         box-shadow: 0px 1px 5px -2x #3f444a;
+    }
+    input {
+        direction: rtl;
     }
 </style>
