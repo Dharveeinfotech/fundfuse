@@ -16,41 +16,43 @@
         if (Enumerable.Count(@ViewBag.DirAuthSignGrid) > 0)
         {
             <div class="col-md-12 createusertitle">DIRECTORS / SIGNATORIES DETAILS</div>
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="tab-pane" id="4a">
+                <!--tab 4a-->
                 <div class="col-md-12" style="height:10px;"></div>
-                <div class="tab-pane" id="4a">
-                    <!--tab 4a-->
-                    <div class="col-md-12" style="height:10px;"></div>
-                    <div class="col-md-12">
-                        <table id="example" class="display" cellspacing="0" width="100%">
-                            <thead>
-                                <tr class="bgspr">
-                                    <th>First Name</th>
-                                    @*<th>Middle Name</th>
+                <div class="col-md-12">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="bgspr">
+                                <th>First Name</th>
+                                @*<th>Middle Name</th>
                                     <th>Last Name</th>
                                     <th>Gender</th>*@
-                                    <th>Country of Residence</th>
-                                    <th>E-Mail</th>
-                                    <th>Mobile Number</th>
-                                    <th>Passport Expiry Date</th>
-                                    <th>Type</th>
-                                    <th>View</th>                                    
-                                </tr>
-                            <tbody>
-                                @foreach (var item in ViewBag.DirAuthSignGrid)
+                                <th>Country of Residence</th>
+                                <th>E-Mail</th>
+                                <th>Mobile Number</th>
+                                <th>Passport Expiry Date</th>
+                                <th>Type</th>
+                                <th>View</th>
+                            </tr>
+                        <tbody>
+                            @foreach (var item in ViewBag.DirAuthSignGrid)
+                            {
+                                foreach (var item1 in ViewBag.DirAuthSignCheck)
                                 {
-                                    foreach (var item1 in ViewBag.DirAuthSignCheck)
+                                    if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
                                     {
-                                        if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
-                                        {
-                                            <tr>
-                                                @if (item.FirstName == item1.FirstName)
-                                                {
-                                                    <td>@item.FirstName</td>}
-                                                else
-                                                {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.FirstName">@item.FirstName</td>}
+                                        <tr>
+                                            @if (item.FirstName == item1.FirstName)
+                                            {
+                                                <td>@item.FirstName</td>
+                                            }
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.FirstName">@item.FirstName</td>
+                                            }
 
-                                                @*@if (item.MiddleName == item1.MiddleName)
+                                            @*@if (item.MiddleName == item1.MiddleName)
                                                 {
                                                     <td>@item.MiddleName</td>}
                                                 else
@@ -72,70 +74,105 @@
                                                     <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.Gender">@item.Gender</td>}*@
 
 
-                                                @if (item.LocCountryName == item1.LocCountryName)
-                                                {
-                                                    <td>@item.LocCountryName</td>}
-                                                else
-                                                {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LocCountryName">@item.LocCountryName</td>}
+                                            @if (item.LocCountryName == item1.LocCountryName)
+                                            {
+                                                <td>@item.LocCountryName</td>
+                                            }
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LocCountryName">@item.LocCountryName</td>
+                                            }
 
 
-                                                @if (item.EmailID == item1.EmailID)
-                                                {
-                                                    <td>@item.EmailID</td>}
-                                                else
-                                                {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.EmailID">@item.EmailID</td>}
+                                            @if (item.EmailID == item1.EmailID)
+                                            {
+                                                <td>@item.EmailID</td>
+                                            }
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.EmailID">@item.EmailID</td>
+                                            }
 
-                                                @if (item.MobileNo == item1.MobileNo)
-                                                {
-                                                    <td>@item.MobileNo</td>}
-                                                else
-                                                {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MobileNo">@item.MobileNo</td>}
+                                            @if (item.MobileNo == item1.MobileNo)
+                                            {
+                                                <td>@item.MobileNo</td>
+                                            }
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MobileNo">@item.MobileNo</td>
+                                            }
 
-                                                @if (string.Format("{0:dd-MMM-yyyy}", item.PassExpDate) == string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))
+                                            @if (string.Format("{0:dd-MMM-yyyy}", item.PassExpDate) == string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))
+                                            {
+                                                if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(item.PassExpDate))
                                                 {
-                                                    if (DateTime.Now.AddDays(CONT.DateExpireDay) > Convert.ToDateTime(item.PassExpDate))
-                                                    {
-                                                        <td class="DateExpireLabel">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
-                                                    }
+                                                    <td class="DateExpireLabel">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
                                                 }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                                    <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
                                                 }
+                                            }
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                            }
 
-                                                @if (item.CustTypeDesc == item1.CustTypeDesc)
-                                                {
-                                                    <td>@item.CustTypeDesc</td>}
-                                                else
-                                                {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CustTypeDesc">@item.CustTypeDesc</td>}
-                                                <td><a href="#" onclick="ViewDetail('@item.CustomerShareHoldID')">View</a></td>
-                                               
-                                            </tr>
-                                        }
+                                            @if (item.CustTypeDesc == item1.CustTypeDesc)
+                                            {
+                                                <td>@item.CustTypeDesc</td>
+                                            }
+                                            else
+                                            {
+                                                <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CustTypeDesc">@item.CustTypeDesc</td>
+                                            }
+                                            <td>
+                                                <span onclick="ViewDetail('@item.CustomerShareHoldID')" class="view-eye-btn">
+                                                    <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                         width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                         xml:space="preserve">
+                                                    <g>
+                                                    <g>
+                                                    <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+			                                                    c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+			                                                    c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+			                                                    c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+			                                                    c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+			                                                    c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+			                                                    c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+	                                                    </g>
+                                                    <g>
+                                                    <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+			                                                    c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+			                                                    c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+			                                                    s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+	                                                    </g>
+                                                    <g>
+                                                    <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+	                                                    </g>
+                                                    </g>
+                                                    </svg>
+                                                </span>
+                                            </td>
+
+                                        </tr>
                                     }
                                 }
-                            </tbody>
-                        </table>
-                    </div>
-
+                            }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-md-12" style="height:15px;"></div>
+
+            </div>
+            <div class="col-md-12" style="height:15px;"></div>
         }
 
         if (Model.CompPubList == "N")
         {
             if (Enumerable.Count(@ViewBag.CompSharHoldGrid) > 0 || Enumerable.Count(@ViewBag.SharHoldGrid) > 0)
             {
-            <div class="col-md-12 createusertitle">SHAREHOLDERS</div>
-            <div class="col-md-12" style="height:10px;"></div>
+                <div class="col-md-12 createusertitle">SHAREHOLDERS</div>
+                <div class="col-md-12" style="height:10px;"></div>
             }
             if (Enumerable.Count(@ViewBag.SharHoldGrid) > 0)
             {
@@ -162,11 +199,11 @@
                                     <th style="display:none;">
                                     </th>
                                     <th style="display:none;">
-                                    </th>  
+                                    </th>
                                     <th style="display:none;">
                                     </th>
                                     <th style="display:none;">
-                                    </th>  
+                                    </th>
                                 </tr>
                             <tbody>
                                 @foreach (var item in ViewBag.SharHoldGrid)
@@ -178,76 +215,96 @@
                                             <tr>
                                                 @if (item.FirstName == item1.FirstName)
                                                 {
-                                                    <td>@item.FirstName</td>}
+                                                    <td>@item.FirstName</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.FirstName">@item.FirstName</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.FirstName">@item.FirstName</td>
+                                                }
 
                                                 @if (item.MiddleName == item1.MiddleName)
                                                 {
-                                                    <td>@item.MiddleName</td>}
+                                                    <td>@item.MiddleName</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MiddleName">@item.MiddleName</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.MiddleName">@item.MiddleName</td>
+                                                }
 
                                                 @if (item.LastName == item1.LastName)
                                                 {
-                                                    <td>@item.LastName</td>}
+                                                    <td>@item.LastName</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LastName">@item.LastName</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LastName">@item.LastName</td>
+                                                }
 
                                                 @if (item.Gender == item1.Gender)
                                                 {
-                                                    <td>@item.Gender</td>}
+                                                    <td>@item.Gender</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.Gender">@item.Gender</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.Gender">@item.Gender</td>
+                                                }
 
                                                 @if (item.LocCountryName == item1.LocCountryName)
                                                 {
-                                                    <td>@item.LocCountryName</td>}
+                                                    <td>@item.LocCountryName</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LocCountryName">@item.LocCountryName</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.LocCountryName">@item.LocCountryName</td>
+                                                }
 
-                                               
+
 
                                                 @if (item.SharePer == item1.SharePer)
                                                 {
-                                                    <td>@string.Format("{0:0,0.00}", item.SharePer) %</td>}
+                                                    <td>@string.Format("{0:0,0.00}", item.SharePer) %</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@string.Format("{0:0,0.00}", @item1.SharePer)">@string.Format("{0:0,0.00}", @item.SharePer) %</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@string.Format("{0:0,0.00}", @item1.SharePer)">@string.Format("{0:0,0.00}", @item.SharePer) %</td>
+                                                }
 
                                                 @if (item.NatCountryName == item1.NatCountryName)
                                                 {
-                                                    <td>@item.NatCountryName</td>}
+                                                    <td>@item.NatCountryName</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.NatCountryName">@item.NatCountryName</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.NatCountryName">@item.NatCountryName</td>
+                                                }
 
                                                 @if (item.PassNo == item1.PassNo)
                                                 {
-                                                    <td>@item.PassNo</td>}
+                                                    <td>@item.PassNo</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.PassNo">@item.PassNo</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.PassNo">@item.PassNo</td>
+                                                }
 
                                                 @if (item.PassCountryName == item1.PassCountryName)
                                                 {
-                                                    <td>@item.PassCountryName</td>}
+                                                    <td>@item.PassCountryName</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.PassCountryName">@item.PassCountryName</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.PassCountryName">@item.PassCountryName</td>
+                                                }
 
 
                                                 @if (string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate) == string.Format("{0:dd-MMM-yyyy}", item1.PassIssueDate))
                                                 {
-                                                    <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate))</td>}
+                                                    <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate))</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassIssueDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate))</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassIssueDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassIssueDate))</td>
+                                                }
 
 
                                                 @if (string.Format("{0:dd-MMM-yyyy}", item.PassExpDate) == string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))
@@ -260,10 +317,11 @@
                                                     {
                                                         <td>@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
                                                     }
-                                                 }
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@(string.Format("{0:dd-MMM-yyyy}", item1.PassExpDate))">@(string.Format("{0:dd-MMM-yyyy}", item.PassExpDate))</td>
+                                                }
 
 
                                                 @if (item.UpdPassport == item1.UpdPassport)
@@ -271,60 +329,218 @@
                                                     <td>
                                                         @if (item.UpdPassport != "")
                                                         {
-                                                            <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+                                                            <a href="javascript:void(0);" class="UpdPassport_PopUp  view-eye-btn" data-id="@item.UpdPassport">
+                                                                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                     width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                     xml:space="preserve">
+                                                                <g>
+                                                                <g>
+                                                                <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                            </a>
                                                         }
-                                                    </td>}
+                                                    </td>
+                                                }
                                                 else
                                                 {
                                                     <td>
                                                         @if (item.UpdPassport != "")
                                                         {
-                                                           
-                                                            <a href="javascript:void(0);" class="UpdPassport_PopUp" data-id="@item.UpdPassport">View</a>
+
+                                                            <a href="javascript:void(0);" class="UpdPassport_PopUp view-eye-btn" data-id="@item.UpdPassport">
+                                                                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                     width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                     xml:space="preserve">
+                                                                <g>
+                                                                <g>
+                                                                <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                            </a>
                                                             if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
                                                             {
-                                                                <span>Old Document 
-                                                                    <a href="javascript:void(0);" class="OldUpdPassport_PopUp" data-id="@item1.UpdPassport">View</a>
-                                                        <br /></span>
+                                                                <span>
+                                                                    Old Document
+                                                                    <a href="javascript:void(0);" class="OldUpdPassport_PopUp view-eye-btn" data-id="@item1.UpdPassport">
+                                                                        <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                             width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                             xml:space="preserve">
+                                                                        <g>
+                                                                        <g>
+                                                                        <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+                  c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+                  c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+                  c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+                  c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+                  c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+                  c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+          </g>
+                                                                        <g>
+                                                                        <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+                  c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+                  c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+                  s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+          </g>
+                                                                        <g>
+                                                                        <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+          </g>
+      </g>
+      </svg>
+                                                                    </a>
+                                                                    <br />
+                                                                </span>
                                                             }
                                                         }
-                                                    </td>}
+                                                    </td>
+                                                }
 
                                                 @if (item.UpdNatIden == item1.UpdNatIden)
                                                 {
                                                     <td>
                                                         @if (item.UpdNatIden != "")
                                                         {
-                                                            <a href="javascript:void(0);" class="UpdNatIden_PopUp" data-id="@item.UpdNatIden">View</a>
+                                                            <a href="javascript:void(0);" class="UpdNatIden_PopUp view-eye-btn" data-id="@item.UpdNatIden">
+                                                                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                     width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                     xml:space="preserve">
+                                                                <g>
+                                                                <g>
+                                                                <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                            </a>
                                                         }
-                                                    </td>}
+                                                    </td>
+                                                }
                                                 else
                                                 {
                                                     <td>
                                                         @if (item.UpdNatIden != "")
                                                         {
-                                                            <a href="javascript:void(0);" class="UpdNatIden_PopUp" data-id="@item.UpdNatIden">View</a>
+                                                            <a href="javascript:void(0);" class="UpdNatIden_PopUp view-eye-btn" data-id="@item.UpdNatIden">
+                                                                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                     width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                     xml:space="preserve">
+                                                                <g>
+                                                                <g>
+                                                                <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                            </a>
                                                             if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
                                                             {
-                                                                <span>Old Document 
-                                                                    <a href="javascript:void(0);" class="OldUpdNatIden_PopUp" data-id="@item1.UpdNatIden">View</a>
-                                                        <br /></span>
+                                                                <span>
+                                                                    Old Document
+                                                                    <a href="javascript:void(0);" class="OldUpdNatIden_PopUp view-eye-btn" data-id="@item1.UpdNatIden">
+                                                                        <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                             width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                             xml:space="preserve">
+                                                                        <g>
+                                                                        <g>
+                                                                        <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                                        <g>
+                                                                        <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                                        <g>
+                                                                        <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                                    </a>
+                                                                    <br />
+                                                                </span>
                                                             }
                                                         }
-                                                    </td>}
-                                                
+                                                    </td>
+                                                }
+
                                                 <td class="UpdPassport" style="display:none;">
                                                     <span>@item.UpdPassport</span>
                                                 </td>
                                                 <td class="UpdNatIden" style="display:none;">
                                                     <span>@item.UpdNatIden</span>
-                                                </td>  
+                                                </td>
                                                 <td class="OldUpdPassport" style="display:none;">
                                                     <span>@item1.UpdPassport</span>
                                                 </td>
                                                 <td class="OldUpdNatIden" style="display:none;">
                                                     <span>@item1.UpdNatIden</span>
-                                                </td>  
+                                                </td>
                                             </tr>
                                         }
                                     }
@@ -370,32 +586,40 @@
                                             <tr>
                                                 @if (item.CompanyName == item1.CompanyName)
                                                 {
-                                                    <td>@item.CompanyName</td>}
+                                                    <td>@item.CompanyName</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CompanyName">@item.CompanyName</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.CompanyName">@item.CompanyName</td>
+                                                }
 
 
                                                 @if (item.SharePer == item1.SharePer)
                                                 {
-                                                    <td>@string.Format("{0:0,0.00}", item.SharePer) %</td>}
+                                                    <td>@string.Format("{0:0,0.00}", item.SharePer) %</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@string.Format("{0:0,0.00}", @item1.SharePer)">@string.Format("{0:0,0.00}", @item.SharePer) %</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@string.Format("{0:0,0.00}", @item1.SharePer)">@string.Format("{0:0,0.00}", @item.SharePer) %</td>
+                                                }
 
                                                 @if (item.TradeLicNo == item1.TradeLicNo)
                                                 {
-                                                    <td>@item.TradeLicNo</td>}
+                                                    <td>@item.TradeLicNo</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.TradeLicNo">@item.TradeLicNo</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.TradeLicNo">@item.TradeLicNo</td>
+                                                }
 
                                                 @if (item.NatCountryName == item1.NatCountryName)
                                                 {
-                                                    <td>@item.NatCountryName</td>}
+                                                    <td>@item.NatCountryName</td>
+                                                }
                                                 else
                                                 {
-                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.NatCountryName">@item.NatCountryName</td>}
+                                                    <td style="background-color:#336699" data-toggle="tooltip" data-placement="bottom" title="@item1.NatCountryName">@item.NatCountryName</td>
+                                                }
 
 
                                                 @if (item.UpdTradeLic == item1.UpdTradeLic)
@@ -403,28 +627,132 @@
                                                     <td>
                                                         @if (item.UpdTradeLic != "")
                                                         {
-                                                            <a href="javascript:void(0);" class="UpdTradeLic_PopUp" data-id="@item.UpdTradeLic">View</a>
+                                                            <a href="javascript:void(0);" class="UpdTradeLic_PopUp view-eye-btn" data-id="@item.UpdTradeLic">
+                                                                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                     width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                     xml:space="preserve">
+                                                                <g>
+                                                                <g>
+                                                                <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                            </a>
                                                         }
-                                                    </td>}
+                                                    </td>
+                                                }
                                                 else
                                                 {
                                                     <td>
                                                         @if (item.UpdTradeLic != "")
                                                         {
-                                                            <a href="javascript:void(0);" class="UpdTradeLic_PopUp" data-id="@item.UpdTradeLic">View</a>
+                                                            <a href="javascript:void(0);" class="UpdTradeLic_PopUp view-eye-btn" data-id="@item.UpdTradeLic">
+                                                                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                     width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                     xml:space="preserve">
+                                                                <g>
+                                                                <g>
+                                                                <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                                <g>
+                                                                <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                            </a>
                                                             if (item.CustomerShareHoldID == item1.CustomerShareHoldID)
                                                             {
-                                                                <span>Old Document 
-                                                                    <a href="javascript:void(0);" class="OldUpdTradeLic_PopUp" data-id="@item1.UpdTradeLic">View</a>
-                                                        <br /></span>
+                                                                <span>
+                                                                    Old Document
+                                                                    <a href="javascript:void(0);" class="OldUpdTradeLic_PopUp view-eye-btn" data-id="@item1.UpdTradeLic">
+                                                                        <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                             width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                             xml:space="preserve">
+                                                                        <g>
+                                                                        <g>
+                                                                        <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                                        <g>
+                                                                        <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                                        <g>
+                                                                        <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                                    </a>
+                                                                    <br />
+                                                                </span>
                                                             }
                                                         }
-                                                    </td>}
+                                                    </td>
+                                                }
 
                                                 <td>
                                                     @if (item.ChildCnt > 0)
                                                     {
-                                                        <a href="javascript:void(0);" class="OpenList" data-id="@item.CustomerShareHoldID">View</a>
+                                                        <a href="javascript:void(0);" class="OpenList view-eye-btn" data-id="@item.CustomerShareHoldID">
+                                                            <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                 width="20px" height="20px" viewBox="0 0 442.04 442.04" class="eye-svg-position"
+                                                                 xml:space="preserve">
+                                                            <g>
+                                                            <g>
+                                                            <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+            c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+            c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+            c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+            c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+            c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+            c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z" />
+    </g>
+                                                            <g>
+                                                            <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+            c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+            c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+            s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z" />
+    </g>
+                                                            <g>
+                                                            <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+    </g>
+</g>
+</svg>
+                                                        </a>
                                                     }
                                                 </td>
 
@@ -462,20 +790,20 @@
 </div>
 
 <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog " style="width:1000px">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body scroll" style="height:350px;">
-                    <div id='myModalContent'></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
-                </div>
+    <div class="modal-dialog " style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body scroll" style="height:350px;">
+                <div id='myModalContent'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
 <script>
     $(document).ready(function () {

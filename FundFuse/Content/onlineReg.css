@@ -232,7 +232,7 @@ input, select, textarea {
     font-size: inherit;
     text-align: center;
     /* border: 1px solid #336699;*/
-    background: #f1ca0440;
+    background: #f6f9fc;
 }
 
 .div-border {
@@ -721,4 +721,20 @@ textarea {
     .box-con-login-2 {
         height: initial;
     }
+}
+
+.view-eye-btn {
+    padding: 5px 15px;
+    background-image: linear-gradient(132.93deg, #fed400 9.89%, #f7f2d6 89.62%);
+    border-radius: 5px;
+    text-decoration:none;
+}
+    .view-eye-btn:hover {
+        cursor: pointer;
+        background-image: linear-gradient(224.5deg, #fdea8a 21.52%, #fff8d2 75.86%);
+        text-decoration: none;
+    }
+.eye-svg-position {
+    position: relative;
+    top: 7px;
 }

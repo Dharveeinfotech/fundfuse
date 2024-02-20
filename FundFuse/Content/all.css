@@ -1962,7 +1962,7 @@ td {
     td.sorting_1 {
         color: #13426b !important;
         text-align: center !important;
-        border: #e6e7e8 1px solid !important;
+        border: #e6e7e8 0px solid !important;
         background-color: transparent !important;
     }
 
