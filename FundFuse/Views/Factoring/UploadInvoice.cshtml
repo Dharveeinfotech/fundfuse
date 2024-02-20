@@ -1,0 +1,222 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Upload Payable";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+<div class="col-md-12 div-border-multitab padoff">
+    <div class="col-md-12 createusertitle">PAYABLE UPLOAD</div>
+    <div class="col-md-12" style="height:10px;"></div>
+    @using (Html.BeginForm("UploadInvoice", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "SMCForm", enctype = "multipart/form-data" }))
+    {
+        <div class="container">
+            <div class="col-sm-12" style="height:15px;"></div>
+            <div class="form-group">
+                @if (Model.ProgramType == CONT.FType)
+                {
+                    <label class="col-md-2" for="textinput">Buyer Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.ObligorID, new SelectList(ViewBag.DDLCustomerID, "CustomerID", "CompanyName", Model.ObligorID), "--Select--", new { @class = "form-control disable validate[required]" })
+                    </div>
+                }
+                else if (Model.ProgramType == CONT.RType)
+                {
+                    <label class="col-md-2" for="textinput">Supplier Name&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.SupplierID, new SelectList(ViewBag.DDLCustomerID, "CustomerID", "CompanyName", Model.SupplierID), "--Select--", new { @class = "form-control disable validate[required]" })
+                    </div>
+                }
+
+                <label class="col-md-2" for="textinput">Currency&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-4">
+                    @Html.DropDownListFor(model => model.CurrencyID, new SelectList(ViewBag.DDLCurrencyID, "CurrencyID", "CurrencyCode", Model.CurrencyID), "--Select--", new { @class = "form-control disable validate[required]" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2" for="textinput">Due Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-md-4">
+                    @if (Model.DueDate != Convert.ToDateTime("01-01-1900") && Model.DueDate != Convert.ToDateTime("01-01-0001"))
+                {
+                        <input id="DueDate" name="DueDate" type="text" placeholder="" class="form-control disable formattedCalender validate[required]" autocomplete="off" value="@Convert.ToDateTime(Model.DueDate).ToString("dd-MMM-yyyy")">
+                    }
+                    else
+                    {
+                        <input id="DueDate" name="DueDate" type="text" placeholder="" class="form-control disable formattedCalender validate[required]" autocomplete="off">
+                    }
+                </div>
+
+              
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <button id="EditData" name="EditData" type="button" onclick="return Edit();" class="smallestbtns">Edit</button>
+                </div>
+            </div>
+            @if (Model.ProgramType == CONT.RType)
+            {
+                <div class="form-group">
+                    <label class="col-md-2" for="textinput">Tenor&nbsp;<span style="color:red;width:50px;">*</span></label>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(model => model.Tenor, new { @class = "form-control num disable validate[required]", maxlength = "50", autocomplete = "off" })                        
+                        @Html.HiddenFor(x => x.Tenor)
+                    </div>
+                </div>
+            }
+            <div class="col-sm-12" style="height:15px;"></div>
+            <div class="col-sm-12 createtitles">Payable Details</div>
+            <div class="col-sm-12" style="height:15px;"></div>
+            <div class="form-group">
+                <label class="col-sm-2" for="textinput">Payable Number&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.InvoiceNo, new { @class = "form-control validate[required]", maxlength = "50", autocomplete = "off" })
+                </div>
+                <label class="col-sm-2 " for="textinput">Payable Date&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-sm-4">
+                    @if (Model.InvoiceDate != Convert.ToDateTime("01-01-1900") && Model.InvoiceDate != Convert.ToDateTime("01-01-0001"))
+                {
+                        <input id="InvoiceDate" name="InvoiceDate" type="text" placeholder="" class="form-control formattedCalenderAll validate[required]" autocomplete="off" value="@Convert.ToDateTime(Model.InvoiceDate).ToString("dd-MMM-yyyy")">
+                    }
+                    else
+                    {
+                        <input id="InvoiceDate" name="InvoiceDate" type="text" placeholder="" class="form-control formattedCalenderAll validate[required]" autocomplete="off">
+                    }
+
+                </div>
+            </div>
+            <div class="col-sm-12" style="height:5px;"></div>
+            <div class="form-group">
+                <label class="col-sm-2 " for="textinput">Payable Amount&nbsp;<span style="color:red;width:50px;">*</span></label>
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.Amt, new { @class = "form-control validate[required] num", maxlength = "50", autocomplete = "off" })
+                </div>
+
+                <label class="col-sm-2 " for="textinput">Attachment&nbsp;</label>
+                <div class="col-sm-4">
+                    @if (Model.Attach != null)
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload <input type="file" name="Attach" id="Attach" class="onlyPDFfile" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.pdf)$" />
+                        </label>
+                        <br />
+                        <label class="l-filename" id="Attach_span"></label>
+                        if (Model.Attach != "")
+                        {
+                            @Html.HiddenFor(x => x.Attach)
+                            <br />
+                            <span class="p-view">
+                                <a href="javascript:void(0);" class="Attach_PopUp" data-id="@Model.Attach">View</a>
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <label class="f-btn f-btn-default f-btn-file">
+                            Upload<input type="file" name="Attach" id="Attach" class="onlyPDFfile" />
+                        </label>
+                        <br />
+                            <label class="l-filename" id="Attach_span"></label>
+                    }
+                </div>
+            </div>
+            <div class="col-sm-12" style="height:5px;"></div>
+            <div class="form-group">
+                <label class="col-sm-2 " for="textinput"></label>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4">
+                    @if (Model.InvoiceID == 0)
+                    {
+                        <button id="Cancel" name="Cancel" value="Cancel" class="btn-tgs CommonDetachValidation">Cancel</button>
+                    }
+                    <button id="SaveAddNew" name="SaveAddNew" value="SaveAddNew" class="btn-tgs">Save & Add New</button>
+                </div>
+            </div>
+            @Html.HiddenFor(x => x.ProgramType)
+            @if (Model.InvoiceID > 0)
+                {
+                @Html.Action("InvoiceDetails", "InvoiceCommon", new { InvoiceId = Model.InvoiceID, IsAdd = true })
+
+                <div class="col-sm-12 viewmargin" style="padding-top:20px;padding-bottom:30px;">
+                    @Html.HiddenFor(x => x.InvoiceID)
+                    @Html.HiddenFor(x => x.InvoiceDetID)
+                    @Html.HiddenFor(x => x.ObligorID)
+                    @Html.HiddenFor(x => x.CurrencyID)
+                    @Html.HiddenFor(x => x.DueDate)
+                    @Html.HiddenFor(x => x.SupplierID)
+                    <div class="col-md-6">
+                        @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+                    </div>
+                    <div class="col-md-6" style="padding-top:30px;text-align:right;padding-right:0px;">
+                        <button id="SaveClose" name="SaveClose" value="SaveClose" class="btn-tgs">Save & Close</button>
+                        <button id="Cancel" name="Cancel" value="Cancel" class="btn-tgs CommonDetachValidation">Cancel</button>
+                        <button id="Submit" name="Submit" value="Submit" class="btn-tgs CommonDetachValidation">Submit</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+<script>
+    $(".Attach_PopUp").on("click", function () {
+        var url = '/Files/Invoice/' + '@Model.Attach' + '#toolbar=0';
+        $('#dociframe').attr('src', url)
+        $('#DocPopup').modal({ show: true });
+    });
+
+    if ('@Model.InvoiceID' > 0) {
+        $(".disable").prop("disabled", true);
+        $(".smallestbtns").css("display", "block");
+        $(".btnDisble").css("display", "block");
+
+    }
+    $("#EditData").click(function () {
+        $(".disable").prop("disabled", false);
+        return false;
+    });
+    $("#SaveAddNew, #SaveClose").on("click", function () {
+        document.getElementById("DueDate").className = document.getElementById("DueDate").className.replace(" input-validation-error", "");
+        $('#DueDate').rules('remove');
+
+        document.getElementById("ProcessRemark").className = document.getElementById("ProcessRemark").className.replace(" validate[required]", "");
+    });
+
+    
+
+    $("#DueDate").on("change", function () {
+        var DueDate = document.getElementById("DueDate").value;
+        if (document.getElementById("DueDate").value != "") {
+            $.ajax({
+                url: "/Factoring/DueDateHoliday?DueDate=" + DueDate,
+                type: "GET",
+                data: "{}",
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data != "Successfully") {
+                        $("#errorMsg").html("Not allowed to on public holiday.");
+                        $('#Error').modal('show');
+                        document.getElementById("DueDate").value = "";
+                        document.getElementById("DueDate").focus();
+                        return false;
+                    }
+                },
+                error: function () {
+                    alert(Error);
+                }
+            });
+        }
+        return false;
+    });
+
+    $("#Amt").val(parseFloat($("#Amt").val(), 10).toFixed(2));
+</script>
+<style>
+    .smallestbtns {
+        display: none;
+    }
+
+    .btnDisble {
+        display: none;
+    }
+</style>

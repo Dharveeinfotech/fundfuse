@@ -1,0 +1,288 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @using (Html.BeginForm("SupplierChecker", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", enctype = "multipart/form-data" }))
+    {
+        @Html.Action("SupplierHeader", "InvoiceCommon", new { InvoiceID = Model.InvoiceID })
+        <div class="col-md-12 createusertitle">TRANSACTION SUMMARY</div>
+        <div class="col-md-12" style="height:10px;"></div>
+
+        if (Model.ProgramType == CONT.FType)
+        {
+            <div class="container padoff">
+                <table class="col-md-5">
+                    <tbody>
+
+                        <tr>
+                            <td class="td-bg">Transaction Number</td>
+                            <td class="td-line">
+                                @Model.TranRefNo
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Transaction Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.TranDate).ToString("dd-MMM-yyyy")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Payable Due Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.DueDate).ToString("dd-MMM-yyyy")
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Number of Payables</td>
+                            <td class="td-line">
+                                @Model.InvCnt
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Tenor</td>
+                            <td class="td-line">
+                                @Model.Tenor Days
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Factor’s Holdback %</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.HoldbackPer)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg"> Profit Rate %</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.ProfitRate) % (@Model.ProfitTypeDesc)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Buyer Name</td>
+                            <td class="td-line">
+                                @Model.ObligorName
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+
+                        <tr>
+                            <td class="td-bg">Total Amount</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.TotAmt)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Currency</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Tentative Payment Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.PaymentDate).ToString("dd-MMM-yyyy")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Transaction Fees</td>
+                            <td class="td-line">
+                              @Model.CurrencyCode  @string.Format("{0:0,0.00}", Model.TranFeeAmt)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Factor’s Holdback Amount</td>
+                            <td class="td-line">
+                               @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.HoldbackAmt)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg"> Profit Amount</td>
+                            <td class="td-line">
+                               @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.ProfitAmt)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg"> Amount Payable to Supplier</td>
+                            <td class="td-line">
+                              @Model.CurrencyCode  @string.Format("{0:0,0.00}", Model.PayToSup)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Supplier Bank Account</td>
+                            <td class="td-line">
+                                @Html.DropDownList("CustomerBankAccID", null, new { @class = "form-control validate[required]" })
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="container padoff">
+                <table class="col-md-5">
+                    <tbody>
+
+                        <tr>
+                            <td class="td-bg">Transaction Number</td>
+                            <td class="td-line">
+                                @Model.TranRefNo
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Transaction Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.TranDate).ToString("dd-MMM-yyyy")
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td class="td-bg">Number of Payables</td>
+                            <td class="td-line">
+                                @Model.InvCnt
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Tenor</td>
+                            <td class="td-line">
+                                @Model.Tenor Days
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Settlement Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.SetDueDate).ToString("dd-MMM-yyyy")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Supplier Name</td>
+                            <td class="td-line">
+                                @Model.ExporterName
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Supplier Bank Account</td>
+                            <td class="td-line">
+                                @Model.CustomerAccountNo
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <table class="col-md-5">
+                    <tbody>
+
+                        <tr>
+                            <td class="td-bg">Total Amount</td>
+                            <td class="td-line">
+                               @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.TotAmt)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Currency</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Payable Due Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.DueDate).ToString("dd-MMM-yyyy")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg">Transaction Fee</td>
+                            <td class="td-line">
+                                @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.TranFeeAmt)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg"> Profit Rate %</td>
+                            <td class="td-line">
+                                @string.Format("{0:0,0.00}", Model.ProfitRate) % (@Model.ProfitTypeDesc)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-bg"> Profit Amount</td>
+                            <td class="td-line">
+                               @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.ProfitAmt)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Upfront amount Payable to SCF Platform (Profit + processing fee) by Buyer</td>
+                            <td class="td-line">
+                               @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.PayToiSCF)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg"> Amount Payable to Supplier</td>
+                            <td class="td-line">
+                             @Model.CurrencyCode   @string.Format("{0:0,0.00}", Model.PayToExp)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        <div class="container">
+            <div class="col-md-2" style="margin-left:30px;"><button id="Tran_Offer" name="Tran_Offer" value="Tran_Offer" type="button" class="btn btn-tgs ">TRANSACTION CONFIRMATION OFFER</button></div>
+        </div>
+        <div class="container" style="margin-top:20px;">
+            @Html.HiddenFor(x => x.InvoiceID)
+            @Html.HiddenFor(x => x.Status)
+            @Html.HiddenFor(x => x.ProgramType)
+            <div class="col-md-6">
+                @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+            </div>
+            <div class="col-md-6" style="text-align:right;margin-top:30px;">
+                <button id="Cancel" name="Cancel" value="Cancel" type="submit" class="btn btn-tgs CommonDetachValidation">Cancel</button>&nbsp;&nbsp;
+                <button id="Submit" name="Submit" value="Submit" type="submit" class="btn btn-tgs">Accept</button>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    table {
+        margin-bottom: 2%;
+        margin-left: 65px;
+        margin-top: 5%;
+    }
+</style>
+
+<script>
+    $("#Tran_Offer").on("click", function () {
+        if ('@Model.IsSUPTranOffer' == 'Y') {
+            var url = '/Files/UploadSignDocs/' + '@Model.SUPTranOfferAttach' + '#toolbar=0';
+            $('#eSigframe').attr('src', url)
+            $('#eSigDocPopup').modal({ show: true });
+            return false;
+        }
+        else {
+            var TempName = "F_Memo_Tran_Offer";
+            CommonTransPopUp(TempName, '@Model.InvoiceID', '@Model.ProgramType');
+            return false;
+        }
+
+    });
+</script>

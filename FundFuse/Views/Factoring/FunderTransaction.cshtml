@@ -1,0 +1,252 @@
+﻿@model TMP.Models.InvoiceTransactionModel
+@using CONT = TMP.Infrastructure.Web.StatusManager.OtherDetail.Constant;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
+}
+
+<div class="col-md-12 padoff div-border-multitab">
+    @using (Html.BeginForm("FunderTransaction", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", enctype = "multipart/form-data" }))
+    {
+        <div class="container padoff">
+            <table class="col-md-5">
+                <tbody>
+
+                    <tr>
+                        <td class="td-bg">Transaction Number</td>
+                        <td class="td-line">
+                            @Model.TranRefNo
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Total Amount</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode @string.Format("{0:0,0.00}", Model.TotAmt)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Currency</td>
+                        <td class="td-line">
+                            @Model.CurrencyCode
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Number of Payables</td>
+                        <td class="td-line">
+                            @Model.InvCnt
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Yield</td>
+                        <td class="td-line">
+                            @string.Format("{0:0,0.00}", Model.FunProfitRate) %
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-bg">Tenor</td>
+                        <td class="td-line">
+                            @Model.Tenor Days
+                        </td>
+
+                    </tr>
+                    @if (Model.ProgramType == CONT.FType)
+                    {
+                        <tr>
+                            <td class="td-bg">Settlement Due Date</td>
+                            <td class="td-line">
+                                @Convert.ToDateTime(Model.ExtDueDate).ToString("dd-MMM-yyyy")
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+            <table class="col-md-5" id="funderTable">
+                <tbody>
+
+                    <tr>
+                        <td class="td-bg">Transaction Date</td>
+                        <td class="td-line">
+                            @Convert.ToDateTime(Model.TranDate).ToString("dd-MMM-yyyy")
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="td-bg">Payable Due Date</td>
+                        <td class="td-line">
+                            @Convert.ToDateTime(Model.DueDate).ToString("dd-MMM-yyyy")
+                        </td>
+
+                    </tr>
+                    @if (Model.ProgramType == CONT.FType)
+                    {
+                        <tr>
+                            <td class="td-bg">Supplier Name</td>
+                            <td class="td-line">
+                                @Model.SupplierName
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Buyer Name</td>
+                            <td class="td-line">
+                                @Model.ObligorName
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="td-bg">Supplier Name</td>
+                            <td class="td-line">
+                                @Model.ExporterName
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-bg">Buyer Name</td>
+                            <td class="td-line">
+                                @Model.BuyerName
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.ProgramType == CONT.FType)
+                    {
+                        <tr>
+                            <td class="td-bg">Extended Tenor</td>
+                            <td class="td-line">
+                                @Model.ExtTenor Days
+                            </td>
+                        </tr>
+                    }
+
+
+                    <tr>
+                        <td class="td-bg">Insurance Cover</td>
+
+                        @if (Model.IsInsurance == true)
+                        {
+                            <td class="td-line">Yes</td>
+                        }
+                        else
+                        {
+                            <td class="td-line">No</td>
+                        }
+                    </tr>
+                    <tr>
+
+                        <td class="td-bg">Payable Details</td>
+                        <td class="td-line">
+                            <a href="javascript:void(0);" class="InvoiceView" data-id="@Model.InvoiceID">View</a>
+                        </td>
+                        <td class="InvoiceID" style="display:none;">
+                            <span>@Model.InvoiceID</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @*@Html.Action("InvoiceDetails", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, IsAdd = false })*@
+        </div>
+
+
+        @Html.HiddenFor(x => x.Status)
+        @Html.HiddenFor(x => x.InvoiceID)
+        @Html.HiddenFor(x => x.SupplierID)
+        @Html.HiddenFor(x => x.ObligorID)
+        @Html.HiddenFor(x => x.BuyerID)
+        @Html.HiddenFor(x => x.ProgramType)
+        @Html.HiddenFor(x => x.IsInsurance)
+        @Html.HiddenFor(x => x.ExporterID)
+
+        if (Model.Status == CONT.SB || Model.Status == CONT.CC || Model.Status == CONT.BB || Model.Status == CONT.ID || Model.Status == CONT.CF)
+        {
+            <div class="container" style="margin-top:20px;">
+
+                <p style="text-align:left; margin-left:50px;">
+                    <input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb  validate[required]" /> I CONFIRM
+                </p>
+                <div style="margin-left:47px;"><button id="Assignment_Notice" name="Assignment_Notice" value="Assignment_Notice" type="button" class="btn btn-tgs CommonDetachValidation">ASSIGNMENT NOTICE</button></div>
+                <div class="col-md-6">
+                    @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+                </div>
+                <div class="col-md-6" style="text-align:right;margin-top:30px;">
+                    <button id="Back" name="Back" value="Back" type="submit" class="btn btn-tgs CommonDetachValidation">GO BACK</button>&nbsp; &nbsp;
+                    <button id="Accept" name="Accept" value="Accept" type="submit" class="btn btn-tgs">Accept</button>
+                </div>
+            </div>
+        }
+        else if ((Model.Status == CONT.FA || Model.Status == CONT.FC) && ViewBag.hideDiv == false)
+        {
+            <div class="container" style="margin-top:20px; ">
+                <div class="col-md-6">
+                    @Html.Action("CommentRemark", "InvoiceCommon", new { InvoiceID = Model.InvoiceID, ProgramType = Model.ProgramType })
+                </div>
+                <div class="col-md-6" style="text-align:right;margin-top:30px;">
+                    <button id="Summary" name="Summary" value="Summary" type="submit" class="btn btn-tgs CommonDetachValidation">BUYER DETAILS</button>&nbsp; &nbsp;
+                    <button id="Reject" name="Reject" value="Reject" type="submit" class="btn  btn-tgs CommonAttachValidation">Reject</button>&nbsp; &nbsp;
+                    <button id="Approve" name="Approve" value="Approve" type="submit" class="btn  btn-tgs CommonDetachValidation">Approve</button>
+                </div>
+            </div>
+        }
+        //else if ((Model.Status == CONT.FD || Model.Status == CONT.FC))
+        //{
+        //}
+        else
+        {
+            <p class="col-md-12" style="margin-left:5px;"><input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb  validate[required]" /> I CONFIRM</p>
+            <div class="container" style="text-align:right;margin-top:10px;">
+                <button id="investmentOffer" name="investmentOffer" value="investmentOffer"  style="float:left;" type="button" class="btn btn-tgs CommonDetachValidation">INVESTMENT OFFER</button>
+                <button id="Back" name="Back" value="Back" type="submit" class="btn btn-tgs CommonDetachValidation">GO BACK</button>&nbsp; &nbsp;
+                <button id="Summary" name="Summary" value="Summary" type="submit" class="btn btn-tgs CommonDetachValidation">BUYER DETAILS</button>&nbsp; &nbsp;
+                @if (ViewBag._currentUser.IsMaker && Model.FunderID == 0 && (Model.Status == CONT.IJ || Model.Status == CONT.OB || Model.Status == CONT.IU))
+                {
+                    <button id="Fund" name="Fund" value="Fund" type="submit" class="btn btn-tgs CommonAttachValidation">PROCEED TO FUND</button>
+        }
+
+            </div>
+        }
+    }
+</div>
+
+<style>
+    table {
+        margin-bottom: 2%;
+        margin-left: 65px;
+        margin-top: 5%;
+    }
+</style>
+<script>
+
+    $("#investmentOffer").on("click", function () {
+        if ('@Model.IsFUNInvOffer' == 'Y') {
+            var url = '/Files/UploadSignDocs/' + '@Model.FUNInvOfferAttach' + '#toolbar=0';
+            $('#eSigframe').attr('src', url)
+            $('#eSigDocPopup').modal({ show: true });
+            return false;
+        }
+        else {
+            var TempName = "Memo_Tran_Funder_InvOffer";
+            CommonTransPopUp(TempName, '@Model.InvoiceID', '@Model.ProgramType');
+            return false;
+        }
+    });
+    $("#Assignment_Notice").on("click", function () {
+        if ('@Model.IsFUNAssignmentNotice' == 'Y') {
+            var url = '/Files/UploadSignDocs/' + '@Model.FUNAssignmentNoticeAttach' + '#toolbar=0';
+            $('#eSigframe').attr('src', url)
+            $('#eSigDocPopup').modal({ show: true });
+            return false;
+        }
+        else {
+
+            var TempName = "Memo_Tran_Funder_AssignmentNotice";
+            CommonTransPopUp(TempName, '@Model.InvoiceID', '@Model.ProgramType');
+            return false;
+        }
+
+    });
+</script>

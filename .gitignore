@@ -2,12 +2,13 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/GlobalSCF/.vs
+/FundFuse/.vs
 /.vs
 /packages
-/GlobalSCF/bin
-/GlobalSCF/obj
-/GlobalSCF/packages
-/FundFuse/obj
 /FundFuse/bin
+/FundFuse/obj
+/FundFuse/packages
+/FundFuse/ProgramLog/ProgramLog-20240216.txt
 /FundFuse/ProgramLog
+/GlobalSCF/bin
+/GlobalSCF/obj/Debug
