@@ -8,7 +8,7 @@
     {
         @Html.Action("ServiceProviderPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 3 })
     }
-    <div class="col-md-12 createusertitle">DOCUMENTATION</div>
+    <div class="col-md-12  dashboard-title">DOCUMENTATION</div>
     <div class="col-md-12" style="height:10px;"></div>
     <div class="col-md-12">
         @using (Html.BeginForm("Documents", "ServiceProvider", FormMethod.Post, new { enctype = "multipart/form-data" }))

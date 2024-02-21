@@ -20,7 +20,7 @@
     {
         @Html.AntiForgeryToken()
         <div class="container padoff">
-            <div class="col-md-12 createusertitle">CREDIT APPROVAL</div>
+            <div class="col-md-12  dashboard-title">CREDIT APPROVAL</div>
             <div class="col-md-12" style="height:15px;"></div>
 
             @if ((Model.CustomerTypeID == CONT.BuyerCustomerTypeID && Model.ProgramType == CONT.RType))
@@ -269,7 +269,7 @@
             else if ((Model.CustomerTypeID == CONT.BothObligorAndBuyerTypeID && Model.ProgramType == CONT.BothProgramType))
             {
                 <div class="container padoff">
-                    <div class="col-md-12 createusertitle">RECEIVABLES FINANCE CREDIT REVIEW</div>
+                    <div class="col-md-12  dashboard-title">RECEIVABLES FINANCE CREDIT REVIEW</div>
                     <div class="col-md-12" style="height:15px;"></div>
                     <table class="col-md-5">
                         <tbody>
@@ -296,7 +296,7 @@
                 </div>
 
                     <div class="container padoff">
-                        <div class="col-md-12 createusertitle padoff">Payables Finance CREDIT REVIEW</div>
+                        <div class="col-md-12  dashboard-title padoff">Payables Finance CREDIT REVIEW</div>
                         <div class="col-md-12" style="height:15px;"></div>
                         <table class="col-md-5">
                             <tbody>

@@ -6,7 +6,7 @@
 }
 <div class="col-md-1"></div>
 <div class="col-md-10 div-border padoff">
-    <div class="col-md-12 createusertitle">ACCEPTANCE OF AGREEMENT</div>
+    <div class="col-md-12  dashboard-title">ACCEPTANCE OF AGREEMENT</div>
     <div class="col-md-12" style="height:10px;"></div>
     <div class="container" style="padding:15px;">
         @*<p class="padoff name-msg" style="margin:0;">**As the authorized signatory of the company, please review and sign the following agreement in order to be able to access the Platform for transactions. If there is more than one signatory (joint signatories), then the other signatory also needs to sign the agreement before you can gain access to the transactions. </p>*@
@@ -14,7 +14,7 @@
     @using (Html.BeginForm("LetterofAwareness", "OnlineReg", FormMethod.Post, new { @class = "col-md-12 CommonValidations" }))
     {
         @Html.AntiForgeryToken()
-        @*<div class="col-md-12 createusertitle">CLIENT IDENTIFICATION FORM</div>
+        @*<div class="col-md-12  dashboard-title">CLIENT IDENTIFICATION FORM</div>
     <div class="form-group">
         <div class="col-md-4">
             <button id="pdf" name="pdf" value="pdf" type="button" class="btn btn-tgs">CLIENT IDENTIFICATION FORM</button>&nbsp;&nbsp;&nbsp;

@@ -16,11 +16,11 @@
         {
             @Html.Action("_CustomerDetailMenuPartialPage", "MasterPage", new { CustomerID = ViewBag.CustomerID, _tab = 8 })  }
     }
-    <div class="col-md-12 createusertitle">Risk Categorization</div>
+    <div class="col-md-12  dashboard-title">Risk Categorization</div>
 
     @if (ViewBag.Cust_Result != null && Enumerable.Count(@ViewBag.Cust_Result) > 0)
     {
-        <div class="col-md-12 createusertitle">Result</div>
+        <div class="col-md-12  dashboard-title">Result</div>
         <div class="tab-pane" id="4a">
             <div class="col-md-12">
                 <table id="exampleRes" class="display" cellspacing="0" width="100%">
@@ -211,7 +211,7 @@
                         i++;
 
 
-                        @*<div class="col-md-12 createusertitle">@item.CategoryName</div>*@
+                        @*<div class="col-md-12  dashboard-title">@item.CategoryName</div>*@
 
                     }
                 </div>

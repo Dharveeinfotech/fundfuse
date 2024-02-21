@@ -2,6 +2,21 @@
 @model  IEnumerable<TMP.Models.CustomerMasterModel>
 <script src="~/Scripts/canvasjs.min.js"></script>
 <div class="col-md-12" style="height:15px;"></div>
+@{
+    List<SelectListItem>
+    listItems1 = new List<SelectListItem>
+        ();
+    listItems1.Add(new SelectListItem
+    {
+        Text = "Yes",
+        Value = "Yes"
+    });
+    listItems1.Add(new SelectListItem
+    {
+        Text = "No",
+        Value = "No"
+    });
+}
 @if (Enumerable.Count(@ViewBag.Transt) == 0 && Enumerable.Count(@ViewBag.CustRegi) == 0)
 {
     <div class="col-md-12 notras-div">
@@ -13,7 +28,7 @@
 
 @if (Enumerable.Count(@ViewBag.CustRegi) > 0 && ViewBag.divCust)
 {
-    <div class="col-md-12 dashboard-titel">ON BOARDING CUSTOMER</div>
+    <div class="col-md-12 dashboard-title">ON BOARDING CUSTOMER</div>
     <div class="tab-pane" id="4a">
         <!--tab 4a-->
         <div class="col-md-12">
@@ -42,12 +57,12 @@
                                 <td>@item.EmailID</td>
 
                                 @*@if (item.IsAdminRegister == 1)
-                                {
-                                    <td>Internal User</td>
-                                }
-                                else
-                                {
-                                    <td>Online User</td>}*@
+                                    {
+                                        <td>Internal User</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Online User</td>}*@
                                 <td>@item.StatusDisplay</td>
                                 @if (item.Status == CONT.RQ || item.Status == CONT.ND || item.Status == CONT.NA || item.Status == CONT.UA)
                                 {
@@ -62,32 +77,50 @@
                         }
 
                     </tbody>
-                    }
+                }
                 </table>
             </div>
 
         </div>
         <hr />
-}
+    }
 <div class="col-md-12" style="height:15px;"></div>
 @if (Enumerable.Count(@ViewBag.Transt) > 0)
 {
-    <div class="col-md-12 dashboard-titel">TRANSACTIONS</div>
+    <div class="col-md-12 dashboard-title">TRANSACTIONS</div>
 
     <div class="tab-pane" id="4a">
         <!--tab 4a-->
-        <div class="col-md-12">
+        <div class="col-md-12" style="display:grid; width:100% !important; overflow:auto;">
             <table id="exampleDB2" class="display" cellspacing="0" width="100%">
                 <thead>
                     <tr class="bgspr">
-                        <th>Transaction Number</th>
-                        <th>Product</th>
-                        <th>Transaction Date</th>
-                        <th>Currency</th>
-                        <th>Total Amount</th>
-                        <th>Buyer Name</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
+                        <th>Transaction Number<input type="search" class="dataTables_filter" data-column="0"></th>
+                        <th>Product<input type="search" class="dataTables_filter" data-column="1"></th>
+                        <th>Transaction Date<input type="search" class="datepicker dataTables_filter" data-column="2"></th>
+                        <th>Currency
+                        <select id="currencyFilter" typeof="search" class="form-control dataTables_filter"  data-column="4">
+                            <option value="">--Select--</option>
+                            <!-- Populate options dynamically from your model or controller -->
+                            @foreach (var item in ViewBag.CurrencyList)
+                            {
+                                <option value="@item.CurrencyCode">@item.CurrencyCode</option>
+                            }
+                        </select>
+                        @*<input type="search" class="dataTables_filter" data-column="3">*@
+                        </th>
+                        <th>Total Amount<input type="search" class="dataTables_filter"></th>
+                        <th>Buyer Name<input type="search" class="dataTables_filter" data-column="5"></th>
+                        <th>Due Date<input type="search" class="datepicker dataTables_filter " data-column="6"></th>
+                        <th>Status <select id="statusFilter" typeof="search" class="form-control dataTables_filter"  data-column="7">
+                         <option value="">--Select--</option>
+                         <!-- Populate options dynamically from your model or controller -->
+                         @foreach (var item in ViewBag.StatusList)
+                         {
+                             <option value="@item.Status">@item.Status</option>
+                         }
+                      </select>
+                        </th>
                         <th>Transaction History</th>
                         <th>Action</th>
                         <th style="display:none;">
@@ -101,7 +134,7 @@
                         @foreach (var item in ViewBag.Transt)
                         {
                             if ((item.IsFoundCC == true && item.IsFoundCC == false && item.IsDispToCD == false) || (item.IsFoundCC == false && item.IsFoundCC == true && item.IsDispToCD == false) ||
-                                //(item.IsFoundFD == true && item.IsFoundID == false && item.IsFoundCF == false) || 
+                                //(item.IsFoundFD == true && item.IsFoundID == false && item.IsFoundCF == false) ||
                                 //(item.IsFoundFD == false && item.IsFoundID == true && item.IsFoundCF == false) ||
                                 (item.IsFoundFD == false && item.IsFoundID == false && item.IsFoundCF == true)) { }
                             else
@@ -164,13 +197,13 @@
                                         <td><a href='@Url.Action("BuyCommodityConfirmation", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.CA })'>Commodity</a></td>
                                     }
                                     @*else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.SB || item.Status == CONT.FB) && (item.IsDispToCD == false))
-                                    {
-                                        <td><a href='@Url.Action("SellCommodityConfirmation", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.SB + "," + CONT.FB })'>Commodity</a></td>
-                                    }
-                                    else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.CC || item.Status == CONT.FB) && (item.IsDispToCD == true))
-                                    {
-                                        <td><a href='@Url.Action("iSCFToSupplier", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.CC + "," + CONT.FB })'>Bank Transfer</a></td>
-                                    }*@
+                                        {
+                                            <td><a href='@Url.Action("SellCommodityConfirmation", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.SB + "," + CONT.FB })'>Commodity</a></td>
+                                        }
+                                        else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.CC || item.Status == CONT.FB) && (item.IsDispToCD == true))
+                                        {
+                                            <td><a href='@Url.Action("iSCFToSupplier", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.CC + "," + CONT.FB })'>Bank Transfer</a></td>
+                                        }*@
                                     else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.SB || item.Status == CONT.FB) && (item.IsDispToCD == false))
                                     {
                                         <td><a class="editbutton" href='@Url.Action("iSCFToSupplier", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.SB + "," + CONT.FB })'>Bank Transfer</a></td>
@@ -184,13 +217,13 @@
                                         <td><a href='@Url.Action("BuyCommodityConfirmation", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.CG })'>Commodity</a></td>
                                     }
                                     @*else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.BB || item.Status == CONT.ID || item.Status == CONT.FD) && (item.IsDispToCH == false))
-                                    {
-                                        <td><a href='@Url.Action("SellCommodityConfirmation", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.BB + "," + CONT.ID + "," + CONT.FD })'>Commodity</a></td>
-                                    }
-                                    else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.CF || item.Status == CONT.ID || item.Status == CONT.FD) && (item.IsDispToCH == true))
-                                    {
-                                        <td><a href='@Url.Action("TIToExpoter", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.CF + "," + CONT.ID + "," + CONT.FD })'>Bank Transfer</a></td>
-                                    }*@
+                                        {
+                                            <td><a href='@Url.Action("SellCommodityConfirmation", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.BB + "," + CONT.ID + "," + CONT.FD })'>Commodity</a></td>
+                                        }
+                                        else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.CF || item.Status == CONT.ID || item.Status == CONT.FD) && (item.IsDispToCH == true))
+                                        {
+                                            <td><a href='@Url.Action("TIToExpoter", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.CF + "," + CONT.ID + "," + CONT.FD })'>Bank Transfer</a></td>
+                                        }*@
                                     else if ((ViewBag._currentUser.IsChecker || ViewBag._currentUser.IsMaker) && (item.Status == CONT.BB || item.Status == CONT.ID || item.Status == CONT.FD) && (item.IsDispToCH == false))
                                     {
                                         <td><a class="editbutton" href='@Url.Action("TIToExpoter", "InvoiceCommon", new { InvoiceID = item.InvoiceID, ProgramType = item.ProgramType, Status = CONT.BB + "," + CONT.ID + "," + CONT.FD })'>Bank Transfer</a></td>
@@ -211,7 +244,7 @@
                             }
                         }
                     </tbody>
-                    }
+                }
                 </table>
             </div>
             @if (Enumerable.Count(@ViewBag.Transt) > 5 && ViewBag.divCust)
@@ -223,49 +256,49 @@
         </div>
 
         <hr />
-}
+    }
 <div class="col-md-12" style="height:15px;"></div>
 @*@if (Enumerable.Count(@ViewBag.reminder) > 0 && ViewBag.divCust)
-{
-    <div class="container tab-pane" id="4a">
-        <div class="col-md-1"></div>
-        <div class="col-md-2 reminder-div">
-            <div class="thumbnail noBorder" style="background-color:transparent;padding-top:15px;">
-                <img src="~/images/notification.png" style="width:25%;" />
-            </div>
-            <div class="reminder-div-notification">NOTIFICATIONS</div>
-            @if (Enumerable.Count(@ViewBag.reminder) > 3 && ViewBag.divCust)
-                {
-                <div class="col-md-12">
-                    <button id="viewall3" name="viewall3" value="viewall3" class="btn btn-tgs reminder-div-btn">VIEW ALL</button>&nbsp;&nbsp;
+    {
+        <div class="container tab-pane" id="4a">
+            <div class="col-md-1"></div>
+            <div class="col-md-2 reminder-div">
+                <div class="thumbnail noBorder" style="background-color:transparent;padding-top:15px;">
+                    <img src="~/images/notification.png" style="width:25%;" />
                 </div>
-            }
-        </div>
-        <div class="col-md-8 padoff">
-            @Html.Action("_ReminderAlert", "Home")
-        </div>
-        <div class="col-md-1"></div>
-    </div>
-    <hr />
-}
-else if (ViewBag.divCust)
-{
-    <div class="container tab-pane" id="4a">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 reminder-div" style="height:inherit;">
-            <div class="thumbnail noBorder" style="background-color:transparent;padding-top:15px;">
-                <img src="~/images/notification.png" style="width:15%;" />
+                <div class="reminder-div-notification">NOTIFICATIONS</div>
+                @if (Enumerable.Count(@ViewBag.reminder) > 3 && ViewBag.divCust)
+                    {
+                    <div class="col-md-12">
+                        <button id="viewall3" name="viewall3" value="viewall3" class="btn btn-tgs reminder-div-btn">VIEW ALL</button>&nbsp;&nbsp;
+                    </div>
+                }
             </div>
-            <div class="reminder-div-notification" style="font-size:15px;padding-bottom:15px;">NO ALERTS</div>
+            <div class="col-md-8 padoff">
+                @Html.Action("_ReminderAlert", "Home")
+            </div>
+            <div class="col-md-1"></div>
         </div>
-        <div class="col-md-4"></div>
-    </div>
-    <hr />
-}*@
+        <hr />
+    }
+    else if (ViewBag.divCust)
+    {
+        <div class="container tab-pane" id="4a">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 reminder-div" style="height:inherit;">
+                <div class="thumbnail noBorder" style="background-color:transparent;padding-top:15px;">
+                    <img src="~/images/notification.png" style="width:15%;" />
+                </div>
+                <div class="reminder-div-notification" style="font-size:15px;padding-bottom:15px;">NO ALERTS</div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <hr />
+    }*@
 <div class="col-md-12" style="height:15px;"></div>
 @if (Enumerable.Count(@ViewBag.Pending) > 0 && ViewBag.divCust)
 {
-    <div class="col-md-12 dashboard-titel">PORTFOLIO</div>
+    <div class="col-md-12 dashboard-title">PORTFOLIO</div>
 
     <div class="tab-pane" id="4a">
         <div class="col-md-12">
@@ -296,7 +329,7 @@ else if (ViewBag.divCust)
                 {
                     <tbody>
                         @foreach (var item in ViewBag.Pending)
-                    {
+                        {
                             <tr>
                                 @if (item.IsAction)
                                 {
@@ -322,7 +355,7 @@ else if (ViewBag.divCust)
                                 }
 
                                 @if (item.ProgramType == CONT.FType)
-                        {
+                                {
                                     <td>Receivables Finance</td>
                                 }
                                 else
@@ -333,7 +366,7 @@ else if (ViewBag.divCust)
                                 <td>@item.CurrencyCode</td>
                                 <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
                                 @if (item.ProgramType == CONT.FType)
-                        {
+                                {
                                     <td>@item.ObligorName</td>
                                 }
                                 else
@@ -344,7 +377,7 @@ else if (ViewBag.divCust)
                                 <td>@Convert.ToDateTime(item.DueDate).ToString("dd-MMM-yyyy")</td>
                                 @*<td>@item.UploadType</td>*@
                                 @if (item.IsAction)
-                        {
+                                {
                                     <td style="color:red !important">@item.StatusUserDesc</td>
                                 }
                                 else
@@ -384,7 +417,7 @@ else if (ViewBag.divCust)
 
     <div class="container">
         @if (Enumerable.Count(ViewBag.CurrencyID) == 0)
-                {
+        {
             <div class="col-md-8 thumbnail noBorder">
                 <img src="~/images/portflio-background.png" />
             </div>
@@ -509,6 +542,64 @@ else if (ViewBag.divCust)
         }
         e.chart.render();
     }
+
+    $(document).ready(function () {
+
+        $('th').each(function (index) {
+            $(this).attr('data-orderable', 'true').append('<span class="sort-icon"></span>');
+        });
+
+        // Check if DataTable is already initialized on the table
+        if ($.fn.dataTable.isDataTable('#exampleDB2')) {
+            // If DataTable is initialized, destroy it before reinitializing
+            $('#exampleDB2').DataTable().destroy();
+        }
+
+        // Set default sorting order
+        $('#exampleDB2').DataTable({ order: [[0, 'asc']] }).draw();
+
+        $('.datepicker').datepicker({
+            dateFormat: 'dd',
+            yearRange: '1900:c',
+            changeYear: true,
+            changeMonth: true,
+            onSelect: function (dateText, inst) {
+                var columnIndex = $(this).data('column');
+                dateFilter(columnIndex, dateText);
+            }
+        });
+
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            if (columnIndex === 2 || columnIndex === 6) {
+                dateFilter(columnIndex, searchValue);
+                return;
+            }
+
+            $('#exampleDB2').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            if (columnIndex === 2 || columnIndex === 6) {
+                dateFilter(columnIndex, searchValue);
+                return;
+            }
+
+            $('#exampleDB2').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        function dateFilter(columnIndex, searchValue) {
+            $('#exampleDB2').DataTable().column(columnIndex).search(searchValue).draw();
+        }
+
+    });
+
+
 </script>
 
 <style>
@@ -544,6 +635,7 @@ else if (ViewBag.divCust)
     p {
         margin: 0px 0 0px;
     }
+
     .editbutton {
         background-image: linear-gradient(132.93deg, #ffd400 9.89%, #f5f1dd 89.62%);
         color: #000 !important;
@@ -555,11 +647,13 @@ else if (ViewBag.divCust)
         text-decoration: none !important;
         display: block;
     }
+
         .editbutton:hover {
             background-image: linear-gradient(132.93deg, #3f444a 9.89%, #979797 89.62%);
             color: #fff !important;
             text-decoration: none !important;
         }
+
     .adminbox-shadow {
         box-shadow: 0px 1px 5px -2x #3f444a;
     }

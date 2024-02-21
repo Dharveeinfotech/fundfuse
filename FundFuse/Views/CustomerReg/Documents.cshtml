@@ -11,7 +11,7 @@
         @Html.Action("_CustomerMenuPartialPage", "MasterPage", new { CustomerID = Model.CustomerID, _tab = 11 })
     }
 
-    <div class="col-md-12 createusertitle">
+    <div class="col-md-12  dashboard-title">
         DOCUMENTATION
     </div>
     <div class="col-md-12" style="height:10px;"></div>
@@ -202,7 +202,7 @@
 
                                     @if (Convert.ToInt32(ViewBag.IsAdminRegister) == 0 && Convert.ToInt32(Session["onlineCustomerTypeID"]) != CONT.ServiceProviderCustomerTypeID)
                                     {
-                                        <div class="col-md-12 createusertitle">DECLARATION</div>
+                                        <div class="col-md-12  dashboard-title">DECLARATION</div>
                                         <div class="col-md-12" style="height:10px;"></div>
                                         <div class="col-md-9">
                                             <input type="checkbox" id="cb1" name="cb1" value="cb1" class="chb validate[required]" /> <span style="">&nbsp; I hereby declare that all the details provided for the registration are true and accurate <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to the best of my knowledge.</span>

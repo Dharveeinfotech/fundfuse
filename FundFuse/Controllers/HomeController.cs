@@ -67,6 +67,8 @@ namespace TMP.Controllers
             //    String file = Convert.ToBase64String(bytes);
             //    return View();
             //}
+
+
             return View();
         }
         public ActionResult CMNDashboard()
@@ -142,8 +144,14 @@ namespace TMP.Controllers
             ViewBag.TotFunder = TotFunderData.TotFunder;
             var TotInsurance = ds.Tables[1].AsEnumerable().Select(dataRow => new InvoiceTransactionModel { TotInsurance = dataRow.Field<int>("TotInsurance") }).FirstOrDefault();
             ViewBag.TotInsurance = TotInsurance.TotInsurance;
-
-            _InvObjModel.Status = _currentStatusAll();
+            ViewBag.CurrencyList = ds.Tables[3].AsEnumerable().Select(dataRow => new InvoiceTransactionModel
+            {
+                CurrencyCode = dataRow.Field<string>("CurrencyCode")
+            }).GroupBy(model => model.CurrencyCode).Select(group => group.First());
+            ViewBag.StatusList = ds.Tables[0].AsEnumerable().Select(dataRow => new InvoiceTransactionModel
+            {
+                Status = dataRow.Field<string>("Status")
+            }).GroupBy(model => model.Status).Select(group => group.First());
             ViewBag.Pending = _clsInvoi.InvoiceMaster_ListAllPenSettlement(_InvObjModel);
             ViewBag.AllSettlement = _clsInvoi.InvoiceMaster_ListAllSettlement(_InvObjModel);
 

@@ -9,7 +9,7 @@
     @using (Html.BeginForm("SupplierChecker", "Factoring", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", enctype = "multipart/form-data" }))
     {
         @Html.Action("SupplierHeader", "InvoiceCommon", new { InvoiceID = Model.InvoiceID })
-        <div class="col-md-12 createusertitle">TRANSACTION SUMMARY</div>
+        <div class="col-md-12  dashboard-title">TRANSACTION SUMMARY</div>
         <div class="col-md-12" style="height:10px;"></div>
 
         if (Model.ProgramType == CONT.FType)

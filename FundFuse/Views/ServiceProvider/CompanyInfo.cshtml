@@ -19,7 +19,7 @@
         @Html.HiddenFor(model => model.CustomerInfoID)
         @Html.HiddenFor(model => model.GetCityID)
 
-        <div class="col-md-12 createusertitle">PRIMARY CONTACT INFORMATION</div>
+        <div class="col-md-12  dashboard-title">PRIMARY CONTACT INFORMATION</div>
         <div class="col-md-12" style="height:10px;"></div>
         <div class="form-group">
             <label class="col-md-2" for="textinput">Name of Contact Person&nbsp;<span style="color:red;width:50px;">*</span></label>
@@ -86,7 +86,7 @@
         </div>
 
 
-        <div class="col-md-12 createusertitle">COMPANY INFORMATION</div>
+        <div class="col-md-12  dashboard-title">COMPANY INFORMATION</div>
         <div class="col-md-12" style="height:10px;"></div>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

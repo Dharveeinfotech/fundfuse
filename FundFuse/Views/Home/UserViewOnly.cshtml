@@ -20,7 +20,7 @@
         <div class="col-md-1"></div>
     </div>
     <div class="col-md-12" style="height:15px;"></div>
-    <div class="col-md-12 createusertitle">COMPANY IDENTIFICATION DETAILS</div>
+    <div class="col-md-12  dashboard-title">COMPANY IDENTIFICATION DETAILS</div>
     <div class="col-md-12" style="height:15px;"></div>
 
     <div class="form-group">
@@ -111,7 +111,7 @@
 
 
     <div class="col-md-12" style="height:15px;"></div>
-    <div class="col-md-12 createusertitle">REGISTERED / MAILING ADDRESS</div>
+    <div class="col-md-12  dashboard-title">REGISTERED / MAILING ADDRESS</div>
     <div class="col-md-12" style="height:15px;"></div>
     <div class="form-group">
         <label class="col-md-2" for="textinput">Address</label>
@@ -152,7 +152,7 @@
     </div>
 
     <div class="col-md-12" style="height:15px;"></div>
-    <div class="col-md-12 createusertitle">CONTACT DETAILS</div>
+    <div class="col-md-12  dashboard-title">CONTACT DETAILS</div>
     <div class="col-md-12" style="height:15px;"></div>
     <div class="form-group">
         <label class="col-md-2" for="textinput">Telephone Number&nbsp;<span style="color:red;width:50px;"></span></label>
@@ -193,7 +193,7 @@
 
 
     <div class="col-md-12" style="height:15px;"></div>
-    <div class="col-md-12 createusertitle">OTHER DETAILS</div>
+    <div class="col-md-12  dashboard-title">OTHER DETAILS</div>
     <div class="col-md-12" style="height:15px;"></div>
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @if (Model.Item2.CustomerTypeID == CONT.SupplierCustomerTypeID)
@@ -314,7 +314,7 @@
         <div class="form-group" style="padding-bottom:50px;"></div>
     }
     <div class="col-md-12" style="height:10px;"></div>
-    <div class="col-md-12 createusertitle">GROUP / REGULATORY DETAILS </div>
+    <div class="col-md-12  dashboard-title">GROUP / REGULATORY DETAILS </div>
     <div class="container padoff box-boder-form">
         <div class="col-md-4 padoff">
             <div class="form-group">
@@ -431,7 +431,7 @@
     {
         int i = 1;
         <div class="col-md-12" style="height:15px;"></div>
-        <div class="col-md-12 createusertitle">CREDIT LINE FACILITIES PER BANK</div>
+        <div class="col-md-12  dashboard-title">CREDIT LINE FACILITIES PER BANK</div>
         <div class="col-md-12" style="height:15px;"></div>
 
         foreach (var item in ViewBag.CreditDetails)
@@ -476,7 +476,7 @@
     {
         int i = 1;
         <div class="col-md-12" style="height:15px;"></div>
-        <div class="col-md-12 createusertitle">BANK ACCOUNT DETAILS</div>
+        <div class="col-md-12  dashboard-title">BANK ACCOUNT DETAILS</div>
         <div class="col-md-12" style="height:15px;"></div>
         foreach (var item in ViewBag.BankAccDetail)
         {
@@ -555,7 +555,7 @@
     {
         int i = 1;
         <div class="col-md-12" style="height:15px;"></div>
-        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">DIRECTORS / AUTHORIZED SIGNATORIES</div>
+        <div class="col-md-12  dashboard-title" style="margin-bottom:0px;">DIRECTORS / AUTHORIZED SIGNATORIES</div>
 
         foreach (var item in ViewBag.AuthUser)
         {
@@ -641,7 +641,7 @@
     @if (Enumerable.Count(ViewBag.ShareIndi) > 0 || Enumerable.Count(ViewBag.ShareComp) > 0)
     {
         <div class="col-md-12" style="height:15px;"></div>
-        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">SHAREHOLDERS OF THE COMPANY</div>
+        <div class="col-md-12  dashboard-title" style="margin-bottom:0px;">SHAREHOLDERS OF THE COMPANY</div>
     }
 
     @if (Enumerable.Count(@ViewBag.ShareIndi) > 0)
@@ -829,7 +829,7 @@
     {
         int i = 1;
         <div class="col-md-12" style="height:15px;"></div>
-        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">AUTHORIZED USERS</div>
+        <div class="col-md-12  dashboard-title" style="margin-bottom:0px;">AUTHORIZED USERS</div>
 
         foreach (var item in ViewBag.UserDetail)
         {
@@ -893,7 +893,7 @@
     {
 
         <div class="col-md-12" style="height:15px;"></div>
-        <div class="col-md-12 createusertitle" style="margin-bottom:0px;">SUPPLIER DETAILS</div>
+        <div class="col-md-12  dashboard-title" style="margin-bottom:0px;">SUPPLIER DETAILS</div>
         int i = 1;
 
         foreach (var item in ViewBag.Supplier)

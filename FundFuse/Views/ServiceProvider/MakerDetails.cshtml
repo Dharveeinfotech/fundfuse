@@ -5,7 +5,7 @@
     Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
 }
 
-<div class="col-md-12 div-border padoff">
+<div class="col-md-12padoff">
     @*@Html.Action("_MenuPartialPage", "MasterPage")*@
     @if (ViewBag.ErrorMsg != null || ViewBag.ErrorMsg != "")
     {
@@ -15,7 +15,7 @@
     <div class="col-md-12 padoff">
         @Html.HiddenFor(model => model.Status)
         <div class="col-md-12 padoff">
-            <div id="a" class="col-md-12 createusertitle" style="cursor:pointer;">PRIMARY CONTACT INFORMATION</div>
+            <div id="a" class="col-md-12  dashboard-title" style="cursor:pointer;">PRIMARY CONTACT INFORMATION</div>
             <div class="col-md-12" style="height:10px;"></div>
             <div class="col-md-12">
                 <div class="col-md-12" style="height:10px;"></div>
@@ -69,7 +69,7 @@
             </div>
         </div>
         <div class="col-md-12 padoff">
-            <div id="aa" class="col-md-12 createusertitle" style="cursor:pointer;">COMPANY INFORMATION</div>
+            <div id="aa" class="col-md-12  dashboard-title">COMPANY INFORMATION</div>
             <div class="col-md-12" style="height:10px;"></div>
             <div class="col-md-12">
                 <div class="form-group">
@@ -170,7 +170,7 @@
             </div>
         </div>
 
-        <div id="d" class="col-md-12 createusertitle" style="cursor:pointer;">BANK ACCOUNT INFORMATION</div>
+        <div id="d" class="col-md-12  dashboard-title">BANK ACCOUNT INFORMATION</div>
         <div class="col-md-12" style="height:10px;"></div>
         <div id="ddrop">
             <table id="" class="display" cellspacing="0" width="100%">
@@ -206,7 +206,7 @@
             </table>
         </div>
 
-        <div id="d" class="col-md-12 createusertitle" style="cursor:pointer;">DOCUMENT INFORMATION</div>
+        <div id="d" class="col-md-12  dashboard-title">DOCUMENT INFORMATION</div>
         <div class="col-md-12" style="height:10px;"></div>
         <div id="ddrop">
             <table id="" class="display" cellspacing="0" width="100%">
@@ -309,7 +309,7 @@
     }
 
     .div-border {
-        border: 1px solid #336699;
+        border: 0px solid #336699;
         padding-bottom: 6%;
     }
 </style>

@@ -5,7 +5,7 @@
 }
 
 <div class="col-md-12 div-border padoff">
-    <div class="col-md-12 createusertitle">Transfer Charge Master</div>
+    <div class="col-md-12  dashboard-title">Transfer Charge Master</div>
     <div class="col-md-12" style="height:10px;"></div>
     @using (Html.BeginForm("TransferChargeMaster", "Country", FormMethod.Post, new { @class = "col-md-12 padoff CommonValidations", id = "frmTransferChargeMaster" }))
     {
@@ -52,7 +52,7 @@
             <div class="col-md-1"></div>
         </div>
     }
-    <div class="col-md-12 createusertitle" style="text-align:center;">Transfer Charge</div>
+    <div class="col-md-12  dashboard-title" style="text-align:center;">Transfer Charge</div>
     <div class="col-md-12 padoff">
         @Html.Action("GridTransferCharge", "Country")
     </div>

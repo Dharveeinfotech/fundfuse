@@ -6,7 +6,7 @@
 }
 <div class="col-md-1"></div>
 <div class="col-md-10 div-border padoff">
-    <div class="col-md-12 createusertitle">ACCEPTANCE OF AGREEMENT</div>
+    <div class="col-md-12  dashboard-title">ACCEPTANCE OF AGREEMENT</div>
     <div class="col-md-12" style="height:10px;"></div>
     <div class="container" style="padding:15px;">
         <p class="padoff name-msg" style="margin:0;">**As the authorized signatory of the company, please review and sign the following agreement in order to be able to access the Platform for transactions. If there is more than one signatory (joint signatories), then the other signatory also needs to sign the agreement before you can gain access to the transactions. </p>
@@ -54,7 +54,7 @@
     @*@using (Html.BeginForm("AssignmentAgreement", "OnlineReg", FormMethod.Post, new { @class = "col-md-12 CommonValidations" }))
     {
         @Html.AntiForgeryToken()
-        <div class="col-md-12 createusertitle">MASTER ASSIGNMENT AGREEMENT</div>
+        <div class="col-md-12  dashboard-title">MASTER ASSIGNMENT AGREEMENT</div>
         <div class="form-group">
             <div class="col-md-4">
                 <button id="btn_Master_Assignment_Agreement" name="btn_Master_Assignment_Agreement" value="btn_Master_Assignment_Agreement"

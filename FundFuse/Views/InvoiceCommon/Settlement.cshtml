@@ -13,7 +13,7 @@
         @Html.HiddenFor(model => model.SettlementType)
         @Html.Action("ISCFHeader", "InvoiceCommon", new { InvoiceID = Model.InvoiceID })
 
-        <div class="col-md-12 createusertitle">TRANSACTION SETTLEMENT DETAILS</div>
+        <div class="col-md-12  dashboard-title">TRANSACTION SETTLEMENT DETAILS</div>
         <div class="col-md-12" style="height:10px;"></div>
 
         <div class="container padoff">
@@ -225,7 +225,7 @@
 
         if (Model.ProgramType == CONT.RType)
         {
-            <div class="col-md-12 createusertitle">ADDITIONAL CHARGES FROM BUYER</div>
+            <div class="col-md-12  dashboard-title">ADDITIONAL CHARGES FROM BUYER</div>
             <div class="container padoff">
                 <table class="col-md-5">
                     <tbody>
@@ -277,7 +277,7 @@
 
             </div>
 
-            <div class="col-md-12 createusertitle">ADDITIONAL CHARGES PAYMENT TO FUNDER</div>
+            <div class="col-md-12  dashboard-title">ADDITIONAL CHARGES PAYMENT TO FUNDER</div>
             <div class="container padoff">
                 <table class="col-md-5">
                     <tbody>
@@ -327,7 +327,7 @@
                 </table>
             </div>
 
-            <div class="col-md-12 createusertitle">FACTOR’S HOLDBACK</div>
+            <div class="col-md-12  dashboard-title">FACTOR’S HOLDBACK</div>
             <div class="container padoff">
                 <table class="col-md-5">
                     <tbody>
@@ -378,7 +378,7 @@
         }
         else if (Model.ProgramType==CONT.FType)
         {
-            @*<div class="col-md-12 createusertitle">FACTOR’S HOLDBACK</div>
+            @*<div class="col-md-12  dashboard-title">FACTOR’S HOLDBACK</div>
             <div class="container padoff">
                 <table class="col-md-5">
                     <tbody>

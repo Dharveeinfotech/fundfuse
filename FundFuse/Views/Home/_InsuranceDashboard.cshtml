@@ -13,7 +13,7 @@
 @if (Enumerable.Count(@ViewBag.MTranst) > 0)
 {
     <div class="col-md-12" style="height:15px;"></div>
-    <div class="col-md-12 dashboard-titel">TRANSACTIONS</div>
+    <div class="col-md-12 dashboard-title">TRANSACTIONS</div>
 
     <div class="tab-pane" id="4a">
         <!--tab 4a-->
@@ -102,7 +102,7 @@
 <div class="col-md-12" style="height:15px;"></div>
 @if (Enumerable.Count(@ViewBag.CTranst) > 0)
 {
-    <div class="col-md-12 dashboard-titel">DECLARATION ISSUANCE</div>
+    <div class="col-md-12 dashboard-title">DECLARATION ISSUANCE</div>
 
     <div class="tab-pane" id="4a">
         <!--tab 4a-->
@@ -192,7 +192,7 @@
 {
     <div class="container padoff">
         <div class="col-md-5">
-            <div class="col-md-12 createusertitle" style="margin-bottom: 0px;">OBLIGORS</div>
+            <div class="col-md-12  dashboard-title" style="margin-bottom: 0px;">OBLIGORS</div>
             <div class="tab-pane" id="4a">
 
                 <div class="col-md-12 padoff">
@@ -234,7 +234,7 @@
             }
         </div>
         <div class="col-md-7">
-            <div class="col-md-12 createusertitle">PORTFOLIO</div>
+            <div class="col-md-12  dashboard-title">PORTFOLIO</div>
            @if (Enumerable.Count(ViewBag.CurrencyID) == 0)
            {
                 <div class="thumbnail noBorder">

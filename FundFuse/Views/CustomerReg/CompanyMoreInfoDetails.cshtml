@@ -14,7 +14,7 @@
     @using (Html.BeginForm("CompanyMoreInfoDetails", "CustomerReg", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-md-12 padoff CommonValidations", id = "UMForm" }))
     {
         @Html.AntiForgeryToken()
-        <div class="col-md-12 createusertitle">COMPANY INFORMATION</div>
+        <div class="col-md-12  dashboard-title">COMPANY INFORMATION</div>
         <div class="col-md-12" style="height:10px;"></div>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         if (Model.CustomerTypeID == CONT.SupplierCustomerTypeID)
@@ -517,7 +517,7 @@
         if (Enumerable.Count(@ViewBag.CreditDetailGrid) > 0)
         {
             <div class="col-md-12" style="height:15px;"></div>
-            <div class="col-md-12 createusertitle">CREDIT LINE FACILITIES PER BANK</div>
+            <div class="col-md-12  dashboard-title">CREDIT LINE FACILITIES PER BANK</div>
 
             <div class="tab-pane" id="4a">
                 <!--tab 4a-->

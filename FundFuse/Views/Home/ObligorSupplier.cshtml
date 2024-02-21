@@ -15,22 +15,23 @@
     }
     @if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.ObligorCustomerTypeID)
     {
-        <div class="col-md-12 dashboard-titel">SUPPLIER</div>
+        <div class="col-md-12 dashboard-title">SUPPLIER</div>
     }
     else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.SupplierCustomerTypeID)
     {
-        <div class="col-md-12 dashboard-titel">OBLIGOR</div>
+        <div class="col-md-12 dashboard-title">OBLIGOR</div>
     }
     else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.BuyerCustomerTypeID)
     {
-        <div class="col-md-12 dashboard-titel">SUPPLIER</div>
+        <div class="col-md-12 dashboard-title">SUPPLIER</div>
     }
     else if (Convert.ToInt32(Session["onlineCustomerTypeID"]) == CONT.BothObligorAndBuyerTypeID)
     {
-        <div class="col-md-12 dashboard-titel">SUPPLIER</div>
+        <div class="col-md-12 dashboard-title">SUPPLIER</div>
     }
   
     <div class="col-md-12" style="height:15px;"></div>
+    @if (Enumerable.Count(@ViewBag.Obligors) > 0)
     @if (Enumerable.Count(@ViewBag.Obligors) > 0)
     {
 
