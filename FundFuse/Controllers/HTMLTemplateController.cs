@@ -43,6 +43,11 @@ namespace TMP.Controllers
                         {
                             ViewBag.UserRight = UserRight;
                             var data = _clsTemp.HTMLTemplate_ListAll(0, "", -1, "", false, "", 0).ToList();
+                            ViewBag.StatusList = data.Select(dataRow => new mRoleMaster
+                            {
+                                StatusUserDesc = dataRow.StatusUserDesc
+                            }).GroupBy(model => model.StatusUserDesc).Select(group => group.First());
+
                             return View(data);
                         }
                         else

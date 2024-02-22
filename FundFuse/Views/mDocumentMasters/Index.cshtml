@@ -15,14 +15,23 @@
             </div>
         </form>
     }
-    <div class="col-md-12">
-        <table id="example" class="display" cellspacing="0" width="100%">
+    <div class="col-md-12 table-responsive-grid">
+        <table id="example_document_master" class="display" cellspacing="0" width="100%">
             <thead>
                 <tr class="bgsp">
-                    <th width="30%">Document Name</th>
-                    <th width="30%">Document Description</th>
-                    <th width="30%">Status</th>
-                    <th width="10%">Action</th>
+                    <th class="tr-filter-value"><p class="p-th-header">Document Name</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Document Descriptio</p><input type="search" class="dataTables_filter filter-value" data-column="1"></th>
+                    <th class="tr-filter-value">
+                        <p class="p-th-header">Status</p>
+                        <select id="statusFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="2">
+                            <option value="">--Select--</option>
+                            @foreach (var item in ViewBag.StatusList)
+                            {
+                                <option value="@item.StatusDesc">@item.StatusDesc</option>
+                            }
+                        </select>
+                    </th>
+                    <th class="tr-filter-value"><p class="p-th-header">Action</p> <p class="filter-value-not-filtered"></p></th>
                 </tr>
             </thead>
             <tbody>
@@ -74,8 +83,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#example').DataTable({
-            "pageLength": 10
+        $('#example_document_master').DataTable({
+            "pageLength": 10, "ordering": false
         });
 
         $("#btnShowModal").click(function (e) {
@@ -86,6 +95,21 @@
             HideDialog();
             e.preventDefault();
         });
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example_document_master').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example_document_master').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+    
     });
 
     $('.OpenDivForNotUpdateRight').click(function () {
@@ -182,3 +206,15 @@
         $("#dialog").fadeOut(300);
     }
 </script>
+
+<style>
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+
+    .filter-value-not-filtered {
+        height: 20px;
+    }
+</style>

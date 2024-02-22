@@ -37,6 +37,11 @@ namespace TMP.Controllers
                         //ViewBag.UserRight = UserRight;
                         ViewBag.UserRight = UserRight.MenuName;
                         var data = _clsDoc.DocumentMaster_ListAll(0, "", -1, -1, indexStatus, false, "");
+                        ViewBag.StatusList = data.Select(dataRow => new CustomerMaster_ListAll_Result
+                        {
+                            StatusDesc = dataRow.StatusUserDesc
+                        }).GroupBy(model => model.StatusDesc).Select(group => group.First());
+
                         return View(data);
                     }
                     else
@@ -1175,8 +1180,20 @@ namespace TMP.Controllers
                     var UserRight = FN.CheckUserRight("", "Viewer", ParentMenuID);
                     if (UserRight != null)
                     {
-                        if (UserRight.IsView)
-                        { return View(_clsDoc.DocumentMasterProcessHistory_ListAllBind(0, 0, "", 0)); }
+                        if (UserRight.IsView)        
+                        {
+                            ViewBag.UserRight = UserRight.MenuName;
+
+                            var data =  _clsDoc.DocumentMasterProcessHistory_ListAllBind(0, 0, "", 0).ToList();
+
+                            ViewBag.StatusList = data.Select(dataRow => new mRoleMaster
+                            {
+                                StatusUserDesc = dataRow.StatusUserDesc
+                            }).GroupBy(model => model.StatusUserDesc).Select(group => group.First());
+
+                            return View(data);
+                                
+                        }
                         else
                         { return RedirectToAction("NoaccessPage", "MasterPage"); }
                     }
