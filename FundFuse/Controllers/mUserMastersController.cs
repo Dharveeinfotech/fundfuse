@@ -726,11 +726,21 @@ namespace TMP.Controllers
                         if (status == "" || UserRight.MenuName == "Viewer")
                         {
                             var Data = _ClsUserMaster.UserMaster_ListAllNew(_objUserMaster);
+
+                            ViewBag.StatusList = Data.Select(dataRow => new mRoleMaster
+                            {
+                                StatusUserDesc = dataRow.StatusUserDesc
+                            }).GroupBy(model => model.StatusUserDesc).Select(group => group.First());
                             return View(Data);
                         }
                         else
                         {
                             var Data = _ClsUserMaster.UserMasterHistory_ListAllBindNew(_objUserMaster);
+
+                            ViewBag.StatusList = Data.Select(dataRow => new mRoleMaster
+                            {
+                                StatusUserDesc = dataRow.StatusUserDesc
+                            }).GroupBy(model => model.StatusUserDesc).Select(group => group.First());
                             return View(Data);
                         }
                     }
@@ -1640,6 +1650,11 @@ namespace TMP.Controllers
                         int.TryParse(LoginStatus[1].ToString(), out UserId);
                         UserMaster = db.UserMaster_ListAll(0, 0, "", "", "", -1, CONT.User_Index, false, "").Where(C => C.UserID != UserId).ToList();
                         //UserMaster = db.UserMaster_ListAll(0, 0, "", "", "", -1, CONT.User_Index, false, "").ToList();
+
+                        ViewBag.StatusList = UserMaster.Select(dataRow => new mRoleMaster
+                        {
+                            StatusUserDesc = dataRow.StatusUserDesc
+                        }).GroupBy(model => model.StatusUserDesc).Select(group => group.First());
                         ViewBag.UserRight = UserRight;
                     }
                     else

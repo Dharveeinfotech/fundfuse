@@ -15,27 +15,37 @@
             </div>
         </form>
     }
-    <div class="col-md-12">
-        <table id="example" class="display" cellspacing="0" width="100%">
+    <div class="col-md-12 table-responsive-grid">
+        <table id="example_index" class="display" cellspacing="0" width="100%">
             <thead>
                 <tr class="bgum">
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Last Name</th>
-                    <th>Login Name</th>
-                    <th>Company Name</th>
-                    <th>E-Mail</th>
-                    <th>Mobile Number</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                    <th>Reset Password</th>
+                    <th class="tr-filter-value"><p class="p-th-header">First Name</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Middle Name</p><input type="search" class="dataTables_filter filter-value" data-column="1"></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Last Name</p><input type="search" class="dataTables_filter filter-value" data-column="2"></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Login Name</p><input type="search" class="dataTables_filter filter-value" data-column="3"></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Company Name</p><input type="search" class="dataTables_filter filter-value" data-column="4"></th>
+                    <th class="tr-filter-value"><p class="p-th-header">E-Mail</p><input type="search" class="dataTables_filter filter-value" data-column="5"></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Mobile Number</p><input type="search" class="dataTables_filter filter-value" data-column="6"></th>
+                    <th class="tr-filter-value">
+                        <p class="p-th-header">Status</p>
+                        <select id="statusFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="7">
+                            <option value="">--Select--</option>
+                            @foreach (var item in ViewBag.StatusList)
+                            {
+                                <option value="@item.StatusUserDesc">@item.StatusUserDesc</option>
+                            }
+                        </select>
+                    </th>
+
+                    <th class="tr-filter-value"><p class="p-th-header">Action</p> <p class="filter-value-not-filtered"></p></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Reset Password</p> <p class="filter-value-not-filtered"></p></th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model.Count() > 0)
-            {
-                foreach (var item in Model)
                 {
+                    foreach (var item in Model)
+                    {
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                             <td>@Html.DisplayFor(modelItem => item.MiddleName)</td>
@@ -46,7 +56,7 @@
                             <td>@Html.DisplayFor(modelItem => item.MobileNo)</td>
                             <td>@Html.DisplayFor(modelItem => item.StatusUserDesc)</td>
                             <td>
-                                <div  class="editbutton">
+                                <div class="editbutton">
 
                                     @if (ViewBag.UserRight.IsMaker == true)
                                     {
@@ -65,7 +75,7 @@
                             <td>
                                 <div class="editbutton">
 
-                                @Html.ActionLink("Reset", "ResetPassword", new { LoginSearch = item.LoginName })
+                                    @Html.ActionLink("Reset", "ResetPassword", new { LoginSearch = item.LoginName })
                                 </div>
 
                             </td>
@@ -166,8 +176,8 @@
         $("#example_filter.dataTables_filter").hide();
         $(".modal-body").css({ 'display': 'block' });
 
-        $('#example').DataTable({
-            "pageLength": 10
+        $('#example_index').DataTable({
+            "pageLength": 10, "ordering": false
         });
 
         $("#btnShowModal").click(function (e) {
@@ -179,7 +189,19 @@
             e.preventDefault();
         });
 
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
 
+            $('#example_index').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example_index').DataTable().column(columnIndex).search(searchValue).draw();
+        });
 
     });
 
@@ -311,3 +333,14 @@
     }
 
 </script>
+<style>
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+
+    .filter-value-not-filtered {
+        height: 20px;
+    }
+</style>

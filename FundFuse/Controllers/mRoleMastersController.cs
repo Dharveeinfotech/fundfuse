@@ -36,7 +36,13 @@ namespace TMP.Controllers
                     if (UserRight != null)
                     {
                         ViewBag.UserRight = UserRight.MenuName;
-                        _objModel.lstRoleMaster = rolemaster.RoleMaster_ListAll(0, "", -1, status, false, "").ToList();
+                        var Data = rolemaster.RoleMaster_ListAll(0, "", -1, status, false, "").ToList();
+
+                        ViewBag.StatusList = Data.Select(dataRow => new mRoleMaster
+                        {
+                            StatusUserDesc = dataRow.StatusUserDesc
+                        }).GroupBy(model => model.StatusUserDesc).Select(group => group.First());
+                        _objModel.lstRoleMaster = Data;
                     }
                     else
                     {
