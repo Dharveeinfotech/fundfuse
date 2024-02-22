@@ -12,25 +12,35 @@
         <div class="col-md-12" style="height:10px;"></div>
         <input type="hidden" name="ProgramType" id="ProgramType" value="@ViewBag.ProgramType">
         <input type="hidden" name="Status" id="Status" value="@ViewBag.Status">
-        <div class="col-md-12">
+        <div class="col-md-12 table-responsive-grid">
             <table id="example" class="display" cellspacing="0" width="100%">
                 <thead>
                     <tr class="bgum">
-                        <th>Select</th>
-                        <th>Transaction Number</th>
-                        <th>Currency</th>
-                        <th>Total Amount</th>
+                        <th class="tr-filter-value"><p class="p-th-header">Select</p> <p class="filter-value-not-filtered"></p></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Transaction Number</p><input type="search" class="dataTables_filter filter-value" data-column="1"></th>
+                        <th class="tr-filter-value">
+                            <p class="p-th-header">Currency</p>
+                            <select id="currencyFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="2">
+                                <option value="">--Select--</option>
+                                <!-- Populate options dynamically from your model or controller -->
+                                @foreach (var item in ViewBag.CurrencyList)
+                                {
+                                    <option value="@item.CurrencyCode">@item.CurrencyCode</option>
+                                }
+                            </select>
+                        </th>
+                        <th class="tr-filter-value"><p class="p-th-header">Total Amount</p><input type="search" class="dataTables_filter filter-value" data-column="3"></th>
                         @if (ViewBag.ProgramType == CONT.FType)
                         {
-                            <th>Buyer Name</th>
+                            <th class="tr-filter-value"><p class="p-th-header">Buyer Name</p><input type="search" class="dataTables_filter filter-value" data-column="4"></th>
                         }
                         else
                         {
-                            <th>Supplier Name</th>
+                            <th class="tr-filter-value"><p class="p-th-header">Supplier Name</p><input type="search" class="dataTables_filter filter-value" data-column="4"></th>
                         }
-                        <th>Reference Number</th>
-                        <th>Transaction Date</th>
-                        <th>Charge Amount</th>
+                    <th class="tr-filter-value"><p class="p-th-header">Reference Number</p> <p class="filter-value-not-filtered"></p></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Transaction Date</p>  <p class="filter-value-not-filtered"></p></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Charge Amount</p> <p class="filter-value-not-filtered"></p></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -120,5 +130,33 @@
             $("#chk_" + InvID).prop("checked", false);
         }
     });
+    $(document).ready(function () {
+
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+    });
+
 </script>
+<style>
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+    .filter-value-not-filtered {
+        height: 20px;
+    }
+</style>
 

@@ -4,100 +4,175 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/MasterPage/_defaultLayout.cshtml";
 }
+@if (Enumerable.Count(Model) > 0)
+{
 
-<div class="col-md-12 div-border padoff">
-    <div class="col-md-12  dashboard-title">BANK TRANSFER HISTORY</div>
-    <div class="tab-pane" id="4a">
-        <!--tab 4a-->
-        <div class="col-md-12" style="height:10px;"></div>
-        <div class="col-md-12">
-            <table id="exampleH" class="display" cellspacing="0" width="100%">
-                <thead>
-                    <tr class="bgspr">
-                        <th>Transaction Number</th>
-                        <th>Transaction Date</th>
-                        <th>Currency</th>
-                        <th>Total Amount</th>
-                        <th>Buyer Name</th>
-                        <th>Supplier Name</th>
-                        <th>No. of Payables</th>
-                        <th>Payable Due Date</th>
-                        <th>Status</th>
-                        <th style="display:none;"></th>
-                    </tr>
-                    @if (Model.Count() > 0)
-                    {
-                    <tbody>
-                        @foreach (var item in Model)
+    <div class="col-md-12 div-border padoff">
+        <div class="col-md-12  dashboard-title">BANK TRANSFER HISTORY</div>
+        <div class="tab-pane" id="4a">
+            <!--tab 4a-->
+            <div class="col-md-12" style="height:10px;"></div>
+            <div class="col-md-12 table-responsive-grid ">
+                <table id="exampleH" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="bgspr">
+                            <th class="tr-filter-value"><p class="p-th-header">Transaction Number</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                            <th class="tr-filter-value"><p class="p-th-header">Transaction Date</p><input type="search" class="datepicker dataTables_filter filter-value" data-column="1"></th>
+                            <th class="tr-filter-value">
+                                <p class="p-th-header">Currency</p>
+                                <select id="currencyFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="2">
+                                    <option value="">--Select--</option>
+                                    <!-- Populate options dynamically from your model or controller -->
+                                    @foreach (var item in ViewBag.CurrencyList)
+                                    {
+                                        <option value="@item.CurrencyCode">@item.CurrencyCode</option>
+                                    }
+                                </select>
+                            </th>
+                            <th class="tr-filter-value"><p class="p-th-header">Total Amount</p><input type="search" class="dataTables_filter filter-value" data-column="3"></th>
+                            <th class="tr-filter-value"><p class="p-th-header">Buyer Name</p><input type="search" class="dataTables_filter filter-value" data-column="4"></th>
+                            <th class="tr-filter-value"><p class="p-th-header">Supplier Name</p><input type="search" class="dataTables_filter filter-value" data-column="5"></th>
+                            <th class="tr-filter-value"><p class="p-th-header">No. of Payables</p><input type="search" class="dataTables_filter filter-value" data-column="6"></th>
+                            <th class="tr-filter-value"><p class="p-th-header">Payable Due Date</p><input type="search" class="datepicker dataTables_filter  filter-value" data-column="7"></th>
+                            <th class="tr-filter-value">
+                                <p class="p-th-header">Status</p><select id="statusFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="8">
+                                    <option value="">--Select--</option>
+                                    <!-- Populate options dynamically from your model or controller -->
+                                    @foreach (var item in ViewBag.StatusList)
+                                    {
+                                        <option value="@item.StatusUserDesc">@item.StatusUserDesc</option>
+                                    }
+                                </select>
+                            </th>
+                            <th style="display:none;"></th>
+                        </tr>
+                        @if (Model.Count() > 0)
                         {
-                            <tr>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
 
-                                <td>
-                                    <a href="javascript:void(0);" class="commudityHist" data-id="@item.InvoiceID">@item.TranRefNo</a>
-                                </td>
-                                <td>@Convert.ToDateTime(item.TranDate).ToString("dd-MMM-yyyy")</td>
-                                <td>@item.CurrencyCode</td>
-                                <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
-                                <td>@item.ObligorName</td>
-                                <td>@item.SupplierName</td>
-                                <td>@item.InvCnt</td>
-                                <td>@Convert.ToDateTime(item.DueDate).ToString("dd-MMM-yyyy")</td>
-                                <td>@item.StatusUserDesc</td>
-                                <td class="InvoiceID" style="display:none;">
-                                    <span>@item.InvoiceID</span>
-                                </td>
+                                    <td>
+                                        <a href="javascript:void(0);" class="commudityHist" data-id="@item.InvoiceID">@item.TranRefNo</a>
+                                    </td>
+                                    <td>@Convert.ToDateTime(item.TranDate).ToString("dd-MMM-yyyy")</td>
+                                    <td>@item.CurrencyCode</td>
+                                    <td>@item.CurrencyCode @string.Format("{0:0,0.00}", item.TotAmt)</td>
+                                    <td>@item.ObligorName</td>
+                                    <td>@item.SupplierName</td>
+                                    <td>@item.InvCnt</td>
+                                    <td>@Convert.ToDateTime(item.DueDate).ToString("dd-MMM-yyyy")</td>
+                                    <td>@item.StatusUserDesc</td>
+                                    <td class="InvoiceID" style="display:none;">
+                                        <span>@item.InvoiceID</span>
+                                    </td>
 
-                            </tr>
+                                </tr>
+                            }
+                        </tbody>
                         }
-                    </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="col-md-12" style="height:10px;"></div>
+        </div>
+        <div class="modal fade" id="myModalCommu" role="dialog">
+            <div class="modal-dialog " style="width:1100px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body scroll" style="height:500px;">
+                        <div id='myModalContentCommu'></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#exampleH').DataTable({
+                    "pageLength": 10, "ordering": false
+                });
+
+
+            });
+            $("#exampleH").on("click", ".commudityHist", function () {
+                $("#processMsg").html("Please wait...");
+                $('#process').modal('show');
+                var row = $(this).closest("tr");
+                var InvoiceID = row.find(".InvoiceID").find("span").html();
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: "/InvoiceCommon/commudityHistList?InvoiceID=" + InvoiceID,
+                    contentType: "application/json; charset=utf-8",
+                    data: "{}",
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContentCommu').html(data);
+                        $('#process').modal('hide');
+                        $('#myModalCommu').modal('show');
+                    },
+                });
+            });
+            $(document).ready(function () {
+
+
+                $('.datepicker').datepicker({
+                    dateFormat: 'dd-M-yy',
+                    yearRange: '1900:c',
+                    changeYear: true,
+                    changeMonth: true,
+                    onSelect: function (dateText, inst) {
+                        var columnIndex = $(this).data('column');
+                        dateFilter(columnIndex, dateText);
                     }
-                </table>
-            </div>
+                });
 
-        </div>
+                $('th input.dataTables_filter').on('keyup', function () {
+                    var columnIndex = $(this).data('column');
+                    var searchValue = $(this).val();
 
-        <div class="col-md-12" style="height:10px;"></div>
-    </div>
-    <div class="modal fade" id="myModalCommu" role="dialog">
-        <div class="modal-dialog " style="width:1100px">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button id="DivClose" type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body scroll" style="height:500px;">
-                    <div id='myModalContentCommu'></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-tgs" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+                    if (columnIndex === 1 || columnIndex === 7) {
+                        dateFilter(columnIndex, searchValue);
+                        return;
+                    }
 
-    <script type="text/javascript">
-    $(document).ready(function () {
-        $('#exampleH').DataTable({
-            "pageLength": 10
-        });
-    });
-    $("#exampleH").on("click", ".commudityHist", function () {
-        $("#processMsg").html("Please wait...");
-        $('#process').modal('show');
-        var row = $(this).closest("tr");
-        var InvoiceID = row.find(".InvoiceID").find("span").html();
-        var options = { "backdrop": "static", keyboard: true };
-        $.ajax({
-            type: "GET",
-            url: "/InvoiceCommon/commudityHistList?InvoiceID=" + InvoiceID,
-            contentType: "application/json; charset=utf-8",
-            data: "{}",
-            datatype: "json",
-            success: function (data) {
-                $('#myModalContentCommu').html(data);
-                $('#process').modal('hide');
-                $('#myModalCommu').modal('show');
-            },
-        });
-    });
+                    $('#exampleH').DataTable().column(columnIndex).search(searchValue).draw();
+                });
 
-    </script>
+                $('th select.dataTables_filter').on('change', function () {
+                    var columnIndex = $(this).data('column');
+                    var searchValue = $(this).val();
+
+                    if (columnIndex === 1 || columnIndex === 7) {
+                        dateFilter(columnIndex, searchValue);
+                        return;
+                    }
+
+                    $('#exampleH').DataTable().column(columnIndex).search(searchValue).draw();
+                });
+
+                function dateFilter(columnIndex, searchValue) {
+                    $('#exampleH').DataTable().column(columnIndex).search(searchValue).draw();
+                }
+
+            });
+
+        </script>
+
+        <style>
+            .table-responsive-grid {
+                display: grid;
+                width: 100% !important;
+                overflow: auto;
+            }
+        </style>
+}

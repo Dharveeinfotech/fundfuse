@@ -17,19 +17,28 @@
     <div class="col-md-12" style="height:15px;"></div>
     <div class="tab-pane" id="4a">
         <!--tab 4a-->
-        <div class="col-md-12">
+        <div class="col-md-12 table-responsive-grid">
             <table id="example" class="display" cellspacing="0" width="100%">
                 <thead>
                     <tr class="bgspr">
                         @*<th>Customer Name</th>*@
-                        <th>Company Name</th>
-                        <th>Company Code</th>
-                        <th>Company Type</th>
-                        <th>Mobile Number</th>
-                        <th>E-Mail</th>
-                        <th>Registration</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th class="tr-filter-value"><p class="p-th-header">Company Name</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Company Code</p><input type="search" class="dataTables_filter filter-value" data-column="1"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Company Type</p><input type="search" class="dataTables_filter filter-value" data-column="2"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Mobile Number</p><input type="search" class="dataTables_filter filter-value" data-column="3"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">E-Mail</p><input type="search" class="dataTables_filter filter-value" data-column="4"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Registration</p><input type="search" class="dataTables_filter filter-value" data-column="5"></th>
+                        <th class="tr-filter-value">
+                            <p class="p-th-header">Status</p><select id="statusFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="6">
+                                <option value="">--Select--</option>
+                                <!-- Populate options dynamically from your model or controller -->
+                                @foreach (var item in ViewBag.StatusList)
+                                {
+                                    <option value="@item.StatusDisplay">@item.StatusDisplay</option>
+                                }
+                            </select>
+                        </th>
+                        <th class="tr-filter-value"><p class="p-th-header">Action</p><p class="filter-value-not-filtered"></p></th>
                     </tr>
                     @if (Model.Count() > 0)
                     {
@@ -75,7 +84,34 @@
     <script>
         $(document).ready(function () {
             $('#example').DataTable({
-                "pageLength": 10,
+                "pageLength": 10, "ordering": false
             });
         });
+
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
     </script>
+<style>
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+
+    .filter-value-not-filtered {
+        height: 20px;
+    }
+</style>

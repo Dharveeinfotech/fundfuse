@@ -2637,6 +2637,11 @@ namespace TMP.Controllers
                     }
 
                     var Data = _clsCust.CustomerMaster_ListAll(_objModel);
+
+                    ViewBag.StatusList = Data.Select(dataRow => new CustomerMasterModel
+                    {
+                        StatusDisplay = dataRow.StatusDisplay
+                    }).GroupBy(model => model.StatusDisplay).Select(group => group.First());
                     ViewBag.MakerIndex = _objModel;
                     return View(Data);
                 }
@@ -2696,6 +2701,11 @@ namespace TMP.Controllers
                     }
 
                     var Data = _clsCust.CustomerMasterHistory_ListAllBind(_objModel);
+
+                    ViewBag.StatusList = Data.Select(dataRow => new CustomerMasterModel
+                    {
+                        StatusDisplay = dataRow.StatusDisplay
+                    }).GroupBy(model => model.StatusDisplay).Select(group => group.First());
                     return View(Data);
                 }
 

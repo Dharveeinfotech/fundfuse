@@ -57,9 +57,11 @@ input, select, textarea {
         background: #ffd509;
         border-color: #ffd509;
     }
-     .mkGreen{
-        color:green;
-    }
+
+.mkGreen {
+    color: green;
+}
+
 .form-control {
     border: 0.5px solid #f6f9fc;
     border-radius: 5px;
@@ -92,6 +94,7 @@ input, select, textarea {
     /*border: 2px solid black;*/
     /*box-shadow: 0px 4px 7px #999999;*/
 }
+
 .box-shadow {
     box-shadow: 0px 4px 7px #999999;
 }
@@ -185,8 +188,8 @@ input, select, textarea {
     opacity: 0.9;
     text-align: center;
     height: auto;
-    border:1px solid #fff;
-    border-radius:5px;
+    border: 1px solid #fff;
+    border-radius: 5px;
 }
 
 .box-con-login-2 {
@@ -241,7 +244,7 @@ input, select, textarea {
     margin-top: 2%;
     margin-bottom: 2%;
     min-height: 500px;
-    background-color:transparent;
+    background-color: transparent;
 }
 
 .div-thankmsg {
@@ -252,7 +255,7 @@ input, select, textarea {
 }
 
 .div-border-multitab {
-   /* border: 1px solid #000;*/
+    /* border: 1px solid #000;*/
     padding-bottom: 2%;
     margin-top: 2%;
     margin-bottom: 2%;
@@ -365,10 +368,10 @@ input, select, textarea {
     color: #000;
     text-transform: uppercase;
 }
-.f-btn:hover
-{
 
-}
+    .f-btn:hover {
+    }
+
 .editbutton {
     background-image: linear-gradient(132.93deg, #ffd400 9.89%, #f5f1dd 89.62%);
     color: #000 !important;
@@ -419,12 +422,14 @@ label {
     border-color: red !important;
 }
 
-.DateExpire:focus {
+    .DateExpire:focus {
         box-shadow: 0 0 2px red !important;
     }
+
 .DateExpireLabel {
     color: red !important;
 }
+
 .bgsp {
     background-color: #444c55;
 }
@@ -652,32 +657,36 @@ textarea {
     color: #fff;
     font-size: 20px;
 }
- 
+
 .reminder-div-btn {
     background: #336699;
     color: #fff;
     padding-top: 15px;
     text-transform: uppercase;
 }
-.changes-input{
-    background-color:#336699 !important;
-    color:#000;
+
+.changes-input {
+    background-color: #336699 !important;
+    color: #000;
 }
- .notras-p {
-        font-weight: 800;
-        font-size: 25px;
-          margin:0;
-    }
-    .notras-div {
-        text-align: center;
-        background: #eeeeee;
-        padding: 2%;
-    }
-    .notras-sub-p {
-        font-weight: 800;
-        font-size: 14px;
-          margin:0;
-    }
+
+.notras-p {
+    font-weight: 800;
+    font-size: 25px;
+    margin: 0;
+}
+
+.notras-div {
+    text-align: center;
+    background: #eeeeee;
+    padding: 2%;
+}
+
+.notras-sub-p {
+    font-weight: 800;
+    font-size: 14px;
+    margin: 0;
+}
 
 
 @media only screen and (max-width: 480px) {
@@ -727,14 +736,34 @@ textarea {
     padding: 5px 15px;
     background-image: linear-gradient(132.93deg, #fed400 9.89%, #f7f2d6 89.62%);
     border-radius: 5px;
-    text-decoration:none;
+    text-decoration: none;
 }
+
     .view-eye-btn:hover {
         cursor: pointer;
         background-image: linear-gradient(224.5deg, #fdea8a 21.52%, #fff8d2 75.86%);
         text-decoration: none;
     }
+
 .eye-svg-position {
     position: relative;
     top: 7px;
+}
+
+.filter-value {
+    width: 165px !important;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.tr-filter-value {
+    /*height: 40px;*/
+}
+.p-th-header{
+    height:30px;
+}
+.table-responsive-grid {
+    display:grid; 
+    width:100% !important; 
+    overflow:auto;
 }

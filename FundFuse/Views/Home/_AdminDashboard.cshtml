@@ -2,21 +2,6 @@
 @model  IEnumerable<TMP.Models.CustomerMasterModel>
 <script src="~/Scripts/canvasjs.min.js"></script>
 <div class="col-md-12" style="height:15px;"></div>
-@{
-    List<SelectListItem>
-    listItems1 = new List<SelectListItem>
-        ();
-    listItems1.Add(new SelectListItem
-    {
-        Text = "Yes",
-        Value = "Yes"
-    });
-    listItems1.Add(new SelectListItem
-    {
-        Text = "No",
-        Value = "No"
-    });
-}
 @if (Enumerable.Count(@ViewBag.Transt) == 0 && Enumerable.Count(@ViewBag.CustRegi) == 0)
 {
     <div class="col-md-12 notras-div">
@@ -91,38 +76,38 @@
 
     <div class="tab-pane" id="4a">
         <!--tab 4a-->
-        <div class="col-md-12" style="display:grid; width:100% !important; overflow:auto;">
+        <div class="col-md-12 table-responsive-grid">
             <table id="exampleDB2" class="display" cellspacing="0" width="100%">
                 <thead>
                     <tr class="bgspr">
-                        <th>Transaction Number<input type="search" class="dataTables_filter" data-column="0"></th>
-                        <th>Product<input type="search" class="dataTables_filter" data-column="1"></th>
-                        <th>Transaction Date<input type="search" class="datepicker dataTables_filter" data-column="2"></th>
-                        <th>Currency
-                        <select id="currencyFilter" typeof="search" class="form-control dataTables_filter"  data-column="4">
-                            <option value="">--Select--</option>
-                            <!-- Populate options dynamically from your model or controller -->
-                            @foreach (var item in ViewBag.CurrencyList)
-                            {
-                                <option value="@item.CurrencyCode">@item.CurrencyCode</option>
-                            }
-                        </select>
-                        @*<input type="search" class="dataTables_filter" data-column="3">*@
+                        <th class="tr-filter-value"><p class="p-th-header">Transaction Number</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Product</p><input type="search" class="dataTables_filter filter-value" data-column="1"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Transaction Date</p><input type="search" class="datepicker dataTables_filter filter-value" data-column="2"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Currency</p>
+                            <select id="currencyFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="3">
+                                <option value="">--Select--</option>
+                                <!-- Populate options dynamically from your model or controller -->
+                                @foreach (var item in ViewBag.CurrencyList)
+                                {
+                                    <option value="@item.CurrencyCode">@item.CurrencyCode</option>
+                                }
+                            </select>
+                            @*<input type="search" class="dataTables_filter" data-column="3">*@
                         </th>
-                        <th>Total Amount<input type="search" class="dataTables_filter"></th>
-                        <th>Buyer Name<input type="search" class="dataTables_filter" data-column="5"></th>
-                        <th>Due Date<input type="search" class="datepicker dataTables_filter " data-column="6"></th>
-                        <th>Status <select id="statusFilter" typeof="search" class="form-control dataTables_filter"  data-column="7">
-                         <option value="">--Select--</option>
-                         <!-- Populate options dynamically from your model or controller -->
-                         @foreach (var item in ViewBag.StatusList)
-                         {
-                             <option value="@item.Status">@item.Status</option>
-                         }
-                      </select>
+                        <th class="tr-filter-value"><p class="p-th-header">Total Amount</p><input type="search" class="dataTables_filter filter-value"data-column="4"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Buyer Name</p><input type="search" class="dataTables_filter filter-value" data-column="5"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Due Date</p><input type="search" class="datepicker dataTables_filter  filter-value" data-column="6"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Status</p><select id="statusFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="7">
+                                <option value="">--Select--</option>
+                                <!-- Populate options dynamically from your model or controller -->
+                                @foreach (var item in ViewBag.StatusList)
+                                {
+                                    <option value="@item.StatusUserDesc">@item.StatusUserDesc</option>
+                                }
+                            </select>
                         </th>
-                        <th>Transaction History</th>
-                        <th>Action</th>
+                        <th><p class="p-th-header">Transaction History</p></th>
+                        <th><p class="p-th-header">Action</p></th>
                         <th style="display:none;">
                         </th>
                         <th style="display:none;">
@@ -130,7 +115,7 @@
                     </tr>
                     @if (Enumerable.Count(@ViewBag.Transt) > 0)
                     {
-                    <tbody>
+<tbody>
                         @foreach (var item in ViewBag.Transt)
                         {
                             if ((item.IsFoundCC == true && item.IsFoundCC == false && item.IsDispToCD == false) || (item.IsFoundCC == false && item.IsFoundCC == true && item.IsDispToCD == false) ||
@@ -544,22 +529,9 @@
     }
 
     $(document).ready(function () {
-
-        $('th').each(function (index) {
-            $(this).attr('data-orderable', 'true').append('<span class="sort-icon"></span>');
-        });
-
-        // Check if DataTable is already initialized on the table
-        if ($.fn.dataTable.isDataTable('#exampleDB2')) {
-            // If DataTable is initialized, destroy it before reinitializing
-            $('#exampleDB2').DataTable().destroy();
-        }
-
-        // Set default sorting order
-        $('#exampleDB2').DataTable({ order: [[0, 'asc']] }).draw();
-
+        
         $('.datepicker').datepicker({
-            dateFormat: 'dd',
+            dateFormat: 'dd-MM-yy',
             yearRange: '1900:c',
             changeYear: true,
             changeMonth: true,
@@ -597,7 +569,9 @@
             $('#exampleDB2').DataTable().column(columnIndex).search(searchValue).draw();
         }
 
+
     });
+
 
 
 </script>
@@ -656,5 +630,22 @@
 
     .adminbox-shadow {
         box-shadow: 0px 1px 5px -2x #3f444a;
+    }
+
+    .sort-icon {
+        display: inline-block;
+        margin-left: 5px;
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+    }
+
+    .sorting_asc .sort-icon {
+        border-bottom: 4px solid;
+    }
+
+    .sorting_desc .sort-icon {
+        border-top: 4px solid;
     }
 </style>

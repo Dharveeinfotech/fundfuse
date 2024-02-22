@@ -2083,6 +2083,10 @@ namespace TMP.Controllers
                     //change for hk demo
                     //var Data = _ClsInvoiceTransaction.InvoiceMaster_ListAll(_ObjModel).Where(d => d.IsDispToCD == true).ToList();
                     var Data = _ClsInvoiceTransaction.InvoiceMaster_ListAll(_ObjModel).ToList();
+                    ViewBag.CurrencyList = Data.Select(dataRow => new InvoiceTransactionModel
+                    {
+                        CurrencyCode = dataRow.CurrencyCode
+                    }).GroupBy(model => model.CurrencyCode).Select(group => group.First());
                     ViewBag.ProgramType = ProgramType; ViewBag.Status = Status;
                     return View(Data);
                 }
@@ -2113,7 +2117,10 @@ namespace TMP.Controllers
                     }
                     _ObjModel.ProgramType = _Model.ProgramType; _ObjModel.Status = _Model.Status;
                     var Data = _ClsInvoiceTransaction.InvoiceMaster_ListAll(_ObjModel);
-
+                    ViewBag.CurrencyList = Data.Select(dataRow => new InvoiceTransactionModel
+                    {
+                        CurrencyCode = dataRow.CurrencyCode
+                    }).GroupBy(model => model.CurrencyCode).Select(group => group.First());
                     _ClsInvoiceTransaction.Conn = ClsAppDatabase.GetCon();
                     if (_ClsInvoiceTransaction.Conn.State == ConnectionState.Closed) _ClsInvoiceTransaction.Conn.Open();
                     else { _ClsInvoiceTransaction.Conn.Close(); _ClsInvoiceTransaction.Conn.Open(); }
@@ -2354,6 +2361,14 @@ namespace TMP.Controllers
                     }
                     _ObjModel.ProgramType = ProgramType;
                     var Data = _ClsInvoiceTransaction.InvoiceMaster_ListAll(_ObjModel);
+                    ViewBag.CurrencyList = Data.Select(dataRow => new InvoiceTransactionModel
+                    {
+                        CurrencyCode = dataRow.CurrencyCode
+                    }).GroupBy(model => model.CurrencyCode).Select(group => group.First());
+                    ViewBag.StatusList = Data.Select(dataRow => new InvoiceTransactionModel
+                    {
+                        StatusUserDesc = dataRow.StatusUserDesc
+                    }).GroupBy(model => model.StatusUserDesc).Select(group => group.First());
                     return View(Data);
                 }
                 else

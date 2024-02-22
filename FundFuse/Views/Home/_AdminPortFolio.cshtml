@@ -6,29 +6,52 @@
 {
     <div class="col-md-12 dashboard-title">PORTFOLIO</div>
     <div class="tab-pane" id="4a">
-        <div class="col-md-12">
-            <table id="exampleDB2" cellspacing="0" width="100%">
+        <div class="col-md-12 table-responsive-grid">
+            <table id="exampleDB2Portfolio" cellspacing="0" width="100%">
                 <thead>
-
                     <tr class="bgspr">
-                        <th>Transaction Number</th>
-                        <th>Product</th>
-                        <th>Transaction Date</th>
-                        <th>Currency</th>
-                        <th>Total Amount</th>
-                        <th>Buyer Name</th>
-                        <th>No. of Payables</th>
-                        <th>Due Date</th>
-                        <th>Upload Type</th>
-                        <th>Status</th>
-                        <th>Transaction History</th>
+                        <th class="tr-filter-value"><p class="p-th-header">Transaction Number</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Product</p><input type="search" class="dataTables_filter filter-value" data-column="1"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Transaction Date</p><input type="search" class="datepicker dataTables_filter filter-value" data-column="2"></th>
+                        <th class="tr-filter-value">
+                            <p class="p-th-header">Currency</p>
+                            <select id="currencyFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="4">
+                                <option value="">--Select--</option>
+                                @foreach (var item in ViewBag.CurrencyList)
+                                {
+                                    <option value="@item.CurrencyCode">@item.CurrencyCode</option>
+                                }
+                            </select>
+                        </th>
+                        <th class="tr-filter-value"><p class="p-th-header">Total Amount</p><input type="search" class="dataTables_filter filter-value"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Buyer Name</p><input type="search" class="dataTables_filter filter-value" data-column="5"></th>
+                        <th><p class="p-th-header">No. of Payables</p><input type="search" class="dataTables_filter filter-value" data-column="6"></th>
+                        <th class="tr-filter-value"><p class="p-th-header">Due Date</p><input type="search" class="datepicker dataTables_filter  filter-value" data-column="7"></th>
+                        <th>
+                            <p class="p-th-header">Upload Type</p><select id="uploadTypeFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="8">
+                                <option value="">--Select--</option>
+                                @foreach (var item in ViewBag.UploadTypeList)
+                                {
+                                    <option value="@item.UploadType">@item.UploadType</option>
+                                }
+                            </select>
+                        </th>
+                        <th class="tr-filter-value">
+                            <p class="p-th-header">Status</p>
+                            <select id="statusFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="9">
+                                <option value="">--Select--</option>
+                                @foreach (var item in ViewBag.StatusList)
+                                {
+                                    <option value="@item.StatusUserDesc">@item.StatusUserDesc</option>
+                                }
+                            </select>
+                        </th>
+                        <th class="tr-filter-value"><p class="p-th-header">Transaction History</p> <p class="filter-value-not-filtered"></p></th>
                         <th style="display:none;">
                         </th>
                         <th style="display:none;">
                         </th>
                     </tr>
-
-
                 </thead>
                 @if (Enumerable.Count(@ViewBag.Pending) > 0)
                 {
@@ -109,14 +132,69 @@
     </div>
     <hr />
     <script>
-    $(document).ready(function () {
-        $('#exampleDB1, #exampleDB2, #exampleDB3').DataTable({
-            "pageLength": 20, "ordering": false
+        $(document).ready(function () {
+            $('#exampleDB1, #exampleDB2Portfolio, #exampleDB3').DataTable({
+                "pageLength": 20, "ordering": false
+            });
+            $('#exampleDB4, #exampleDB5').DataTable({
+                "pageLength": 10, "ordering": false
+            });
         });
-        $('#exampleDB4, #exampleDB5').DataTable({
-            "pageLength": 10, "ordering": false
+
+        $(document).ready(function () {
+
+            $('.datepicker').datepicker({
+                dateFormat: 'dd-M-yy',
+                yearRange: '1900:c',
+                changeYear: true,
+                changeMonth: true,
+                onSelect: function (dateText, inst) {
+                    var columnIndex = $(this).data('column');
+                    dateFilter(columnIndex, dateText);
+                }
+            });
+
+            $('th input.dataTables_filter').on('keyup', function () {
+                var columnIndex = $(this).data('column');
+                var searchValue = $(this).val();
+
+                if (columnIndex === 2 || columnIndex === 7) {
+                    dateFilter(columnIndex, searchValue);
+                    return;
+                }
+
+                $('#exampleDB2Portfolio').DataTable().column(columnIndex).search(searchValue).draw();
+            });
+
+            $('th select.dataTables_filter').on('change', function () {
+                var columnIndex = $(this).data('column');
+                var searchValue = $(this).val();
+
+                if (columnIndex === 2 || columnIndex === 7) {
+                    dateFilter(columnIndex, searchValue);
+                    return;
+                }
+
+                $('#exampleDB2Portfolio').DataTable().column(columnIndex).search(searchValue).draw();
+            });
+
+            function dateFilter(columnIndex, searchValue) {
+                $('#exampleDB2Portfolio').DataTable().column(columnIndex).search(searchValue).draw();
+            }
+
+
         });
-    });
     </script>
+    <style>
+        .table-responsive-grid {
+            display: grid;
+            width: 100% !important;
+            overflow: auto;
+        }
+
+        .filter-value-not-filtered {
+            height: 20px;
+        }
+    </style>
 
 }
