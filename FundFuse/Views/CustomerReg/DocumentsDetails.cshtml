@@ -15,15 +15,13 @@
             <div class="tab-pane" id="4a">
                 <!--tab 4a-->
                 <div class="col-md-12" style="height:10px;"></div>
-                <div class="col-md-12">
+                <div class="col-md-12 table-responsive-grid">
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr class="bgspr">
-                                <th style="width:10%">Sr. No.</th>
-                                <th style="width:50%">Document Name</th>
-                                <th style="width:40%">Attachments</th>
-                                <th style="display:none;">
-                                </th>
+                                <th class="tr-filter-value"><p class="p-th-header">Sr. No.</p></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Document Name</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Attachments</p></th>
                             </tr>
                         <tbody>
                             @foreach (var item in ViewBag.attachList)
@@ -55,15 +53,13 @@
             <div class="tab-pane" id="4a">
                 <!--tab 4a-->
                 <div class="col-md-12" style="height:10px;"></div>
-                <div class="col-md-12">
+                <div class="col-md-12 table-responsive-grid">
                     <table id="example1" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr class="bgspr">
-                                <th style="width:10%">Sr. No.</th>
-                                <th style="width:50%">Document Name</th>
-                                <th style="width:40%">Attachments</th>
-                                <th style="display:none;">
-                                </th>
+                                <th class="tr-filter-value"><p class="p-th-header">Sr. No.</p></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Document Name</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Attachments</p></th>
                             </tr>
                         <tbody>
                             @foreach (var item in ViewBag.userAttach)
@@ -94,6 +90,7 @@
             </div>
             <div class="col-md-12" style="height:15px;"></div>
         }
+  
         if (ViewBag._currentUser.IsCompScr == true || ViewBag._currentUser.IsCreRevChecker == true || ViewBag._currentUser.IsCreRevApprover == true || ViewBag._currentUser.IsOpTeam == true)
         {
             <div class="col-md-12" style="text-align:right">
@@ -124,7 +121,7 @@
         $('#dociframe').attr('src', url)
         $('#DocPopup').modal({ show: true });
     });
-    
+
     $(document).ready(function () {
         var t = $('#example').DataTable({
             "columnDefs": [{
@@ -159,7 +156,13 @@
 </script>
 
 <style>
-    .dataTables_filter {
-        display: none;
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+
+    .filter-value-not-filtered {
+        height: 20px;
     }
 </style>

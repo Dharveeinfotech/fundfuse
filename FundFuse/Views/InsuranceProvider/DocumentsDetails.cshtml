@@ -16,10 +16,11 @@
             <div class="tab-pane" id="4a">
                 <!--tab 4a-->
                 <div class="col-md-12" style="height:10px;"></div>
-                <div class="col-md-12">
+                <div class="col-md-12 table-responsive-grid">
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr class="bgspr">
+
                                 <th style="width:10%">Sr. No.</th>
                                 <th style="width:50%">Document Name</th>
                                 <th style="width:40%">Attachments</th>
@@ -156,6 +157,19 @@
             "order": [[1, 'desc']]
         });
 
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
         t.on('order.dt search.dt', function () {
             t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                 cell.innerHTML = i + 1;
@@ -178,9 +192,14 @@
         }).draw();
     });
 </script>
-
 <style>
-    .dataTables_filter {
-        display: none;
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+
+    .filter-value-not-filtered {
+        height: 20px;
     }
 </style>

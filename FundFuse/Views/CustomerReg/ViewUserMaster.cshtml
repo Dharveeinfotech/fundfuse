@@ -16,16 +16,16 @@
 
             <div class="col-md-12  dashboard-title">AUTHORIZED USER INFORMATION</div>
             <div class="col-md-12" style="height:10px;"></div>
-                <div class="col-md-12">
+                <div class="col-md-12 table-responsive-grid">
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr class="bgspr">
-                                <th>First Name</th>
-                                <th>Middle Name</th>
-                                <th>Last Name</th>
-                                <th>E-Mail</th>
-                                <th>Mobile Number</th>
-                                <th>View</th>
+                                <th class="tr-filter-value"><p class="p-th-header">First Name</p><input type="search" class="dataTables_filter input-alignment filter-value" data-column="0"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Middle Name</p><input type="search" class="dataTables_filter input-alignment filter-value" data-column="1"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Last Name</p><input type="search" class="dataTables_filter input-alignment filter-value" data-column="2"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">E-Mail</p><input type="search" class="dataTables_filter input-alignment filter-value" data-column="3"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Mobile Number</p><input type="search" class="dataTables_filter input-alignment filter-value" data-column="4"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">View</p> <p class="filter-value-not-filtered"></p></th>
                             </tr>
                         <tbody>
                             @foreach (var item in ViewBag.UserMasterData)
@@ -103,7 +103,21 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
-            "pageLength": 5,
+            "pageLength": 5, "ordering": false
+        });
+
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
         });
     });
     function ViewDetail(id) {
@@ -140,7 +154,17 @@
 </script>
 
 <style>
-    .dataTables_filter {
-        display: none;
+  
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+
+    .filter-value-not-filtered {
+        height: 20px;
+    }
+    .input-alignment {
+        float: none !important;
     }
 </style>

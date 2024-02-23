@@ -1179,7 +1179,16 @@ namespace TMP.Controllers
                     if (UserRight != null)
                     {
                         if (UserRight.IsView)
-                        { return View(_clsTemp.HTMLTemplateProcessHistory_ListAllBind_Result(0, 0, 0, "", 0).ToList()); }
+                        {
+                            var data  = _clsTemp.HTMLTemplateProcessHistory_ListAllBind_Result(0, 0, 0, "", 0).ToList();
+
+                            ViewBag.StatusList = data.Select(dataRow => new mRoleMaster
+                            {
+                                StatusUserDesc = dataRow.StatusUserDesc
+                            }).GroupBy(model => model.StatusUserDesc).Select(group => group.First());
+
+                            return View(data);
+                        }
                         else
                         { return RedirectToAction("NoaccessPage", "MasterPage"); }
                     }

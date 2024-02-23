@@ -6,13 +6,23 @@
 <div class="col-md-12 div-border padoff">
 
 
-    <div class="col-md-12">
+    <div class="col-md-12 table-responsive-grid">
         <table id="example" class="display" cellspacing="0" width="100%">
             <thead>
                 <tr class="bgsp">
-                    <th>Template</th>
-                    <th>Template Type</th>
-                    <th>Status</th>
+                    <th class="tr-filter-value"><p class="p-th-header">Role Name</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                    <th class="tr-filter-value"><p class="p-th-header">Role Name</p><input type="search" class="dataTables_filter filter-value" data-column="1"></th>
+                    <th class="tr-filter-value">
+                        <p class="p-th-header">Status</p>
+                        <select id="statusFilter" typeof="search" class="form-control dataTables_filter filter-value" data-column="2">
+                            <option value="">--Select--</option>
+                            @foreach (var item in ViewBag.StatusList)
+                            {
+                                <option value="@item.StatusUserDesc">@item.StatusUserDesc</option>
+                            }
+                        </select>
+                    </th>
+                 
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +44,33 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
-            "pageLength": 10
+            "pageLength": 10, "ordering": false
         });
+
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
     });
 </script>
+<style>
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+
+    .filter-value-not-filtered {
+        height: 20px;
+    }
+</style>

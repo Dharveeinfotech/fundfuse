@@ -18,19 +18,19 @@
             <div class="tab-pane" id="4a">
                 <!--tab 4a-->
 
-                <div class="col-md-12">
+                <div class="col-md-12 table-responsive-grid">
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr class="bgspr">
-                                <th>Account Name</th>
-                                <th>Currency</th>
-                                <th>Bank Name</th>
-                                <th>Account Number</th>
-                                <th>Address</th>
-                                <th>IBAN</th>
-                                <th>Country</th>
-                                <th>Swift Code</th>
-                                <th>IFSC Code</th>
+                                <th class="tr-filter-value"><p class="p-th-header">Account Name</p><input type="search" class="dataTables_filter filter-value" data-column="0"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Currency</p><input type="search" class="dataTables_filter filter-value" data-column="1"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Bank Name</p><input type="search" class="dataTables_filter filter-value" data-column="2"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Account Number</p><input type="search" class="dataTables_filter filter-value" data-column="3"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Address</p><input type="search" class="dataTables_filter filter-value" data-column="4"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">IBAN</p><input type="search" class="dataTables_filter filter-value" data-column="5"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Country</p><input type="search" class="dataTables_filter filter-value" data-column="6"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">Swift Code</p><input type="search" class="dataTables_filter filter-value" data-column="7"></th>
+                                <th class="tr-filter-value"><p class="p-th-header">IFSC Code</p><input type="search" class="dataTables_filter filter-value" data-column="8"></th>
                             </tr>
                         <tbody>
                             @foreach (var item in ViewBag.BankDetailGrid)
@@ -120,8 +120,34 @@
 <script>
     $(document).ready(function () {
         $('#example,#example1').DataTable({
-            "pageLength": 5,
+            "pageLength": 5, "ordering": false
         });
+
+        $('th input.dataTables_filter').on('keyup', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
+        $('th select.dataTables_filter').on('change', function () {
+            var columnIndex = $(this).data('column');
+            var searchValue = $(this).val();
+
+            $('#example').DataTable().column(columnIndex).search(searchValue).draw();
+        });
+
     });
     ShareCompany();
 </script>
+<style>
+    .table-responsive-grid {
+        display: grid;
+        width: 100% !important;
+        overflow: auto;
+    }
+
+    .filter-value-not-filtered {
+        height: 20px;
+    }
+</style>
